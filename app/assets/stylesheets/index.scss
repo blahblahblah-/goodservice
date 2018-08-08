@@ -1,0 +1,28 @@
+// Place all the styles related to the Index controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+ul {
+  list-style-type: none;
+}
+.routes {
+  li {
+    margin: 0.5em 0;
+  }
+  .route {
+    font-family: Brandon Grotesque, sans-serif;
+    width: 1em;
+    height: 1em;
+    font-size: 1em;
+    line-height: 1em;
+    padding: 0.25em;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url(css/PIE.htc);
+    display: inline-block;
+    margin-right: 1em;
+  } 
+}

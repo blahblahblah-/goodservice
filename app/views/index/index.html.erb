@@ -1,0 +1,15 @@
+<h1>
+  goodservice.io
+  <sub>alpha</sub>
+</h1>
+
+<ul class="routes">
+  <% @routes.each do |route| %>
+    <li>
+      <div class="route" style="background-color: #<%= route.color %>; color: #<%= route.text_color %>"><%= route.name %></div>
+      <% if (pair = @troubled_routes[route.name]) %>
+        Delay - expected headway: <%= pair[0].round(1) %>, actual: <%= pair[1].round(1) %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
