@@ -1,3 +1,4 @@
 class Route < ActiveRecord::Base
-  default_scope { where(visible: true).order(name: :asc) }
+  default_scope { order(name: :asc) }
+  scope :visible, -> { where(visible: true)}
 end

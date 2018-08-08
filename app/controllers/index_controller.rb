@@ -3,7 +3,7 @@ class IndexController < ApplicationController
 
   def index
     processor = ScheduleProcessor.new
-    @routes = Route.all
+    @routes = Route.all.visible
     @troubled_routes = processor.troubled_routes
   end
 end
