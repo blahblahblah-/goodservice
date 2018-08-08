@@ -9,7 +9,7 @@ class Stop < ActiveRecord::Base
   end
 
   def current_headways_by_route
-    data = stop_times.soon.group_by { |time| time.trip.route.internal_id }
+    data = stop_times.soon.includes(trip: :route).group_by { |time| time.trip.route.internal_id }
     Hash[
       data.map do |k, st|
         times = st.map(&:departure_time)
