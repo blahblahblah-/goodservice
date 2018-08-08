@@ -88,9 +88,7 @@ csv.each do |row|
   puts "#{t.internal_id} saved"
 end
 
-csv_text = File.read(Rails.root.join('import', 'stop_times.txt'))
-csv = CSV.parse(csv_text, headers: true)
-csv.each do |row|
+CSV.foreach(Rails.root.join('import', 'stop_times.txt'), headers: true) do |row|
   s = StopTime.new
   s.trip_internal_id = row['trip_id']
   str = row['departure_time']
