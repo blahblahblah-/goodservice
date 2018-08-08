@@ -1,24 +1,17 @@
-# README
+# goodservice
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails app that detects headway discrepancy on New York City Subway system by comparing the data for live countdown clocks with the static schedule data provided by the MTA.
 
-Things you may want to cover:
+See it live at http://www.goodservice.io deployed on Heroku
 
-* Ruby version
+MTA's GTFS-realtime manual: http://datamine.mta.info/sites/all/files/pdfs/GTFS-Realtime-NYC-Subway%20version%201%20dated%207%20Sep.pdf
 
-* System dependencies
+Most up-to-date MTA static schedule data: http://web.mta.info/developers/developer-data-terms.html
 
-* Configuration
+Uses Ruby 2.4.2, Rails 5.2, Postgres
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To run locally:
+1. Sign up for free MTA Developer account https://datamine.mta.info
+2. Set developer key as environment variable `MTA_KEY`
+4. Run `rake db:reset`
+6. Run `rails s`
