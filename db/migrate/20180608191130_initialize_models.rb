@@ -37,7 +37,6 @@ class InitializeModels < ActiveRecord::Migration[5.2]
       t.string :parent_stop_id
     end
 
-    add_foreign_key :stops, :stops, column: :parent_stop_id, primary_key: :internal_id
     add_index :stops, :internal_id, unique: true
 
     create_table :trips do |t|
@@ -81,7 +80,7 @@ class InitializeModels < ActiveRecord::Migration[5.2]
     end
 
     add_foreign_key :line_direction_stops, :line_directions, column: :line_direction_id
-    add_foreign_key :line_direction_stops, :stops, column: :stop_id, primary_key: :internal_id
+    add_foreign_key :line_direction_stops, :stops, column: :stop_internal_id, primary_key: :internal_id
     add_index :line_direction_stops, [:line_direction_id, :stop_internal_id], unique: true, name: "idx_line_direction_stops"
 
     create_table :route_line_directions do |t|

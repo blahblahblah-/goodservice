@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2018_06_08_191130) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "calendar_exceptions", force: :cascade do |t|
     t.string "schedule_service_id", null: false
     t.date "date", null: false
@@ -97,4 +100,14 @@ ActiveRecord::Schema.define(version: 2018_06_08_191130) do
     t.index ["internal_id"], name: "index_trips_on_internal_id", unique: true
   end
 
+  add_foreign_key "calendar_exceptions", "schedules", column: "schedule_service_id", primary_key: "service_id"
+  add_foreign_key "line_direction_stops", "line_directions"
+  add_foreign_key "line_direction_stops", "stops", column: "stop_internal_id", primary_key: "internal_id"
+  add_foreign_key "line_directions", "lines"
+  add_foreign_key "route_line_directions", "line_directions"
+  add_foreign_key "route_line_directions", "routes", column: "route_internal_id", primary_key: "internal_id"
+  add_foreign_key "stop_times", "stops", column: "stop_internal_id", primary_key: "internal_id"
+  add_foreign_key "stop_times", "trips", column: "trip_internal_id", primary_key: "internal_id"
+  add_foreign_key "trips", "routes", column: "route_internal_id", primary_key: "internal_id"
+  add_foreign_key "trips", "schedules", column: "schedule_service_id", primary_key: "service_id"
 end
