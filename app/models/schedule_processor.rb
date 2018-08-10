@@ -22,7 +22,7 @@ class ScheduleProcessor
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         entity.trip_update.stop_time_update.each do |update|
           if stop_ids.include?(update.stop_id)
-            if update&.departure && (time = Time.at(update.departure.time)) > Time.current
+            if update&.departure && (time = Time.at(update.departure.time)) > Time.current && time < Time.current + 40.minutes
               direction = update.stop_id.ends_with?("N") ? 1 : 3
               next if entity.trip_update.trip.nyct_trip_descriptor.direction != direction
               # stop_times[update.stop_id] << time
