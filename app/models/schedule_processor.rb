@@ -19,7 +19,7 @@ class ScheduleProcessor
     data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
     feed = Transit_realtime::FeedMessage.decode(data)
     for entity in feed.entity do
-      if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor.is_assigned
+      if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         entity.trip_update.stop_time_update.each do |update|
           if stop_ids.include?(update.stop_id)
             if update&.departure && (time = Time.at(update.departure.time)) > Time.current
