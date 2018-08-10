@@ -198,8 +198,8 @@ class SeedMoreKeyStations < ActiveRecord::Migration[5.2]
     KeyStation.create(line_direction: bcrosstown, stop_internal_id: "G31S")
     KeyStation.create(line_direction: wfortysecond, stop_internal_id: "901N") # Grand Central
     KeyStation.create(line_direction: efortysecond, stop_internal_id: "902S") # Times Sq
-    KeyStation.create(line_direction: nfranklin, stop_internal_id: "S04N") # Botanic Garden
-    KeyStation.create(line_direction: sfranklin, stop_internal_id: "S01S") # Franklin Av
+    KeyStation.create(line_direction: nfranklin, stop_internal_id: "S04S") # Botanic Garden
+    KeyStation.create(line_direction: sfranklin, stop_internal_id: "S01N") # Franklin Av
     KeyStation.create(line_direction: nrockawaypk, stop_internal_id: "H12N") # B 90 St
     KeyStation.create(line_direction: srockawaypk, stop_internal_id: "H14N") # B 105 St
     KeyStation.create(line_direction: nfarrockaway, stop_internal_id: "H10N") # B 67 St
