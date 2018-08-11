@@ -6,19 +6,19 @@ module Display
 
     def initialize(route)
       @route = route
-      @stop_headways = Hash.new { |h, k| h[k] = StopHeadway.new(k, route) }
+      @stop_headways = Set.new
     end
 
-    def add_actual_trip_time(stop_id, trip_time)
-      stop_headways[stop_id].add_actual_trip_time(trip_time)
+    def add_stop_headway(stop_headway)
+      stop_headways << stop_headway
     end
 
     def max_difference_headway
-      @max_difference_headway ||= stop_headways.select { |_, headway|
-        headway.difference.present?
-      }.max_by { |_, headway|
-        headway.difference
-      }&.last
+      @max_difference_headway ||= stop_headways.select { |headway|
+        headway.difference_for_route(route.internal_id).present?
+      }.max_by { |headway|
+        headway.difference_for_route(route.internal_id)
+      }
     end
 
     def status
@@ -28,12 +28,12 @@ module Display
         else
           "No Scheduled Service"
         end
-      elsif max_difference_headway.difference > 2
+      elsif max_difference_headway.difference_for_route(route.internal_id) > 2
         puts "Headway discreprency at #{max_difference_headway.stop.stop_name} (#{max_difference_headway.stop.internal_id}) "\
-        "for #{route.internal_id}. #{max_difference_headway.actual_times.sort.map { |t| t.strftime("%H:%M") }}. "\
+        "for #{route.internal_id}. #{max_difference_headway.actual_times_for_route(route.internal_id).sort.map { |t| t.strftime("%H:%M") }}. "\
         "Expected: #{max_difference_headway.scheduled_headway}, actual: #{max_difference_headway.actual_headway}"
-        "Not Good - expected headway: #{max_difference_headway.scheduled_headway.round(1)} mins, "\
-        "actual: #{max_difference_headway.actual_headway.round(1)}"
+        "Not Good - expected headway: #{max_difference_headway.scheduled_headway_for_route(route.internal_id).round(1)} mins, "\
+        "actual: #{max_difference_headway.actual_headway_for_route(route.internal_id).round(1)}"
       else
         "Good Service"
       end

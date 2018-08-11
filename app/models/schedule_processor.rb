@@ -21,6 +21,10 @@ class ScheduleProcessor
     @routes = Hash[pairs]
   end
 
+  def lines
+
+  end
+
   private
 
   def estimated_times(feed_id, stop_ids)
@@ -33,7 +37,8 @@ class ScheduleProcessor
             if update&.departure && (time = Time.at(update.departure.time)) > Time.current && time < Time.current + 30.minutes
               direction = update.stop_id.ends_with?("N") ? 1 : 3
               next if entity.trip_update.trip.nyct_trip_descriptor.direction != direction
-              routes[entity.trip_update.trip.route_id].add_actual_trip_time(update.stop_id, time)
+              stop_headways[update.stop_id].add_actual_trip_time(entity.trip_update.trip.route_id, time)
+              routes[entity.trip_update.trip.route_id].add_stop_headway(stop_headways[update.stop_id])
             end
           end
         end
@@ -43,5 +48,9 @@ class ScheduleProcessor
 
   def key_stations
     @key_stations ||= KeyStation.all
+  end
+
+  def stop_headways
+    @stop_headways ||= Hash.new { |h, k| h[k] = Display::StopHeadway.new(k) }
   end
 end
