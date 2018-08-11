@@ -11,33 +11,37 @@ ul {
   .route-name {
     margin-right: .75em;
   }
-  .route {
-    font-family: Brandon Grotesque, sans-serif;
-    width: 1em;
-    height: 1em;
-    font-size: 1em;
-    line-height: 1em;
-    padding: 0.25em;
-    text-align: center;
-    font-weight: bold;
-    color: #fff;
-    display: inline-block;
-    margin-right: .25em;
-  }
-  .bullet {
-    -webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
-    border-radius: 999px;
-    behavior: url(css/PIE.htc);
-  }
-  .diamond {
-    transform:rotate(45deg);
-    -ms-transform:rotate(45deg);
-    -webkit-transform:rotate(45deg);
-  }
-  .diamond-inner {
-    transform:rotate(-45deg);
-    -ms-transform:rotate(-45deg);
-    -webkit-transform:rotate(-45deg);
-  }
+}
+
+.route {
+  font-family: Brandon Grotesque, sans-serif;
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  line-height: 1em;
+  padding: 0.25em;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  display: inline-block;
+  margin-right: .25em;
+}
+.bullet {
+  -webkit-border-radius: 999px;
+  -moz-border-radius: 999px;
+  border-radius: 999px;
+  behavior: url(css/PIE.htc);
+}
+.diamond {
+  transform:rotate(45deg);
+  -ms-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+}
+.diamond-inner {
+  transform:rotate(-45deg);
+  -ms-transform:rotate(-45deg);
+  -webkit-transform:rotate(-45deg);
+}
+.line-name {
+  font-weight: bold;
 }

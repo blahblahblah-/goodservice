@@ -33,7 +33,7 @@ module Display
         "for #{route.internal_id}. #{max_difference_headway.actual_times_for_route(route.internal_id).sort.map { |t| t.strftime("%H:%M") }}. "\
         "Expected: #{max_difference_headway.scheduled_headway}, actual: #{max_difference_headway.actual_headway}"
         "Not Good - expected headway: #{max_difference_headway.scheduled_headway_for_route(route.internal_id).round(1)} mins, "\
-        "actual: #{max_difference_headway.actual_headway_for_route(route.internal_id).round(1)}"
+        "actual: #{max_difference_headway.actual_headway_for_route(route.internal_id).round(1)} mins"
       else
         "Good Service"
       end

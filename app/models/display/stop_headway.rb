@@ -24,8 +24,18 @@ module Display
       times.sort.each_cons(2).map { |a,b| (b - a) / 60 }.max
     end
 
+    def actual_headway
+      times = actual_times.values.flatten
+      times << Time.current if times.size == 1
+      times.sort.each_cons(2).map { |a,b| (b - a) / 60 }.max
+    end
+
     def scheduled_headway_for_route(route_internal_id)
       @scheduled_headway_for_route[route_internal_id] ||= stop.current_headways_for_route(route_internal_id).max
+    end
+
+    def scheduled_headway
+      @scheduled_headway ||= stop.current_headways.max
     end
 
     def difference_for_route(route_internal_id)
@@ -33,12 +43,18 @@ module Display
       actual_headway_for_route(route_internal_id) - scheduled if scheduled
     end
 
-    def routes
-      actual_times.keys.sort
+    def difference
+      actual_headway - scheduled_headway if scheduled_headway
     end
+
+    def routes
+      actual_times.keys
+    end
+
+    attr_reader :actual_times
 
     private
 
-    attr_reader :route, :actual_times
+    attr_reader :route
   end
 end

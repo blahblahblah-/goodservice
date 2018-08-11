@@ -3,5 +3,6 @@ class IndexController < ApplicationController
 
   def index
     @processor = ScheduleProcessor.new
+    @boroughs = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
   end
 end

@@ -230,8 +230,6 @@ LineBorough.create(borough: "Brooklyn", line: canarsie)
 LineBorough.create(borough: "Manhattan", line: flushing)
 LineBorough.create(borough: "Queens", line: flushing)
 LineBorough.create(borough: "Manhattan", line: nassau)
-LineBorough.create(borough: "Brooklyn", line: nassau)
-LineBorough.create(borough: "Queens", line: nassau)
 
 LineBorough.create(borough: "Queens", line: crosstown)
 LineBorough.create(borough: "Brooklyn", line: crosstown)
