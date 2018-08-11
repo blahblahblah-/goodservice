@@ -365,3 +365,8 @@ KeyStation.create(line_direction: uwh, stop_internal_id: "A07N") # 175 St,
 KeyStation.create(line_direction: dwh, stop_internal_id: "A07S")
 KeyStation.create(line_direction: nsi, stop_internal_id: "S22N") # New Dorp
 KeyStation.create(line_direction: ssi, stop_internal_id: "S22S")
+
+KeyStation.create(line_direction: wcanarsie, stop_internal_id: "L02S") # 6 Av
+KeyStation.create(line_direction: ecanarsie, stop_internal_id: "L06N") # 1 Av
+KeyStation.create(line_direction: wcanarsie, stop_internal_id: "L24S") # Atlantic Av
+KeyStation.create(line_direction: ecanarsie, stop_internal_id: "L28N") # E 105 St
