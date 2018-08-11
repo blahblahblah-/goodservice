@@ -32,9 +32,13 @@ class ScheduleProcessor
   def lines_by_borough(borough)
     lines.values.select { |line|
       line.boroughs.include?(borough)
-    }.sort_by { |line|
-      line.name
-    }
+    }.sort_by do |line| # Sorting strings with numbers is annoying :()
+      if line.name =~ /^\d+/
+        [1, $&.to_i]
+      else
+        [2, line.name]
+      end
+    end
   end
 
   private
