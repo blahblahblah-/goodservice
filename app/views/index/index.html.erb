@@ -4,14 +4,15 @@
 </h1>
 
 <ul class="routes">
-  <% @routes.each do |route| %>
+  <% Hash[@processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}"}].each do |_, route| %>
     <li>
-      <div class="route" style="background-color: #<%= route.color %>; color: #<%= route.text_color %>"><%= route.name %></div>
-      <% if (pair = @troubled_routes[route.name]) %>
-        Not Good - expected headway: <%= pair[0].round(1) %> mins, actual: <%= pair[1].round(1) %> mins
-      <% else %>
-        Good Service
-      <% end %>
+      <span class="route-name">
+        <div class="<%=route.classes %>" style="<%= route.style %>">
+          <div class="<%=route.inner_classes %>" style="<%= route.inner_style %>"><%= route.display_name %></div>
+        </div>
+        <%= route.alternate_name %>
+      </span>
+      <%= route.status %>
     </li>
   <% end %>
 </ul>
