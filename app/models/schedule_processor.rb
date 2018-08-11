@@ -32,11 +32,11 @@ class ScheduleProcessor
   def lines_by_borough(borough)
     lines.values.select { |line|
       line.boroughs.include?(borough)
-    }.sort_by do |line| # Sorting strings with numbers is annoying :()
+    }.sort_by do |line| # Sorting strings with numbers is annoying :(
       if line.name =~ /^\d+/
-        [1, $&.to_i]
+        [1, $&.to_i, line.name]
       else
-        [2, line.name]
+        [2, line.name, line.name]
       end
     end
   end
@@ -51,7 +51,7 @@ class ScheduleProcessor
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         entity.trip_update.stop_time_update.each do |update|
           if (key_station = key_stations[update.stop_id])
-            if update&.departure && (time = Time.at(update.departure.time)) > Time.current && time < Time.current + 30.minutes
+            if update&.departure && (time = Time.at(update.departure.time)) > Time.current && time < Time.current + 25.minutes
               direction = update.stop_id.ends_with?("N") ? 1 : 3
               next if entity.trip_update.trip.nyct_trip_descriptor.direction != direction
               stop_headway = stop_headways[update.stop_id]
