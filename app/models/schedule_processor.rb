@@ -66,10 +66,14 @@ class ScheduleProcessor
   end
 
   def key_stations
-    @key_stations ||= KeyStation.all.index_by(&:stop_internal_id)
+    @key_stations ||= KeyStation.all.includes(:stop, line_direction: {}).index_by(&:stop_internal_id)
   end
 
   def stop_headways
-    @stop_headways ||= Hash.new { |h, k| h[k] = Display::StopHeadway.new(k) }
+    @stop_headways ||= Hash.new { |h, k| h[k] = Display::StopHeadway.new(k, stop_times[k]) }
+  end
+
+  def stop_times
+    @stop_times ||= StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
   end
 end
