@@ -1,0 +1,36 @@
+.route {
+  width: 2em;
+  height: 2em;
+  font-size: 2em;
+  line-height: 2em;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  display: inline-block;
+  margin: .25em;
+
+  &.small {
+    height: 1.5em;
+    width: 1.5em;
+    font-size: 1em;
+    line-height: 1.5em;
+  }
+}
+
+.bullet {
+  -webkit-border-radius: 999px;
+  -moz-border-radius: 999px;
+  border-radius: 999px;
+}
+
+.diamond {
+  transform:rotate(45deg);
+  -ms-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+}
+
+.diamond-inner {
+  transform:rotate(-45deg);
+  -ms-transform:rotate(-45deg);
+  -webkit-transform:rotate(-45deg);
+}

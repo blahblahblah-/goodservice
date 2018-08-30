@@ -13,6 +13,22 @@ module Display
       stop_headways << stop_headway
     end
 
+    def min_actual_headway
+      stop_headways.map { |s| s.min_actual_headway }.compact.min
+    end
+
+    def max_actual_headway
+      stop_headways.map { |s| s.max_actual_headway }.compact.max
+    end
+
+    def min_scheduled_headway
+      stop_headways.map { |s| s.min_scheduled_headway }.compact.min
+    end
+
+    def max_scheduled_headway
+      stop_headways.map { |s| s.max_scheduled_headway }.compact.max
+    end
+
     def max_difference_headway
       @max_difference_headway ||= stop_headways.select { |headway|
         headway.difference.present?
@@ -26,10 +42,8 @@ module Display
         "No Service"
       elsif max_difference_headway.difference > 2
         puts "Headway discreprency at #{max_difference_headway.stop.stop_name} (#{max_difference_headway.stop.internal_id}). "\
-        "#{max_difference_headway.actual_times.values.flatten.sort.map { |t| t.strftime("%H:%M") }}. "\
-        "Expected: #{max_difference_headway.scheduled_headway}, actual: #{max_difference_headway.actual_headway}"
-        "Not Good - expected headway: #{max_difference_headway.scheduled_headway.round(1)} mins, "\
-        "actual: #{max_difference_headway.actual_headway.round(1)} mins"
+        "#{max_difference_headway.actual_times.values.flatten.sort.map { |t| t.strftime("%H:%M") }}. "
+        "Not Good"
       else
         "Good Service"
       end

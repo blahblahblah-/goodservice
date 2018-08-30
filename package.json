@@ -6,7 +6,12 @@
     "babel-preset-react": "^6.24.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "resolve-url-loader": "^2.3.0",
+    "semantic-ui-react": "^0.82.3",
+    "webpack-cli": "^3.1.0"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
