@@ -1,23 +1,36 @@
 import React from 'react';
-import { Tab, Segment, Responsive } from 'semantic-ui-react';
+import { Tab, Responsive } from 'semantic-ui-react';
 import BoroughPane from './boroughPane.jsx';
 import { map } from 'lodash';
 
 const BOROUGHS = ['The Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'];
+const BOROUGHS_ABRV = {
+  'The Bronx': 'Bx',
+  'Brooklyn': "Bklyn",
+  'Manhattan': 'Manh',
+  'Queens': 'Qns',
+  'Staten Island': 'SI',
+}
 
 class LinePane extends React.Component {
+  state = {}
+
+  handleOnUpdate = (e, { width }) => this.setState({ width })
+
   panes() {
     return map(BOROUGHS, borough => {
-      return { menuItem: borough, render: () => <BoroughPane lines={this.props.lines[borough]} /> }
+      const { width } = this.state;
+      const boroughName = width > Responsive.onlyMobile.maxWidth ? borough : BOROUGHS_ABRV[borough];
+      return { menuItem: boroughName, render: () => <BoroughPane lines={this.props.lines[borough]} /> }
     })
   }
 
   render() {
+    const { width } = this.state;
+    const vertical = width > Responsive.onlyComputer.minWidth;
+
     return(
-      <Segment.Group basic style={{border : 'none'}}>
-        <Responsive as={Tab} menu={{ fluid: true, vertical: true, tabular: true }} panes={this.panes()} minWidth={650} />
-        <Responsive as={Tab} menu={{ tabular: true }} panes={this.panes()} maxWidth={650} />
-      </Segment.Group>
+      <Responsive as={Tab} fireOnMount onUpdate={this.handleOnUpdate} menu={{ fluid: true, vertical: vertical, tabular: true }} panes={this.panes()} />
     )
   }
 }
