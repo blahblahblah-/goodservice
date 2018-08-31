@@ -81,14 +81,26 @@ module Display
 
     def current_headways
       times = stop_times.map(&:departure_time)
-      times << Time.current - Time.current.beginning_of_day if times.size == 1
-      times.sort.each_cons(2).map { |a,b| (b - a) / 60 }
+      treat_times(times).sort.each_cons(2).map { |a,b| (b - a) / 60 }
     end
 
     def current_headways_for_route(route_internal_id)
       times = stop_times.select { |st| st.trip.route_internal_id == route_internal_id}.map(&:departure_time)
+      treat_times(times).sort.each_cons(2).map { |a,b| (b - a) / 60 }
+    end
+
+    def treat_times(times)
       times << Time.current - Time.current.beginning_of_day if times.size == 1
-      times.sort.each_cons(2).map { |a,b| (b - a) / 60 }
+      if (Time.current + 40.minutes).to_date == Date.current.tomorrow
+        return times.map { |time|
+          (time < Time.current - Time.current.beginning_of_day) ? time + 86400 : time
+        }
+      elsif Time.current.hour < 4
+        return times.map { |time|
+          time % 86400
+        }
+      end
+      return times
     end
   end
 end

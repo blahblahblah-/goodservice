@@ -14,8 +14,8 @@ class StopTime < ActiveRecord::Base
       where("(departure_time > ? and departure_time < ?) or (departure_time > ? and departure_time < ?)",
         Time.current - Time.current.beginning_of_day,
         Time.current - Time.current.beginning_of_day + 40.minutes.to_i,
-        86400,
-        Time.current - Time.current.beginning_of_day + 86400
+        Time.current - Time.current.beginning_of_day + 86400,
+        Time.current - Time.current.beginning_of_day + 86400 + 40.minutes.to_i
       ).joins(trip: :schedule).merge(Schedule.today)
     else
       where("departure_time > ? and departure_time < ?",
