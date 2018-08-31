@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Segment, Tab, Dimmer, Loader } from "semantic-ui-react";
+import { Header, Segment, Tab, Dimmer, Loader, Grid } from "semantic-ui-react";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
 import sampleData from "../data/sampleData.js";
@@ -53,6 +53,21 @@ class LandingPage extends React.Component {
           {this.loading()}
           <Tab panes={this.panes()} />
         </Segment>
+        <Grid centered style={{margin: '2em 0'}}>
+          <Grid.Column width={7}>
+            <Segment basic>
+              <Header as='h2'>What is Good Service?</Header>
+              <p>
+                Everyone has their own definition of what good service is for the public transit.
+                To me, it is how long I have to wait for before a train comes. This website
+                uses live data feeds from the New York City subway and compares the headways
+                to the scheduled headways. Headway is the time between two trains. This site uses
+                the same live data feeds that power the station platform countdown clocks, therefore
+                this site is as accurate as the data that we are given.
+              </p>
+            </Segment>
+          </Grid.Column>
+        </Grid>
         <Segment inverted vertical textAlign='right' style={{padding: '1em 2em'}}>
           <Header inverted as='h5'>
             Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>
