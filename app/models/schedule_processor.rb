@@ -55,14 +55,20 @@ class ScheduleProcessor
               direction = update.stop_id.ends_with?("N") ? 1 : 3
               next if entity.trip_update.trip.nyct_trip_descriptor.direction != direction
               stop_headway = stop_headways[update.stop_id]
-              stop_headway.add_actual_trip_time(entity.trip_update.trip.route_id, time)
-              routes[entity.trip_update.trip.route_id].add_stop_headway(stop_headway)
+              stop_headway.add_actual_trip_time(route(entity.trip_update.trip.route_id), time)
+              routes[route(entity.trip_update.trip.route_id)] &.add_stop_headway(stop_headway)
+              puts "Error: #{entity.trip_update.trip.route_id} not found" if routes[entity.trip_update.trip.route_id].nil?
               lines[key_station.line_direction.line_id].add_stop_headway(stop_headway)
             end
           end
         end
       end
     end
+  end
+
+  def route(route_id)
+    route_id = "SI" if route_id == "SS"
+    route_id
   end
 
   def key_stations
