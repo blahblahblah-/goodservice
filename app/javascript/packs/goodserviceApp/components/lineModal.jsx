@@ -61,7 +61,12 @@ class LineModal extends React.Component {
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-                <Header as='h3' color={this.color()}>{this.props.line.status}</Header>
+                <Statistic.Group widths={1} size='small'>
+                  <Statistic color={this.color()}>
+                    <Statistic.Value>{this.props.line.status}</Statistic.Value>
+                    <Statistic.Label>Status</Statistic.Label>
+                  </Statistic>
+                </Statistic.Group>
                 <Statistic.Group widths={this.statisticGroupWidths()}>
                   <Statistic>
                     <Statistic.Value>{this.scheduledHeadway()}</Statistic.Value>

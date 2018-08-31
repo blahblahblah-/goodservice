@@ -53,7 +53,7 @@ class TrainModal extends React.Component {
   alternateName() {
     if (this.props.train.alternate_name) {
       return (
-        <Header as='h1'>{this.props.train.alternate_name}</Header>
+        <Header as={this.headingSize()} floated='right'>{this.props.train.alternate_name}</Header>
       )
     }
   }
@@ -63,13 +63,18 @@ class TrainModal extends React.Component {
       <Responsive as={Modal} open={this.props.open} closeIcon={true} onClose={this.props.onClose} fireOnMount onUpdate={this.handleOnUpdate}>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color} textColor={this.props.train.text_color} style={{display: "inline-block"}} />
-          <Header as={this.headingSize()} color={this.color()} floated="right" style={{ marginRight: '2em'}}>{this.props.train.status}</Header>
+          {this.alternateName()}
         </Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-                {this.alternateName()}
+                <Statistic.Group widths={1} size='small'>
+                  <Statistic color={this.color()}>
+                    <Statistic.Value>{this.props.train.status}</Statistic.Value>
+                    <Statistic.Label>Status</Statistic.Label>
+                  </Statistic>
+                </Statistic.Group>
                 <Statistic.Group widths={this.statisticGroupWidths()}>
                   <Statistic>
                     <Statistic.Value>{this.scheduledHeadway()}</Statistic.Value>
