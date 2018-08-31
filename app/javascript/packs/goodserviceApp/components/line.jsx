@@ -18,7 +18,7 @@ class Line extends React.Component {
         <Header as='h3'>{this.props.line.name}</Header>
         {
           map(this.props.line.routes, route => {
-            return <TrainBullet name={route.name} color={route.color} textColor={route.text_color} size='small' />
+            return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
           })
         }
         <Header as='h3' floated='right' className='status' color={this.color()}>{this.props.line.status}</Header>
