@@ -50,6 +50,14 @@ class TrainModal extends React.Component {
     return (width > Responsive.onlyMobile.maxWidth) ? 'h1' : 'h4';
   }
 
+  alternateName() {
+    if (this.props.train.alternate_name) {
+      return (
+        <Header as='h1'>{this.props.train.alternate_name}</Header>
+      )
+    }
+  }
+
   render() {
     return(
       <Responsive as={Modal} open={this.props.open} closeIcon={true} onClose={this.props.onClose} fireOnMount onUpdate={this.handleOnUpdate}>
@@ -61,7 +69,7 @@ class TrainModal extends React.Component {
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-                <Header as='h1'>{this.props.train.alternate_name}</Header>
+                {this.alternateName()}
                 <Statistic.Group widths={this.statisticGroupWidths()}>
                   <Statistic>
                     <Statistic.Value>{this.scheduledHeadway()}</Statistic.Value>
