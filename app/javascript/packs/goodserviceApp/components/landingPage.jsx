@@ -53,16 +53,19 @@ class LandingPage extends React.Component {
           {this.loading()}
           <Tab panes={this.panes()} />
         </Segment>
-        <Grid centered style={{margin: '2em 0'}}>
-          <Grid.Column width={7}>
+        <Grid centered stackable style={{margin: '2em 0'}}>
+          <Grid.Column width={9}>
             <Segment basic>
               <Header as='h2'>What is Good Service?</Header>
               <p>
-                Everyone has their own definition of what good service is for the public transit.
-                To me, it is how long I have to wait for before a train comes. This website
+                Good service is kind of a vague term in regards to public transit.
+                Personally, it means I'm waiting for a predictable amount of time before a train comes. This website
                 uses live data feeds from the New York City subway and compares the headways
-                to the scheduled headways. Headway is the time between two trains. This site uses
-                the same live data feeds that power the station platform countdown clocks, therefore
+                to the scheduled headways—headway being the amount of time between two trains. By tracking various
+                key stations in the system, this site alerts the user if the gap between two upcoming trains exceed the expectation
+                by more than 2 minutes.
+              </p>
+              <p>This site uses the same live data feeds that power the station platform countdown clocks, therefore
                 this site is as accurate as the data that we are given.
               </p>
             </Segment>
