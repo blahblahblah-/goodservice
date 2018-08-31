@@ -20,11 +20,13 @@ class TrainBullet extends React.Component {
   style() {
     if (this.props.textColor) {
       return {
+        ...this.props.style,
         backgroundColor: `${this.props.color}`,
         color: `${this.props.textColor}`
       }
     } else {
       return {
+        ...this.props.style,
         backgroundColor: `${this.props.color}`
       };
     }

@@ -41,8 +41,6 @@ module Display
       if max_difference_headway.nil?
         "No Service"
       elsif max_difference_headway.difference > 2
-        puts "Headway discreprency at #{max_difference_headway.stop.stop_name} (#{max_difference_headway.stop.internal_id}). "\
-        "#{max_difference_headway.actual_times.values.flatten.sort.map { |t| t.strftime("%H:%M") }}. "
         "Not Good"
       else
         "Good Service"

@@ -1,8 +1,12 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid } from 'semantic-ui-react'
+import { Header, Modal, Statistic, Grid, Responsive } from 'semantic-ui-react';
 import TrainBullet from './trainBullet.jsx';
 
 class TrainModal extends React.Component {
+  state = {}
+
+  handleOnUpdate = (e, { width }) => this.setState({ width })
+
   color() {
     if (this.props.train.status == 'Good Service') {
       return 'green';
@@ -36,19 +40,29 @@ class TrainModal extends React.Component {
     )
   }
 
+  statisticGroupWidths() {
+    const { width } = this.state;
+    return (width > Responsive.onlyMobile.maxWidth) ? 2 : 1;
+  }
+
+  headingSize() {
+    const { width } = this.state;
+    return (width > Responsive.onlyMobile.maxWidth) ? 'h1' : 'h4';
+  }
+
   render() {
     return(
-      <Modal open={this.props.open} closeIcon={true} onClose={this.props.onClose}>
+      <Responsive as={Modal} open={this.props.open} closeIcon={true} onClose={this.props.onClose} fireOnMount onUpdate={this.handleOnUpdate}>
         <Modal.Header>
-          <TrainBullet name={this.props.train.name} color={this.props.train.color} textColor={this.props.train.text_color} />
-          {this.props.train.alternate_name}
-          <Header as='h1' color={this.color()} floated="right" style={{ marginRight: '2em'}}>{this.props.train.status}</Header>
+          <TrainBullet name={this.props.train.name} color={this.props.train.color} textColor={this.props.train.text_color} style={{display: "inline-block"}} />
+          <Header as={this.headingSize()} color={this.color()} floated="right" style={{ marginRight: '2em'}}>{this.props.train.status}</Header>
         </Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-                <Statistic.Group widths={2}>
+                <Header as='h1'>{this.props.train.alternate_name}</Header>
+                <Statistic.Group widths={this.statisticGroupWidths()}>
                   <Statistic>
                     <Statistic.Value>{this.scheduledHeadway()}</Statistic.Value>
                     <Statistic.Label>Scheduled Headway (mins)</Statistic.Label>
@@ -62,7 +76,7 @@ class TrainModal extends React.Component {
             </Grid>
           </Modal.Description>
         </Modal.Content>
-      </Modal>
+      </Responsive>
     )
   }
 }

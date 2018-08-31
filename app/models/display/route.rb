@@ -42,43 +42,13 @@ module Display
         if route.scheduled?
           "No Service"
         else
-          "No Scheduled Service"
+          "Not Scheduled"
         end
       elsif max_difference_headway.difference_for_route(route.internal_id) > 2
-        puts "Headway discreprency at #{max_difference_headway.stop.stop_name} (#{max_difference_headway.stop.internal_id}) "\
-        "for #{route.internal_id}. #{max_difference_headway.actual_times_for_route(route.internal_id).sort.map { |t| t.strftime("%H:%M") }}. "\
-        "Expected: #{max_difference_headway.scheduled_headway}, actual: #{max_difference_headway.actual_headway}"
         "Not Good"
       else
         "Good Service"
       end
-    end
-
-    def diamond?
-      name.ends_with?("X")
-    end
-
-    def display_name
-      diamond? ? name[0] : name
-    end
-
-    def classes
-      diamond? ? "route diamond" : "route bullet"
-    end
-
-    def inner_classes
-      "diamond-inner" if diamond?
-    end
-
-    def style
-      value = "background-color: ##{color}"
-      value << "; color: ##{text_color}" if text_color
-      # value << "; width: 1.5em" if name.length == 3
-      value
-    end
-
-    def inner_style
-      "font-size: .7em" if name.length == 3
     end
   end
 end

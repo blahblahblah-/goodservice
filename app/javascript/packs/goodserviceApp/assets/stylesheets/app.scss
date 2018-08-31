@@ -6,7 +6,6 @@
   text-align: center;
   font-weight: bold;
   color: #fff;
-  display: inline-block;
   margin: .25em;
 
   &.small {
@@ -14,6 +13,7 @@
     width: 1.5em;
     font-size: 1em;
     line-height: 1.5em;
+    display: inline-block;
   }
 }
 

@@ -33,14 +33,14 @@ class Line extends React.Component {
 
   render() {
     return(
-      <Segment onClick={this.handleClick}>
+      <Segment onClick={this.handleClick} style={{ minHeight: 92}}>
+        <Header as='h3' floated='right' className='status' color={this.color()}>{this.props.line.status}</Header>
         <Header as='h3'>{this.props.line.name}</Header>
         {
           map(this.props.line.routes, route => {
             return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
           })
         }
-        <Header as='h3' floated='right' className='status' color={this.color()}>{this.props.line.status}</Header>
         <LineModal line={this.props.line} open={this.state.openModal} onClose={this.handleClose} />
       </Segment>
     )

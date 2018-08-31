@@ -1,9 +1,13 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid } from 'semantic-ui-react';
+import { Header, Modal, Statistic, Grid, Responsive } from 'semantic-ui-react';
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
 
 class LineModal extends React.Component {
+  state = {}
+
+  handleOnUpdate = (e, { width }) => this.setState({ width })
+
   color() {
     if (this.props.line.status == 'Good Service') {
       return 'green';
@@ -37,9 +41,14 @@ class LineModal extends React.Component {
     )
   }
 
+  statisticGroupWidths() {
+    const { width } = this.state;
+    return (width > Responsive.onlyMobile.maxWidth) ? 2 : 1;
+  }
+
   render() {
     return(
-      <Modal open={this.props.open} closeIcon={true} onClose={this.props.onClose}>
+      <Responsive as={Modal} open={this.props.open} closeIcon={true} onClose={this.props.onClose} fireOnMount onUpdate={this.handleOnUpdate}>
         <Modal.Header>
           {this.props.line.name}
           {
@@ -47,13 +56,13 @@ class LineModal extends React.Component {
               return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
             })
           }
-          <Header as='h1' color={this.color()} floated="right" style={{ marginRight: '2em'}}>{this.props.line.status}</Header>
         </Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-                <Statistic.Group widths={2}>
+                <Header as='h3' color={this.color()}>{this.props.line.status}</Header>
+                <Statistic.Group widths={this.statisticGroupWidths()}>
                   <Statistic>
                     <Statistic.Value>{this.scheduledHeadway()}</Statistic.Value>
                     <Statistic.Label>Scheduled Headway (mins)</Statistic.Label>
@@ -67,7 +76,7 @@ class LineModal extends React.Component {
             </Grid>
           </Modal.Description>
         </Modal.Content>
-      </Modal>
+      </Responsive>
     )
   }
 }
