@@ -7,7 +7,7 @@ class BoroughPane extends React.Component {
   render() {
     return(
       <Tab.Pane>
-        <Grid columns={2}>
+        <Grid stackable columns={2}>
           {
             map(this.props.lines, line => {
               return <Grid.Column key={line.name}><Line line={line} /></Grid.Column>
