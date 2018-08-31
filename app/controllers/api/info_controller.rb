@@ -1,6 +1,6 @@
 class Api::InfoController < ApplicationController
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
-  caches_action :index, expires_in: 2.minutes
+  caches_action :index, expires_in: 5.minutes
 
   def index
     processor = ScheduleProcessor.new
