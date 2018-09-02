@@ -1,8 +1,14 @@
 class Api::InfoController < ApplicationController
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
-  caches_action :index, expires_in: 5.minutes
 
   def index
+    result = Rails.cache.fetch("trip-data") do
+      self.class.refresh_data
+    end
+    render json: result
+  end
+
+  def self.refresh_data
     processor = ScheduleProcessor.new
     routes = processor.routes.reject { |_, route|
       !route.visible? && route.min_scheduled_headway.nil?
@@ -45,6 +51,8 @@ class Api::InfoController < ApplicationController
       routes: routes,
       lines: lines,
     }
-    render json: result
+
+    Rails.cache.write("trip-data", result)
+    result
   end
 end
