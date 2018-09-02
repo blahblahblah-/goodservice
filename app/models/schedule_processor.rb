@@ -8,8 +8,6 @@ FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
 
 class ScheduleProcessor
   def initialize
-    @key_stations = KeyStation.all.includes(:stop, line_direction: {}).index_by(&:stop_internal_id)
-    instantiate_classes
     feeds = Parallel.map(FEED_IDS, in_threads: 4) do |id|
       puts "Spawning thread for #{id}"
       feed = retrieve_feed(id)
@@ -17,10 +15,16 @@ class ScheduleProcessor
       feed
     end
 
-    puts "Analyze feeds"
-    Parallel.each_with_index(feeds, in_threads: 4) do |feed, index|
-      puts "Analyzing feed #{FEED_IDS[index]}"
-      analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+    if Rails.env.production?
+      puts "Analyze feeds"
+      Parallel.each_with_index(feeds, in_threads: 4) do |feed, index|
+        puts "Analyzing feed #{FEED_IDS[index]}"
+        analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+      end
+    else
+      feeds.each do |feed|
+        analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+      end
     end
   end
 
@@ -90,7 +94,9 @@ class ScheduleProcessor
     route_id
   end
 
-  attr_accessor :key_stations
+  def key_stations
+    @key_stations ||= KeyStation.all.includes(:stop, line_direction: {}).index_by(&:stop_internal_id)
+  end
 
   def stop_headways
     @stop_headways ||= Hash.new { |h, k| h[k] = Display::StopHeadway.new(k, stop_times[k]) }
