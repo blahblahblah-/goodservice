@@ -8,8 +8,15 @@ FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
 
 class ScheduleProcessor
   def initialize
-    FEED_IDS.each do |id|
-      estimated_times(id, key_stations.values.map(&:stop_internal_id))
+    feeds = Parallel.map(FEED_IDS, in_threads: 9) do |id|
+      puts "Spawning thread for #{id}"
+      feed = retrieve_feed(id)
+      puts "Done with thread for #{id}"
+      feed
+    end
+
+    feeds.each do |feed|
+      analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
     end
   end
 
@@ -41,12 +48,18 @@ class ScheduleProcessor
     end
   end
 
-  private
+  def retrieve_feed(feed_id)
+    begin
+      retries ||= 0
+      data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
+      feed = Transit_realtime::FeedMessage.decode(data)
+    rescue StandardError => e
+      puts "Error: #{e} from feed #{feed_id}"
+      retry if (retries += 1) < 3
+    end
+  end
 
-  def estimated_times(feed_id, stop_ids)
-    data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
-    feed = Transit_realtime::FeedMessage.decode(data)
-    puts "Received feed data for #{feed_id}"
+  def analyze_feed(feed, stop_ids)
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         entity.trip_update.stop_time_update.each do |update|

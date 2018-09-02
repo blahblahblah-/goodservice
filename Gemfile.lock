@@ -111,6 +111,7 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
+    parallel (1.12.1)
     pg (1.0.0)
     protobuf (3.8.2)
       activesupport (>= 3.2)
@@ -220,6 +221,7 @@ DEPENDENCIES
   gtfs-realtime-bindings
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
+  parallel
   pg
   pry-byebug
   puma (~> 3.11)
