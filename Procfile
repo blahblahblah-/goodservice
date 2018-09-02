@@ -1,2 +1,2 @@
 web: bundle exec rails s
-webpacker: ./bin/webpack-dev-server
+clock: bundle exec clockwork lib/clock.rb
