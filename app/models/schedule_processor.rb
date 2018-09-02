@@ -15,7 +15,7 @@ class ScheduleProcessor
         puts "Spawning thread for #{id}"
         feed = retrieve_feed(id)
         puts "Analyzing feed #{id}"
-        Rails.cache.write("feed-data-#{id}", feed, expires_in: 5.minutes)
+        Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
         analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
         puts "Done analyzing feed #{id}"
       end
