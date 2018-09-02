@@ -21,6 +21,7 @@ class ScheduleProcessor
       Parallel.each_with_index(feeds, in_threads: 4) do |feed, index|
         puts "Analyzing feed #{FEED_IDS[index]}"
         analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+        puts "Done analyzing feed #{FEED_IDS[index]}"
       end
     else
       feeds.each do |feed|
