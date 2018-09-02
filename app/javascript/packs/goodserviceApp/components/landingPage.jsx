@@ -97,7 +97,7 @@ class LandingPage extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-    this.timer = setInterval(() => this.fetchData(), 300000);
+    this.timer = setInterval(() => this.fetchData(), 60000);
   }
 }
 export default LandingPage
