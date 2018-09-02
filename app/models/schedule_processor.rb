@@ -8,6 +8,7 @@ FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
 
 class ScheduleProcessor
   def initialize
+    instantiate_data
     feeds = Parallel.map(FEED_IDS, in_threads: 4) do |id|
       puts "Spawning thread for #{id}"
       feed = retrieve_feed(id)
@@ -69,6 +70,8 @@ class ScheduleProcessor
 
   private
 
+  attr_accessor :key_stations, :stop_times
+
   def analyze_feed(feed, stop_ids)
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
@@ -89,20 +92,17 @@ class ScheduleProcessor
     end
   end
 
+  def instantiate_data
+    @key_stations = KeyStation.all.includes(:stop, line_direction: {}).index_by(&:stop_internal_id)
+    @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
+  end
+
   def route(route_id)
     route_id = "SI" if route_id == "SS"
     route_id
   end
 
-  def key_stations
-    @key_stations ||= KeyStation.all.includes(:stop, line_direction: {}).index_by(&:stop_internal_id)
-  end
-
   def stop_headways
     @stop_headways ||= Hash.new { |h, k| h[k] = Display::StopHeadway.new(k, stop_times[k]) }
-  end
-
-  def stop_times
-    @stop_times ||= StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
   end
 end
