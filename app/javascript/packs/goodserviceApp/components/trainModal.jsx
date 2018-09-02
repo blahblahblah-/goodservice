@@ -60,7 +60,7 @@ class TrainModal extends React.Component {
 
   render() {
     return(
-      <Responsive as={Modal} open={this.props.open} onClose={this.props.onClose} fireOnMount onUpdate={this.handleOnUpdate}>
+      <Responsive as={Modal} fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon={true}>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color} textColor={this.props.train.text_color} style={{display: "inline-block"}} />
           {this.alternateName()}

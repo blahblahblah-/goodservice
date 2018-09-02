@@ -17,6 +17,12 @@
   }
 }
 
+.line-button{
+  .route:first-of-type {
+    clear: left;
+  }
+}
+
 .bullet {
   -webkit-border-radius: 999px;
   -moz-border-radius: 999px;

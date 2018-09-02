@@ -48,7 +48,7 @@ class LineModal extends React.Component {
 
   render() {
     return(
-      <Responsive as={Modal} open={this.props.open} onClose={this.props.onClose} fireOnMount onUpdate={this.handleOnUpdate}>
+      <Responsive as={Modal} fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger}>
         <Modal.Header>
           {this.props.line.name}
           {
