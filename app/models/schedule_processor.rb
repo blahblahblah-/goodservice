@@ -9,22 +9,18 @@ FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
 class ScheduleProcessor
   def initialize
     instantiate_data
-    feeds = Parallel.map(FEED_IDS, in_threads: 4) do |id|
-      puts "Spawning thread for #{id}"
-      feed = retrieve_feed(id)
-      puts "Done with thread for #{id}"
-      feed
-    end
 
     if Rails.env.production?
-      puts "Analyze feeds"
-      Parallel.each_with_index(feeds, in_threads: 4) do |feed, index|
-        puts "Analyzing feed #{FEED_IDS[index]}"
+      feeds = Parallel.map(FEED_IDS, in_threads: 4) do |id|
+        puts "Spawning thread for #{id}"
+        feed = retrieve_feed(id)
+        puts "Analyzing feed #{id}"
         analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
-        puts "Done analyzing feed #{FEED_IDS[index]}"
+        puts "Done analyzing feed #{id}"
       end
     else
-      feeds.each do |feed|
+      FEED_IDS.each do |id|
+        feed = retrieve_feed(id)
         analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
       end
     end
