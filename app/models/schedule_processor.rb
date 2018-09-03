@@ -12,12 +12,19 @@ class ScheduleProcessor
 
     if Rails.env.production?
       feeds = Parallel.map(FEED_IDS, in_threads: 4) do |id|
-        puts "Spawning thread for #{id}"
-        feed = retrieve_feed(id)
-        puts "Analyzing feed #{id}"
-        Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
-        analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
-        puts "Done analyzing feed #{id}"
+        begin
+          retries ||= 0
+          puts "Spawning thread for #{id}"
+          feed = retrieve_feed(id)
+          puts "Analyzing feed #{id}"
+          Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
+          analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+          puts "Done analyzing feed #{id}"
+        rescue StandardError => e
+          puts "Error: #{e} from feed #{id}"
+          retry if (retries += 1) < 3
+        end
+    end
       end
     else
       FEED_IDS.each do |id|
@@ -56,14 +63,8 @@ class ScheduleProcessor
   end
 
   def retrieve_feed(feed_id)
-    begin
-      retries ||= 0
-      data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
-      feed = Transit_realtime::FeedMessage.decode(data)
-    rescue StandardError => e
-      puts "Error: #{e} from feed #{feed_id}"
-      retry if (retries += 1) < 3
-    end
+    data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
+    feed = Transit_realtime::FeedMessage.decode(data)
   end
 
   private
@@ -71,6 +72,7 @@ class ScheduleProcessor
   attr_accessor :key_stations, :stop_times
 
   def analyze_feed(feed, stop_ids)
+    raise "Error: Empty feed" if feed.entity.empty?
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         entity.trip_update.stop_time_update.each do |update|
