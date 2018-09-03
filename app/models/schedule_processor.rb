@@ -25,12 +25,16 @@ class ScheduleProcessor
           retry if (retries += 1) < 3
         end
       end
-    end
-      end
     else
       FEED_IDS.each do |id|
-        feed = retrieve_feed(id)
-        analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+        begin
+          retries ||= 0
+          feed = retrieve_feed(id)
+          analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+        rescue StandardError => e
+          puts "Error: #{e} from feed #{id}"
+          retry if (retries += 1) < 3
+        end
       end
     end
   end
