@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_11_171252) do
+ActiveRecord::Schema.define(version: 2018_09_03_133344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2018_08_11_171252) do
   create_table "calendar_exceptions", force: :cascade do |t|
     t.string "schedule_service_id", null: false
     t.date "date", null: false
+    t.integer "exception_type", default: 1, null: false
   end
 
   create_table "key_stations", force: :cascade do |t|
