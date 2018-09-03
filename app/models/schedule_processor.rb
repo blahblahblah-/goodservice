@@ -24,6 +24,7 @@ class ScheduleProcessor
           puts "Error: #{e} from feed #{id}"
           retry if (retries += 1) < 3
         end
+      end
     end
       end
     else
