@@ -1,54 +1,55 @@
 module Display
   class Line
-    attr_accessor :line, :stop_headways
+    attr_accessor :line, :directions
 
     delegate :name, :boroughs, to: :line
 
-    def initialize(line)
+    def initialize(line, stop_times, timestamp)
       @line = line
-      @stop_headways = Set.new
-    end
-
-    def add_stop_headway(stop_headway)
-      stop_headways << stop_headway
-    end
-
-    def min_actual_headway
-      stop_headways.map { |s| s.min_actual_headway }.compact.min
-    end
-
-    def max_actual_headway
-      stop_headways.map { |s| s.max_actual_headway }.compact.max
-    end
-
-    def min_scheduled_headway
-      stop_headways.map { |s| s.min_scheduled_headway }.compact.min
-    end
-
-    def max_scheduled_headway
-      stop_headways.map { |s| s.max_scheduled_headway }.compact.max
-    end
-
-    def max_difference_headway
-      @max_difference_headway ||= stop_headways.select { |headway|
-        headway.difference.present?
-      }.max_by { |headway|
-        headway.difference
+      @directions = {
+        1 => line.line_directions.where(direction: 1).order(:type).map { |ld|
+          Display::LineDirection.new(ld, stop_times, timestamp)
+        },
+        3 => line.line_directions.where(direction: 3).order(:type).map { |ld|
+          Display::LineDirection.new(ld, stop_times, timestamp)
+        },
       }
     end
 
     def status
-      if max_difference_headway.nil?
-        "No Service"
-      elsif max_difference_headway.difference > 2
+      if max_headway_discreprency.nil?
+        if directions.any? {|_, d| d.any?(&:max_actual_headway) }
+          "???"
+        else
+          "No Service"
+        end
+      elsif max_headway_discreprency > 2
         "Not Good"
       else
         "Good Service"
       end
     end
 
+    def destinations
+      Hash[directions.map do |k, v|
+        [k, v.map(&:destinations).flatten.uniq.sort]
+      end]
+    end
+
     def routes
-      stop_headways.map(&:routes).flatten.uniq.sort.map { |route| Display::Route.new(::Route.find_by(internal_id: route)) }
+      directions.map { |_, v| v.map(&:routes) }.flatten.uniq { |rd| rd.name }.sort
+    end
+
+    private
+
+    def max_headway_discreprency
+      directions.map { |_, array|
+        array.map { |ld|
+          ld.headway_discreprency
+        }
+      }.flatten.reject { |headway_discreprency|
+        headway_discreprency.nil?
+      }.max
     end
   end
 end

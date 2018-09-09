@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_03_133344) do
+ActiveRecord::Schema.define(version: 2018_09_09_052443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,38 +21,26 @@ ActiveRecord::Schema.define(version: 2018_09_03_133344) do
     t.integer "exception_type", default: 1, null: false
   end
 
-  create_table "key_stations", force: :cascade do |t|
-    t.string "stop_internal_id", null: false
-    t.integer "line_direction_id", null: false
-  end
-
   create_table "line_boroughs", force: :cascade do |t|
     t.integer "line_id", null: false
     t.string "borough", null: false
   end
 
-  create_table "line_direction_stops", force: :cascade do |t|
-    t.integer "line_direction_id", null: false
-    t.string "stop_internal_id", null: false
-    t.index ["line_direction_id", "stop_internal_id"], name: "idx_line_direction_stops", unique: true
-  end
-
   create_table "line_directions", force: :cascade do |t|
-    t.integer "line_id", null: false
-    t.text "direction", null: false
-    t.index ["line_id", "direction"], name: "index_line_directions_on_line_id_and_direction", unique: true
+    t.bigint "line_id", null: false
+    t.integer "direction", null: false
+    t.string "last_stop", null: false
+    t.string "type"
+    t.integer "express_line_direction_id"
+    t.string "first_stop", null: false
+    t.string "penultimate_stop"
+    t.index ["line_id", "direction", "type"], name: "index_line_directions_on_line_id_and_direction_and_type", unique: true
+    t.index ["line_id"], name: "index_line_directions_on_line_id"
   end
 
   create_table "lines", force: :cascade do |t|
     t.string "name", null: false
-  end
-
-  create_table "route_line_directions", force: :cascade do |t|
-    t.string "route_internal_id", null: false
-    t.integer "line_direction_id", null: false
-    t.text "direction", null: false
-    t.integer "sequence", null: false
-    t.index ["route_internal_id", "direction", "sequence"], name: "idx_route_line_directions", unique: true
+    t.boolean "is_visible", default: true, null: false
   end
 
   create_table "routes", force: :cascade do |t|
@@ -102,11 +90,11 @@ ActiveRecord::Schema.define(version: 2018_09_03_133344) do
   end
 
   add_foreign_key "calendar_exceptions", "schedules", column: "schedule_service_id", primary_key: "service_id"
-  add_foreign_key "line_direction_stops", "line_directions"
-  add_foreign_key "line_direction_stops", "stops", column: "stop_internal_id", primary_key: "internal_id"
+  add_foreign_key "line_directions", "line_directions", column: "express_line_direction_id"
   add_foreign_key "line_directions", "lines"
-  add_foreign_key "route_line_directions", "line_directions"
-  add_foreign_key "route_line_directions", "routes", column: "route_internal_id", primary_key: "internal_id"
+  add_foreign_key "line_directions", "stops", column: "first_stop", primary_key: "internal_id"
+  add_foreign_key "line_directions", "stops", column: "last_stop", primary_key: "internal_id"
+  add_foreign_key "line_directions", "stops", column: "penultimate_stop", primary_key: "internal_id"
   add_foreign_key "stop_times", "stops", column: "stop_internal_id", primary_key: "internal_id"
   add_foreign_key "stop_times", "trips", column: "trip_internal_id", primary_key: "internal_id"
   add_foreign_key "trips", "routes", column: "route_internal_id", primary_key: "internal_id"

@@ -140,85 +140,6 @@ cpw = Line.create(name: "Central Park West")
 wh = Line.create(name: "8 Avenue (Washington Heights)")
 si = Line.create(name: "Staten Island")
 
-
-usecav = LineDirection.create(direction: "Uptown", line: secav)
-dsecav = LineDirection.create(direction: "Downtown", line: secav)
-ulex = LineDirection.create(direction: "Uptown", line: lex)
-dlex = LineDirection.create(direction: "Downtown", line: lex)
-usixav = LineDirection.create(direction: "Uptown", line: sixav)
-dsixav = LineDirection.create(direction: "Downtown", line: sixav)
-ubway = LineDirection.create(direction: "Uptown", line: bway)
-dbway = LineDirection.create(direction: "Downtown", line: bway)
-usevav = LineDirection.create(direction: "Uptown", line: sevav)
-dsevav = LineDirection.create(direction: "Downtown", line: sevav)
-ueigav = LineDirection.create(direction: "Uptown", line: eigav)
-deigav = LineDirection.create(direction: "Downtown", line: eigav)
-wcanarsie = LineDirection.create(direction: "West", line: canarsie)
-ecanarsie = LineDirection.create(direction: "East", line: canarsie)
-wflushing = LineDirection.create(direction: "West", line: flushing)
-eflushing = LineDirection.create(direction: "East", line: flushing)
-jnassau = LineDirection.create(direction: "Uptown", line: nassau)
-bnassau = LineDirection.create(direction: "Downtown", line: nassau)
-
-qcrosstown = LineDirection.create(direction: "Queens", line: crosstown)
-bcrosstown = LineDirection.create(direction: "Brooklyn", line: crosstown)
-wfortysecond = LineDirection.create(direction: "West", line: fortysecond)
-efortysecond = LineDirection.create(direction: "East", line: fortysecond)
-nfranklin = LineDirection.create(direction: "North", line: franklin)
-sfranklin = LineDirection.create(direction: "South", line: franklin)
-nrockawaypk = LineDirection.create(direction: "Broad Channel", line: rockawaypk)
-srockawaypk = LineDirection.create(direction: "Rockaway Park", line: rockawaypk)
-nfarrockaway = LineDirection.create(direction: "Broad Channel", line: farrockaway)
-sfarrockaway = LineDirection.create(direction: "Far Rockaway", line: farrockaway)
-nastoria = LineDirection.create(direction: "North", line: astoria)
-sastoria = LineDirection.create(direction: "South", line: astoria)
-equeensblvd = LineDirection.create(direction: "East", line: queensblvd)
-wqueensblvd = LineDirection.create(direction: "West", line: queensblvd)
-nfourthav = LineDirection.create(direction: "North", line: fourthav)
-sfourthav = LineDirection.create(direction: "South", line: fourthav)
-nbrighton = LineDirection.create(direction: "North", line: brighton)
-sbrighton = LineDirection.create(direction: "South", line: brighton)
-nwestend = LineDirection.create(direction: "North", line: westend)
-swestend = LineDirection.create(direction: "South", line: westend)
-nseabeach = LineDirection.create(direction: "North", line: seabeach)
-sseabeach = LineDirection.create(direction: "South", line: seabeach)
-njamaica = LineDirection.create(direction: "North", line: jamaica)
-sjamaica = LineDirection.create(direction: "South", line: jamaica)
-nbwaybk = LineDirection.create(direction: "North", line: bwaybk)
-sbwaybk = LineDirection.create(direction: "South", line: bwaybk)
-nmyrtle = LineDirection.create(direction: "North", line: myrtle)
-smyrtle = LineDirection.create(direction: "South", line: myrtle)
-wfulton = LineDirection.create(direction: "West", line: fulton)
-efulton = LineDirection.create(direction: "East", line: fulton)
-uconcourse = LineDirection.create(direction: "Uptown", line: concourse)
-dconcourse = LineDirection.create(direction: "Downtown", line: concourse)
-nculver = LineDirection.create(direction: "North", line: culver)
-sculver = LineDirection.create(direction: "South", line: culver)
-wepkwy = LineDirection.create(direction: "West", line: epkwy)
-eepkwy = LineDirection.create(direction: "East", line: epkwy)
-nnostrand = LineDirection.create(direction: "North", line: nostrand)
-snostrand = LineDirection.create(direction: "South", line: nostrand)
-wnewlots = LineDirection.create(direction: "West", line: newlots)
-enewlots = LineDirection.create(direction: "South", line: newlots)
-upelham = LineDirection.create(direction: "Uptown", line: pelham)
-dpelham = LineDirection.create(direction: "Downtown", line: pelham)
-ujerome = LineDirection.create(direction: "Uptown", line: jerome)
-djerome = LineDirection.create(direction: "Downtown", line: jerome)
-ulenox = LineDirection.create(direction: "Uptown", line: lenox)
-dlenox = LineDirection.create(direction: "Downtown", line: lenox)
-uwhiteplains = LineDirection.create(direction: "Uptown", line: whiteplains)
-dwhiteplains = LineDirection.create(direction: "Downtown", line: whiteplains)
-udyre = LineDirection.create(direction: "Uptown", line: dyre)
-ddyre = LineDirection.create(direction: "Downtown", line: dyre)
-ubwayseventh = LineDirection.create(direction: "Uptown", line: bwayseventh)
-dbwayseventh = LineDirection.create(direction: "Downtown", line: bwayseventh)
-ucpw = LineDirection.create(direction: "Uptown", line: cpw)
-dcpw = LineDirection.create(direction: "Downtown", line: cpw)
-uwh = LineDirection.create(direction: "Uptown", line: wh)
-dwh = LineDirection.create(direction: "Downtown", line: wh)
-nsi = LineDirection.create(direction: "North", line: si)
-ssi = LineDirection.create(direction: "South", line: si)
-
 LineBorough.create(borough: "Manhattan", line: secav)
 LineBorough.create(borough: "Manhattan", line: lex)
 LineBorough.create(borough: "Manhattan", line: sixav)
@@ -266,105 +187,111 @@ LineBorough.create(borough: "Manhattan", line: cpw)
 LineBorough.create(borough: "Manhattan", line: wh)
 LineBorough.create(borough: "Staten Island", line: si)
 
-KeyStation.create(line_direction: usecav, stop_internal_id: "Q03N") # 72 St
-KeyStation.create(line_direction: dsecav, stop_internal_id: "Q03S") # 72 St
-KeyStation.create(line_direction: ulex, stop_internal_id: "635N") # 14 St – Union Sq
-KeyStation.create(line_direction: dlex, stop_internal_id: "629S") # 59 St
-KeyStation.create(line_direction: dlex, stop_internal_id: "635S") # 14 St – Union Sq
-KeyStation.create(line_direction: usixav, stop_internal_id: "D21N") # Broadway-Lafayette St
-KeyStation.create(line_direction: dsixav, stop_internal_id: "D15S") # 47-50 Sts - Rockefeller Ctr
-KeyStation.create(line_direction: ubway, stop_internal_id: "R19N") # 14 St–Union Sq
-KeyStation.create(line_direction: dbway, stop_internal_id: "R14S") # 57 St – 7 Av
-KeyStation.create(line_direction: dbway, stop_internal_id: "R19S") # 14 St–Union Sq
-KeyStation.create(line_direction: usevav, stop_internal_id: "137N") # Chambers St
-KeyStation.create(line_direction: dsevav, stop_internal_id: "127S") # Times Sq – 42 St
-KeyStation.create(line_direction: ueigav, stop_internal_id: "A32N") # W 4 St
-KeyStation.create(line_direction: deigav, stop_internal_id: "A27S") # 42 St – Port Authority Bus Terminal
-KeyStation.create(line_direction: wcanarsie, stop_internal_id: "L10S") # Lorimer St
-KeyStation.create(line_direction: ecanarsie, stop_internal_id: "L10N") # Lorimer St
-KeyStation.create(line_direction: wflushing, stop_internal_id: "718S") # Queensboro Plaza
-KeyStation.create(line_direction: eflushing, stop_internal_id: "718N") # Queensboro Plaza
-KeyStation.create(line_direction: nbwaybk, stop_internal_id: "M16N") # Marcy Av
-KeyStation.create(line_direction: sbwaybk, stop_internal_id: "M16S") # Marcy Av
-
-KeyStation.create(line_direction: qcrosstown, stop_internal_id: "G31N") # Flushing Av
-KeyStation.create(line_direction: bcrosstown, stop_internal_id: "G31S")
-KeyStation.create(line_direction: wfortysecond, stop_internal_id: "901N") # Grand Central
-KeyStation.create(line_direction: efortysecond, stop_internal_id: "902S") # Times Sq
-KeyStation.create(line_direction: nfranklin, stop_internal_id: "S04S") # Botanic Garden
-KeyStation.create(line_direction: sfranklin, stop_internal_id: "S01N") # Franklin Av
-KeyStation.create(line_direction: nrockawaypk, stop_internal_id: "H12N") # B 90 St
-KeyStation.create(line_direction: srockawaypk, stop_internal_id: "H14N") # B 105 St
-KeyStation.create(line_direction: nfarrockaway, stop_internal_id: "H10N") # B 67 St
-KeyStation.create(line_direction: sfarrockaway, stop_internal_id: "H10S") # B 25 St
-KeyStation.create(line_direction: nastoria, stop_internal_id: "R09N") # Queensboro Plz
-KeyStation.create(line_direction: sastoria, stop_internal_id: "R06S") # 36 Av
-KeyStation.create(line_direction: equeensblvd, stop_internal_id: "G14N") # Roosevelt Av
-KeyStation.create(line_direction: wqueensblvd, stop_internal_id: "G14S") # Roosevelt Av
-KeyStation.create(line_direction: equeensblvd, stop_internal_id: "F06N") # Union Tpke
-KeyStation.create(line_direction: wqueensblvd, stop_internal_id: "F06S") # Union Tpke
-KeyStation.create(line_direction: nfourthav, stop_internal_id: "R31N") # Atlantic Av
-KeyStation.create(line_direction: sfourthav, stop_internal_id: "R31S")
-KeyStation.create(line_direction: nfourthav, stop_internal_id: "R36N") # 36 St
-KeyStation.create(line_direction: sfourthav, stop_internal_id: "R36S")
-KeyStation.create(line_direction: nbrighton, stop_internal_id: "D27N") # Parkside Av
-KeyStation.create(line_direction: sbrighton, stop_internal_id: "D27S")
-KeyStation.create(line_direction: nbrighton, stop_internal_id: "D35N") # Kings Hwy
-KeyStation.create(line_direction: sbrighton, stop_internal_id: "D35S")
-KeyStation.create(line_direction: nwestend, stop_internal_id: "B16N") # 62 St
-KeyStation.create(line_direction: swestend, stop_internal_id: "B16S")
-KeyStation.create(line_direction: nseabeach, stop_internal_id: "N07N") # Bay Pkwy
-KeyStation.create(line_direction: sseabeach, stop_internal_id: "N07S")
-KeyStation.create(line_direction: njamaica, stop_internal_id: "J27N") # Bway Jct
-KeyStation.create(line_direction: sjamaica, stop_internal_id: "J27S")
-KeyStation.create(line_direction: njamaica, stop_internal_id: "J15N") # Woodhaven Blvd
-KeyStation.create(line_direction: sjamaica, stop_internal_id: "J15S")
-KeyStation.create(line_direction: jnassau, stop_internal_id: "M19N") # Bowery
-KeyStation.create(line_direction: bnassau, stop_internal_id: "M19S")
-KeyStation.create(line_direction: nmyrtle, stop_internal_id: "M04N") # Fresh Pond Rd
-KeyStation.create(line_direction: smyrtle, stop_internal_id: "M10S") # Central Av
-KeyStation.create(line_direction: wfulton, stop_internal_id: "A46N") # Nostrand Av
-KeyStation.create(line_direction: efulton, stop_internal_id: "A46S")
-KeyStation.create(line_direction: wfulton, stop_internal_id: "A51N") # Bway Jct
-KeyStation.create(line_direction: efulton, stop_internal_id: "A51S")
-KeyStation.create(line_direction: wfulton, stop_internal_id: "A61N") # Rockaway Blvd
-KeyStation.create(line_direction: efulton, stop_internal_id: "A61S")
-KeyStation.create(line_direction: uconcourse, stop_internal_id: "D05N") # Fordham Rd
-KeyStation.create(line_direction: dconcourse, stop_internal_id: "D11S") # 161 St - Yankee Stadium
-KeyStation.create(line_direction: nculver, stop_internal_id: "F20N") # Bergen St
-KeyStation.create(line_direction: sculver, stop_internal_id: "F20S")
-KeyStation.create(line_direction: nculver, stop_internal_id: "F32N") # Bay Pkwy
-KeyStation.create(line_direction: sculver, stop_internal_id: "F32S")
-KeyStation.create(line_direction: wepkwy, stop_internal_id: "235N") # Atlantic Av
-KeyStation.create(line_direction: eepkwy, stop_internal_id: "235S")
-KeyStation.create(line_direction: nnostrand, stop_internal_id: "241N") # President St
-KeyStation.create(line_direction: snostrand, stop_internal_id: "246S") # Newkirk Av
-KeyStation.create(line_direction: wnewlots, stop_internal_id: "251N") # Sutter Av-Rutland Rd
-KeyStation.create(line_direction: enewlots, stop_internal_id: "256S") # Van Siclen Av
-KeyStation.create(line_direction: upelham, stop_internal_id: "608N") # Parkchester
-KeyStation.create(line_direction: dpelham, stop_internal_id: "608S")
-KeyStation.create(line_direction: ujerome, stop_internal_id: "402N") # Mosholu Pkwy
-KeyStation.create(line_direction: djerome, stop_internal_id: "415S") # 149 St–Grand Concourse
-KeyStation.create(line_direction: ulenox, stop_internal_id: "224N") # 135 St
-KeyStation.create(line_direction: dlenox, stop_internal_id: "227S") # Central Pk N
-KeyStation.create(line_direction: uwhiteplains, stop_internal_id: "214N") # West Farms Sq
-KeyStation.create(line_direction: dwhiteplains, stop_internal_id: "214S")
-KeyStation.create(line_direction: uwhiteplains, stop_internal_id: "204N") # Nereid Av
-KeyStation.create(line_direction: dwhiteplains, stop_internal_id: "212S") # Bronx Pk E
-KeyStation.create(line_direction: udyre, stop_internal_id: "502N") # Baychester Av
-KeyStation.create(line_direction: ddyre, stop_internal_id: "505S") # Morris Park
-KeyStation.create(line_direction: ubwayseventh, stop_internal_id: "115N") # 137 St–City COllege
-KeyStation.create(line_direction: dbwayseventh, stop_internal_id: "115S")
-KeyStation.create(line_direction: ubwayseventh, stop_internal_id: "109N") # Dyckman St
-KeyStation.create(line_direction: dbwayseventh, stop_internal_id: "109S")
-KeyStation.create(line_direction: ucpw, stop_internal_id: "A21N") # 81 St–Natural History
-KeyStation.create(line_direction: dcpw, stop_internal_id: "A21S")
-KeyStation.create(line_direction: uwh, stop_internal_id: "A07N") # 175 St,
-KeyStation.create(line_direction: dwh, stop_internal_id: "A07S")
-KeyStation.create(line_direction: nsi, stop_internal_id: "S22N") # New Dorp
-KeyStation.create(line_direction: ssi, stop_internal_id: "S22S")
-
-KeyStation.create(line_direction: wcanarsie, stop_internal_id: "L02S") # 6 Av
-KeyStation.create(line_direction: ecanarsie, stop_internal_id: "L06N") # 1 Av
-KeyStation.create(line_direction: wcanarsie, stop_internal_id: "L24S") # Atlantic Av
-KeyStation.create(line_direction: ecanarsie, stop_internal_id: "L28N") # E 105 St
+LineDirection.create(line: secav, direction: 1, first_stop: "Q03N", last_stop: "Q05N")
+LineDirection.create(line: secav, direction: 3, first_stop: "Q05S", last_stop: "Q03S")
+lexexn = ExpressLineDirection.create(line: lex, direction: 1, first_stop: "420N", last_stop: "621N")
+lexexs = ExpressLineDirection.create(line: lex, direction: 3, first_stop: "621S", last_stop: "420S")
+LocalLineDirection.create(line: lex, express_line_direction: lexexn, direction: 1, first_stop: "639N", last_stop: "622N")
+LocalLineDirection.create(line: lex, express_line_direction: lexexs, direction: 3, first_stop: "622S", last_stop: "639S")
+sixexn = ExpressLineDirection.create(line: sixav, direction: 1, first_stop: "D20N", last_stop: "D15N")
+sixexs = ExpressLineDirection.create(line: sixav, direction: 3, first_stop: "D15S", last_stop: "D20S")
+LocalLineDirection.create(line: sixav, express_line_direction: sixexn, direction: 1, first_stop: "D19N", last_stop: "D19N")
+LocalLineDirection.create(line: sixav, express_line_direction: sixexs, direction: 3, first_stop: "D19S", last_stop: "D19S")
+bwayexn = ExpressLineDirection.create(line: bway, direction: 1, first_stop: "R20N", last_stop: "R14N")
+bwayexs = ExpressLineDirection.create(line: bway, direction: 3, first_stop: "R14S", last_stop: "R20S")
+LocalLineDirection.create(line: bway, express_line_direction: bwayexn, direction: 1, first_stop: "R22N", last_stop: "R18N")
+LocalLineDirection.create(line: bway, express_line_direction: bwayexs, direction: 3, first_stop: "R18S", last_stop: "R22S")
+sevexn = ExpressLineDirection.create(line: sevav, direction: 1, first_stop: "137N", last_stop: "120N")
+sevexs = ExpressLineDirection.create(line: sevav, direction: 3, first_stop: "120S", last_stop: "137S")
+LocalLineDirection.create(line: sevav, express_line_direction: sevexn, direction: 1, first_stop: "136N", last_stop: "121N")
+LocalLineDirection.create(line: sevav, express_line_direction: sevexs, direction: 3, first_stop: "121S", last_stop: "136S")
+eigexn = ExpressLineDirection.create(line: eigav, direction: 1, first_stop: "A32N", last_stop: "A27N")
+eigexs = ExpressLineDirection.create(line: eigav, direction: 3, first_stop: "A27S", last_stop: "A32S")
+LocalLineDirection.create(line: eigav, express_line_direction: eigexn, direction: 1, first_stop: "A30N", last_stop: "A30N")
+LocalLineDirection.create(line: eigav, express_line_direction: eigexs, direction: 3, first_stop: "A30S", last_stop: "A30S")
+LineDirection.create(line: canarsie, direction: 1, first_stop: "L17N", last_stop: "L01S")
+LineDirection.create(line: canarsie, direction: 3, first_stop: "L01S", last_stop: "L17S")
+flushingexn = ExpressLineDirection.create(line: flushing, direction: 1, first_stop: "726N", last_stop: "701N")
+flushingexs = ExpressLineDirection.create(line: flushing, direction: 3, first_stop: "701S", last_stop: "726S")
+LocalLineDirection.create(line: flushing, express_line_direction: flushingexn, direction: 1, first_stop: "716N", last_stop: "705N")
+LocalLineDirection.create(line: flushing, express_line_direction: flushingexs, direction: 3, first_stop: "705S", last_stop: "716S")
+LineDirection.create(line: nassau, direction: 1, first_stop: "M23N", last_stop: "M19N")
+LineDirection.create(line: nassau, direction: 3, first_stop: "M19S", last_stop: "M23S")
+LineDirection.create(line: crosstown, direction: 1, first_stop: "G36N", last_stop: "G22N")
+LineDirection.create(line: crosstown, direction: 3, first_stop: "G22S", last_stop: "G36S")
+LineDirection.create(line: fortysecond, direction: 1, first_stop: "902N", last_stop: "901N")
+LineDirection.create(line: fortysecond, direction: 3, first_stop: "901S", last_stop: "902S")
+LineDirection.create(line: franklin, direction: 1, first_stop: "S04N", last_stop: "S01N")
+LineDirection.create(line: franklin, direction: 3, first_stop: "S01S", last_stop: "S04S")
+LineDirection.create(line: rockawaypk, direction: 1, first_stop: "H15N", last_stop: "H12N")
+LineDirection.create(line: rockawaypk, direction: 3, first_stop: "H12S", last_stop: "H15S")
+LineDirection.create(line: farrockaway, direction: 1, first_stop: "H11N", last_stop: "H06N")
+LineDirection.create(line: farrockaway, direction: 3, first_stop: "H06S", last_stop: "H11S")
+LineDirection.create(line: astoria, direction: 1, first_stop: "R06N", last_stop: "R01N")
+LineDirection.create(line: astoria, direction: 3, first_stop: "R01S", last_stop: "R06S")
+queensexn = ExpressLineDirection.create(line: queensblvd, direction: 1, first_stop: "G14N", last_stop: "F06N")
+queensexs = ExpressLineDirection.create(line: queensblvd, direction: 3, first_stop: "F06S", last_stop: "G14S")
+LocalLineDirection.create(line: queensblvd, express_line_direction: queensexn, direction: 1, first_stop: "G20N", last_stop: "G09N")
+LocalLineDirection.create(line: queensblvd, express_line_direction: queensexs, direction: 3, first_stop: "G09S", last_stop: "G20S")
+fourthexn = ExpressLineDirection.create(line: fourthav, direction: 1, first_stop: "R36N", last_stop: "R31N")
+fourthexs = ExpressLineDirection.create(line: fourthav, direction: 3, first_stop: "R31S", last_stop: "R36S")
+LocalLineDirection.create(line: fourthav, express_line_direction: fourthexn, direction: 1, first_stop: "R35N", last_stop: "R32N")
+LocalLineDirection.create(line: fourthav, express_line_direction: fourthexs, direction: 3, first_stop: "R32S", last_stop: "R35S")
+brightonexn = ExpressLineDirection.create(line: brighton, direction: 1, first_stop: "D40N", last_stop: "D24N")
+brightonexs = ExpressLineDirection.create(line: brighton, direction: 3, first_stop: "D24S", last_stop: "D40S")
+LocalLineDirection.create(line: brighton, express_line_direction: brightonexn, direction: 1, first_stop: "D41N", last_stop: "D27N")
+LocalLineDirection.create(line: brighton, express_line_direction: brightonexs, direction: 3, first_stop: "D27S", last_stop: "D41S")
+LineDirection.create(line: westend, direction: 1, first_stop: "B23N", last_stop: "B12N")
+LineDirection.create(line: westend, direction: 3, first_stop: "B12S", last_stop: "B23S")
+LineDirection.create(line: seabeach, direction: 1, first_stop: "N10N", last_stop: "N02N")
+LineDirection.create(line: seabeach, direction: 3, first_stop: "N02S", last_stop: "N10S")
+LineDirection.create(line: jamaica, direction: 1, first_stop: "J27N", last_stop: "J15N")
+LineDirection.create(line: jamaica, direction: 3, first_stop: "J15S", last_stop: "J27S")
+bwaybkexn = ExpressLineDirection.create(line: bwaybk, direction: 1, first_stop: "M16N", last_stop: "M11N")
+bwaybkexs = ExpressLineDirection.create(line: bwaybk, direction: 3, first_stop: "M11S", last_stop: "M16S")
+LocalLineDirection.create(line: bwaybk, express_line_direction: bwaybkexn, direction: 1, first_stop: "M14N", last_stop: "M12N")
+LocalLineDirection.create(line: bwaybk, express_line_direction: bwaybkexs, direction: 3, first_stop: "M12S", last_stop: "M14S")
+LineDirection.create(line: myrtle, direction: 1, first_stop: "M10N", last_stop: "M01N")
+LineDirection.create(line: myrtle, direction: 3, first_stop: "M01S", last_stop: "M10S")
+fultonexn = ExpressLineDirection.create(line: fulton, direction: 1, first_stop: "A55N", last_stop: "A46N")
+fultonexs = ExpressLineDirection.create(line: fulton, direction: 3, first_stop: "A46S", last_stop: "A55S")
+LocalLineDirection.create(line: fulton, express_line_direction: fultonexn, direction: 1, first_stop: "A54N", last_stop: "A43N")
+LocalLineDirection.create(line: fulton, express_line_direction: fultonexs, direction: 3, first_stop: "A43S", last_stop: "A54S")
+concourseexn = ExpressLineDirection.create(line: concourse, direction: 1, first_stop: "D13N", last_stop: "D01N")
+concourseexs = ExpressLineDirection.create(line: concourse, direction: 3, first_stop: "D01S", last_stop: "D13S")
+LocalLineDirection.create(line: concourse, express_line_direction: concourseexn, direction: 1, first_stop: "D12N", last_stop: "D06N")
+LocalLineDirection.create(line: concourse, express_line_direction: concourseexs, direction: 3, first_stop: "D06S", last_stop: "D12S")
+LineDirection.create(line: culver, direction: 1, first_stop: "F27N", last_stop: "F20N")
+LineDirection.create(line: culver, direction: 3, first_stop: "F20S", last_stop: "F27S")
+epkwyexn = ExpressLineDirection.create(line: epkwy, direction: 1, first_stop: "239N", last_stop: "234N")
+epkwyexs = ExpressLineDirection.create(line: epkwy, direction: 3, first_stop: "234S", last_stop: "239S")
+LocalLineDirection.create(line: epkwy, express_line_direction: epkwyexn, direction: 1, first_stop: "238N", last_stop: "236N")
+LocalLineDirection.create(line: epkwy, express_line_direction: epkwyexs, direction: 3, first_stop: "236S", last_stop: "238S")
+LineDirection.create(line: nostrand, direction: 1, first_stop: "247N", last_stop: "241N")
+LineDirection.create(line: nostrand, direction: 3, first_stop: "241S", last_stop: "247S")
+LineDirection.create(line: newlots, direction: 1, first_stop: "257N", last_stop: "251N")
+LineDirection.create(line: newlots, direction: 3, first_stop: "251S", last_stop: "257S")
+pelhamexn = ExpressLineDirection.create(line: pelham, direction: 1, first_stop: "619N", last_stop: "601N")
+pelhamexs = ExpressLineDirection.create(line: pelham, direction: 3, first_stop: "601S", last_stop: "619S")
+LocalLineDirection.create(line: pelham, express_line_direction: pelhamexn, direction: 1, first_stop: "618N", last_stop: "609N")
+LocalLineDirection.create(line: pelham, express_line_direction: pelhamexs, direction: 3, first_stop: "609S", last_stop: "618S")
+LineDirection.create(line: jerome, direction: 1, first_stop: "415N", last_stop: "401N")
+LineDirection.create(line: jerome, direction: 3, first_stop: "401S", last_stop: "415S")
+LineDirection.create(line: lenox, direction: 1, first_stop: "227N", last_stop: "224N")
+LineDirection.create(line: lenox, direction: 3, first_stop: "224S", last_stop: "227S")
+whiteplainsexn = ExpressLineDirection.create(line: whiteplains, direction: 1, first_stop: "222N", last_stop: "213N")
+whiteplainsexs = ExpressLineDirection.create(line: whiteplains, direction: 3, first_stop: "213S", last_stop: "222S")
+LocalLineDirection.create(line: whiteplains, express_line_direction: whiteplainsexn, direction: 1, first_stop: "220N", last_stop: "214N")
+LocalLineDirection.create(line: whiteplains, express_line_direction: whiteplainsexs, direction: 3, first_stop: "214S", last_stop: "220S")
+LineDirection.create(line: dyre, direction: 1, first_stop: "505N", last_stop: "501N")
+LineDirection.create(line: dyre, direction: 3, first_stop: "501S", last_stop: "505S")
+LineDirection.create(line: bwayseventh, direction: 1, first_stop: "119N", last_stop: "101N")
+LineDirection.create(line: bwayseventh, direction: 3, first_stop: "101S", last_stop: "119S")
+cpwexn = ExpressLineDirection.create(line: cpw, direction: 1, first_stop: "A24N", last_stop: "A15N")
+cpwexs = ExpressLineDirection.create(line: cpw, direction: 3, first_stop: "A15S", last_stop: "A24S")
+LocalLineDirection.create(line: cpw, express_line_direction: cpwexn, direction: 1, first_stop: "A21N", last_stop: "A16N")
+LocalLineDirection.create(line: cpw, express_line_direction: cpwexs, direction: 3, first_stop: "A16S", last_stop: "A21S")
+LineDirection.create(line: wh, direction: 1, first_stop: "A07N", last_stop: "A02N")
+LineDirection.create(line: wh, direction: 3, first_stop: "A02S", last_stop: "A07S")
+LineDirection.create(line: si, direction: 1, first_stop: "S31N", last_stop: "S09N")
+LineDirection.create(line: si, direction: 3, first_stop: "S09S", last_stop: "S31S")

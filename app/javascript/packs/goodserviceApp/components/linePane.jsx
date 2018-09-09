@@ -28,7 +28,7 @@ class LinePane extends React.Component {
     return map(BOROUGHS, borough => {
       const { width } = this.state;
       var boroughName = borough;
-      if (width < Responsive.onlyMobile.maxWidth) {
+      if (width < 600) {
         if (width < 375) {
           boroughName = BOROUGHS_SHORT_ABRV[borough];
         } else {

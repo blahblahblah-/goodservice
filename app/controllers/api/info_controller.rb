@@ -11,19 +11,36 @@ class Api::InfoController < ApplicationController
   def self.refresh_data
     processor = ScheduleProcessor.new
     routes = processor.routes.reject { |_, route|
-      !route.visible? && route.min_scheduled_headway.nil?
+      !route.visible? && !route.scheduled?
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
-
       {
         name: route.name,
         color: route.color && "##{route.color}",
         text_color: route.text_color && "##{route.text_color}",
         alternate_name: route.alternate_name,
         status: route.status,
-        min_actual_headway: route.min_actual_headway,
-        max_actual_headway: route.max_actual_headway,
-        min_scheduled_headway: route.min_scheduled_headway,
-        max_scheduled_headway: route.max_scheduled_headway,
+        destinations: {
+          north: route.directions[1].destinations,
+          south: route.directions[3].destinations,
+        },
+        north: route.directions[1].line_directions.reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+          {
+            name: ld.name,
+            max_actual_headway: ld.max_actual_headway,
+            max_scheduled_headway: ld.max_scheduled_headway,
+          }
+        },
+        south: route.directions[3].line_directions.reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+          {
+            name: ld.name,
+            max_actual_headway: ld.max_actual_headway,
+            max_scheduled_headway: ld.max_scheduled_headway,
+          }
+        }
       }
     end
 
@@ -39,10 +56,42 @@ class Api::InfoController < ApplicationController
             }
           },
           status: line.status,
-          min_actual_headway: line.min_actual_headway,
-          max_actual_headway: line.max_actual_headway,
-          min_scheduled_headway: line.min_scheduled_headway,
-          max_scheduled_headway: line.max_scheduled_headway,
+          destinations: {
+            north: line.destinations[1],
+            south: line.destinations[3],
+          },
+          north: line.directions[1].reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+            {
+              type: ld.type,
+              max_actual_headway: ld.max_actual_headway,
+              max_scheduled_headway: ld.max_scheduled_headway,
+              routes: ld.routes.map { |route|
+                {
+                  name: route.name,
+                  color: route.color && "##{route.color}",
+                  text_color: route.text_color && "##{route.text_color}",
+                }
+              }
+            }
+          },
+          south: line.directions[3].reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+            {
+              type: ld.type,
+              max_actual_headway: ld.max_actual_headway,
+              max_scheduled_headway: ld.max_scheduled_headway,
+              routes: ld.routes.map { |route|
+                {
+                  name: route.name,
+                  color: route.color && "##{route.color}",
+                  text_color: route.text_color && "##{route.text_color}",
+                }
+              }
+            }
+          },
         }
       }]
     end]

@@ -15,10 +15,10 @@ class ScheduleProcessor
         begin
           retries ||= 0
           puts "Spawning thread for #{id}"
-          feed = retrieve_feed(id)
+          retrieve_feed(id)
           puts "Analyzing feed #{id}"
           Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
-          analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+          analyze_feed(feed)
           puts "Done analyzing feed #{id}"
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
@@ -29,8 +29,10 @@ class ScheduleProcessor
       FEED_IDS.each do |id|
         begin
           retries ||= 0
-          feed = retrieve_feed(id)
-          analyze_feed(feed, key_stations.values.map(&:stop_internal_id))
+          feed = Rails.cache.fetch("feed-#{id}", expires_in: 5.minutes) do
+            retrieve_feed(id)
+          end
+          analyze_feed(feed)
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
           retry if (retries += 1) < 3
@@ -42,7 +44,7 @@ class ScheduleProcessor
   def routes
     return @routes if @routes
     pairs = Route.all.map do |route|
-      [route.internal_id, Display::Route.new(route)]
+      [route.internal_id, Display::Route.new(route, stop_times, timestamp)]
     end
     @routes = Hash[pairs]
   end
@@ -50,7 +52,7 @@ class ScheduleProcessor
   def lines
     return @lines if @lines
     pairs = Line.all.map do |line|
-      [line.id, Display::Line.new(line)]
+      [line.id, Display::Line.new(line, stop_times, timestamp)]
     end
     @lines = Hash[pairs]
   end
@@ -68,46 +70,38 @@ class ScheduleProcessor
   end
 
   def retrieve_feed(feed_id)
+    puts "Retrieving feed #{feed_id}"
     data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
     feed = Transit_realtime::FeedMessage.decode(data)
   end
 
   private
 
-  attr_accessor :key_stations, :stop_times
+  attr_accessor :line_directions, :stop_times, :timestamp
 
-  def analyze_feed(feed, stop_ids)
+  def analyze_feed(feed)
     raise "Error: Empty feed" if feed.entity.empty?
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
-        entity.trip_update.stop_time_update.each do |update|
-          if (key_station = key_stations[update.stop_id])
-            if update&.departure && (time = Time.at(update.departure.time)) > Time.current && time < Time.current + 25.minutes
-              direction = update.stop_id.ends_with?("N") ? 1 : 3
-              next if entity.trip_update.trip.nyct_trip_descriptor.direction != direction
-              stop_headway = stop_headways[update.stop_id]
-              stop_headway.add_actual_trip_time(route(entity.trip_update.trip.route_id), time)
-              routes[route(entity.trip_update.trip.route_id)] &.add_stop_headway(stop_headway)
-              puts "Error: #{entity.trip_update.trip.route_id} not found" if routes[entity.trip_update.trip.route_id].nil?
-              lines[key_station.line_direction.line_id].add_stop_headway(stop_headway)
-            end
-          end
-        end
+        next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
+        direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i 
+        route_id = route(entity.trip_update.trip.route_id)
+        trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction])
+        routes[route_id]&.push_trip(trip)
+        trip.add_to_lines(lines)
+        puts "Error: #{route_id} not found" if routes[route_id].nil?
       end
     end
   end
 
   def instantiate_data
-    @key_stations = KeyStation.all.includes(:stop, line_direction: {}).index_by(&:stop_internal_id)
+    @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
+    @line_directions = LineDirection.all.includes(:line).group_by(&:direction)
   end
 
   def route(route_id)
     route_id = "SI" if route_id == "SS"
     route_id
-  end
-
-  def stop_headways
-    @stop_headways ||= Hash.new { |h, k| h[k] = Display::StopHeadway.new(k, stop_times[k]) }
   end
 end

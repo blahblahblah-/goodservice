@@ -1,54 +1,47 @@
 module Display
   class Route
-    attr_accessor :route, :stop_headways
+    attr_accessor :route, :directions
 
-    delegate :color, :text_color, :name, :alternate_name, :visible?, to: :route
+    delegate :color, :text_color, :name, :alternate_name, :visible?, :scheduled?, to: :route
 
-    def initialize(route)
+    def initialize(route, stop_times, timestamp)
       @route = route
-      @stop_headways = Set.new
-    end
-
-    def add_stop_headway(stop_headway)
-      stop_headways << stop_headway
-    end
-
-    def min_actual_headway
-      stop_headways.map { |s| s.min_actual_headway_for_route(route.internal_id) }.compact.min
-    end
-
-    def max_actual_headway
-      stop_headways.map { |s| s.max_actual_headway_for_route(route.internal_id) }.compact.max
-    end
-
-    def min_scheduled_headway
-      stop_headways.map { |s| s.min_scheduled_headway_for_route(route.internal_id) }.compact.min
-    end
-
-    def max_scheduled_headway
-      stop_headways.map { |s| s.max_scheduled_headway_for_route(route.internal_id) }.compact.max
-    end
-
-    def max_difference_headway
-      @max_difference_headway ||= stop_headways.select { |headway|
-        headway.difference_for_route(route.internal_id).present?
-      }.max_by { |headway|
-        headway.difference_for_route(route.internal_id)
+      @directions = {
+        1 => Display::RouteDirection.new(route.internal_id, stop_times, timestamp),
+        3 => Display::RouteDirection.new(route.internal_id, stop_times, timestamp),
       }
     end
 
+    def push_trip(trip)
+      directions[trip.direction].push_trip(trip)
+    end
+
     def status
-      if max_difference_headway.nil?
-        if route.scheduled?
+      if max_headway_discreprency.nil?
+        if directions.any? {|_, d| d.line_directions.present? }
+          "???"
+        elsif route.scheduled?
           "No Service"
         else
           "Not Scheduled"
         end
-      elsif max_difference_headway.difference_for_route(route.internal_id) > 2
+      elsif max_headway_discreprency > 2
         "Not Good"
       else
         "Good Service"
       end
+    end
+
+    private
+
+    attr_accessor :trips
+
+    def max_headway_discreprency
+      directions.map { |_, rd|
+        rd.headway_discreprency
+      }.reject { |headway_discreprency|
+        headway_discreprency.nil?
+      }.max
     end
   end
 end
