@@ -60,7 +60,7 @@ class LineModal extends React.Component {
       return (
         <Table.Row key={obj.type}>
           <Table.Cell error={southError}>
-            { obj.southActual &&
+            { obj.southActual || obj.southActual === 0 &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.southActual}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -68,7 +68,7 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell error={southError}>
-            { obj.southActual &&
+            { obj.southActual || obj.southActual === 0 &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -86,7 +86,7 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell error={northError}>
-            { obj.northActual &&
+            { obj.northActual || obj.northActual === 0 &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.northActual}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -94,7 +94,7 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell error={northError}>
-            { obj.northActual &&
+            { obj.northActual || obj.northActual === 0 &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
