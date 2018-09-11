@@ -50,7 +50,7 @@ class TrainModal extends React.Component {
       return (
         <Table.Row key={obj.line}>
           <Table.Cell error={southError}>
-            { obj.southActual || obj.southActual === 0 &&
+            { (obj.southActual || obj.southActual === 0) &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.southActual}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -58,7 +58,7 @@ class TrainModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell error={southError}>
-            { obj.southActual || obj.southActual === 0 &&
+            { (obj.southActual || obj.southActual === 0) &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -71,7 +71,7 @@ class TrainModal extends React.Component {
             </h5>
           </Table.Cell>
           <Table.Cell error={northError}>
-            { obj.northActual || obj.northActual === 0 &&
+            { (obj.northActual || obj.northActual === 0) &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.northActual}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -79,7 +79,7 @@ class TrainModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell error={northError}>
-            { obj.northActual || obj.northActual === 0 &&
+            { (obj.northActual || obj.northActual === 0) &&
               <Statistic size='small' horizontal>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -105,20 +105,16 @@ class TrainModal extends React.Component {
       return (
         <Table.Row key={obj.line}>
           <Table.Cell error={southError}>
-            { obj.southActual !== null &&
-              <Statistic size='small'>
-                <Statistic.Value>{obj.southActual}</Statistic.Value>
-                <Statistic.Label>Mins</Statistic.Label>
-              </Statistic>
-            }
+            <Statistic size='small'>
+              <Statistic.Value>{obj.southActual}</Statistic.Value>
+              <Statistic.Label>Mins</Statistic.Label>
+            </Statistic>
           </Table.Cell>
           <Table.Cell error={southError}>
-            { obj.southActual !== null &&
-              <Statistic size='small'>
-                <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
-                <Statistic.Label>Mins</Statistic.Label>
-              </Statistic>
-            }
+            <Statistic size='small'>
+              <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
+              <Statistic.Label>Mins</Statistic.Label>
+            </Statistic>
           </Table.Cell>
           <Table.Cell active>
             <h5>
@@ -149,20 +145,16 @@ class TrainModal extends React.Component {
             </h5>
           </Table.Cell>
           <Table.Cell error={northError}>
-            { obj.northActual !== null &&
-              <Statistic size='small'>
-                <Statistic.Value>{obj.northActual}</Statistic.Value>
-                <Statistic.Label>Mins</Statistic.Label>
-              </Statistic>
-            }
+            <Statistic size='small'>
+              <Statistic.Value>{obj.northActual}</Statistic.Value>
+              <Statistic.Label>Mins</Statistic.Label>
+            </Statistic>
           </Table.Cell>
           <Table.Cell error={northError}>
-            { obj.northActual !== null &&
-              <Statistic size='small'>
-                <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
-                <Statistic.Label>Mins</Statistic.Label>
-              </Statistic>
-            }
+            <Statistic size='small'>
+              <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
+              <Statistic.Label>Mins</Statistic.Label>
+            </Statistic>
           </Table.Cell>
         </Table.Row>
       )
