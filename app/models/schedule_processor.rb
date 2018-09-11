@@ -102,6 +102,7 @@ class ScheduleProcessor
 
   def route(route_id)
     route_id = "SI" if route_id == "SS"
+    route_id = "5" if route_id == "5X"
     route_id
   end
 end
