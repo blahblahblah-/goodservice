@@ -26,7 +26,13 @@ module Display
 
     def add_to_lines(lines)
       upcoming_line_directions.keys.each do |ld|
-        lines[ld.line_id].directions[direction].find { |dld| dld.line_direction == ld }.push_trip(self)
+        # M train shuffle, M train stations are mapped on the opposite direction on Broadway-Brooklyn
+        if route_id == "M" && lines[ld.line_id].name == "Broadway (Brooklyn)"
+          actual_direction = (direction == 1) ? 3 : 1
+          lines[ld.line_id].directions[actual_direction].find { |dld| dld.line_direction.type == ld.type }.push_trip(self)
+        else
+          lines[ld.line_id].directions[direction].find { |dld| dld.line_direction == ld }.push_trip(self)
+        end
       end
     end
 
@@ -36,6 +42,7 @@ module Display
 
     def line_directions_time_hash
       return @line_directions_time_hash if @line_directions_time_hash
+
       time_hash = ActiveSupport::OrderedHash[
         trip.stop_time_update.select { |u|
           (u.departure || u.arrival).time > timestamp &&
