@@ -11,7 +11,6 @@ module Display
       name <=> another.name
     end
 
-    private
     attr_accessor :route
   end
 end
