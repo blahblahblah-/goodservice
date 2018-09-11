@@ -13,7 +13,7 @@ class ScheduleProcessor
     instantiate_data
 
     if Rails.env.production?
-      feeds = Parallel.map(FEED_IDS, in_threads: 1) do |id|
+      feeds = Parallel.map(FEED_IDS, in_threads: 4) do |id|
         begin
           retries ||= 0
           puts "Spawning thread for #{id}"
