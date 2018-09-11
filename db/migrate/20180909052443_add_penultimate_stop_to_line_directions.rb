@@ -6,7 +6,7 @@ class AddPenultimateStopToLineDirections < ActiveRecord::Migration[5.2]
     lexexn = ExpressLineDirection.find_by!(last_stop: "621N")
     lexexn.penultimate_stop = "626N"
     lexexn.save!
-    lexexs = ExpressLineDirection.find_by!(last_stop: "423S")
+    lexexs = ExpressLineDirection.find_by!(last_stop: "420S")
     lexexs.penultimate_stop = "635S"
     lexexs.save!
     sixexn = ExpressLineDirection.find_by!(last_stop: "D15N")
