@@ -15,7 +15,7 @@ class ScheduleProcessor
         begin
           retries ||= 0
           puts "Spawning thread for #{id}"
-          retrieve_feed(id)
+          feed = retrieve_feed(id)
           puts "Analyzing feed #{id}"
           Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
           analyze_feed(feed)
@@ -72,7 +72,7 @@ class ScheduleProcessor
   def retrieve_feed(feed_id)
     puts "Retrieving feed #{feed_id}"
     data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
-    feed = Transit_realtime::FeedMessage.decode(data)
+    Transit_realtime::FeedMessage.decode(data)
   end
 
   private
