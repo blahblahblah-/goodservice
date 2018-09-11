@@ -46,17 +46,17 @@ module Display
           }, (u.departure || u.arrival).time]
         }
       ]
-      # short_turn_ld = all_line_directions.reject{ |ld|
-      #   ld.kind_of?(ExpressLineDirection) || time_hash.keys.include?(ld)
-      # }.reject { |ld|
-      #   ld.kind_of?(LocalLineDirection) && time_hash.keys.map(&:id).include?(ld.express_line_direction_id)
-      # }.find { |ld|
-      #   trip.stop_time_update.map(&:stop_id).include?(ld.first_stop) && !trip.stop_time_update.map(&:stop_id).include?(ld.last_stop)
-      # }
-      # if short_turn_ld
-      #   update = trip.stop_time_update.find { |u| u.stop_id == short_turn_ld.first_stop}
-      #   time_hash[short_turn_ld] = (update.departure || update.arrival).time
-      # end
+      short_turn_ld = all_line_directions.reject{ |ld|
+        ld.kind_of?(ExpressLineDirection) || time_hash.keys.include?(ld)
+      }.reject { |ld|
+        ld.kind_of?(LocalLineDirection) && time_hash.keys.map(&:id).include?(ld.express_line_direction_id)
+      }.find { |ld|
+        trip.stop_time_update.map(&:stop_id).include?(ld.first_stop) && !trip.stop_time_update.map(&:stop_id).include?(ld.last_stop)
+      }
+      if short_turn_ld
+        update = trip.stop_time_update.find { |u| u.stop_id == short_turn_ld.first_stop}
+        time_hash[short_turn_ld] = (update.departure || update.arrival).time
+      end
 
       time_hash.reject!{ |ld, _|
         ld.kind_of?(ExpressLineDirection) && (time_hash.keys.include?(ld.local_line_direction) ||  trip.stop_time_update.none? { |u| u.stop_id == ld.penultimate_stop})
