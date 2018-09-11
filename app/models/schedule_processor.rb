@@ -7,6 +7,8 @@ BASE_URI = "http://datamine.mta.info/mta_esi.php"
 FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
 
 class ScheduleProcessor
+  attr_accessor :routes, :lines
+
   def initialize
     instantiate_data
 
@@ -39,22 +41,6 @@ class ScheduleProcessor
         end
       end
     end
-  end
-
-  def routes
-    return @routes if @routes
-    pairs = Route.all.map do |route|
-      [route.internal_id, Display::Route.new(route, stop_times, timestamp)]
-    end
-    @routes = Hash[pairs]
-  end
-
-  def lines
-    return @lines if @lines
-    pairs = Line.all.map do |line|
-      [line.id, Display::Line.new(line, stop_times, timestamp)]
-    end
-    @lines = Hash[pairs]
   end
 
   def lines_by_borough(borough)
@@ -98,6 +84,22 @@ class ScheduleProcessor
     @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
     @line_directions = LineDirection.all.includes(:line).group_by(&:direction)
+    instantiate_routes
+    instantiate_lines
+  end
+
+  def instantiate_routes
+    pairs = Route.all.map do |route|
+      [route.internal_id, Display::Route.new(route, stop_times, timestamp)]
+    end
+    @routes = Hash[pairs]
+  end
+
+  def instantiate_lines
+    pairs = Line.all.map do |line|
+      [line.id, Display::Line.new(line, stop_times, timestamp)]
+    end
+    @lines = Hash[pairs]
   end
 
   def route(route_id)
