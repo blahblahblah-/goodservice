@@ -200,7 +200,7 @@ class LineModal extends React.Component {
             })
           }
         </Modal.Header>
-        <Modal.Content scrolling>
+        <Modal.Content>
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>

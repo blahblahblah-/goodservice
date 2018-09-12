@@ -183,7 +183,7 @@ class TrainModal extends React.Component {
             textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />
           {this.alternateName()}
         </Modal.Header>
-        <Modal.Content scrolling>
+        <Modal.Content>
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
