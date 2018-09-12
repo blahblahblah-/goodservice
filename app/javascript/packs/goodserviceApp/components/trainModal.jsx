@@ -175,17 +175,19 @@ class TrainModal extends React.Component {
   }
 
   render() {
+    const { width } = this.state;
     return(
       <Responsive as={Modal} fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon={true}>
         <Modal.Header>
-          <TrainBullet name={this.props.train.name} color={this.props.train.color} textColor={this.props.train.text_color} style={{display: "inline-block"}} />
+          <TrainBullet name={this.props.train.name} color={this.props.train.color}
+            textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />
           {this.alternateName()}
         </Modal.Header>
-        <Modal.Content>
+        <Modal.Content scrolling>
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-                <Statistic.Group widths={1} size='small'>
+                <Statistic.Group widths={1} size={(width > Responsive.onlyMobile.maxWidth) ? "small" : "tiny"}>
                   <Statistic color={this.color()}>
                     <Statistic.Value>{this.props.train.status}</Statistic.Value>
                     <Statistic.Label>Status</Statistic.Label>
@@ -212,16 +214,20 @@ class TrainModal extends React.Component {
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell width={2}>
-                        Actual
+                        Actual<br />
+                        Frequency
                       </Table.HeaderCell>
                       <Table.HeaderCell width={2}>
-                        Scheduled
+                        Scheduled<br />
+                        Frequency
                       </Table.HeaderCell>
                       <Table.HeaderCell width={2}>
-                        Actual
+                        Actual <br />
+                        Frequency
                       </Table.HeaderCell>
                       <Table.HeaderCell width={2}>
-                        Scheduled
+                        Scheduled<br />
+                        Frequency
                       </Table.HeaderCell>
                     </Table.Row>
                     { this.tableData() }
@@ -231,17 +237,17 @@ class TrainModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        <h4>
-                          To {this.props.train.destinations.south.join(', ').replace(/ - /g, "-") || "--"}
-                        </h4>
+                        To {this.props.train.destinations.south.join(', ').replace(/ - /g, "-") || "--"}
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
                       <Table.HeaderCell width={5}>
-                        Actual
+                        Actual<br />
+                        Frequency
                       </Table.HeaderCell>
                       <Table.HeaderCell width={5}>
-                        Scheduled
+                        Scheduled<br />
+                        Frequency
                       </Table.HeaderCell>
                       <Table.HeaderCell width={6}>
                         Lines
@@ -254,9 +260,7 @@ class TrainModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        <h4>
-                          To {this.props.train.destinations.north.join(', ').replace(/ - /g, "-") || "--"}
-                        </h4>
+                        To {this.props.train.destinations.north.join(', ').replace(/ - /g, "-") || "--"}
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
@@ -264,10 +268,12 @@ class TrainModal extends React.Component {
                         Lines
                       </Table.HeaderCell>
                       <Table.HeaderCell width={5}>
-                        Actual
+                        Actual<br />
+                        Frequency
                       </Table.HeaderCell>
                       <Table.HeaderCell width={5}>
-                        Scheduled
+                        Scheduled<br />
+                        Frequency
                       </Table.HeaderCell>
                     </Table.Row>
                     { this.tableDataMobileNorth() }

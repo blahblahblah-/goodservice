@@ -9,6 +9,8 @@ class TrainBullet extends React.Component {
   classNames() {
     if (this.props.size === 'small') {
       return this.props.name.endsWith("X") ? 'small route diamond' : 'small route bullet'
+    } else if (this.props.size === 'medium') {
+      return this.props.name.endsWith("X") ? 'medium route diamond' : 'medium route bullet'
     }
     return this.props.name.endsWith("X") ? 'route diamond' : 'route bullet'
   }

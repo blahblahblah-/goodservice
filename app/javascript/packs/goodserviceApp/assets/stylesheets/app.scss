@@ -8,6 +8,13 @@
   color: #fff;
   margin: .25em;
 
+  &.medium {
+    height: 1.75em;
+    width: 1.75em;
+    font-size: 1.75em;
+    line-height: 1.75em;
+  }
+
   &.small {
     height: 1.5em;
     width: 1.5em;
