@@ -40,7 +40,12 @@ module Display
       update = trip.stop_time_update.find { |u|
         u.stop_id == stop_id
       }
+      return unless update
       (update.departure || update.arrival).time
+    end
+
+    def trip_id
+      trip.trip.trip_id
     end
 
     private

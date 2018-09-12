@@ -12,6 +12,7 @@ module Display
 
     def push_trip(trip)
       trips << trip
+      log_trip(trip)
     end
 
     def destinations
@@ -94,6 +95,35 @@ module Display
         }
       end
       times
+    end
+
+    def log_trip(trip)
+      log_stop(trip, line_direction.first_stop)
+      log_stop(trip, line_direction.last_stop)
+    end
+
+    def log_stop(trip, stop)
+      time = trip.find_time(stop)
+      return if time.nil?
+
+      diff = time - trip.timestamp
+      trip_id = trip.trip_id
+      route_id = trip.route_id
+
+      if diff > 240 && diff <= 300
+        return if TrainArrival.find_by(date: Date.current, trip_id: trip_id, stop_id: stop)
+        puts "LOG: 5 minutes until #{route_id} arrives at #{stop}"
+        TrainArrival.create(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id, five_minute_timestamp: trip.timestamp)
+      elsif diff < 60
+        ta = TrainArrival.find_by(date: Date.current, trip_id: trip_id, stop_id: stop)
+        five_minute = ta&.five_minute_timestamp
+        ta = TrainArrival.new(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id) unless ta
+        str = "LOG: #{route_id} arrives at #{stop}"
+        str << ", diff: #{(trip.timestamp - five_minute) / 60}" if five_minute
+        puts str
+        ta.arrival_timestamp = trip.timestamp
+        ta.save!
+      end
     end
   end
 end
