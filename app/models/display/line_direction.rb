@@ -31,11 +31,7 @@ module Display
 
         # Facilitate M train shuffle (where M train stops for Broadway-Brooklyn line are reverse of J/Z trains)
         if !time && t.route_id == "M" && line_direction.line.name == "Broadway (Brooklyn)"
-          time = t.upcoming_line_directions.find { |k, _|
-            k.line.name == line_direction.line.name &&
-              k.type == line_direction.type &&
-              k.direction != line_direction.direction
-          }.last
+          time = t.find_time(last_stop_reverse)
         end
         time
       }
@@ -50,7 +46,6 @@ module Display
       # Facilitate M train shuffle
       if line_direction.line.name == "Broadway (Brooklyn)"
         st = stop_times[line_direction.last_stop].select { |st| st.trip.route_internal_id != "M"}
-        last_stop_reverse = line_direction.last_stop[0..2] + (line_direction.last_stop[3] == "N" ? "S" : "N")
         st.concat(stop_times[last_stop_reverse].select { |st| st.trip.route_internal_id == "M"})
       else
         st = stop_times[line_direction.last_stop]
@@ -83,6 +78,10 @@ module Display
     private
 
     attr_accessor :trips, :stop_times, :timestamp
+
+    def last_stop_reverse
+      line_direction.first_stop[0..2] + (line_direction.first_stop[3] == "N" ? "S" : "N")
+    end
 
     def treat_times(times)
       if (timestamp + 40.minutes).to_date == (timestamp.to_date + 1.day)

@@ -36,6 +36,13 @@ module Display
       end
     end
 
+    def find_time(stop_id)
+      update = trip.stop_time_update.find { |u|
+        u.stop_id == stop_id
+      }
+      (update.departure || update.arrival).time
+    end
+
     private
 
     attr_accessor :trip, :all_line_directions
