@@ -2,7 +2,7 @@ class Api::InfoController < ApplicationController
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
 
   def index
-    result = Rails.cache.fetch("trip-data", expires_in: 5.minutes) do
+    result = Rails.cache.fetch("trip-data", expires_in: 1.day) do
       self.class.refresh_data
     end
     render json: result
@@ -101,7 +101,7 @@ class Api::InfoController < ApplicationController
       lines: lines,
     }
 
-    Rails.cache.write("trip-data", result, expires_in: 5.minutes)
+    Rails.cache.write("trip-data", result, expires_in: 1.day)
     result
   end
 end
