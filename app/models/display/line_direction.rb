@@ -80,7 +80,7 @@ module Display
     attr_accessor :trips, :stop_times, :timestamp
 
     def last_stop_reverse
-      line_direction.first_stop[0..2] + (line_direction.first_stop[3] == "N" ? "S" : "N")
+      line_direction.last_stop[0..2] + (line_direction.last_stop[3] == "N" ? "S" : "N")
     end
 
     def treat_times(times)
