@@ -19,7 +19,7 @@ module Display
     def status
       if max_headway_discreprency.nil?
         if directions.any? {|_, d| d.any?(&:max_actual_headway) }
-          "???"
+          "Good Service"
         else
           "No Service"
         end

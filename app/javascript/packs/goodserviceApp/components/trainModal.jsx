@@ -10,6 +10,8 @@ class TrainModal extends React.Component {
   color() {
     if (this.props.train.status == 'Good Service') {
       return 'green';
+    } else if (this.props.train.status == 'Service Change') {
+      return 'orange';
     } else if (this.props.train.status == 'Not Good') {
       return 'red';
     }

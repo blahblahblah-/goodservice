@@ -17,10 +17,10 @@ module Display
     end
 
     def status
-      if max_headway_discreprency.nil?
-        if directions.any? {|_, d| d.line_directions.present? }
-          "???"
-        elsif route.scheduled?
+      if directions.any? {|_, d| d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
+        "Service Change"
+      elsif max_headway_discreprency.nil?
+        if route.scheduled?
           "No Service"
         else
           "Not Scheduled"
