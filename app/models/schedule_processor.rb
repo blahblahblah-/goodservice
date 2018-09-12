@@ -83,6 +83,7 @@ class ScheduleProcessor
   def instantiate_data
     @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
+    @stop_times.merge!(StopTime.soon_by_route("SI", time_range: 60.minutes).includes(:trip).group_by(&:stop_internal_id))
     @line_directions = LineDirection.all.includes(:line).group_by(&:direction)
     instantiate_routes
     instantiate_lines
