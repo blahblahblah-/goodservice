@@ -21,7 +21,13 @@ class Line extends React.Component {
     const { width } = this.state;
     const name = this.props.line.name.replace(" Branch", "");
     if (width < 470) {
-      return name.replace("Washington Heights", "Wash Hts").replace("Rockaway (Far Rockaway)", "Far Rockaway").replace("Rockaway (Rockaway Park)", "Rockaway Park").replace("Brooklyn", "Bklyn");
+      return name.replace("8 Avenue (Washington Heights)", "8 Av (Wash Hts)")
+        .replace("Rockaway (Far Rockaway)", "Far Rockaway")
+        .replace("Rockaway (Rockaway Park)", "Rockaway Park")
+        .replace("Brooklyn", "Bklyn")
+        .replace("Broadway–7 Avenue", "Bway–7 Avenue")
+        .replace("14 Street–Canarsie", "14 St–Canarsie")
+        .replace("Boulevard", "Blvd");
     }
     return name;
   }
