@@ -1,7 +1,6 @@
 module Display
   class Trip
-    TIME_ESTIMATE_LIMIT = 30.minutes.to_i
-    SIR_TIME_ESTIMATE_LIMIT = 60.minutes.to_i
+    TIME_ESTIMATE_LIMIT = 60.minutes.to_i
 
     attr_accessor :line_directions, :upcoming_line_directions, :route_id, :timestamp, :direction
 
@@ -13,7 +12,6 @@ module Display
       @all_line_directions = all_line_directions
       @line_directions = line_directions_time_hash.keys
       @upcoming_line_directions = line_directions_time_hash.select { |_, time|
-        limit = (route_id == "SI") ? SIR_TIME_ESTIMATE_LIMIT : TIME_ESTIMATE_LIMIT
         timestamp + TIME_ESTIMATE_LIMIT > time
       }
     end
