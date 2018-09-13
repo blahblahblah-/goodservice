@@ -4,7 +4,7 @@ class StopTime < ActiveRecord::Base
 
   DAY_IN_MINUTES = 86400
 
-  def self.soon(time_range: 40.minutes)
+  def self.soon(time_range: 60.minutes)
     if (Time.current + time_range).to_date == Date.current.tomorrow
       where("(departure_time > ? and departure_time < ?) or (departure_time > ? and departure_time < ?)",
         Time.current - Time.current.beginning_of_day,
@@ -27,7 +27,7 @@ class StopTime < ActiveRecord::Base
     end
   end
 
-  def self.soon_by_route(route_id, time_range: 40.minutes)
+  def self.soon_by_route(route_id, time_range: 60.minutes)
     soon(time_range: time_range).where(trips: {route_internal_id: route_id})
   end
 end
