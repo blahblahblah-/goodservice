@@ -36,7 +36,7 @@ class LinePane extends React.Component {
           boroughName = BOROUGHS_ABRV[borough];
         }
       }
-      return { menuItem: <Menu.Item as={Link} to={'/boroughs/' + boroughName.replace(/\s+/g, '-').toLowerCase()} key={boroughName}>{boroughName}</Menu.Item>, render: () => <BoroughPane lines={this.props.lines[borough]} /> }
+      return { menuItem: <Menu.Item as={Link} to={'/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase()} key={borough}>{boroughName}</Menu.Item>, render: () => <BoroughPane lines={this.props.lines[borough]} /> }
     })
   }
 
