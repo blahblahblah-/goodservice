@@ -110,7 +110,7 @@ module Display
       trip_id = trip.trip_id
       route_id = trip.route_id
 
-      if diff > 240 && diff <= 300
+      if diff / 60 == 5
         return if TrainArrival.find_by(date: Date.current, trip_id: trip_id, stop_id: stop)
         puts "LOG: 5 minutes until #{route_id} arrives at #{stop}"
         TrainArrival.create(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id, five_minute_timestamp: trip.timestamp)
@@ -124,6 +124,9 @@ module Display
         ta.arrival_timestamp = trip.timestamp
         ta.save!
       end
+    rescue StandardError =>
+      puts "Error logging stop: #{e.message}"
+      puts e.backtrace
     end
   end
 end
