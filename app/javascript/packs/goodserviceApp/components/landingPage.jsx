@@ -23,8 +23,8 @@ class LandingPage extends React.Component {
   panes() {
     const { trains, lines } = this.state;
     return [
-      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>, render: () => <Tab.Pane style={{background: "none"}}><TrainPane trains={trains} /></Tab.Pane> },
-      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane style={{background: "none"}}><LinePane lines={lines} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>, render: () => <Tab.Pane><TrainPane trains={trains} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane style={{minHeight: 650}}><LinePane lines={lines} /></Tab.Pane> },
     ]
   }
 
@@ -57,8 +57,8 @@ class LandingPage extends React.Component {
             bgImageAlt=""
             strength={500}
         >
-          <Segment basic style={{backgroundColor: "rgba(255, 255, 255, 0.15)"}}>
-            <Grid centered>
+          <Segment basic style={{backgroundColor: "rgba(255, 255, 255, 0.15)", margin: 0, padding: 0}}>
+            <Grid centered stackable style={{margin: '0'}}>
               <Grid.Column width={14}>
                   {this.loading()}
                   <Switch>
