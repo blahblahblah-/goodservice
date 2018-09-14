@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tab, Responsive, Menu } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 import BoroughPane from './boroughPane.jsx';
 import { map } from 'lodash';
 
@@ -52,11 +52,12 @@ class LinePane extends React.Component {
 
     return(
       <Switch>
+        <Route strict path="/boroughs/the-bronx" render={() => this.tab(vertical, 0)} />
         <Route strict path="/boroughs/brooklyn" render={() => this.tab(vertical, 1)} />
         <Route strict path="/boroughs/manhattan" render={() => this.tab(vertical, 2)} />
         <Route strict path="/boroughs/queens" render={() => this.tab(vertical, 3)} />
         <Route strict path="/boroughs/staten-island" render={() => this.tab(vertical, 4)} />
-        <Route  render={() => this.tab(vertical, 0)} />
+        <Redirect to="/boroughs/the-bronx"/>
       </Switch>
     )
   }
