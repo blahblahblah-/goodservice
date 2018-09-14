@@ -1,5 +1,6 @@
 import React from 'react';
-import { Header, Segment, Tab, Dimmer, Loader, Grid } from "semantic-ui-react";
+import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu } from "semantic-ui-react";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
 import sampleData from "../data/sampleData.js";
@@ -21,8 +22,8 @@ class LandingPage extends React.Component {
   panes() {
     const { trains, lines } = this.state;
     return [
-      { menuItem: 'By Train', render: () => <Tab.Pane><TrainPane trains={trains} /></Tab.Pane> },
-      { menuItem: 'By Line', render: () => <Tab.Pane><LinePane lines={lines} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>, render: () => <Tab.Pane><TrainPane trains={trains} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane><LinePane lines={lines} /></Tab.Pane> },
     ]
   }
 
@@ -38,7 +39,7 @@ class LandingPage extends React.Component {
   }
 
   render() {
-    const { trains, lines } = this.state;
+    const { trains, lines, activeIndex } = this.state;
     return(
       <div>
         <Segment inverted vertical style={{padding: '2em 2em'}}>
@@ -51,7 +52,10 @@ class LandingPage extends React.Component {
         </Segment>
         <Segment>
           {this.loading()}
-          <Tab panes={this.panes()} />
+          <Switch>
+            <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
+            <Route render={() => <Tab panes={this.panes()} activeIndex="0" />} />
+          </Switch>
         </Segment>
         <Grid centered stackable style={{margin: '2em 0'}}>
           <Grid.Column width={9}>

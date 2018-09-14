@@ -1,5 +1,6 @@
 import React from 'react';
-import { Tab, Responsive } from 'semantic-ui-react';
+import { Tab, Responsive, Menu } from 'semantic-ui-react';
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import BoroughPane from './boroughPane.jsx';
 import { map } from 'lodash';
 
@@ -35,8 +36,14 @@ class LinePane extends React.Component {
           boroughName = BOROUGHS_ABRV[borough];
         }
       }
-      return { menuItem: boroughName, render: () => <BoroughPane lines={this.props.lines[borough]} /> }
+      return { menuItem: <Menu.Item as={Link} to={'/boroughs/' + boroughName.replace(/\s+/g, '-').toLowerCase()} key={boroughName}>{boroughName}</Menu.Item>, render: () => <BoroughPane lines={this.props.lines[borough]} /> }
     })
+  }
+
+  tab(vertical, activeIndex) {
+    return (
+      <Responsive as={Tab} fireOnMount onUpdate={this.handleOnUpdate} menu={{ fluid: true, vertical: vertical, tabular: true }} activeIndex={activeIndex} panes={this.panes()} />
+    )
   }
 
   render() {
@@ -44,7 +51,13 @@ class LinePane extends React.Component {
     const vertical = width > Responsive.onlyComputer.minWidth;
 
     return(
-      <Responsive as={Tab} fireOnMount onUpdate={this.handleOnUpdate} menu={{ fluid: true, vertical: vertical, tabular: true }} panes={this.panes()} />
+      <Switch>
+        <Route strict path="/boroughs/brooklyn" render={() => this.tab(vertical, 1)} />
+        <Route strict path="/boroughs/manhattan" render={() => this.tab(vertical, 2)} />
+        <Route strict path="/boroughs/queens" render={() => this.tab(vertical, 3)} />
+        <Route strict path="/boroughs/staten-island" render={() => this.tab(vertical, 4)} />
+        <Route  render={() => this.tab(vertical, 0)} />
+      </Switch>
     )
   }
 }

@@ -7,7 +7,7 @@ import LandingPage from './components/landingPage';
 const App = (props) => (
   <Router>
     <div>
-      <Route exact path='/' component={LandingPage} />
+      <LandingPage />
     </div>
   </Router>
 )
