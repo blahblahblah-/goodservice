@@ -124,7 +124,7 @@ module Display
         ta.arrival_timestamp = trip.timestamp
         ta.save!
       end
-    rescue StandardError =>
+    rescue StandardError => e
       puts "Error logging stop: #{e.message}"
       puts e.backtrace
     end
