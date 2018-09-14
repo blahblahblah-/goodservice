@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
 import sampleData from "../data/sampleData.js";
+import { Parallax, Background } from 'react-parallax';
 
 const API_URL = '/api/info';
 const TEST_DATA = false;
@@ -22,8 +23,8 @@ class LandingPage extends React.Component {
   panes() {
     const { trains, lines } = this.state;
     return [
-      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>, render: () => <Tab.Pane><TrainPane trains={trains} /></Tab.Pane> },
-      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane><LinePane lines={lines} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>, render: () => <Tab.Pane style={{background: "none"}}><TrainPane trains={trains} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane style={{background: "none"}}><LinePane lines={lines} /></Tab.Pane> },
     ]
   }
 
@@ -50,35 +51,24 @@ class LandingPage extends React.Component {
             </Header.Subheader>
           </Header>
         </Segment>
-        <Segment basic>
-          <Grid centered>
-            <Grid.Column width={14}>
-                {this.loading()}
-                <Switch>
-                  <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
-                  <Route render={() => <Tab panes={this.panes()} activeIndex="0" />} />
-                </Switch>
-            </Grid.Column>
-          </Grid>
-        </Segment>
-        <Grid centered stackable style={{margin: '2em 0'}}>
-          <Grid.Column width={9}>
-            <Segment basic>
-              <Header as='h2'>What is Good Service?</Header>
-              <p>
-                Good service is kind of a vague term in regards to public transit.
-                Personally, it means I'm waiting for a predictable amount of time before a train comes. This website
-                uses live data feeds from the New York City subway and compares the headways
-                to the scheduled headways—headway being the amount of time between two trains. By tracking various
-                key stations in the system, this site alerts the user if the gap between two upcoming trains exceed the expectation
-                by more than 2 minutes.
-              </p>
-              <p>This site uses the same live data feeds that power the station platform countdown clocks, therefore
-                this site is as accurate as the data that we are given.
-              </p>
-            </Segment>
-          </Grid.Column>
-        </Grid>
+        <Parallax
+            blur={5}
+            bgImage={require('../assets/images/background.jpg')}
+            bgImageAlt=""
+            strength={500}
+        >
+          <Segment basic style={{backgroundColor: "rgba(255, 255, 255, 0.15)"}}>
+            <Grid centered>
+              <Grid.Column width={14}>
+                  {this.loading()}
+                  <Switch>
+                    <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
+                    <Route render={() => <Tab panes={this.panes()} activeIndex="0"/>} />
+                  </Switch>
+              </Grid.Column>
+            </Grid>
+          </Segment>
+        </Parallax>
         <Segment inverted vertical textAlign='right' style={{padding: '1em 2em'}}>
           <Header inverted as='h5'>
             Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>

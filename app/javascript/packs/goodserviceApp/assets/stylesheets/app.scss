@@ -1,3 +1,30 @@
+.ui.attached.tabular.menu .item, .ui.fluid.vertical.tabular.menu .item{
+  background: none;
+  color: white;
+
+  &.active {
+    background: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  &:hover {
+    color: gray;
+  }
+}
+
+.ui.segment.tab {
+  background: none;
+}
+
+button.ui.segment {
+  background-color: rgba(255, 255, 255, 0.1);
+
+  &:hover, &:active {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
 .route {
   width: 2em;
   height: 2em;
