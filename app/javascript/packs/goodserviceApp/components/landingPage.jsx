@@ -50,12 +50,16 @@ class LandingPage extends React.Component {
             </Header.Subheader>
           </Header>
         </Segment>
-        <Segment>
-          {this.loading()}
-          <Switch>
-            <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
-            <Route render={() => <Tab panes={this.panes()} activeIndex="0" />} />
-          </Switch>
+        <Segment basic>
+          <Grid centered>
+            <Grid.Column width={14}>
+                {this.loading()}
+                <Switch>
+                  <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
+                  <Route render={() => <Tab panes={this.panes()} activeIndex="0" />} />
+                </Switch>
+            </Grid.Column>
+          </Grid>
         </Segment>
         <Grid centered stackable style={{margin: '2em 0'}}>
           <Grid.Column width={9}>
