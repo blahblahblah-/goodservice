@@ -78,7 +78,8 @@ class LandingPage extends React.Component {
         </Parallax>
         <Segment inverted vertical textAlign='right' style={{padding: '1em 2em'}}>
           <Header inverted as='h5'>
-            Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>
+            Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />
+            Contribute <a href='https://github.com/blahblahblah-/goodservice'>here</a>!
           </Header>
         </Segment>
       </div>

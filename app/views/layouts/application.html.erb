@@ -17,6 +17,20 @@
     <%= stylesheet_pack_tag 'goodserviceApp/assets/stylesheets/app' %>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css"></link>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-— facebook open graph tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.goodservice.io" />
+    <meta property="og:title" content="goodservice.io" />
+    <meta property="og:description" content="How long do I have to wait for a train?" />
+    <%= tag :meta, property: 'og:image', content: image_url('background.jpg') %>
+     
+    <!-— twitter card tags additive with the og: tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:domain" value="goodservice.io" />
+    <meta name="twitter:title" value="goodservice.io" />
+    <meta name="twitter:description" value="How long do I have to wait for a train?" />
+    <%= tag :meta, property: 'twitter:image', content: image_url('background.jpg') %>
+    <meta name="twitter:url" value="https://www.goodservice.io" />
     <%= favicon_link_tag asset_path('favicon.ico'), rel: 'icon', type: "image/x-icon" %>
   </head>
 
