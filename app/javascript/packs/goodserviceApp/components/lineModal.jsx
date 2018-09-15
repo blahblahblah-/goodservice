@@ -232,19 +232,19 @@ class LineModal extends React.Component {
                     <Table.Row>
                       <Table.HeaderCell width={2}>
                         Actual<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                       <Table.HeaderCell width={2}>
                         Scheduled<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                       <Table.HeaderCell width={2}>
                         Actual<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                       <Table.HeaderCell width={2}>
                         Scheduled<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                     </Table.Row>
                     { this.tableData() }
@@ -260,11 +260,11 @@ class LineModal extends React.Component {
                     <Table.Row>
                       <Table.HeaderCell width={5}>
                         Actual<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                       <Table.HeaderCell width={5}>
                         Scheduled<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                       <Table.HeaderCell width={6}>
                         Service
@@ -286,11 +286,11 @@ class LineModal extends React.Component {
                       </Table.HeaderCell>
                       <Table.HeaderCell width={5}>
                         Actual<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                       <Table.HeaderCell width={5}>
                         Scheduled<br />
-                        Frequency
+                        Max Wait
                       </Table.HeaderCell>
                     </Table.Row>
                     { this.tableDataMobileNorth() }
