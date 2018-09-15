@@ -8,10 +8,13 @@ MTA's GTFS-realtime manual: http://datamine.mta.info/sites/all/files/pdfs/GTFS-R
 
 Most up-to-date MTA static schedule data: http://web.mta.info/developers/developer-data-terms.html
 
-Uses Ruby 2.4.2, Rails 5.2, Postgres
+Uses Ruby 2.4.2, Rails 5.2, Postgres, Semantic UI React
 
 To run locally:
 1. Sign up for free MTA Developer account https://datamine.mta.info
 2. Set developer key as environment variable `MTA_KEY`
-4. Run `rake db:reset`
-6. Run `rails s`
+3. Down MTA static subway schedule data from above, extract and put them in the `import\` folder
+4. Install bundler (`gem install bundler`)
+5. Run `bundle install`
+6. Run `rake db:reset`
+7. Run `rails s`
