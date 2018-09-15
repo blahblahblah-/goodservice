@@ -179,7 +179,7 @@ class TrainModal extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Modal} fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />
