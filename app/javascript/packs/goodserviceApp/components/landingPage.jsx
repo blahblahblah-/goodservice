@@ -18,6 +18,7 @@ class LandingPage extends React.Component {
       lines: [],
       loading: false,
     };
+    this.background = this.randomizeBackground();
   }
 
   panes() {
@@ -32,11 +33,17 @@ class LandingPage extends React.Component {
     const { loading } = this.state;
     if (loading) {
       return(
-        <Dimmer active inverted>
+        <Dimmer active>
           <Loader inverted></Loader>
         </Dimmer>
       )
     }
+  }
+
+  randomizeBackground() {
+    const numberOfPics = 3;
+    const number = Math.floor(Math.random() * Math.floor(numberOfPics));
+    return require('../assets/images/background-' + number + '.jpg');
   }
 
   render() {
@@ -53,7 +60,7 @@ class LandingPage extends React.Component {
         </Segment>
         <Parallax
             blur={5}
-            bgImage={require('../assets/images/background.jpg')}
+            bgImage={this.background}
             bgImageAlt=""
             strength={500}
         >
