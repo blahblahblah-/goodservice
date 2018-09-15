@@ -45,9 +45,9 @@ class LandingPage extends React.Component {
       <div>
         <Segment inverted vertical style={{padding: '2em 2em'}}>
           <Header inverted as='h1' color='blue'>
-            goodservice.io
+            goodservice.io<span id="beta">beta</span>
             <Header.Subheader>
-              alpha
+              when is the next train coming?
             </Header.Subheader>
           </Header>
         </Segment>
