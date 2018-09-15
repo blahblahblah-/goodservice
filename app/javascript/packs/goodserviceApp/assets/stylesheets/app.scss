@@ -4,7 +4,7 @@
 
   &.active {
     background: none;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0,0,0, 0.1);
     color: white;
   }
 
@@ -18,10 +18,20 @@
 }
 
 button.ui.segment {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0,0,0, 0.1);
+  color: white;
 
-  &:hover, &:active {
-    background-color: rgba(255, 255, 255, 0.3);
+  .ui.header {
+    color: white;
+  }
+
+  &:hover, &:active, .active, &:focus {
+    background-color: rgba(0,0,0, 0.3);
+    color: gray;
+
+    .ui.header {
+      color: gray;
+    }
   }
 }
 

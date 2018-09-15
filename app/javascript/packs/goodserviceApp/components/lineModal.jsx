@@ -59,23 +59,23 @@ class LineModal extends React.Component {
       const northError = obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
       return (
         <Table.Row key={obj.type}>
-          <Table.Cell error={southError}>
+          <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='small' horizontal>
+              <Statistic size='small' horizontal inverted color={southError ? "red" : "black"}>
                 <Statistic.Value>{obj.southActual}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
             }
           </Table.Cell>
-          <Table.Cell error={southError}>
+          <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='small' horizontal>
+              <Statistic size='small' horizontal inverted color={southError ? "red" : "black"}>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
             }
           </Table.Cell>
-          <Table.Cell active>
+          <Table.Cell>
             <h5 style={{display: "inline-block"}}>
               {obj.type}
             </h5>
@@ -85,17 +85,17 @@ class LineModal extends React.Component {
               })
             }
           </Table.Cell>
-          <Table.Cell error={northError}>
+          <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='small' horizontal>
+              <Statistic size='small' horizontal inverted color={northError ? "red" : "black"}>
                 <Statistic.Value>{obj.northActual}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
             }
           </Table.Cell>
-          <Table.Cell error={northError}>
+          <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='small' horizontal>
+              <Statistic size='small' horizontal inverted color={northError ? "red" : "black"}>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
@@ -120,19 +120,19 @@ class LineModal extends React.Component {
       const southError = obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
       return (
         <Table.Row key={obj.type}>
-          <Table.Cell error={southError}>
-            <Statistic size='small'>
+          <Table.Cell>
+            <Statistic size='small' inverted color={southError ? "red" : "black"}>
               <Statistic.Value>{obj.southActual}</Statistic.Value>
               <Statistic.Label>Mins</Statistic.Label>
             </Statistic>
           </Table.Cell>
-          <Table.Cell error={southError}>
-            <Statistic size='small'>
+          <Table.Cell>
+            <Statistic size='small' inverted color={southError ? "red" : "black"}>
               <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
               <Statistic.Label>Mins</Statistic.Label>
             </Statistic>
           </Table.Cell>
-          <Table.Cell active>
+          <Table.Cell>
             <h5>
               {obj.type}
             </h5>
@@ -161,7 +161,7 @@ class LineModal extends React.Component {
       const northError = obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
       return (
         <Table.Row key={obj.type}>
-          <Table.Cell active>
+          <Table.Cell>
             <h5>
               {obj.type}
             </h5>
@@ -171,14 +171,14 @@ class LineModal extends React.Component {
               })
             }
           </Table.Cell>
-          <Table.Cell error={northError}>
-            <Statistic size='small'>
+          <Table.Cell>
+            <Statistic size='small' inverted color={northError ? "red" : "black"}>
               <Statistic.Value>{obj.northActual}</Statistic.Value>
               <Statistic.Label>Mins</Statistic.Label>
             </Statistic>
           </Table.Cell>
-          <Table.Cell error={northError}>
-            <Statistic size='small'>
+          <Table.Cell>
+            <Statistic size='small' inverted color={northError ? "red" : "black"}>
               <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
               <Statistic.Label>Mins</Statistic.Label>
             </Statistic>
@@ -191,7 +191,7 @@ class LineModal extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Modal} fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon={true}>
+      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Modal.Header>
           {this.props.line.name}
           {
@@ -204,13 +204,13 @@ class LineModal extends React.Component {
           <Modal.Description>
             <Grid textAlign='center'>
               <Grid.Column>
-              <Statistic.Group widths={1} size={(width > Responsive.onlyMobile.maxWidth) ? "small" : "tiny"}>
-                <Statistic color={this.color()}>
+              <Statistic.Group widths={1} size={(width > Responsive.onlyMobile.maxWidth) ? "small" : "tiny"} color={this.color()} inverted>
+                <Statistic>
                   <Statistic.Value>{this.props.line.status}</Statistic.Value>
                   <Statistic.Label>Status</Statistic.Label>
                 </Statistic>
               </Statistic.Group>
-                <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth}>
+                <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='2' width={4}>
@@ -250,7 +250,7 @@ class LineModal extends React.Component {
                     { this.tableData() }
                   </Table.Header>
                 </Responsive>
-                <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable>
+                <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
@@ -273,7 +273,7 @@ class LineModal extends React.Component {
                     { this.tableDataMobileSouth() }
                   </Table.Header>
                 </Responsive>
-                <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable>
+                <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
