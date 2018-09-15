@@ -47,7 +47,7 @@ class LandingPage extends React.Component {
           <Header inverted as='h1' color='blue'>
             goodservice.io<span id="beta">beta</span>
             <Header.Subheader>
-              when is the next train coming?
+              how long do I have to wait for a train?
             </Header.Subheader>
           </Header>
         </Segment>
