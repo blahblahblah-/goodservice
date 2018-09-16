@@ -79,8 +79,8 @@ class LandingPage extends React.Component {
         <Segment inverted vertical style={{padding: '1em 2em'}}>
           <Grid>
             <Grid.Column width={8}>
-              <Button circular color='facebook' icon='facebook' onClick={() => window.open("https://www.facebook.com/sharer/sharer.php")} />
-              <Button circular color='twitter' icon='twitter' onClick={() => window.open("https://www.twitter.com/share")} />
+              <Button circular color='facebook' icon='facebook' onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=https%3A//www.goodservice.io")} />
+              <Button circular color='twitter' icon='twitter' onClick={() => window.open("https://www.twitter.com/share?text&url=https%3A//www.goodservice.io")} />
             </Grid.Column>
             <Grid.Column width={8} textAlign='right'>
               <Header inverted as='h5'>
