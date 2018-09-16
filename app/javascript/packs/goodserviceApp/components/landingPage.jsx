@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu } from "semantic-ui-react";
+import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
@@ -76,11 +76,19 @@ class LandingPage extends React.Component {
             </Grid>
           </Segment>
         </Parallax>
-        <Segment inverted vertical textAlign='right' style={{padding: '1em 2em'}}>
-          <Header inverted as='h5'>
-            Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />
-            Contribute <a href='https://github.com/blahblahblah-/goodservice'>here</a>!
-          </Header>
+        <Segment inverted vertical style={{padding: '1em 2em'}}>
+          <Grid>
+            <Grid.Column width={8}>
+              <Button circular color='facebook' icon='facebook' onClick={() => window.open("https://www.facebook.com/sharer/sharer.php")} />
+              <Button circular color='twitter' icon='twitter' onClick={() => window.open("https://www.twitter.com/share")} />
+            </Grid.Column>
+            <Grid.Column width={8} textAlign='right'>
+              <Header inverted as='h5'>
+                Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />
+                Contribute <a href='https://github.com/blahblahblah-/goodservice'>here</a>!
+              </Header>
+            </Grid.Column>
+          </Grid>
         </Segment>
       </div>
     )
