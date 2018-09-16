@@ -2,11 +2,10 @@ require 'nyct-subway.pb'
 require 'net/http'
 require 'uri'
 
-BASE_URI = "http://datamine.mta.info/mta_esi.php"
-
-FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
-
 class ScheduleProcessor
+  BASE_URI = "http://datamine.mta.info/mta_esi.php"
+  FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
+
   attr_accessor :routes, :lines
 
   def initialize

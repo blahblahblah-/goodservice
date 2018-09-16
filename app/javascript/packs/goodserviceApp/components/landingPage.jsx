@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon } from "semantic-ui-react";
+import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon, Message } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
@@ -19,6 +19,20 @@ class LandingPage extends React.Component {
       loading: false,
     };
     this.background = this.randomizeBackground();
+  }
+
+  blogPostMessage() {
+    const { blogPost } = this.state;
+    if (!blogPost) return;
+    return (
+      <Message attached style={{marginTop: 0, padding: "1em 2em"}} color="black">
+        <Message.Content>
+          <Header as='h5' inverted>
+            Blog Post: <a href={blogPost.link} target="_blank">{blogPost.title}</a>
+          </Header>
+        </Message.Content>
+      </Message>
+    )
   }
 
   panes() {
@@ -50,7 +64,7 @@ class LandingPage extends React.Component {
     const { trains, lines, activeIndex } = this.state;
     return(
       <div>
-        <Segment inverted vertical style={{padding: '2em 2em'}}>
+        <Segment inverted vertical style={{padding: '2em 2em 0.5em 2em'}}>
           <Header inverted as='h1' color='blue'>
             goodservice.io<span id="beta">beta</span>
             <Header.Subheader>
@@ -58,6 +72,7 @@ class LandingPage extends React.Component {
             </Header.Subheader>
           </Header>
         </Segment>
+        { this.blogPostMessage() }
         <Parallax
             blur={5}
             bgImage={this.background}
@@ -101,7 +116,7 @@ class LandingPage extends React.Component {
     } else {
       fetch(API_URL)
         .then(response => response.json())
-        .then(data => this.setState({ trains: data.routes, lines: data.lines, loading: false }))
+        .then(data => this.setState({ trains: data.routes, lines: data.lines, blogPost: data.blog_post, loading: false }))
     }
   }
 

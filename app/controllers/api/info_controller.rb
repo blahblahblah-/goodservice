@@ -96,9 +96,21 @@ class Api::InfoController < ApplicationController
       }]
     end]
 
+    begin
+      feed = FeedProcessor.new
+      blog_post = {
+        title: feed.latest.title,
+        link: feed.latest.link,
+      }
+    rescue StandardError => e
+      puts "Error retrieving feed: #{e.message}"
+      puts e.backtrace
+    end
+
     result = {
       routes: routes,
       lines: lines,
+      blog_post: blog_post,
     }
 
     Rails.cache.write("trip-data", result, expires_in: 1.day)
