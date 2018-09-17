@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon } from "semantic-ui-react";
+import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon, Responsive } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
@@ -17,9 +17,11 @@ class LandingPage extends React.Component {
       trains: [],
       lines: [],
       loading: false,
+      backgroundImageId: this.randomizeBackground(),
     };
-    this.background = this.randomizeBackground();
   }
+
+  handleOnUpdate = (e, { width }) => this.setState({ width })
 
   blogPostMessage() {
     const { blogPost } = this.state;
@@ -52,8 +54,40 @@ class LandingPage extends React.Component {
 
   randomizeBackground() {
     const numberOfPics = 3;
-    const number = Math.floor(Math.random() * Math.floor(numberOfPics));
-    return require('../assets/images/background-' + number + '.jpg');
+    return Math.floor(Math.random() * Math.floor(numberOfPics));
+  }
+
+  backgroundImage() {
+    const { width, backgroundImageId } = this.state;
+    if (width < Responsive.onlyMobile.maxWidth) {
+      return require('../assets/images/background-' + backgroundImageId + '-mobile.jpg');
+    } else if (width > 1920) {
+      return require('../assets/images/background-' + backgroundImageId + '.jpg');
+    } else {
+      return require('../assets/images/background-' + backgroundImageId + '-desktop.jpg');
+    }
+  }
+
+  parallaxHeight() {
+    const { width } = this.state;
+    if (width < Responsive.onlyMobile.maxWidth) {
+      return "4032px";
+    } else if (width > 1920) {
+      return "4032px";
+    } else {
+      return "2560px";
+    }
+  }
+
+  parallaxWidth() {
+    const { width } = this.state;
+    if (width < Responsive.onlyMobile.maxWidth) {
+      return "767px";
+    } else if (width > 1920) {
+      return "3024px";
+    } else {
+      return "1920px";
+    }
   }
 
   render() {
@@ -69,11 +103,13 @@ class LandingPage extends React.Component {
           </Header>
           { this.blogPostMessage() }
         </Segment>
-        <Parallax
+        <Responsive as={Parallax} fireOnMount onUpdate={this.handleOnUpdate}
             blur={5}
-            bgImage={this.background}
+            bgImage={this.backgroundImage()}
             bgImageAlt=""
             strength={500}
+            bgHeight={this.parallaxHeight()}
+            bgWidth={this.parallaxWidth()}
         >
           <Segment basic style={{backgroundColor: "rgba(255, 255, 255, 0.15)", margin: 0, padding: 0}}>
             <Grid centered stackable style={{margin: '0'}}>
@@ -86,7 +122,7 @@ class LandingPage extends React.Component {
               </Grid.Column>
             </Grid>
           </Segment>
-        </Parallax>
+        </Responsive>
         <Segment inverted vertical style={{padding: '1em 2em'}}>
           <Grid>
             <Grid.Column width={8}>
