@@ -91,7 +91,7 @@ class LandingPage extends React.Component {
   }
 
   render() {
-    const { trains, lines, activeIndex } = this.state;
+    const { trains, lines, activeIndex, timestamp } = this.state;
     return(
       <div>
         <Segment inverted vertical style={{padding: '2em 2em 1em 2em'}}>
@@ -131,6 +131,7 @@ class LandingPage extends React.Component {
             </Grid.Column>
             <Grid.Column width={8} textAlign='right'>
               <Header inverted as='h5'>
+                Last updated {timestamp && (new Date(timestamp)).toLocaleTimeString('en-US')}.<br />
                 Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />
                 Contribute <a href='https://github.com/blahblahblah-/goodservice'>here</a>!
               </Header>
@@ -148,7 +149,7 @@ class LandingPage extends React.Component {
     } else {
       fetch(API_URL)
         .then(response => response.json())
-        .then(data => this.setState({ trains: data.routes, lines: data.lines, blogPost: data.blog_post, loading: false }))
+        .then(data => this.setState({ trains: data.routes, lines: data.lines, blogPost: data.blog_post, timestamp: data.timestamp, loading: false }))
     }
   }
 

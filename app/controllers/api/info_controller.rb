@@ -111,6 +111,7 @@ class Api::InfoController < ApplicationController
       routes: routes,
       lines: lines,
       blog_post: blog_post,
+      timestamp: Time.current.iso8601,
     }
 
     Rails.cache.write("trip-data", result, expires_in: 1.day)
