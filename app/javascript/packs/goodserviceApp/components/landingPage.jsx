@@ -125,11 +125,11 @@ class LandingPage extends React.Component {
         </Responsive>
         <Segment inverted vertical style={{padding: '1em 2em'}}>
           <Grid>
-            <Grid.Column width={8}>
+            <Grid.Column width={6}>
               <Button circular color='facebook' icon='facebook' onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=https%3A//www.goodservice.io")} />
               <Button circular color='twitter' icon='twitter' onClick={() => window.open("https://www.twitter.com/share?text&url=https%3A//www.goodservice.io")} />
             </Grid.Column>
-            <Grid.Column width={8} textAlign='right'>
+            <Grid.Column width={10} textAlign='right'>
               <Header inverted as='h5'>
                 Last updated {timestamp && (new Date(timestamp)).toLocaleTimeString('en-US')}.<br />
                 Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />
