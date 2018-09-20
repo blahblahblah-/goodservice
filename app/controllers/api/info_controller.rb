@@ -2,7 +2,7 @@ class Api::InfoController < ApplicationController
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
 
   def index
-    result = Rails.cache.fetch("trip-data", expires_in: 1.day) do
+    result = Rails.cache.fetch("trip-data", expires_in: 1.minute) do
       self.class.refresh_data
     end
     render json: result

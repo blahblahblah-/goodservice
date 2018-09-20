@@ -65,9 +65,9 @@ module Display
         five_minute = ta&.five_minute_timestamp
         ta = TrainArrival.new(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id) unless ta
         str = "LOG: Implicit #{route_id} arrives at #{stop}"
-        str << ", diff: #{(trip.timestamp - five_minute) / 60}" if five_minute
+        str << ", diff: #{(timestamp - five_minute) / 60}" if five_minute
         puts str
-        ta.arrival_timestamp = trip.timestamp
+        ta.arrival_timestamp = timestamp
         ta.explicit_arrival = false
         ta.save!
         Rails.cache.delete("trip-logged-#{trip_id}-#{stop}")
