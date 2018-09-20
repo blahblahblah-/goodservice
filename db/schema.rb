@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_14_062216) do
+ActiveRecord::Schema.define(version: 2018_09_20_031838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,9 @@ ActiveRecord::Schema.define(version: 2018_09_14_062216) do
     t.integer "arrival_timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "explicit_arrival", default: false, null: false
+    t.boolean "explicit_five_minute", default: false, null: false
+    t.integer "five_minute_implicit_timestamp"
     t.index ["date", "route_id"], name: "index_train_arrivals_on_date_and_route_id"
     t.index ["date", "trip_id", "stop_id"], name: "index_train_arrivals_on_date_and_trip_id_and_stop_id", unique: true
   end
