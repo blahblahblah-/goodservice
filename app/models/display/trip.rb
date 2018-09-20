@@ -25,15 +25,18 @@ module Display
     end
 
     def add_to_lines(lines)
-      upcoming_line_directions.keys.each do |ld|
+      stops = upcoming_line_directions.keys.map do |ld|
         # M train shuffle, M train stations are mapped on the opposite direction on Broadway-Brooklyn
         if route_id == "M" && lines[ld.line_id].name == "Broadway (Brooklyn)"
           actual_direction = (direction == 1) ? 3 : 1
-          lines[ld.line_id].directions[actual_direction].find { |dld| dld.line_direction.type == ld.type }.push_trip(self)
+          display_line_dir = lines[ld.line_id].directions[actual_direction].find { |dld| dld.line_direction.type == ld.type }
         else
-          lines[ld.line_id].directions[direction].find { |dld| dld.line_direction == ld }.push_trip(self)
+          display_line_dir = lines[ld.line_id].directions[direction].find { |dld| dld.line_direction == ld }
         end
+        display_line_dir.push_trip(self)
+        [display_line_dir.line_direction.first_stop, display_line_dir.line_direction.last_stop]
       end
+      log_implicit_arrivals(stops.flatten)
     end
 
     def find_time(stop_id)
@@ -51,6 +54,28 @@ module Display
     private
 
     attr_accessor :trip, :all_line_directions
+
+    def log_implicit_arrivals(stops)
+      Rails.cache.redis.keys("trip-logged-#{trip_id}*").reject { |key|
+        stops.map { |stop| "trip-logged-#{trip_id}-#{stop}"}.any? { |k| k == key }
+      }.each do |key|
+        stop = key.split("-").last
+        ta = TrainArrival.find_by(date: Date.current, trip_id: trip_id, stop_id: stop)
+        return if ta && ta.arrival_timestamp
+        five_minute = ta&.five_minute_timestamp
+        ta = TrainArrival.new(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id) unless ta
+        str = "LOG: Implicit #{route_id} arrives at #{stop}"
+        str << ", diff: #{(trip.timestamp - five_minute) / 60}" if five_minute
+        puts str
+        ta.arrival_timestamp = trip.timestamp
+        ta.explicit_arrival = false
+        ta.save!
+        Rails.cache.delete("trip-logged-#{trip_id}-#{stop}")
+      end
+    rescue StandardError => e
+      puts "Error logging stop: #{e.message}"
+      puts e.backtrace
+    end
 
     def line_directions_time_hash
       return @line_directions_time_hash if @line_directions_time_hash
