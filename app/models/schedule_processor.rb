@@ -3,6 +3,7 @@ require 'net/http'
 require 'uri'
 
 class ScheduleProcessor
+  include Singleton
   BASE_URI = "http://datamine.mta.info/mta_esi.php"
   FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
@@ -41,18 +42,12 @@ class ScheduleProcessor
         end
       end
     end
-
-    Rails.cache.write("schedule-processor", self, expires_in: 1.day)
-  end
-
-  def self.from_cache
-    Rails.cache.read("schedule-processor", expires_in: 1.day) || self.new
   end
 
   def self.headway_info(force_refresh: false)
     return Rails.cache.read("headway-info") if !force_refresh && Rails.cache.read("headway-info")
 
-    processor = self.from_cache
+    processor = self.instance
     routes_data = processor.routes.reject { |_, route|
       !route.visible? && !route.scheduled?
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
@@ -152,7 +147,7 @@ class ScheduleProcessor
 
   def self.routes_info(force_refresh: false)
     return Rails.cache.read("routes-info") if !force_refresh && Rails.cache.read("routes-info")
-    processor = self.from_cache
+    processor = self.instance
 
     results = Hash[processor.routes.reject { |_, route|
       !route.visible? && !route.scheduled?

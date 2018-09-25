@@ -13,9 +13,10 @@ module Clockwork
   # end
 
   every(30.seconds, 'update.data') {
-    sp = ScheduleProcessor.new
+    puts "Updating Headways"
     ScheduleProcessor.headway_info(force_refresh: true)
     if (Time.current.min % 5 == 1 && Time.current.sec < 30)
+      puts "Updating Routes"
       ScheduleProcessor.routes_info(force_refresh: true)
     end
   }
