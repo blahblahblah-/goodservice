@@ -11,6 +11,10 @@ class ScheduleProcessor
   attr_accessor :routes, :lines
 
   def initialize
+    refresh_data
+  end
+
+  def refresh_data
     instantiate_data
 
     if Rails.env.production?
