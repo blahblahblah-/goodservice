@@ -2,7 +2,7 @@ module Display
   class Route
     attr_accessor :route, :directions
 
-    delegate :color, :text_color, :name, :alternate_name, :visible?, :scheduled?, to: :route
+    delegate :color, :text_color, :name, :alternate_name, :internal_id, :visible?, :scheduled?, to: :route
 
     def initialize(route, stop_times, timestamp)
       @route = route

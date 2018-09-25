@@ -5,6 +5,7 @@ require 'uri'
 class ScheduleProcessor
   BASE_URI = "http://datamine.mta.info/mta_esi.php"
   FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
+  BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
 
   attr_accessor :routes, :lines
 
@@ -40,6 +41,142 @@ class ScheduleProcessor
         end
       end
     end
+
+    Rails.cache.write("schedule-processor", self, expires_in: 1.day)
+  end
+
+  def self.from_cache
+    Rails.cache.read("schedule-processor", expires_in: 1.day) || self.new
+  end
+
+  def self.headway_info(force_refresh: false)
+    return Rails.cache.read("headway-info") if !force_refresh && Rails.cache.read("headway-info")
+
+    processor = self.from_cache
+    routes_data = processor.routes.reject { |_, route|
+      !route.visible? && !route.scheduled?
+    }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
+      {
+        name: route.name,
+        color: route.color && "##{route.color}",
+        text_color: route.text_color && "##{route.text_color}",
+        alternate_name: route.alternate_name,
+        status: route.status,
+        destinations: {
+          north: route.directions[1].destinations,
+          south: route.directions[3].destinations,
+        },
+        north: route.directions[1].line_directions.reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+          {
+            name: ld.name,
+            max_actual_headway: ld.max_actual_headway,
+            max_scheduled_headway: ld.max_scheduled_headway,
+          }
+        },
+        south: route.directions[3].line_directions.reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+          {
+            name: ld.name,
+            max_actual_headway: ld.max_actual_headway,
+            max_scheduled_headway: ld.max_scheduled_headway,
+          }
+        }
+      }
+    end
+
+    lines_data = Hash[BOROUGHS.map do |borough|
+      [borough, processor.lines_by_borough(borough).map{ |line|
+        {
+          name: line.name,
+          routes: line.routes.map { |route|
+            {
+              name: route.name,
+              color: route.color && "##{route.color}",
+              text_color: route.text_color && "##{route.text_color}",
+            }
+          },
+          status: line.status,
+          destinations: {
+            north: line.destinations[1],
+            south: line.destinations[3],
+          },
+          north: line.directions[1].reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+            {
+              type: ld.type,
+              max_actual_headway: ld.max_actual_headway,
+              max_scheduled_headway: ld.max_scheduled_headway,
+              routes: ld.routes.map { |route|
+                {
+                  name: route.name,
+                  color: route.color && "##{route.color}",
+                  text_color: route.text_color && "##{route.text_color}",
+                }
+              }
+            }
+          },
+          south: line.directions[3].reject { |ld|
+            ld.max_actual_headway.nil?
+          }.map { |ld|
+            {
+              type: ld.type,
+              max_actual_headway: ld.max_actual_headway,
+              max_scheduled_headway: ld.max_scheduled_headway,
+              routes: ld.routes.map { |route|
+                {
+                  name: route.name,
+                  color: route.color && "##{route.color}",
+                  text_color: route.text_color && "##{route.text_color}",
+                }
+              }
+            }
+          },
+        }
+      }]
+    end]
+
+    data = {
+      routes: routes_data,
+      lines: lines_data,
+      timestamp: Time.current.iso8601,
+    }
+
+    Rails.cache.write("headway-info", data, expires_in: 1.day)
+
+    data
+  end
+
+  def self.routes_info(force_refresh: false)
+    return Rails.cache.read("routes-info") if !force_refresh && Rails.cache.read("routes-info")
+    processor = self.from_cache
+
+    results = Hash[processor.routes.reject { |_, route|
+      !route.visible? && !route.scheduled?
+    }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
+      [route.internal_id, {
+          name: route.name,
+          color: route.color && "##{route.color}",
+          text_color: route.text_color && "##{route.text_color}",
+          alternate_name: route.alternate_name,
+          destinations: {
+            north: route.directions[1].destination_stops,
+            south: route.directions[3].destination_stops,
+          },
+          routings: {
+            north: route.directions[1].routings,
+            south: route.directions[3].routings,
+          },
+        }
+      ]
+    end]
+
+    Rails.cache.write("routes-info", results, expires_in: 1.day)
+
+    results
   end
 
   def lines_by_borough(borough)
@@ -54,15 +191,15 @@ class ScheduleProcessor
     end
   end
 
+  private
+
+  attr_accessor :line_directions, :stop_times, :timestamp, :stops
+
   def retrieve_feed(feed_id)
     puts "Retrieving feed #{feed_id}"
     data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
     Transit_realtime::FeedMessage.decode(data)
   end
-
-  private
-
-  attr_accessor :line_directions, :stop_times, :timestamp
 
   def analyze_feed(feed)
     raise "Error: Empty feed" if feed.entity.empty?
@@ -71,7 +208,7 @@ class ScheduleProcessor
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
         direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i 
         route_id = route(entity.trip_update.trip.route_id)
-        trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction])
+        trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stops)
         routes[route_id]&.push_trip(trip)
         trip.add_to_lines(lines)
         puts "Error: #{route_id} not found" if routes[route_id].nil?
@@ -83,6 +220,7 @@ class ScheduleProcessor
     @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
     @line_directions = LineDirection.all.includes(:line).group_by(&:direction)
+    @stops = Stop.pluck(:internal_id).to_set
     instantiate_routes
     instantiate_lines
   end

@@ -4,7 +4,7 @@ module Display
 
     attr_accessor :line_directions, :upcoming_line_directions, :route_id, :timestamp, :direction
 
-    def initialize(route_id, trip, direction, timestamp, all_line_directions)
+    def initialize(route_id, trip, direction, timestamp, all_line_directions, valid_stops)
       @route_id = route_id
       @trip = trip
       @direction = direction
@@ -14,10 +14,17 @@ module Display
       @upcoming_line_directions = line_directions_time_hash.select { |_, time|
         timestamp + TIME_ESTIMATE_LIMIT > time
       }
+      @valid_stops = valid_stops
     end
 
     def last_stop
-      trip.stop_time_update.last.stop_id
+      trip.stop_time_update.map(&:stop_id).last
+    end
+
+    def stops
+      trip.stop_time_update.map(&:stop_id).reject{ |stop_id|
+        !valid_stops.include?(stop_id)
+      }.uniq
     end
 
     def lines
@@ -53,7 +60,7 @@ module Display
 
     private
 
-    attr_accessor :trip, :all_line_directions
+    attr_accessor :trip, :all_line_directions, :valid_stops
 
     def log_implicit_arrivals(stops)
       Rails.cache.redis.keys("trip-logged-#{trip_id}*").reject { |key|

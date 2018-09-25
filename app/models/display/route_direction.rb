@@ -13,9 +13,22 @@ module Display
     end
 
     def destinations
-      trips&.map(&:last_stop).uniq.map { |id|
+      destination_stops.map { |id|
         Stop.find_by(internal_id: id).stop_name
       }
+    end
+
+    def destination_stops
+      routings.map(&:last).uniq
+    end
+
+    def routings
+      trips.map(&:stops).sort_by(&:size).reverse.inject([]) do |memo, stops_array|
+        unless memo.any? { |array| (stops_array - array).empty? }
+          memo << stops_array
+        end
+        memo
+      end
     end
 
     def line_directions
