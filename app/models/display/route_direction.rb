@@ -13,7 +13,7 @@ module Display
     end
 
     def destinations
-      destination_stops.map { |id|
+      trips&.map(&:last_stop).uniq.map { |id|
         Stop.find_by(internal_id: id).stop_name
       }
     end
