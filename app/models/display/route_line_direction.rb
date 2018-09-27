@@ -47,7 +47,7 @@ module Display
     attr_accessor :trips, :stop_times, :line_direction, :route_id, :timestamp
 
     def treat_times(times)
-      if (timestamp + 40.minutes).to_date == (timestamp.to_date + 1.day)
+      if (timestamp + 60.minutes).to_date == (timestamp.to_date + 1.day)
         return times.map { |time|
           (time < timestamp - timestamp.beginning_of_day) ? time + 86400 : time
         }
