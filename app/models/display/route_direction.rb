@@ -50,13 +50,17 @@ module Display
     attr_accessor :trips, :stop_times, :route_id, :timestamp
 
     def line_directions_data
-      @line_directions_data ||= trips.map { |t|
-        t.line_directions
+      return @line_directions_data if @line_directions_data
+
+      arrays = trips.map { |t|
+        t.line_directions.reverse
       }.sort_by { |ld|
         ld.size
-      }.reverse.reduce { |memo, obj|
-        memo.concat(obj)
-        }&.uniq
+      }.reverse
+
+      head, *rest = arrays
+
+      @line_directions_data = head.zip(*rest)&.flatten&.compact&.uniq.reverse
     end
   end
 end

@@ -37,7 +37,7 @@ class TrainModal extends React.Component {
         return el.line === obj.name
       });
       if (!match) {
-        data.splice(index + count, 0, {
+        data.splice(index + count - 1, 0, {
           line: obj.name,
           northActual: obj.max_actual_headway,
           northScheduled: obj.max_scheduled_headway
