@@ -36,7 +36,7 @@ class ScheduleProcessor
       FEED_IDS.each do |id|
         begin
           retries ||= 0
-          feed = Rails.cache.fetch("feed-#{id}", expires_in: 5.minutes) do
+          feed = Rails.cache.fetch("feed-#{id}", expires_in: 1.minute) do
             retrieve_feed(id)
           end
           analyze_feed(feed)
@@ -72,6 +72,7 @@ class ScheduleProcessor
             name: ld.name,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
+            delay: ld.delay,
           }
         },
         south: route.directions[3].line_directions.reject { |ld|
@@ -81,6 +82,7 @@ class ScheduleProcessor
             name: ld.name,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
+            delay: ld.delay,
           }
         }
       }
@@ -109,6 +111,7 @@ class ScheduleProcessor
               type: ld.type,
               max_actual_headway: ld.max_actual_headway,
               max_scheduled_headway: ld.max_scheduled_headway,
+              delay: ld.delay,
               routes: ld.routes.map { |route|
                 {
                   name: route.name,
@@ -125,6 +128,7 @@ class ScheduleProcessor
               type: ld.type,
               max_actual_headway: ld.max_actual_headway,
               max_scheduled_headway: ld.max_scheduled_headway,
+              delay: ld.delay,
               routes: ld.routes.map { |route|
                 {
                   name: route.name,

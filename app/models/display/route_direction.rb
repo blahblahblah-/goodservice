@@ -45,6 +45,10 @@ module Display
       }.max
     end
 
+    def delay
+      line_directions.map(&:delay).max || 0
+    end
+
     private
 
     attr_accessor :trips, :stop_times, :route_id, :timestamp

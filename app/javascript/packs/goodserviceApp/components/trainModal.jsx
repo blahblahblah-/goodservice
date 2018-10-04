@@ -12,7 +12,7 @@ class TrainModal extends React.Component {
       return 'green';
     } else if (this.props.train.status == 'Service Change') {
       return 'orange';
-    } else if (this.props.train.status == 'Not Good') {
+    } else if (this.props.train.status == 'Not Good' || this.props.train.status == 'Delay') {
       return 'red';
     }
   }
@@ -27,8 +27,10 @@ class TrainModal extends React.Component {
         line: obj.name,
         southActual: obj.max_actual_headway,
         southScheduled: obj.max_scheduled_headway,
+        southDelay: obj.delay,
         northActual: northLine && northLine.max_actual_headway,
-        northScheduled: northLine && northLine.max_scheduled_headway
+        northScheduled: northLine && northLine.max_scheduled_headway,
+        northDelay: northLine && northLine.delay
       }
     });
     let count = 1;
@@ -40,22 +42,30 @@ class TrainModal extends React.Component {
         data.splice(index + count - 1, 0, {
           line: obj.name,
           northActual: obj.max_actual_headway,
-          northScheduled: obj.max_scheduled_headway
+          northScheduled: obj.max_scheduled_headway,
+          northDelay: obj.delay,
         });
         count++;
       }
     });
 
     return data.map((obj) => {
-      const southError = obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
-      const northError = obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
+      const southError = obj.southDelay >= 5 || obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
+      const northError = obj.northDelay >= 5 || obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
       return (
         <Table.Row key={obj.line}>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
               <Statistic size='small' horizontal inverted color={southError ? "red" : "black"}>
-                <Statistic.Value>{obj.southActual}</Statistic.Value>
-                <Statistic.Label>Mins</Statistic.Label>
+                <Statistic.Value>
+                  {obj.southActual}
+                  {
+                    (obj.southDelay >= 5) && (<span style={{fontSize: "1rem"}}> + {obj.southDelay}</span>)
+                  }
+                </Statistic.Value>
+                <Statistic.Label>
+                  Mins
+                </Statistic.Label>
               </Statistic>
             }
           </Table.Cell>
@@ -75,8 +85,15 @@ class TrainModal extends React.Component {
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
               <Statistic size='small' horizontal inverted color={northError ? "red" : "black"}>
-                <Statistic.Value>{obj.northActual}</Statistic.Value>
-                <Statistic.Label>Mins</Statistic.Label>
+                <Statistic.Value>
+                  {obj.northActual}
+                  {
+                    (obj.northDelay >= 5) && (<span style={{fontSize: "1rem"}}> + {obj.northDelay}</span>)
+                  }
+                </Statistic.Value>
+                <Statistic.Label>
+                  Mins
+                </Statistic.Label>
               </Statistic>
             }
           </Table.Cell>
@@ -99,17 +116,25 @@ class TrainModal extends React.Component {
         line: obj.name.replace(/Avenue/g, "Av").replace(/Street/g, "St").replace(/Parkway/g, "Pkwy").replace(/Boulevard/g, "Blvd").replace(/Broadway/g, "Bway").replace(/Washington/g, "Wash"),
         southActual: obj.max_actual_headway,
         southScheduled: obj.max_scheduled_headway,
+        southDelay: obj.delay,
       }
     });
 
     return data.map((obj) => {
-      const southError = obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
+      const southError = obj.southDelay >= 5 || obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
       return (
         <Table.Row key={obj.line}>
           <Table.Cell>
             <Statistic size='small' inverted color={southError ? "red" : "black"}>
-              <Statistic.Value>{obj.southActual}</Statistic.Value>
-              <Statistic.Label>Mins</Statistic.Label>
+              <Statistic.Value>
+                {obj.southActual}
+                {
+                  (obj.southDelay >= 5) && (<span style={{fontSize: "0.9rem"}}> + {obj.southDelay}</span>)
+                }
+              </Statistic.Value>
+              <Statistic.Label>
+                Mins
+              </Statistic.Label>
             </Statistic>
           </Table.Cell>
           <Table.Cell>
@@ -134,11 +159,12 @@ class TrainModal extends React.Component {
         line: obj.name.replace(/Avenue/g, "Av").replace(/Street/g, "St").replace(/Parkway/g, "Pkwy").replace(/Boulevard/g, "Blvd").replace(/Broadway/g, "Bway").replace(/Washington/g, "Wash"),
         northActual: obj.max_actual_headway,
         northScheduled: obj.max_scheduled_headway,
+        northDelay: obj.delay,
       }
     });
 
     return data.map((obj) => {
-      const northError = obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
+      const northError = obj.northDelay >= 5 || obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
       return (
         <Table.Row key={obj.line}>
           <Table.Cell>
@@ -148,8 +174,15 @@ class TrainModal extends React.Component {
           </Table.Cell>
           <Table.Cell>
             <Statistic size='small' inverted color={northError ? "red" : "black"}>
-              <Statistic.Value>{obj.northActual}</Statistic.Value>
-              <Statistic.Label>Mins</Statistic.Label>
+              <Statistic.Value>
+                {obj.northActual}
+                {
+                  (obj.northDelay >= 5) && (<span style={{fontSize: "0.9rem"}}> + {obj.northDelay}</span>)
+                }
+              </Statistic.Value>
+              <Statistic.Label>
+                Mins
+              </Statistic.Label>
             </Statistic>
           </Table.Cell>
           <Table.Cell>

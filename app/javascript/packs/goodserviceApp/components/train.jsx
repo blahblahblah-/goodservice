@@ -18,7 +18,7 @@ class Train extends React.Component {
       return 'green';
     } else if (this.props.train.status == 'Service Change') {
       return 'orange';
-    } else if (this.props.train.status == 'Not Good') {
+    } else if (this.props.train.status == 'Not Good' || this.props.train.status == 'Delay') {
       return 'red';
     }
   }

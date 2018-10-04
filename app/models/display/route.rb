@@ -17,7 +17,9 @@ module Display
     end
 
     def status
-      if directions.any? {|_, d| d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
+      if delay >= 5
+        "Delay"
+      elsif directions.any? {|_, d| d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
         "Service Change"
       elsif max_headway_discreprency.nil?
         if route.scheduled?
@@ -35,6 +37,12 @@ module Display
     private
 
     attr_accessor :trips
+
+    def delay
+      directions.map { |_, rd|
+        rd.delay
+      }.max || 0
+    end
 
     def max_headway_discreprency
       directions.map { |_, rd|

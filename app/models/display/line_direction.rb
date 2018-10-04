@@ -25,6 +25,41 @@ module Display
       trips.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(::Route.find_by(internal_id: route)) }.reject { |rd| rd.route.nil? }
     end
 
+    def delay
+      @delay if @delay
+
+      return @delay = 0 if trips.empty?
+
+      next_trip = trips.sort_by { |t|
+        time = t.upcoming_line_directions[line_direction]
+
+        # Facilitate M train shuffle (where M train stops for Broadway-Brooklyn line are reverse of J/Z trains)
+        if !time && t.route_id == "M" && line_direction.line.name == "Broadway (Brooklyn)"
+          time = t.find_time(last_stop_reverse)
+        end
+        time
+      }.first
+
+      next_trip_arrival = next_trip.upcoming_line_directions[line_direction]
+
+      if !next_trip_arrival && next_trip.route_id == "M" && line_direction.line.name == "Broadway (Brooklyn)"
+        next_trip_arrival = next_trip.find_time(last_stop_reverse)
+      end
+
+      previous_estimate = Rails.cache.read("line-direction-next-#{line_direction.id}-#{next_trip.trip_id}")
+      if previous_estimate
+        Rails.cache.write("line-direction-next-#{line_direction.id}-#{next_trip.trip_id}", previous_estimate, expires_in: 5.minutes)
+        @delay = (next_trip_arrival - previous_estimate) / 60
+        if @delay > 0
+          puts "Delay detected on #{line_direction.name} - #{line_direction.direction}: #{@delay}"
+        end
+        @delay
+      else
+        Rails.cache.write("line-direction-next-#{line_direction.id}-#{next_trip.trip_id}", next_trip_arrival, expires_in: 5.minutes)
+        @delay = 0
+      end
+    end
+
     def max_actual_headway
       @max_actual_headway if @max_actual_headway
       times = trips.map { |t|
