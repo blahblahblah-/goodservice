@@ -94,3 +94,11 @@ button.ui.segment {
   -ms-transform:rotate(-45deg);
   -webkit-transform:rotate(-45deg);
 }
+
+.ui.menu .item.disabled.sticky-menu-gap {
+  color: white!important;
+
+  &:hover, &:active, .active, &:focus {
+    color: white!important;
+  }
+}

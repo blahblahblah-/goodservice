@@ -26,7 +26,7 @@ class Train extends React.Component {
   render() {
     return(
       <TrainModal train={this.props.train} trigger={
-        <Segment as={Button} fluid>
+        <Segment as={Button} fluid id={"train-" + this.props.train.name}>
           <Responsive as={Segment} basic maxWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
             <Header as='h4' floated='right' className='status' color={this.color()}>{this.props.train.status}</Header>
           </Responsive>

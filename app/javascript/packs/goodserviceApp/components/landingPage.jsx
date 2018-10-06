@@ -9,7 +9,6 @@ import { Parallax, Background } from 'react-parallax';
 const API_URL = '/api/info';
 const TEST_DATA = false;
 
-
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
@@ -36,7 +35,12 @@ class LandingPage extends React.Component {
   panes() {
     const { trains, lines } = this.state;
     return [
-      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>, render: () => <Tab.Pane><TrainPane trains={trains} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>,
+        render: () =>
+          <Tab.Pane>
+            <TrainPane trains={trains} />
+          </Tab.Pane>
+      },
       { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane style={{minHeight: 650}}><LinePane lines={lines} /></Tab.Pane> },
     ]
   }
