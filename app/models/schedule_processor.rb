@@ -173,9 +173,14 @@ class ScheduleProcessor
       ]
     end]
 
-    Rails.cache.write("routes-info", results, expires_in: 1.day)
+    data = {
+      routes: results,
+      timestamp: Time.current.iso8601,
+    }
 
-    results
+    Rails.cache.write("routes-info", data, expires_in: 1.day)
+
+    data
   end
 
   def lines_by_borough(borough)
