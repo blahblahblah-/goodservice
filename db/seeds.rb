@@ -137,7 +137,7 @@ whiteplains = Line.create(name: "White Plains Road")
 dyre = Line.create(name: "Dyre Avenue")
 bwayseventh = Line.create(name: "Broadway–7 Avenue")
 cpw = Line.create(name: "Central Park West")
-wh = Line.create(name: "8 Avenue (Washington Heights)")
+wh = Line.create(name: "Washington Heights (8 Avenue)")
 si = Line.create(name: "Staten Island")
 
 LineBorough.create(borough: "Manhattan", line: secav)
