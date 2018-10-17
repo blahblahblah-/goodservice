@@ -147,7 +147,6 @@ class LandingPage extends React.Component {
   }
 
   fetchData() {
-    this.setState({loading: true});
     if (TEST_DATA) {
       this.setState({ trains: sampleData.routes, lines: sampleData.lines, loading: false });
     } else {
@@ -162,6 +161,7 @@ class LandingPage extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({loading: true});
     this.fetchData();
     this.timer = setInterval(() => this.fetchData(), 60000);
   }
