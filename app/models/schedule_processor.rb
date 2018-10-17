@@ -29,7 +29,10 @@ class ScheduleProcessor
           puts "Done analyzing feed #{id}"
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
-          retry if (retries += 1) < 3
+          if (retries += 1) < 3
+            sleep(1)
+            retry
+          end
         end
       end
     else
