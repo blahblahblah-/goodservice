@@ -10,7 +10,7 @@ class BoroughPane extends React.Component {
         <Grid stackable columns={2}>
           {
             map(this.props.lines, line => {
-              return <Grid.Column key={line.name}><Line line={line} /></Grid.Column>
+              return <Grid.Column key={line.name}><Line line={line} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} /></Grid.Column>
             })
           }
         </Grid>

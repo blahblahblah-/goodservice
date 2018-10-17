@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid, Responsive, Table } from 'semantic-ui-react';
+import { Header, Modal, Statistic, Grid, Responsive, Table, Rating } from 'semantic-ui-react';
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
 
@@ -8,12 +8,23 @@ class LineModal extends React.Component {
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
 
+  handleRateLine = (e, { rating }) => {
+    this.props.onFavLineChange(this.props.line.id, rating);
+  };
+
   color() {
     if (this.props.line.status == 'Good Service') {
       return 'green';
     } else if (this.props.line.status == 'Not Good' || this.props.line.status == 'Delay') {
       return 'red';
     }
+  }
+
+  defaultRating() {
+    if (this.props.favLines.has(this.props.line.id)) {
+      return 1;
+    }
+    return 0;
   }
 
   tableData() {
@@ -232,6 +243,7 @@ class LineModal extends React.Component {
               return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
             })
           }
+          <Rating icon='star' size="massive" onRate={this.handleRateLine} defaultRating={this.defaultRating()} />
         </Modal.Header>
         <Modal.Content>
           <Modal.Description>

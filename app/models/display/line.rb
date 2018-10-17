@@ -2,7 +2,7 @@ module Display
   class Line
     attr_accessor :line, :directions
 
-    delegate :name, :boroughs, to: :line
+    delegate :name, :boroughs, :id, to: :line
 
     def initialize(line, stop_times, timestamp)
       @line = line

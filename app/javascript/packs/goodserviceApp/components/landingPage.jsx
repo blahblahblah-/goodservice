@@ -1,10 +1,12 @@
 import React from 'react';
 import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon, Responsive } from "semantic-ui-react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
+import StarredPane from "./starredPane.jsx";
 import sampleData from "../data/sampleData.js";
 import { Parallax, Background } from 'react-parallax';
+import * as Cookies from 'es-cookie';
 
 const API_URL = '/api/info';
 const TEST_DATA = false;
@@ -12,12 +14,41 @@ const TEST_DATA = false;
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
+    const favTrains = Cookies.get('favTrains') && Cookies.get('favTrains').split(",");
+    const favLines = Cookies.get('favLines') && Cookies.get('favLines').split(",");
     this.state = {
       trains: [],
       lines: [],
       loading: false,
       backgroundImageId: this.randomizeBackground(),
+      favTrains: new Set(favTrains),
+      favLines: new Set(favLines),
     };
+  }
+
+  handleFavTrainChange = (train, rating) => {
+    const { favTrains } = this.state;
+
+    if (rating) {
+      favTrains.add(train);
+    } else {
+      favTrains.delete(train);
+    }
+
+    this.setState({ favTrains: favTrains});
+    Cookies.set('favTrains', [...favTrains].join(","));
+  }
+
+  handleFavLineChange = (line, rating) => {
+    const { favLines } = this.state;
+
+    if (rating) {
+      favLines.add(line);
+    } else {
+      favLines.delete(line);
+    }
+    this.setState({ favLines: favLines});
+    Cookies.set('favLines', [...favLines].join(","));
   }
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
@@ -33,15 +64,26 @@ class LandingPage extends React.Component {
   }
 
   panes() {
-    const { trains, lines } = this.state;
+    const { trains, lines, favTrains, favLines } = this.state;
     return [
-      { menuItem: <Menu.Item as={Link} to='/' key='train'>By Train</Menu.Item>,
+      { menuItem: <Menu.Item as={Link} to='/trains' key='train'>By Train</Menu.Item>,
         render: () =>
           <Tab.Pane>
-            <TrainPane trains={trains} />
+            <TrainPane trains={trains} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} />
           </Tab.Pane>
       },
-      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>, render: () => <Tab.Pane style={{minHeight: 650}}><LinePane lines={lines} /></Tab.Pane> },
+      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>,
+        render: () =>
+          <Tab.Pane style={{minHeight: 650}}>
+            <LinePane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+          </Tab.Pane>
+      },
+      { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
+        render: () =>
+          <Tab.Pane style={{minHeight: 650}}>
+            <StarredPane trains={trains} lines={lines} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+          </Tab.Pane>
+      },
     ]
   }
 
@@ -95,7 +137,7 @@ class LandingPage extends React.Component {
   }
 
   render() {
-    const { trains, lines, activeIndex, timestamp } = this.state;
+    const { trains, lines, activeIndex, timestamp, favLines, favTrains } = this.state;
     return(
       <div>
         <Segment inverted vertical style={{padding: '2em 2em 1em 2em'}}>
@@ -121,7 +163,12 @@ class LandingPage extends React.Component {
                   {this.loading()}
                   <Switch>
                     <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
-                    <Route render={() => <Tab panes={this.panes()} activeIndex="0"/>} />
+                    <Route strict path="/starred" render={() => <Tab panes={this.panes()} activeIndex="2" />} />
+                    <Route strict path="/trains" render={() => <Tab panes={this.panes()} activeIndex="0" />} />
+                    <Route render={() =>
+                      favTrains.size || favLines.size ?
+                      <Redirect to="/starred" /> :
+                      <Redirect to="/trains" />} />
                   </Switch>
               </Grid.Column>
             </Grid>

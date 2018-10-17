@@ -59,6 +59,7 @@ class ScheduleProcessor
       !route.visible? && !route.scheduled?
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       {
+        id: route.internal_id,
         name: route.name,
         color: route.color && "##{route.color}",
         text_color: route.text_color && "##{route.text_color}",
@@ -94,6 +95,7 @@ class ScheduleProcessor
     lines_data = Hash[BOROUGHS.map do |borough|
       [borough, processor.lines_by_borough(borough).map{ |line|
         {
+          id: line.id.to_s,
           name: line.name,
           routes: line.routes.map { |route|
             {

@@ -1,11 +1,15 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid, Responsive, Table } from 'semantic-ui-react';
+import { Header, Modal, Statistic, Grid, Responsive, Table, Rating } from 'semantic-ui-react';
 import TrainBullet from './trainBullet.jsx';
 
 class TrainModal extends React.Component {
   state = {}
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
+
+  handleRateTrain = (e, { rating }) => {
+    this.props.onFavTrainChange(this.props.train.id, rating);
+  };
 
   color() {
     if (this.props.train.status == 'Good Service') {
@@ -15,6 +19,13 @@ class TrainModal extends React.Component {
     } else if (this.props.train.status == 'Not Good' || this.props.train.status == 'Delay') {
       return 'red';
     }
+  }
+
+  defaultRating() {
+    if (this.props.favTrains.has(this.props.train.id)) {
+      return 1;
+    }
+    return 0;
   }
 
   tableData() {
@@ -216,6 +227,7 @@ class TrainModal extends React.Component {
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />
+          <Rating icon='star' size="massive" onRate={this.handleRateTrain} defaultRating={this.defaultRating()} />
           {this.alternateName()}
         </Modal.Header>
         <Modal.Content>

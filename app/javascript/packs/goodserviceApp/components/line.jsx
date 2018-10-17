@@ -39,7 +39,7 @@ class Line extends React.Component {
 
   render() {
     return(
-      <Responsive as={LineModal} line={this.props.line} fireOnMount onUpdate={this.handleOnUpdate} trigger={
+      <Responsive as={LineModal} line={this.props.line} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} fireOnMount onUpdate={this.handleOnUpdate} trigger={
         <Segment className='line-button' as={Button} fluid style={{minHeight: 92}}>
           <Header as={this.headingSize()} floated='right' className='status' color={this.color()}>{this.props.line.status}</Header>
           <Header as={this.headingSize()} style={{textAlign: 'left', display: 'inline-block', float: 'left', marginTop: '0em'}}>{this.name()}</Header>
