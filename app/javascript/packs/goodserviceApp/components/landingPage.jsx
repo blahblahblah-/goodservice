@@ -32,8 +32,10 @@ class LandingPage extends React.Component {
     const { favTrains } = this.state;
 
     if (rating) {
+      ga('send', 'event', 'Star', 'addTrain', train);
       favTrains.add(train);
     } else {
+      ga('send', 'event', 'Star', 'removeTrain', train);
       favTrains.delete(train);
     }
 
@@ -45,8 +47,10 @@ class LandingPage extends React.Component {
     const { favLines } = this.state;
 
     if (rating) {
+      ga('send', 'event', 'Star', 'addLine', line);
       favLines.add(line);
     } else {
+      ga('send', 'event', 'Star', 'removeLine', line);
       favLines.delete(line);
     }
     this.setState({ favLines: favLines});
