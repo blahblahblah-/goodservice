@@ -24,6 +24,8 @@ class LandingPage extends React.Component {
       favTrains: new Set(favTrains),
       favLines: new Set(favLines),
     };
+    favTrains && Cookies.set('favTrains', favTrains.join(","), {expires: 365});
+    favLines && Cookies.set('favLines', favLines.join(","), {expires: 365});
   }
 
   handleFavTrainChange = (train, rating) => {
@@ -36,7 +38,7 @@ class LandingPage extends React.Component {
     }
 
     this.setState({ favTrains: favTrains});
-    Cookies.set('favTrains', [...favTrains].join(","));
+    Cookies.set('favTrains', [...favTrains].join(","), {expires: 365});
   }
 
   handleFavLineChange = (line, rating) => {
@@ -48,7 +50,7 @@ class LandingPage extends React.Component {
       favLines.delete(line);
     }
     this.setState({ favLines: favLines});
-    Cookies.set('favLines', [...favLines].join(","));
+    Cookies.set('favLines', [...favLines].join(","), {expires: 365});
   }
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
