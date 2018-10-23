@@ -7,6 +7,13 @@ class TrainModal extends React.Component {
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
 
+  handleOnMount = e => {
+    gtag('event', 'open_train', {
+      'event_category': 'modal',
+      'event_label': this.props.train.id
+    });
+  }
+
   handleRateTrain = (e, { rating }) => {
     this.props.onFavTrainChange(this.props.train.id, rating);
   };
@@ -223,7 +230,7 @@ class TrainModal extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />

@@ -24,18 +24,48 @@ class LandingPage extends React.Component {
       favTrains: new Set(favTrains),
       favLines: new Set(favLines),
     };
-    favTrains && Cookies.set('favTrains', favTrains.join(","), {expires: 365});
-    favLines && Cookies.set('favLines', favLines.join(","), {expires: 365});
+    this.trackLoadFavTrains(favTrains);
+    this.trackLoadFavLines(favLines);
+  }
+
+  trackLoadFavTrains = (trains) => {
+    if (!trains) {
+      return;
+    }
+    const trainsStr = trains.join(',')
+    gtag('event', 'load_train', {
+      'event_category': 'star',
+      'event_label': trainsStr,
+    });
+    Cookies.set('favTrains', trainsStr, {expires: 365});
+  }
+
+  trackLoadFavLines = (lines) => {
+    if (!lines) {
+      return;
+    }
+    const linesStr = lines.join(',')
+    gtag('event', 'load_line', {
+      'event_category': 'star',
+      'event_label': linesStr
+    });
+    Cookies.set('favLines', linesStr, {expires: 365});
   }
 
   handleFavTrainChange = (train, rating) => {
     const { favTrains } = this.state;
 
     if (rating) {
-      ga('send', 'event', 'Star', 'addTrain', train);
+      gtag('event', 'add_train', {
+        'event_category': 'star',
+        'event_label': train
+      });
       favTrains.add(train);
     } else {
-      ga('send', 'event', 'Star', 'removeTrain', train);
+      gtag('event', 'remove_train', {
+        'event_category': 'star',
+        'event_label': train
+      });
       favTrains.delete(train);
     }
 
@@ -47,10 +77,16 @@ class LandingPage extends React.Component {
     const { favLines } = this.state;
 
     if (rating) {
-      ga('send', 'event', 'Star', 'addLine', line);
+      gtag('event', 'add_line', {
+        'event_category': 'star',
+        'event_label': line
+      });
       favLines.add(line);
     } else {
-      ga('send', 'event', 'Star', 'removeLine', line);
+      gtag('event', 'remove_line', {
+        'event_category': 'star',
+        'event_label': line
+      });
       favLines.delete(line);
     }
     this.setState({ favLines: favLines});

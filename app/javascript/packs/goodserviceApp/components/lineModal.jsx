@@ -8,6 +8,13 @@ class LineModal extends React.Component {
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
 
+  handleOnMount = e => {
+    gtag('event', 'open_line', {
+      'event_category': 'modal',
+      'event_label': this.props.line.id
+    });
+  }
+
   handleRateLine = (e, { rating }) => {
     this.props.onFavLineChange(this.props.line.id, rating);
   };
@@ -235,7 +242,7 @@ class LineModal extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Modal.Header>
           {this.props.line.name}
           {
