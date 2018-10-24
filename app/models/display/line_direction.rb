@@ -12,7 +12,6 @@ module Display
 
     def push_trip(trip)
       trips << trip
-      log_trip(trip)
     end
 
     def destinations
@@ -130,72 +129,6 @@ module Display
         }
       end
       times
-    end
-
-    def log_trip(trip)
-      log_stop(trip, line_direction.first_stop)
-      log_stop(trip, line_direction.last_stop)
-    end
-
-    def log_stop(trip, stop)
-      time = trip.find_time(stop)
-      trip_id = trip.trip_id
-      route_id = trip.route_id
-
-      if time.nil?
-        return unless Rails.cache.read("trip-logged-#{trip_id}-#{stop}")
-        ta = TrainArrival.find_by(date: Date.current, trip_id: trip_id, stop_id: stop)
-        return if ta && ta.arrival_timestamp
-        five_minute = ta&.five_minute_timestamp
-        ta = TrainArrival.new(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id) unless ta
-        str = "LOG: Implicit #{route_id} arrives at #{stop}"
-        str << ", diff: #{(trip.timestamp - five_minute) / 60}" if five_minute
-        puts str
-        ta.arrival_timestamp = trip.timestamp
-        ta.explicit_arrival = false
-        ta.save!
-        Rails.cache.delete("trip-logged-#{trip_id}-#{stop}")
-        return
-      end
-
-      diff = time - trip.timestamp
-      rounded_by_minute = (diff / 60.0).round
-
-      if rounded_by_minute == 5
-        return if Rails.cache.read("trip-logged-#{trip_id}-#{stop}")
-        puts "LOG: 5 minutes until #{route_id} arrives at #{stop}"
-        TrainArrival.create(
-          date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id, five_minute_timestamp: trip.timestamp, explicit_five_minute: true
-        )
-        Rails.cache.write("trip-logged-#{trip_id}-#{stop}", trip.timestamp, expires_in: 1.hour)
-      elsif rounded_by_minute < 1
-        ta = TrainArrival.find_by(date: Date.current, trip_id: trip_id, stop_id: stop)
-        five_minute = ta&.five_minute_timestamp
-        ta = TrainArrival.new(date: Date.current, trip_id: trip_id, stop_id: stop, route_id: route_id) unless ta
-        str = "LOG: #{route_id} arrives at #{stop}"
-        str << ", diff: #{(trip.timestamp - five_minute) / 60.0}" if five_minute
-        puts str
-        ta.arrival_timestamp = trip.timestamp
-        ta.explicit_arrival = true
-        ta.save!
-        Rails.cache.delete("trip-logged-#{trip_id}-#{stop}")
-      elsif rounded_by_minute < 5
-        return if Rails.cache.read("trip-logged-#{trip_id}-#{stop}")
-        puts "LOG: Implicit < #{rounded_by_minute} minutes until #{route_id} arrives at #{stop}"
-        TrainArrival.create(
-          date: Date.current,
-          trip_id: trip_id,
-          stop_id: stop,
-          route_id: route_id,
-          five_minute_timestamp: trip.timestamp,
-          explicit_five_minute: false,
-          five_minute_implicit_timestamp: diff
-        )
-        Rails.cache.write("trip-logged-#{trip_id}-#{stop}", trip.timestamp, expires_in: 1.hour)
-      end
-    rescue StandardError => e
-      puts "Error logging stop: #{e.message}"
-      puts e.backtrace
     end
   end
 end
