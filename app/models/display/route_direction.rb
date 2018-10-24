@@ -1,8 +1,9 @@
 module Display
   class RouteDirection
 
-    def initialize(route_id, stop_times, timestamp)
+    def initialize(route_id, direction, stop_times, timestamp)
       @route_id = route_id
+      @direction = direction
       @trips = []
       @stop_times = stop_times
       @timestamp = timestamp
@@ -49,9 +50,16 @@ module Display
       line_directions.map(&:delay).max || 0
     end
 
+    def lines_not_in_service
+      scheduled_lines = ::LineDirection.scheduled_lines(route_id, (direction - 1) / 2)
+      lines_in_service = line_directions_data&.map(&:line) || []
+
+      scheduled_lines - lines_in_service
+    end
+
     private
 
-    attr_accessor :trips, :stop_times, :route_id, :timestamp
+    attr_accessor :trips, :stop_times, :route_id, :timestamp, :direction
 
     def line_directions_data
       return @line_directions_data if @line_directions_data
@@ -63,6 +71,8 @@ module Display
       }.reverse
 
       head, *rest = arrays
+
+      return if head.nil?
 
       @line_directions_data = head.zip(*rest)&.flatten&.compact&.uniq.reverse
     end

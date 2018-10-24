@@ -7,8 +7,8 @@ module Display
     def initialize(route, stop_times, timestamp)
       @route = route
       @directions = {
-        1 => Display::RouteDirection.new(route.internal_id, stop_times, timestamp),
-        3 => Display::RouteDirection.new(route.internal_id, stop_times, timestamp),
+        1 => Display::RouteDirection.new(route.internal_id, 1, stop_times, timestamp),
+        3 => Display::RouteDirection.new(route.internal_id, 3, stop_times, timestamp),
       }
     end
 
@@ -19,14 +19,14 @@ module Display
     def status
       if delay >= 5
         "Delay"
-      elsif directions.any? {|_, d| d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
-        "Service Change"
       elsif max_headway_discreprency.nil?
         if route.scheduled?
           "No Service"
         else
           "Not Scheduled"
         end
+      elsif directions.any? {|_, d| d.lines_not_in_service.present? || d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
+        "Service Change"
       elsif max_headway_discreprency > 2
         "Not Good"
       else

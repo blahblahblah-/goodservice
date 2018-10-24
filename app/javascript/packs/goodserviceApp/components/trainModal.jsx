@@ -227,6 +227,36 @@ class TrainModal extends React.Component {
     }
   }
 
+  renderStatus() {
+    if (this.renderNoService().length) {
+      return `${this.props.train.status}*`
+    }
+    return this.props.train.status;
+  }
+
+  renderNoService() {
+    if (!this.props.train.lines_not_in_service.north && !this.props.train.lines_not_in_service.south) {
+      return;
+    }
+    const lineNamesNorth = this.props.train.lines_not_in_service.north.map(x => x.name);
+    const lineNamesSouth = this.props.train.lines_not_in_service.south.map(x => x.name);
+    const linesBothDirection = lineNamesNorth.filter(x => lineNamesSouth.includes(x));
+    const linesNorth = lineNamesNorth.filter(x => !linesBothDirection.includes(x));
+    const linesSouth = lineNamesSouth.filter(x => !linesBothDirection.includes(x));
+    const array = []
+
+    if (linesBothDirection.length) {
+      array.push(<Header as='h4' inverted>*No service on {linesBothDirection.join(", ")}.</Header>)
+    }
+    if (linesNorth.length) {
+      array.push(<Header as='h4' inverted>*No {this.props.train.destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.join(", ")}.</Header>)
+    }
+    if (linesSouth.length) {
+      array.push(<Header as='h4' inverted>*No {this.props.train.destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.join(", ")}.</Header>)
+    }
+    return array;
+  }
+
   render() {
     const { width } = this.state;
     return(
@@ -243,7 +273,7 @@ class TrainModal extends React.Component {
               <Grid.Column>
                 <Statistic.Group widths={1} size={(width > Responsive.onlyMobile.maxWidth) ? "small" : "tiny"} color={this.color()} inverted>
                   <Statistic>
-                    <Statistic.Value>{this.props.train.status}</Statistic.Value>
+                    <Statistic.Value>{this.renderStatus()}</Statistic.Value>
                     <Statistic.Label>Status</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>
@@ -252,7 +282,7 @@ class TrainModal extends React.Component {
                     <Table.Row>
                       <Table.HeaderCell colSpan='2' width={4}>
                         <h4>
-                          To {this.props.train.destinations.south.join(', ').replace(/ - /g, "-") || "--"}
+                          To {this.props.train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                         </h4>
                       </Table.HeaderCell>
                       <Table.HeaderCell rowSpan='2' width={5}>
@@ -262,7 +292,7 @@ class TrainModal extends React.Component {
                       </Table.HeaderCell>
                       <Table.HeaderCell colSpan='2' width={4}>
                         <h4>
-                          To {this.props.train.destinations.north.join(', ').replace(/ - /g, "-") || "--"}
+                          To {this.props.train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                         </h4>
                       </Table.HeaderCell>
                     </Table.Row>
@@ -291,7 +321,7 @@ class TrainModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        To {this.props.train.destinations.south.join(', ').replace(/ - /g, "-") || "--"}
+                        To {this.props.train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
@@ -314,7 +344,7 @@ class TrainModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        To {this.props.train.destinations.north.join(', ').replace(/ - /g, "-") || "--"}
+                        To {this.props.train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
@@ -333,6 +363,9 @@ class TrainModal extends React.Component {
                     { this.tableDataMobileNorth() }
                   </Table.Header>
                 </Responsive>
+                {
+                  this.renderNoService()
+                }
               </Grid.Column>
             </Grid>
           </Modal.Description>

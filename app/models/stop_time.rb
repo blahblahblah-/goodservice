@@ -27,7 +27,7 @@ class StopTime < ActiveRecord::Base
     end
   end
 
-  def self.soon_by_route(route_id, time_range: 60.minutes)
-    soon(time_range: time_range).where(trips: {route_internal_id: route_id})
+  def self.soon_by_route(route_id, direction, time_range: 60.minutes)
+    soon(time_range: time_range).where(trips: {route_internal_id: route_id, direction: direction})
   end
 end

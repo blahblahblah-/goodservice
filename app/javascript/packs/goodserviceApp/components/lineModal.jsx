@@ -267,7 +267,7 @@ class LineModal extends React.Component {
                     <Table.Row>
                       <Table.HeaderCell colSpan='2' width={4}>
                         <h4>
-                          To {this.props.line.destinations.south.join(', ').replace(/ - /g, "-") || "--"}
+                          To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                         </h4>
                       </Table.HeaderCell>
                       <Table.HeaderCell rowSpan='2' width={5}>
@@ -277,7 +277,7 @@ class LineModal extends React.Component {
                       </Table.HeaderCell>
                       <Table.HeaderCell colSpan='2' width={4}>
                         <h4>
-                          To {this.props.line.destinations.north.join(', ').replace(/ - /g, "-") || "--"}
+                          To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                         </h4>
                       </Table.HeaderCell>
                     </Table.Row>
@@ -306,7 +306,7 @@ class LineModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        To {this.props.line.destinations.south.join(', ').replace(/ - /g, "-") || "--"}
+                        To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
@@ -329,7 +329,7 @@ class LineModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        To {this.props.line.destinations.north.join(', ').replace(/ - /g, "-") || "--"}
+                        To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>

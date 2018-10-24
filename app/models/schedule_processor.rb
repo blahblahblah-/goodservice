@@ -88,6 +88,10 @@ class ScheduleProcessor
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
           }
+        },
+        lines_not_in_service: {
+          north: route.directions[1].lines_not_in_service,
+          south: route.directions[3].lines_not_in_service,
         }
       }
     end
