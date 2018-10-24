@@ -10,15 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_11_050721) do
+ActiveRecord::Schema.define(version: 2018_10_31_234037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actual_trip_updates", force: :cascade do |t|
+    t.integer "actual_trip_id", null: false
+    t.string "next_stop", null: false
+    t.integer "timestamp", null: false
+    t.integer "diff", null: false
+    t.integer "new_arrival_estimate", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actual_trip_id", "next_stop"], name: "index_actual_trip_updates_on_actual_trip_id_and_next_stop", unique: true
+  end
+
+  create_table "actual_trips", force: :cascade do |t|
+    t.date "date", null: false
+    t.string "trip_id", null: false
+    t.string "route_id", null: false
+    t.string "first_stop_id", null: false
+    t.integer "first_stop_departure_timestamp"
+    t.integer "timestamp", null: false
+    t.integer "initial_arrival_estimate", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_actual_trips_on_created_at"
+  end
 
   create_table "calendar_exceptions", force: :cascade do |t|
     t.string "schedule_service_id", null: false
     t.date "date", null: false
     t.integer "exception_type", default: 1, null: false
+  end
+
+  create_table "delays", force: :cascade do |t|
+    t.integer "actual_trip_update_id", null: false
+    t.integer "delayed_minutes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actual_trip_update_id"], name: "index_delays_on_actual_trip_update_id", unique: true
   end
 
   create_table "line_boroughs", force: :cascade do |t|
@@ -106,6 +138,7 @@ ActiveRecord::Schema.define(version: 2018_10_11_050721) do
     t.index ["internal_id"], name: "index_trips_on_internal_id", unique: true
   end
 
+  add_foreign_key "actual_trip_updates", "actual_trips"
   add_foreign_key "calendar_exceptions", "schedules", column: "schedule_service_id", primary_key: "service_id"
   add_foreign_key "line_directions", "line_directions", column: "express_line_direction_id"
   add_foreign_key "line_directions", "lines"

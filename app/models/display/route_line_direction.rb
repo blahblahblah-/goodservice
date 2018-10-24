@@ -18,25 +18,7 @@ module Display
 
       return @delay = 0 if trips.empty?
 
-      next_trip = trips.sort_by { |t|
-        t.upcoming_line_directions[line_direction]
-      }.first
-
-      next_trip_arrival = next_trip.upcoming_line_directions[line_direction]
-
-      previous_estimate = Rails.cache.read("route-line-direction-next-#{route_id}-#{line_direction.id}-#{next_trip.trip_id}")
-      if previous_estimate
-
-        Rails.cache.write("route-line-direction-next-#{route_id}-#{line_direction.id}-#{next_trip.trip_id}", previous_estimate, expires_in: 5.minutes)
-        @delay = (next_trip_arrival - previous_estimate) / 60
-        if @delay > 0
-          puts "Delay detected on #{route_id} - #{line_direction.name} - #{line_direction.direction}: #{@delay}"
-        end
-        @delay
-      else
-        Rails.cache.write("route-line-direction-next-#{route_id}-#{line_direction.id}-#{next_trip.trip_id}", next_trip_arrival, expires_in: 5.minutes)
-        @delay = 0
-      end
+      @delay = trips.map(&:delay).max
     end
 
     def max_actual_headway
