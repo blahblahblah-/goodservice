@@ -14,6 +14,8 @@ class LineDirection < ActiveRecord::Base
   end
 
   def self.scheduled_lines(route_internal_id, direction)
-    self.joins(:stop_time).merge(StopTime.soon_by_route(route_internal_id, direction)).uniq.map(&:line).uniq.select(&:is_visible).sort_by(&:name)
+    stops = StopTime.soon_by_route(route_internal_id, direction).pluck(:stop_internal_id)
+    self.where("type is null or type <> 'ExpressLineDirection'").where(last_stop: stops).or(self.where(type: 'ExpressLineDirection').where(penultimate_stop: stops).where(last_stop: stops))
+      .uniq.map(&:line).uniq.select(&:is_visible).sort_by(&:name)
   end
 end
