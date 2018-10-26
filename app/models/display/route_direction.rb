@@ -19,6 +19,10 @@ module Display
       }
     end
 
+    def scheduled_destinations
+      StopTime.scheduled_destinations_by_route(route_id, (direction - 1) / 2)
+    end
+
     def destination_stops
       routings.map(&:last).uniq
     end

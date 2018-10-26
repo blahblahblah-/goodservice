@@ -30,4 +30,8 @@ class StopTime < ActiveRecord::Base
   def self.soon_by_route(route_id, direction, time_range: 60.minutes)
     soon(time_range: time_range).where(trips: {route_internal_id: route_id, direction: direction})
   end
+
+  def self.scheduled_destinations_by_route(route_id, direction)
+    StopTime.soon_by_route(route_id, direction).map(&:trip).map(&:destination).sort.uniq
+  end
 end

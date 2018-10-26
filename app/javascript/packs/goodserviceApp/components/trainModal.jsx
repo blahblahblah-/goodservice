@@ -249,10 +249,10 @@ class TrainModal extends React.Component {
       array.push(<Header as='h4' inverted>*No service on {linesBothDirection.join(", ")}.</Header>)
     }
     if (linesNorth.length) {
-      array.push(<Header as='h4' inverted>*No {this.props.train.destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.join(", ")}.</Header>)
+      array.push(<Header as='h4' inverted>*No {this.props.train.scheduled_destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.join(", ")}.</Header>)
     }
     if (linesSouth.length) {
-      array.push(<Header as='h4' inverted>*No {this.props.train.destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.join(", ")}.</Header>)
+      array.push(<Header as='h4' inverted>*No {this.props.train.scheduled_destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.join(", ")}.</Header>)
     }
     return array;
   }
