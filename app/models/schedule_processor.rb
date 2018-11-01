@@ -161,9 +161,26 @@ class ScheduleProcessor
       timestamp: Time.current.iso8601,
     }
 
+    log_route_statuses(routes_data)
+    log_line_statuses(lines_data)
+
     Rails.cache.write("headway-info", data, expires_in: 1.day)
 
     data
+  end
+
+  def self.log_route_statuses(routes_data)
+    routes_data.each do |route|
+      RouteStatus.create(route_internal_id: route[:id], status: route[:status])
+    end
+  end
+
+  def self.log_line_statuses(lines_data)
+    lines = lines_data.map { |_, lines| lines }.flatten.uniq { |line| line[:id] }
+
+    lines.each do |line|
+      LineStatus.create(line_id: line[:id].to_i, status: line[:status])
+    end
   end
 
   def self.routes_info(force_refresh: false)
