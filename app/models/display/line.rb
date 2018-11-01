@@ -7,10 +7,10 @@ module Display
     def initialize(line, stop_times, timestamp)
       @line = line
       @directions = {
-        1 => line.line_directions.where(direction: 1).order(:type).map { |ld|
+        1 => line.line_directions.where(direction: 1).includes(:line).order(:type).map { |ld|
           Display::LineDirection.new(ld, stop_times, timestamp)
         },
-        3 => line.line_directions.where(direction: 3).order(:type).map { |ld|
+        3 => line.line_directions.where(direction: 3).includes(:line).order(:type).map { |ld|
           Display::LineDirection.new(ld, stop_times, timestamp)
         },
       }
