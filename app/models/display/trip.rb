@@ -114,7 +114,15 @@ module Display
       return @actual_trip if @actual_trip
 
       @actual_trip ||= recent_trips.find { |rt| rt.trip_id == trip_id && rt.route_id == route_id }
-      @actual_trip ||= ActualTrip.create!(date: Date.current, trip_id: trip_id, route_id: route_id, first_stop_id: next_stop, timestamp: timestamp, initial_arrival_estimate: arrival_time)
+      @actual_trip ||= ActualTrip.create!(
+        date: Date.current,
+        trip_id: trip_id,
+        route_id: route_id,
+        first_stop_id: next_stop,
+        timestamp: timestamp,
+        initial_arrival_estimate: arrival_time,
+        first_stop_departure_estimate: next_stop_time
+      )
       @actual_trip
     end
 
