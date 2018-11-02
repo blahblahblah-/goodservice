@@ -3,11 +3,12 @@ module Display
     delegate :name, to: :line_direction
     attr_accessor :line_direction
 
-    def initialize(line_direction, stop_times, timestamp)
+    def initialize(line_direction, stop_times, timestamp, stops)
       @line_direction = line_direction
       @stop_times = stop_times
       @timestamp = timestamp
       @trips = []
+      @stops = stops
     end
 
     def push_trip(trip)
@@ -16,7 +17,7 @@ module Display
 
     def destinations
       trips&.map(&:last_stop).uniq.map { |id|
-        Stop.find_by(internal_id: id).stop_name
+        stops.find { |s| s.internal_id == id}.stop_name
       }
     end
 
@@ -85,7 +86,7 @@ module Display
 
     private
 
-    attr_accessor :trips, :stop_times, :timestamp
+    attr_accessor :trips, :stop_times, :timestamp, :stops
 
     def last_stop_reverse
       line_direction.last_stop[0..2] + (line_direction.last_stop[3] == "N" ? "S" : "N")

@@ -1,12 +1,13 @@
 module Display
   class RouteDirection
 
-    def initialize(route_id, direction, stop_times, timestamp)
+    def initialize(route_id, direction, stop_times, timestamp, stops)
       @route_id = route_id
       @direction = direction
       @trips = []
       @stop_times = stop_times
       @timestamp = timestamp
+      @stops = stops
     end
 
     def push_trip(trip)
@@ -15,7 +16,7 @@ module Display
 
     def destinations
       trips&.map(&:last_stop).uniq.map { |id|
-        Stop.find_by(internal_id: id).stop_name
+        stops.find { |s| s.internal_id == id}.stop_name
       }
     end
 
@@ -63,7 +64,7 @@ module Display
 
     private
 
-    attr_accessor :trips, :stop_times, :route_id, :timestamp, :direction
+    attr_accessor :trips, :stop_times, :route_id, :timestamp, :direction, :stops
 
     def line_directions_data
       return @line_directions_data if @line_directions_data

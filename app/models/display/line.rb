@@ -4,14 +4,14 @@ module Display
 
     delegate :name, :boroughs, :id, to: :line
 
-    def initialize(line, stop_times, timestamp)
+    def initialize(line, stop_times, timestamp, stops)
       @line = line
       @directions = {
-        1 => line.line_directions.where(direction: 1).includes(:line).order(:type).map { |ld|
-          Display::LineDirection.new(ld, stop_times, timestamp)
+        1 => line.line_directions.select { |ld| ld.direction == 1 }.sort_by { |ld| ld.type }.map { |ld|
+          Display::LineDirection.new(ld, stop_times, timestamp, stops)
         },
-        3 => line.line_directions.where(direction: 3).includes(:line).order(:type).map { |ld|
-          Display::LineDirection.new(ld, stop_times, timestamp)
+        3 => line.line_directions.select { |ld| ld.direction == 3}.sort_by { |ld| ld.type }.map { |ld|
+          Display::LineDirection.new(ld, stop_times, timestamp, stops)
         },
       }
     end

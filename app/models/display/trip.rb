@@ -4,7 +4,7 @@ module Display
 
     attr_accessor :line_directions, :upcoming_line_directions, :route_id, :timestamp, :direction
 
-    def initialize(route_id, trip, direction, timestamp, all_line_directions, valid_stops)
+    def initialize(route_id, trip, direction, timestamp, all_line_directions, valid_stops, recent_trips)
       @route_id = route_id
       @trip = trip
       @direction = direction
@@ -15,6 +15,7 @@ module Display
         timestamp + TIME_ESTIMATE_LIMIT > time
       }
       @valid_stops = valid_stops
+      @recent_trips = recent_trips
       log_trip
     end
 
@@ -65,7 +66,7 @@ module Display
 
     private
 
-    attr_accessor :trip, :all_line_directions, :valid_stops
+    attr_accessor :trip, :all_line_directions, :valid_stops, :recent_trips
 
     def arrival_time
       @arrival_time if @arrival_time
@@ -91,7 +92,7 @@ module Display
       return unless diff.abs >= 60.0
 
       puts "Trip #{trip_id} updated, diff: #{diff}, new estimated arrival: #{arrival_time}"
-      update = actual_trip.actual_trip_updates.find_by(next_stop: next_stop) || actual_trip.actual_trip_updates.new(next_stop: next_stop, diff: 0)
+      update = actual_trip.actual_trip_updates.find { |u| u.next_stop == next_stop } || actual_trip.actual_trip_updates.new(next_stop: next_stop, diff: 0)
       update.timestamp = timestamp
       update.diff += diff
       update.new_arrival_estimate = arrival_time
@@ -103,8 +104,6 @@ module Display
         actual_trip.save!
       end
 
-      actual_trip.reload
-
       if update.diff > 300
         puts "Logging delay for trip #{trip_id}, #{update.diff / 60} minutes"
         actual_trip.log_delay!(update.diff)
@@ -112,9 +111,9 @@ module Display
     end
 
     def actual_trip
-      @actual_trip if @actual_trip
+      return @actual_trip if @actual_trip
 
-      @actual_trip ||= ActualTrip.includes(:actual_trip_updates).where("created_at > ?", Time.current - 3.hours).find_by(trip_id: trip_id, route_id: route_id)
+      @actual_trip ||= recent_trips.find { |rt| rt.trip_id == trip_id && rt.route_id == route_id }
       @actual_trip ||= ActualTrip.create!(date: Date.current, trip_id: trip_id, route_id: route_id, first_stop_id: next_stop, timestamp: timestamp, initial_arrival_estimate: arrival_time)
       @actual_trip
     end

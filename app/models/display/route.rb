@@ -4,11 +4,11 @@ module Display
 
     delegate :color, :text_color, :name, :alternate_name, :internal_id, :visible?, :scheduled?, to: :route
 
-    def initialize(route, stop_times, timestamp)
+    def initialize(route, stop_times, timestamp, stops)
       @route = route
       @directions = {
-        1 => Display::RouteDirection.new(route.internal_id, 1, stop_times, timestamp),
-        3 => Display::RouteDirection.new(route.internal_id, 3, stop_times, timestamp),
+        1 => Display::RouteDirection.new(route.internal_id, 1, stop_times, timestamp, stops),
+        3 => Display::RouteDirection.new(route.internal_id, 3, stop_times, timestamp, stops),
       }
     end
 
