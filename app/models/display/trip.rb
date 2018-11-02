@@ -81,7 +81,7 @@ module Display
 
     def next_stop_time
       update = trip.stop_time_update.first
-      (update.arrival || update.departure).time
+      (update.departure || update.arrival).time
     end
 
     def log_trip
