@@ -186,9 +186,11 @@ class LandingPage extends React.Component {
           <Header inverted as='h1' color='blue'>
             goodservice.io<span id="beta">beta</span>
             <Header.Subheader>
-              how long do I have to wait for a train?
+              a better new york city subway status page
             </Header.Subheader>
           </Header>
+        </Segment>
+        <Segment inverted vertical style={{backgroundColor: '#333333', padding: '1em 2em'}}>
           { this.blogPostMessage() }
         </Segment>
         <Responsive as={Parallax} fireOnMount onUpdate={this.handleOnUpdate}
