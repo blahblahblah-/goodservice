@@ -25,7 +25,7 @@ class ScheduleProcessor
           feed = retrieve_feed(id)
           puts "Analyzing feed #{id}"
           Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
-          analyze_feed(feed)
+          analyze_feed(feed, id)
           puts "Done analyzing feed #{id}"
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
@@ -42,7 +42,7 @@ class ScheduleProcessor
           feed = Rails.cache.fetch("feed-#{id}", expires_in: 1.minute) do
             retrieve_feed(id)
           end
-          analyze_feed(feed)
+          analyze_feed(feed, id)
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
           retry if (retries += 1) < 3
@@ -239,8 +239,9 @@ class ScheduleProcessor
     Transit_realtime::FeedMessage.decode(data)
   end
 
-  def analyze_feed(feed)
+  def analyze_feed(feed, id)
     raise "Error: Empty feed" if feed.entity.empty?
+    puts "Feed id #{id}, timestamp: #{feed.header.timestamp}"
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
