@@ -9,13 +9,14 @@ module Display
       @trip = trip
       @direction = direction
       @timestamp = timestamp
-      @all_line_directions = all_line_directions
+      initialize_line_directions_time_hash(all_line_directions)
+
       @line_directions = line_directions_time_hash.keys
       @upcoming_line_directions = line_directions_time_hash.select { |_, time|
         timestamp + TIME_ESTIMATE_LIMIT > time
       }
       @valid_stops = valid_stops
-      @recent_trips = recent_trips
+      instantiate_actual_trip(recent_trips)
       log_trip
     end
 
@@ -66,7 +67,7 @@ module Display
 
     private
 
-    attr_accessor :trip, :all_line_directions, :valid_stops, :recent_trips
+    attr_accessor :trip, :all_line_directions, :valid_stops, :line_directions_time_hash, :actual_trip
 
     def arrival_time
       @arrival_time if @arrival_time
@@ -110,11 +111,12 @@ module Display
       end
     end
 
-    def actual_trip
-      return @actual_trip if @actual_trip
+    def instantiate_actual_trip(recent_trips)
+      if @actual_trip = recent_trips.find { |rt| rt.trip_id == trip_id && rt.route_id == route_id }
+        return
+      end
 
-      @actual_trip ||= recent_trips.find { |rt| rt.trip_id == trip_id && rt.route_id == route_id }
-      @actual_trip ||= ActualTrip.create!(
+      @actual_trip = ActualTrip.create!(
         date: Date.current,
         trip_id: trip_id,
         route_id: route_id,
@@ -123,23 +125,20 @@ module Display
         initial_arrival_estimate: arrival_time,
         first_stop_departure_estimate: next_stop_time
       )
-      @actual_trip
     end
 
-    def line_directions_time_hash
-      return @line_directions_time_hash if @line_directions_time_hash
-
+    def initialize_line_directions_time_hash(line_directions)
       time_hash = ActiveSupport::OrderedHash[
         trip.stop_time_update.select { |u|
           (u.departure || u.arrival).time > timestamp &&
-            all_line_directions.map(&:last_stop).include?(u.stop_id)
+            line_directions.map(&:last_stop).include?(u.stop_id)
         }.map { |u|
-          [all_line_directions.find { |ld|
+          [line_directions.find { |ld|
             ld.last_stop == u.stop_id
           }, (u.departure || u.arrival).time]
         }
       ]
-      short_turn_ld = all_line_directions.reject{ |ld|
+      short_turn_ld = line_directions.reject{ |ld|
         ld.kind_of?(ExpressLineDirection) || time_hash.keys.include?(ld)
       }.reject { |ld|
         ld.kind_of?(LocalLineDirection) && time_hash.keys.map(&:id).include?(ld.express_line_direction_id)
