@@ -231,7 +231,7 @@ class ScheduleProcessor
 
   private
 
-  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :stops
+  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :stops, :recent_trips
 
   def retrieve_feed(feed_id)
     puts "Retrieving feed #{feed_id}"
@@ -247,7 +247,7 @@ class ScheduleProcessor
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
         direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i 
         route_id = route(entity.trip_update.trip.route_id)
-        trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names)
+        trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names, recent_trips)
         routes[route_id]&.push_trip(trip)
         trip.add_to_lines(lines)
         puts "Error: #{route_id} not found" if routes[route_id].nil?
@@ -263,6 +263,7 @@ class ScheduleProcessor
     @stops = Stop.all
     instantiate_routes
     instantiate_lines
+    instantiate_recent_trips
   end
 
   def instantiate_routes
@@ -277,6 +278,10 @@ class ScheduleProcessor
       [line.id, Display::Line.new(line, stop_times, timestamp, stops)]
     end
     @lines = Hash[pairs]
+  end
+
+  def instantiate_recent_trips
+    @recent_trips = ActualTrip.includes(:actual_trip_updates).where("created_at > ?", Time.current - 3.hours)
   end
 
   def route(route_id)
