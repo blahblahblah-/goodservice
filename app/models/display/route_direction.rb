@@ -5,12 +5,10 @@ module Display
       @route_id = route_id
       @direction = direction
       @trips = []
+      @stop_times = stop_times
       @timestamp = timestamp
       @stops = stops
-      initialize_line_directions(stop_times)
     end
-
-    attr_accessor :line_directions
 
     def push_trip(trip)
       trips << trip
@@ -39,13 +37,10 @@ module Display
       end
     end
 
-    def initialize_line_directions(stop_times)
-      if trips.empty?
-        @line_directions = []
-      else
-        @line_directions = line_directions_data.map do |ld|
-          Display::RouteLineDirection.new(route_id, ld, trips, stop_times, timestamp)
-        end
+    def line_directions
+      return [] if trips.empty?
+      @line_directions ||= line_directions_data.map do |ld|
+        Display::RouteLineDirection.new(route_id, ld, trips, stop_times, timestamp)
       end
     end
 
