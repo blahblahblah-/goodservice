@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_02_055406) do
+ActiveRecord::Schema.define(version: 2018_12_06_140227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,22 +126,6 @@ ActiveRecord::Schema.define(version: 2018_11_02_055406) do
     t.string "stop_name", null: false
     t.string "parent_stop_id"
     t.index ["internal_id"], name: "index_stops_on_internal_id", unique: true
-  end
-
-  create_table "train_arrivals", force: :cascade do |t|
-    t.date "date"
-    t.string "trip_id"
-    t.string "stop_id"
-    t.string "route_id"
-    t.integer "five_minute_timestamp"
-    t.integer "arrival_timestamp"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "explicit_arrival", default: false, null: false
-    t.boolean "explicit_five_minute", default: false, null: false
-    t.integer "five_minute_implicit_timestamp"
-    t.index ["date", "route_id"], name: "index_train_arrivals_on_date_and_route_id"
-    t.index ["date", "trip_id", "stop_id"], name: "index_train_arrivals_on_date_and_trip_id_and_stop_id", unique: true
   end
 
   create_table "trips", force: :cascade do |t|
