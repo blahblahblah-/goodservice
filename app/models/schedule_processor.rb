@@ -7,6 +7,37 @@ class ScheduleProcessor
   BASE_URI = "http://datamine.mta.info/mta_esi.php"
   FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
+  ROUTE_FEED_MAPPING = {
+    "1" => 1,
+    "2" => 1,
+    "3" => 1,
+    "4" => 1,
+    "5" => 1,
+    "5X" => 1,
+    "6" => 1,
+    "6X" => 1,
+    "GS" => 1,
+    "A" => 26,
+    "C" => 26,
+    "E" => 26,
+    "H" => 26,
+    "FS" => 26,
+    "N" => 16,
+    "Q" => 16,
+    "R" => 16,
+    "W" => 16,
+    "B" => 21,
+    "D" => 21,
+    "F" => 21,
+    "M" => 21,
+    "L" => 2,
+    "SI" => 11,
+    "G" => 31,
+    "J" => 36,
+    "Z" => 36,
+    "7" => 51,
+    "7X" => 51,
+  }
 
   attr_accessor :routes, :lines
 
@@ -33,6 +64,7 @@ class ScheduleProcessor
             sleep(1)
             retry
           end
+          unavailable_feeds << id
         end
       end
     else
@@ -46,9 +78,12 @@ class ScheduleProcessor
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
           retry if (retries += 1) < 3
+          unavailable_feeds << id
         end
       end
     end
+
+    update_route_feed_statuses
   end
 
   def self.headway_info(force_refresh: false)
@@ -65,6 +100,7 @@ class ScheduleProcessor
         text_color: route.text_color && "##{route.text_color}",
         alternate_name: route.alternate_name,
         status: route.status,
+        max_headway_discreprency: route.max_headway_discreprency,
         destinations: {
           north: route.directions[1].destinations,
           south: route.directions[3].destinations,
@@ -170,7 +206,9 @@ class ScheduleProcessor
 
   def self.log_route_statuses(routes_data)
     routes_data.each do |route|
-      RouteStatus.create(route_internal_id: route[:id], status: route[:status])
+      unless ["No Data", "Not Scheduled"].include?(route[:status])
+        RouteStatus.create(route_internal_id: route[:id], status: route[:status], max_headway_discreprency: route[:max_headway_discreprency] || 0)
+      end
     end
   end
 
@@ -222,7 +260,7 @@ class ScheduleProcessor
 
   private
 
-  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :stops, :recent_trips
+  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :stops, :recent_trips, :unavailable_feeds
 
   def retrieve_feed(feed_id)
     puts "Retrieving feed #{feed_id}"
@@ -252,6 +290,8 @@ class ScheduleProcessor
     @line_directions = LineDirection.all.includes(:line).group_by(&:direction)
     @stop_names = Stop.pluck(:internal_id).to_set
     @stops = Stop.all
+    @unavailable_feeds = Set.new
+
     instantiate_routes
     instantiate_lines
     instantiate_recent_trips
@@ -279,5 +319,13 @@ class ScheduleProcessor
     route_id = "SI" if route_id == "SS"
     route_id = "5" if route_id == "5X"
     route_id
+  end
+
+  def update_route_feed_statuses
+    routes.values.each do |route|
+      if unavailable_feeds.include?(ROUTE_FEED_MAPPING[route.internal_id])
+        route.set_unavailable!
+      end
+    end
   end
 end

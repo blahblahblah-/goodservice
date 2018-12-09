@@ -23,15 +23,22 @@ class Train extends React.Component {
     }
   }
 
+  status() {
+    if (this.props.train.status == "No Data") {
+      return "--";
+    }
+    return this.props.train.status;
+  }
+
   render() {
     return(
       <TrainModal train={this.props.train} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} trigger={
         <Segment as={Button} fluid id={"train-" + this.props.train.name}>
           <Responsive as={Segment} basic maxWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-            <Header as='h4' floated='right' className='status' color={this.color()}>{this.props.train.status}</Header>
+            <Header as='h4' floated='right' className='status' color={this.color()}>{this.status()}</Header>
           </Responsive>
           <Responsive as={Segment} basic minWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-            <Header as='h3' floated='right' className='status' color={this.color()}>{this.props.train.status}</Header>
+            <Header as='h3' floated='right' className='status' color={this.color()}>{this.status()}</Header>
           </Responsive>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{ float: 'left' }} />

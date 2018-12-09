@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_09_052849) do
+ActiveRecord::Schema.define(version: 2018_12_09_073040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,10 +77,12 @@ ActiveRecord::Schema.define(version: 2018_12_09_052849) do
   end
 
   create_table "route_statuses", force: :cascade do |t|
-    t.integer "route_internal_id", null: false
     t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "route_internal_id", null: false
+    t.integer "max_headway_discreprency", default: 0, null: false
+    t.index ["route_internal_id", "created_at"], name: "index_route_statuses_on_route_internal_id_and_created_at"
   end
 
   create_table "routes", force: :cascade do |t|

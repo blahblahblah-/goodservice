@@ -35,6 +35,13 @@ class TrainModal extends React.Component {
     return 0;
   }
 
+  status() {
+    if (this.props.train.status == 'No Data') {
+      return "--";
+    }
+    return this.props.train.status;
+  }
+
   tableData() {
     const north = this.props.train.north.slice().reverse();
     let data = this.props.train.south.map((obj, index) => {
@@ -228,14 +235,16 @@ class TrainModal extends React.Component {
   }
 
   renderStatus() {
-    if (this.renderNoService().length) {
-      return `${this.props.train.status}*`
+    if (this.status() !== '--' && this.renderNoService().length) {
+      return `${this.status()}*`
     }
-    return this.props.train.status;
+    return this.status();
   }
 
   renderNoService() {
-    if (!this.props.train.lines_not_in_service.north && !this.props.train.lines_not_in_service.south) {
+    if (this.props.train.status == 'No Data' ||
+      (!this.props.train.lines_not_in_service.north && !this.props.train.lines_not_in_service.south)
+    ) {
       return;
     }
     const lineNamesNorth = this.props.train.lines_not_in_service.north.map(x => x.name);

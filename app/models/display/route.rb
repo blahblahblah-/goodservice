@@ -10,6 +10,7 @@ module Display
         1 => Display::RouteDirection.new(route.internal_id, 1, stop_times, timestamp, stops),
         3 => Display::RouteDirection.new(route.internal_id, 3, stop_times, timestamp, stops),
       }
+      @unavailable = false
     end
 
     def push_trip(trip)
@@ -17,6 +18,8 @@ module Display
     end
 
     def status
+      return "No Data" if unavailable
+
       if delay >= 5
         "Delay"
       elsif max_headway_discreprency.nil?
@@ -34,22 +37,26 @@ module Display
       end
     end
 
-    private
-
-    attr_accessor :trips
-
-    def delay
-      directions.map { |_, rd|
-        rd.delay
-      }.max || 0
-    end
-
     def max_headway_discreprency
       directions.map { |_, rd|
         rd.headway_discreprency
       }.reject { |headway_discreprency|
         headway_discreprency.nil?
       }.max
+    end
+
+    def set_unavailable!
+      @unavailable = true
+    end
+
+    private
+
+    attr_accessor :trips, :unavailable
+
+    def delay
+      directions.map { |_, rd|
+        rd.delay
+      }.max || 0
     end
   end
 end
