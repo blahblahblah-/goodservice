@@ -61,7 +61,7 @@ class ScheduleProcessor
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
           if (retries += 1) < 3
-            sleep(1)
+            sleep(5)
             retry
           end
           unavailable_feeds << id
