@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_06_140227) do
+ActiveRecord::Schema.define(version: 2018_12_09_052849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,13 +69,6 @@ ActiveRecord::Schema.define(version: 2018_12_06_140227) do
     t.string "penultimate_stop"
     t.index ["line_id", "direction", "type"], name: "index_line_directions_on_line_id_and_direction_and_type", unique: true
     t.index ["line_id"], name: "index_line_directions_on_line_id"
-  end
-
-  create_table "line_statuses", force: :cascade do |t|
-    t.integer "line_id", null: false
-    t.string "status", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "lines", force: :cascade do |t|
