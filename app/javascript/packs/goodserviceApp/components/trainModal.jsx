@@ -23,7 +23,9 @@ class TrainModal extends React.Component {
       return 'green';
     } else if (this.props.train.status == 'Service Change') {
       return 'orange';
-    } else if (this.props.train.status == 'Not Good' || this.props.train.status == 'Delay') {
+    } else if (this.props.train.status == 'Not Good') {
+      return 'yellow';
+    } else if (this.props.train.status == 'Delay') {
       return 'red';
     }
   }

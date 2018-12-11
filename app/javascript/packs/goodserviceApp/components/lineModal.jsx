@@ -22,7 +22,9 @@ class LineModal extends React.Component {
   color() {
     if (this.props.line.status == 'Good Service') {
       return 'green';
-    } else if (this.props.line.status == 'Not Good' || this.props.line.status == 'Delay') {
+    } else if (this.props.line.status == 'Not Good') {
+      return 'yellow';
+    } else if (this.props.line.status == 'Delay') {
       return 'red';
     }
   }
