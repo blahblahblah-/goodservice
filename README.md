@@ -15,6 +15,7 @@ brew install ruby-build
 rbenv install 2.4.2
 gem install bundler
 gem install rails
+gem install foreman
 
 # Other dependencies
 brew install postgresql
