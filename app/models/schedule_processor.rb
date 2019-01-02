@@ -160,6 +160,8 @@ class ScheduleProcessor
               type: ld.type,
               max_actual_headway: ld.max_actual_headway,
               max_scheduled_headway: ld.max_scheduled_headway,
+              median_actual_headway: ld.median_actual_headway,
+              median_scheduled_headway: ld.median_scheduled_headway,
               delay: ld.delay,
               routes: ld.routes.map { |route|
                 {
