@@ -7,6 +7,7 @@ class ScheduleProcessor
   BASE_URI = "http://datamine.mta.info/mta_esi.php"
   FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
+  STATUSES = ["Good Service", "Service Change", "Not Good", "Delay", "No Service"]
   ROUTE_FEED_MAPPING = {
     "1" => 1,
     "2" => 1,
@@ -242,6 +243,76 @@ class ScheduleProcessor
     }
 
     Rails.cache.write("routes-info", data, expires_in: 1.day)
+
+    data
+  end
+
+  def self.stats_info(force_refresh: false)
+    return Rails.cache.read("stats_info") if !force_refresh && Rails.cache.read("stats_info")
+    processor = self.instance
+
+    last_hour_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.hour).order(:created_at).group_by(&:route_internal_id)
+    last_day_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id, :status).size
+
+    last_week_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.week - 1.day).group(:route_internal_id, "date(created_at at time zone 'EST')", :status).size
+
+    last_day_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id).average(:max_headway_discreprency)
+    last_week_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.week).group(:route_internal_id).average(:max_headway_discreprency)
+
+    last_day_delays = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id, :created_at).pluck(:route_id,"date_trunc('hour', delays.created_at)")
+    last_week_delays = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id, :created_at).pluck(:route_id,"date_trunc('hour', delays.created_at)")
+    last_day_avg_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id).average(:delayed_minutes)
+    last_week_avg_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).average(:delayed_minutes)
+    last_day_max_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id).maximum(:delayed_minutes)
+    last_week_max_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).maximum(:delayed_minutes)
+
+
+    results = Hash[processor.routes.sort_by { |_, v|
+      "#{v.name} #{v.alternate_name}"
+    }.map do |_, route|
+      [route.internal_id, {
+          name: route.name,
+          color: route.color && "##{route.color}",
+          text_color: route.text_color && "##{route.text_color}",
+          alternate_name: route.alternate_name,
+          statuses: {
+            last_hour: last_hour_statuses[route.internal_id]&.pluck(:status)&.chunk { |n| n }&.map { |n, ary|
+              {
+                status: n,
+                count: ary.size
+              }
+            } || [],
+            last_day: Hash[STATUSES.map { |s| [s.gsub(/( )/, '_').underscore, last_day_statuses[[route.internal_id, s]] || 0]}],
+            last_week: (Date.current - 7.days..Date.current - 1.day).map { |date|
+              Hash[STATUSES.map { |s| [s.gsub(/( )/, '_').underscore, last_week_statuses[[route.internal_id, date, s]] || 0]}]
+            }
+          },
+          max_headway_discreprency: {
+            last_day_avg: last_day_avg_max_headway_discreprency[route.internal_id]&.to_f&.round(1) || 0,
+            last_week_avg: last_week_avg_max_headway_discreprency[route.internal_id]&.to_f&.round(1) || 0
+          },
+          delays: {
+            last_day: {
+              count: last_day_delays.select { |d| d.first == route.internal_id }.uniq { |d| d.second }.size,
+              avg_mins: last_day_avg_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
+              max_mins: last_day_max_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
+            },
+            last_week: {
+              count: last_week_delays.select { |d| d.first == route.internal_id }.uniq { |d| d.second }.size,
+              avg_mins: last_week_avg_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
+              max_mins: last_week_max_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
+            }
+          }
+        }
+      ]
+    end]
+
+    data = {
+      status: results,
+      timestamp: Time.current.iso8601,
+    }
+
+    Rails.cache.write("stats-info", data, expires_in: 1.day)
 
     data
   end

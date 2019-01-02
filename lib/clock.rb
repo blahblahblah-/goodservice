@@ -19,9 +19,16 @@ module Clockwork
     midTime = Time.current
     puts "Refreshed data in #{midTime - startTime} seconds"
     ScheduleProcessor.headway_info(force_refresh: true)
+    processTime = Time.current
+    puts "Processed headway info in #{processTime - midTime} seconds"
+    ScheduleProcessor.stats_info(force_refresh: true)
+    statsTime = Time.current
+    puts "Processed stats in #{statsTime - processTime} seconds"
     if (Time.current.min % 5 == 1)
       puts "Updating Routes"
       ScheduleProcessor.routes_info(force_refresh: true)
+      routesTime = Time.current
+      puts "Processed routes info in #{routesTime - statsTime} seconds"
     end
     endTime = Time.current
     puts "Finished in #{endTime - startTime} seconds"
