@@ -91,9 +91,7 @@ class ScheduleProcessor
     return Rails.cache.read("headway-info") if !force_refresh && Rails.cache.read("headway-info")
 
     processor = self.instance
-    routes_data = processor.routes.reject { |_, route|
-      !route.visible? && !route.scheduled?
-    }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
+    routes_data = processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       {
         id: route.internal_id,
         name: route.name,
@@ -133,7 +131,9 @@ class ScheduleProcessor
         lines_not_in_service: {
           north: route.directions[1].lines_not_in_service,
           south: route.directions[3].lines_not_in_service,
-        }
+        },
+        scheduled: route.scheduled?,
+        visible: route.visible?,
       }
     end
 
@@ -248,13 +248,13 @@ class ScheduleProcessor
   end
 
   def self.stats_info(force_refresh: false)
-    return Rails.cache.read("stats_info") if !force_refresh && Rails.cache.read("stats_info")
+    return Rails.cache.read("stats-info") if !force_refresh && Rails.cache.read("stats-info")
     processor = self.instance
 
     last_hour_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.hour).order(:created_at).group_by(&:route_internal_id)
     last_day_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id, :status).size
 
-    last_week_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.week - 1.day).group(:route_internal_id, "date(created_at at time zone 'EST')", :status).size
+    last_week_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.week - 1.day).group(:route_internal_id, "date(created_at at time zone 'UTC' at time zone 'America/New_York')", :status).size
 
     last_day_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id).average(:max_headway_discreprency)
     last_week_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.week).group(:route_internal_id).average(:max_headway_discreprency)
@@ -267,7 +267,9 @@ class ScheduleProcessor
     last_week_max_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).maximum(:delayed_minutes)
 
 
-    results = Hash[processor.routes.sort_by { |_, v|
+    results = Hash[processor.routes.reject { |_, route|
+      !route.visible?
+    }.sort_by { |_, v|
       "#{v.name} #{v.alternate_name}"
     }.map do |_, route|
       [route.internal_id, {
@@ -275,6 +277,7 @@ class ScheduleProcessor
           color: route.color && "##{route.color}",
           text_color: route.text_color && "##{route.text_color}",
           alternate_name: route.alternate_name,
+          status: route.status,
           statuses: {
             last_hour: last_hour_statuses[route.internal_id]&.pluck(:status)&.chunk { |n| n }&.map { |n, ary|
               {

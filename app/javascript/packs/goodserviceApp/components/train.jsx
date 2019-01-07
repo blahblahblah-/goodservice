@@ -2,6 +2,7 @@ import React from 'react';
 import { Segment, Header, Button, Responsive } from "semantic-ui-react";
 import TrainBullet from './trainBullet.jsx';
 import TrainModal from './trainModal.jsx';
+import { Pie } from '@nivo/pie';
 
 class Train extends React.Component {
   alternateName() {
@@ -25,6 +26,18 @@ class Train extends React.Component {
     }
   }
 
+  statusColor(status) {
+    if (status === 'Good Service') {
+      return "#2ecc40";
+    } else if (status === 'Service Change') {
+      return "#ff851b";
+    } else if (status === 'Not Good') {
+      return "#ffe21f";
+    } else if (status === 'Delay') {
+      return "#ff695e";
+    }
+  }
+
   status() {
     if (this.props.train.status == "No Data") {
       return "--";
@@ -32,19 +45,83 @@ class Train extends React.Component {
     return this.props.train.status;
   }
 
+  lastDayData() {
+    let total = Object.keys(this.props.stats.statuses.last_day).reduce((accumulator, key) => {
+      return accumulator + this.props.stats.statuses.last_day[key]
+    }, 0);
+    return [
+      {
+        id: 'good service',
+        label: (this.props.stats.statuses.last_day['good_service'] / total).toLocaleString(undefined, {style: "percent"}),
+        value: this.props.stats.statuses.last_day['good_service'],
+        color: this.statusColor("Good Service")
+      },
+      {
+        id: 'service change',
+        label: (this.props.stats.statuses.last_day['service_change'] / total).toLocaleString(undefined, {style: "percent"}),
+        value: this.props.stats.statuses.last_day['service_change'],
+        color: this.statusColor("Service Change")
+      },
+      {
+        id: 'not good',
+        label: (this.props.stats.statuses.last_day['not_good'] / total).toLocaleString(undefined, {style: "percent"}),
+        value: this.props.stats.statuses.last_day['not_good'],
+        color: this.statusColor("Not Good")
+      },
+      {
+        id: 'delay',
+        label: (this.props.stats.statuses.last_day['delay'] / total).toLocaleString(undefined, {style: "percent"}),
+        value: this.props.stats.statuses.last_day['delay'],
+        color: this.statusColor("Delay")
+      },
+      {
+        id: 'no service',
+        label: (this.props.stats.statuses.last_day['no_service'] / total).toLocaleString(undefined, {style: "percent"}),
+        value: this.props.stats.statuses.last_day['no_service'],
+        color: '#000'
+      },
+    ];
+  }
+
+  renderInfo() {
+    if (this.props.showStats) {
+      return (
+        <div style={{float: "right", marginTop: '5px'}}>
+          <Pie
+            width={60}
+            height={60}
+            sliceLabelFormat=".0%"
+            data={this.lastDayData()}
+            colorBy={( data ) => data.color }
+            enableRadialLabels={false}
+            enableSlicesLabels={false}
+            animate
+            isInteractive={false}
+            innerRadius={0.6}
+          />
+        </div>
+      )
+    }
+    return (
+      <div>
+        <Responsive as={Segment} basic maxWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
+          <Header as='h4' floated='right' className='status' color={this.color()}>{this.status()}</Header>
+        </Responsive>
+        <Responsive as={Segment} basic minWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
+          <Header as='h3' floated='right' className='status' color={this.color()}>{this.status()}</Header>
+        </Responsive>
+      </div>
+    )
+  }
+
   render() {
     return(
-      <TrainModal train={this.props.train} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} trigger={
+      <TrainModal train={this.props.train} stats={this.props.stats} showStats={this.props.showStats} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} trigger={
         <Segment as={Button} fluid id={"train-" + this.props.train.name}>
-          <Responsive as={Segment} basic maxWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-            <Header as='h4' floated='right' className='status' color={this.color()}>{this.status()}</Header>
-          </Responsive>
-          <Responsive as={Segment} basic minWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-            <Header as='h3' floated='right' className='status' color={this.color()}>{this.status()}</Header>
-          </Responsive>
+          {this.renderInfo()}
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{ float: 'left' }} />
-          <div style={{ float: 'left', clear: 'right', textAlign:'left' }}>{this.alternateName()}</div>
+          <div style={{ float: 'left', textAlign:'left' }}>{this.alternateName()}</div>
         </Segment>
       }/>
     )

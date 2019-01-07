@@ -18,22 +18,23 @@ module Display
     end
 
     def status
-      return "No Data" if unavailable
+      return @status if @status
+      return @status = "No Data" if unavailable
 
       if delay >= 5
-        "Delay"
+        @status = "Delay"
       elsif max_headway_discreprency.nil?
         if route.scheduled?
-          "No Service"
+          @status = "No Service"
         else
-          "Not Scheduled"
+          @status = "Not Scheduled"
         end
       elsif directions.any? {|_, d| d.lines_not_in_service.present? || d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
-        "Service Change"
+        @status = "Service Change"
       elsif max_headway_discreprency > 2
-        "Not Good"
+        @status = "Not Good"
       else
-        "Good Service"
+        @status = "Good Service"
       end
     end
 

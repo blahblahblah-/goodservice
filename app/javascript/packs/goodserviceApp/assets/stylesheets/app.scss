@@ -13,6 +13,42 @@
   }
 }
 
+.ui.bottom.attached.segment.active.tab .item{
+  background: none;
+  color: white;
+
+  &.active {
+    background: none;
+    background-color: rgba(0,0,0, 0.3);
+    color: white;
+  }
+
+  &:hover {
+    color: gray;
+  }
+}
+
+.ui.two.item.menu .item{
+  background: none;
+  color: white;
+
+  &.active {
+    background: none;
+    background-color: #333333;
+    color: white;
+  }
+
+  &:hover {
+    color: gray;
+  }
+}
+
+
+.ui.two.item.menu {
+  background-color: rgba(51,51,51, 0.3);
+}
+
+
 .ui.fluid.tabular.menu {
   margin-bottom: 0;
 }

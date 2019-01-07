@@ -9,6 +9,7 @@ import { Parallax, Background } from 'react-parallax';
 import * as Cookies from 'es-cookie';
 
 const API_URL = '/api/info';
+const STATS_URL = '/api/stats';
 const TEST_DATA = false;
 
 class LandingPage extends React.Component {
@@ -19,6 +20,7 @@ class LandingPage extends React.Component {
     this.state = {
       trains: [],
       lines: [],
+      trainStats: [],
       loading: false,
       backgroundImageId: this.randomizeBackground(),
       favTrains: new Set(favTrains),
@@ -106,12 +108,12 @@ class LandingPage extends React.Component {
   }
 
   panes() {
-    const { trains, lines, favTrains, favLines } = this.state;
+    const { trains, lines, favTrains, favLines, trainStats } = this.state;
     return [
       { menuItem: <Menu.Item as={Link} to='/trains' key='train'>By Train</Menu.Item>,
         render: () =>
           <Tab.Pane>
-            <TrainPane trains={trains} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} />
+            <TrainPane trains={trains} trainStats={trainStats} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>,
@@ -123,7 +125,7 @@ class LandingPage extends React.Component {
       { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <StarredPane trains={trains} lines={lines} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+            <StarredPane trains={trains} trainStats={trainStats} lines={lines} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
           </Tab.Pane>
       },
     ]
@@ -244,6 +246,10 @@ class LandingPage extends React.Component {
       fetch(API_URL)
         .then(response => response.json())
         .then(data => this.setState({ trains: data.routes, lines: data.lines, blogPost: data.blog_post, timestamp: data.timestamp, loading: false }))
+
+      fetch(STATS_URL)
+        .then(response => response.json())
+        .then(data => this.setState({ trainStats: data.status }))
     }
   }
 
