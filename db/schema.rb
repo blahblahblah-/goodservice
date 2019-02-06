@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_09_073040) do
+ActiveRecord::Schema.define(version: 2019_02_06_131451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 2018_12_09_073040) do
     t.index ["internal_id"], name: "index_trips_on_internal_id", unique: true
   end
 
-  add_foreign_key "actual_trip_updates", "actual_trips"
+  add_foreign_key "actual_trip_updates", "actual_trips", on_delete: :cascade
   add_foreign_key "calendar_exceptions", "schedules", column: "schedule_service_id", primary_key: "service_id"
   add_foreign_key "line_directions", "line_directions", column: "express_line_direction_id"
   add_foreign_key "line_directions", "lines"

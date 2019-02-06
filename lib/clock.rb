@@ -26,4 +26,13 @@ module Clockwork
     endTime = Time.current
     puts "Finished in #{endTime - startTime} seconds"
   }
+
+  every(1.day, 'db.cleanup', at: '00:00', tz: 'America/New_York') {
+    puts "Start DB cleanup"
+    startTime = Time.current
+    RouteStatus.where("created_at < ?", Date.current - 2.months).delete_all
+    ActualTrip.where("created_at < ?", Date.current - 2.months).delete_all
+    endTime = Time.current
+    puts "DB cleanup finished in #{endTime - startTime} seconds"
+  }
 end
