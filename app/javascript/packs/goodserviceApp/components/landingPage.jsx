@@ -6,10 +6,18 @@ import LinePane from "./linePane.jsx";
 import StarredPane from "./starredPane.jsx";
 import sampleData from "../data/sampleData.js";
 import { Parallax, Background } from 'react-parallax';
+import qs from 'query-string';
 import * as Cookies from 'es-cookie';
 
 const API_URL = '/api/info';
 const TEST_DATA = false;
+
+function getQueryStringValue (key) {  
+  return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+}  
+
+// Would write the value of the QueryString-variable called name to the console  
+console.log(getQueryStringValue("name")); 
 
 class LandingPage extends React.Component {
   constructor(props) {
@@ -241,9 +249,43 @@ class LandingPage extends React.Component {
     if (TEST_DATA) {
       this.setState({ trains: sampleData.routes, lines: sampleData.lines, loading: false });
     } else {
+      let params = qs.parse(location.search);
+      let use_median = params.median && params.median === 'true';
+      let bad_service_threshold = parseInt(params.bad_service_threshold) || 2;
+
+      let statusFromLines = function(lines) {
+        for (let boro in lines) {
+          for (let line of lines[boro]) {
+            if (line.status == "Delay") {
+              // Let delays be handled as in Ruby for now
+              continue;
+            }
+
+            let scheduled = use_median ? line.median_scheduled_headway : line.max_scheduled_headway;
+            let actual = use_median ? line.median_actual_headway : line.max_actual_headway;
+            if (!scheduled) {
+              // Just use the default in the Ruby for now
+              continue;
+            }
+            
+            if (actual - scheduled > bad_service_threshold) {
+              line.status = "Not Good";
+            } else {
+              line.status = "Good Service";
+            }
+          }
+        }
+        return lines;
+      }
       fetch(API_URL)
         .then(response => response.json())
-        .then(data => this.setState({ trains: data.routes, lines: data.lines, blogPost: data.blog_post, timestamp: data.timestamp, loading: false }))
+        .then(data => this.setState({ 
+          trains: data.routes, 
+          lines: statusFromLines(data.lines), 
+          blogPost: data.blog_post, 
+          timestamp: data.timestamp, 
+          loading: false 
+        }))
     }
   }
 
