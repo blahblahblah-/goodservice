@@ -267,9 +267,7 @@ class ScheduleProcessor
     last_week_max_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).maximum(:delayed_minutes)
 
 
-    results = Hash[processor.routes.reject { |_, route|
-      !route.visible?
-    }.sort_by { |_, v|
+    results = Hash[processor.routes.sort_by { |_, v|
       "#{v.name} #{v.alternate_name}"
     }.map do |_, route|
       [route.internal_id, {

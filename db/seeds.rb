@@ -80,6 +80,7 @@ csv = CSV.parse(csv_text, headers: true)
 csv.each do |row|
   t = Trip.new
   t.route_internal_id = row['route_id']
+  t.route_internal_id = "5" if t.route_internal_id == "5X"
   t.schedule_service_id = row['service_id']
   t.internal_id = row['trip_id']
   t.destination = row['trip_headsign']
