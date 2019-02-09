@@ -29,6 +29,16 @@ class LineModal extends React.Component {
     }
   }
 
+  cellColor(delay, scheduledHeadway, actualHeadway) {
+    if (delay >= 5) {
+      return "red";
+    }
+    if (scheduledHeadway && (actualHeadway - scheduledHeadway > 2)) {
+      return "yellow";
+    }
+    return "black";
+  }
+
   defaultRating() {
     if (this.props.favLines.has(this.props.line.id)) {
       return 1;
@@ -78,13 +88,13 @@ class LineModal extends React.Component {
     });
 
     return data.map((obj) => {
-      const southError = obj.southDelay >= 5 || obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
-      const northError = obj.northDelay >= 5 || obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
+      const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
+      const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       return (
         <Table.Row key={obj.type}>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='small' horizontal inverted color={southError ? "red" : "black"}>
+              <Statistic size='small' horizontal inverted color={southColor}>
                 <Statistic.Value>
                   {obj.southActual}
                   {
@@ -99,7 +109,7 @@ class LineModal extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='small' horizontal inverted color={southError ? "red" : "black"}>
+              <Statistic size='small' horizontal inverted color={southColor}>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
@@ -117,7 +127,7 @@ class LineModal extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='small' horizontal inverted color={northError ? "red" : "black"}>
+              <Statistic size='small' horizontal inverted color={northColor}>
                 <Statistic.Value>
                   {obj.northActual}
                   {
@@ -132,7 +142,7 @@ class LineModal extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='small' horizontal inverted color={northError ? "red" : "black"}>
+              <Statistic size='small' horizontal inverted color={northColor}>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
@@ -155,11 +165,11 @@ class LineModal extends React.Component {
     });
 
     return data.map((obj) => {
-      const southError = obj.southDelay >= 5 || obj.southScheduled && (obj.southActual - obj.southScheduled > 2)
+      const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
       return (
         <Table.Row key={obj.type}>
           <Table.Cell>
-            <Statistic size='small' inverted color={southError ? "red" : "black"}>
+            <Statistic size='small' inverted color={southColor}>
               <Statistic.Value>
                 {obj.southActual}
                 {
@@ -172,7 +182,7 @@ class LineModal extends React.Component {
             </Statistic>
           </Table.Cell>
           <Table.Cell>
-            <Statistic size='small' inverted color={southError ? "red" : "black"}>
+            <Statistic size='small' inverted color={southColor}>
               <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
               <Statistic.Label>Mins</Statistic.Label>
             </Statistic>
@@ -204,7 +214,7 @@ class LineModal extends React.Component {
     });
 
     return data.map((obj) => {
-      const northError = obj.northDelay >= 5 || obj.northScheduled && (obj.northActual - obj.northScheduled > 2)
+      const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       return (
         <Table.Row key={obj.type}>
           <Table.Cell>
@@ -218,7 +228,7 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            <Statistic size='small' inverted color={northError ? "red" : "black"}>
+            <Statistic size='small' inverted color={northColor}>
               <Statistic.Value>
                 {obj.northActual}
                 {
@@ -231,7 +241,7 @@ class LineModal extends React.Component {
             </Statistic>
           </Table.Cell>
           <Table.Cell>
-            <Statistic size='small' inverted color={northError ? "red" : "black"}>
+            <Statistic size='small' inverted color={northColor}>
               <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
               <Statistic.Label>Mins</Statistic.Label>
             </Statistic>
