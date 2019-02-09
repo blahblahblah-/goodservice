@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_193957) do
+ActiveRecord::Schema.define(version: 2019_02_09_210807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_193957) do
     t.datetime "updated_at", null: false
     t.string "route_internal_id", null: false
     t.integer "max_headway_discreprency", default: 0, null: false
+    t.index ["created_at", "route_internal_id"], name: "index_route_statuses_on_created_at_and_route_internal_id"
     t.index ["route_internal_id", "created_at"], name: "index_route_statuses_on_route_internal_id_and_created_at"
   end
 
