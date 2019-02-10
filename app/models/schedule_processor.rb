@@ -247,14 +247,25 @@ class ScheduleProcessor
     data
   end
 
-  def self.stats_info(force_refresh: false)
+  def self.last_week_statuses(force_refresh_last_week_stats: false)
+    unless force_refresh_last_week_stats || !Rails.cache.read("stats-last-week")
+      return Rails.cache.read("stats-last-week")
+    end
+    statuses = RouteStatus.where("created_at >= ?", Time.current - 1.week - 1.day).group(:route_internal_id, "date(created_at at time zone 'UTC' at time zone 'America/New_York')", :status).size
+
+    Rails.cache.write("stats-last-week", statuses, expires_in: 1.day)
+
+    statuses
+  end
+
+  def self.stats_info(force_refresh: false, force_refresh_last_week_stats: false)
     return Rails.cache.read("stats-info") if !force_refresh && Rails.cache.read("stats-info")
     processor = self.instance
 
     last_hour_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.hour).order(:created_at).group_by(&:route_internal_id)
     last_day_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id, :status).size
 
-    last_week_statuses = RouteStatus.where("created_at >= ?", Time.current - 1.week - 1.day).group(:route_internal_id, "date(created_at at time zone 'UTC' at time zone 'America/New_York')", :status).size
+    last_week_statuses = last_week_statuses(force_refresh_last_week_stats: force_refresh_last_week_stats)
 
     last_day_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id).average(:max_headway_discreprency)
     last_week_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.week).group(:route_internal_id).average(:max_headway_discreprency)

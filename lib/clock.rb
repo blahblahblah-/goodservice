@@ -41,5 +41,9 @@ module Clockwork
     ActualTrip.where("created_at < ?", Date.current - 2.months).delete_all
     endTime = Time.current
     puts "DB cleanup finished in #{endTime - startTime} seconds"
+
+    ScheduleProcessor.stats_info(force_refresh: true, force_refresh_last_week_stats: true)
+    statsTime = Time.current
+    puts "Processed stats in #{statsTime - endTime} seconds"
   }
 end
