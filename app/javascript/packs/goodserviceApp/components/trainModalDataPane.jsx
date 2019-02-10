@@ -313,7 +313,7 @@ class TrainModalDataPane extends React.Component {
             <Statistic.Value>{this.addPlusSignToPositiveNumber(this.props.stats.max_headway_discreprency.last_day_avg)} mins</Statistic.Value>
           </Statistic>
           <Statistic>
-            <Statistic.Label>Last 7 days</Statistic.Label>
+            <Statistic.Label>Last week</Statistic.Label>
             <Statistic.Value>{this.addPlusSignToPositiveNumber(this.props.stats.max_headway_discreprency.last_week_avg)} mins</Statistic.Value>
           </Statistic>
         </Statistic.Group>
@@ -345,7 +345,7 @@ class TrainModalDataPane extends React.Component {
               <Grid.Column>
                 <Statistic.Group widths={1} size="small" inverted>
                   <Statistic>
-                    <Statistic.Label>Last 7 days</Statistic.Label>
+                    <Statistic.Label>Last week</Statistic.Label>
                     <Statistic.Value>{this.props.stats.delays.last_week.count}</Statistic.Value>
                   </Statistic>
                 </Statistic.Group>
