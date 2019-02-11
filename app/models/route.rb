@@ -3,6 +3,6 @@ class Route < ActiveRecord::Base
   scope :visible, -> { where(visible: true)}
 
   def scheduled?
-    StopTime.soon.joins(trip: :route).where(trip: {routes: {internal_id: internal_id}}).any?
+    StopTime.soon(time_range: 5.minutes).joins(trip: :route).where(trip: {routes: {internal_id: internal_id}}).any?
   end
 end

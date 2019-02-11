@@ -42,6 +42,7 @@ module Display
         }
       end
       times = st.map(&:departure_time)
+      times << (Time.current - Time.current.beginning_of_day).to_i if times.size == 1
       @max_scheduled_headway = treat_times(times).sort.each_cons(2).map { |a,b| (b - a) / 60 }.max
     end
 

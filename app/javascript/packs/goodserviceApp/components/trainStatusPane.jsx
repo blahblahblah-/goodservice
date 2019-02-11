@@ -94,7 +94,7 @@ class TrainStatusPane extends React.Component {
         }
         <Responsive as={Grid} stackable columns={3} fireOnMount onUpdate={this.handleOnUpdate}>
           {
-            map(this.props.trains.filter(train => (this.props.showStats || train.visible || train.scheduled)), train => {
+            map(this.props.trains.filter(train => (this.props.showStats || train.visible || train.status !== 'Not Scheduled')), train => {
               return <Grid.Column key={train.name + train.alternate_name}><Train train={train} stats={this.props.trainStats[train.id]} showStats={this.props.showStats} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} /></Grid.Column>
             })
           }
