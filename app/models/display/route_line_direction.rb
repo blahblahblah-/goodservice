@@ -45,7 +45,7 @@ module Display
       @max_scheduled_headway = treat_times(times).sort.each_cons(2).map { |a,b| (b - a) / 60 }.max
     end
 
-    def headway_discreprency
+    def headway_discrepancy
       return nil if trips.empty?
       max_actual_headway - max_scheduled_headway if max_scheduled_headway
     end

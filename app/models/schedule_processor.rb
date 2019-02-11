@@ -99,7 +99,7 @@ class ScheduleProcessor
         text_color: route.text_color && "##{route.text_color}",
         alternate_name: route.alternate_name,
         status: route.status,
-        max_headway_discreprency: route.max_headway_discreprency,
+        max_headway_discrepancy: route.max_headway_discrepancy,
         destinations: {
           north: route.directions[1].destinations,
           south: route.directions[3].destinations,
@@ -208,7 +208,7 @@ class ScheduleProcessor
   def self.log_route_statuses(routes_data)
     routes_data.each do |route|
       unless ["No Data", "Not Scheduled"].include?(route[:status])
-        RouteStatus.create(route_internal_id: route[:id], status: route[:status], max_headway_discreprency: route[:max_headway_discreprency] || 0)
+        RouteStatus.create(route_internal_id: route[:id], status: route[:status], max_headway_discrepancy: route[:max_headway_discrepancy] || 0)
       end
     end
   end
@@ -267,8 +267,8 @@ class ScheduleProcessor
 
     last_week_statuses = last_week_statuses(force_refresh_last_week_stats: force_refresh_last_week_stats)
 
-    last_day_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id).average(:max_headway_discreprency)
-    last_week_avg_max_headway_discreprency = RouteStatus.where("created_at >= ?", Time.current - 1.week).group(:route_internal_id).average(:max_headway_discreprency)
+    last_day_avg_max_headway_discrepancy = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id).average(:max_headway_discrepancy)
+    last_week_avg_max_headway_discrepancy = RouteStatus.where("created_at >= ?", Time.current - 1.week).group(:route_internal_id).average(:max_headway_discrepancy)
 
     last_day_delays = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id, :created_at).pluck(:route_id,"date_trunc('hour', delays.created_at)")
     last_week_delays = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id, :created_at).pluck(:route_id,"date_trunc('hour', delays.created_at)")
@@ -299,9 +299,9 @@ class ScheduleProcessor
               Hash[STATUSES.map { |s| [s.gsub(/( )/, '_').underscore, last_week_statuses[[route.internal_id, date, s]] || 0]}]
             }
           },
-          max_headway_discreprency: {
-            last_day_avg: last_day_avg_max_headway_discreprency[route.internal_id]&.to_f&.round(1) || 0,
-            last_week_avg: last_week_avg_max_headway_discreprency[route.internal_id]&.to_f&.round(1) || 0
+          max_headway_discrepancy: {
+            last_day_avg: last_day_avg_max_headway_discrepancy[route.internal_id]&.to_f&.round(1) || 0,
+            last_week_avg: last_week_avg_max_headway_discrepancy[route.internal_id]&.to_f&.round(1) || 0
           },
           delays: {
             last_day: {

@@ -306,15 +306,15 @@ class TrainModalDataPane extends React.Component {
 
         <Divider />
 
-        <Header size='medium' inverted>AVG MAX HEADWAY DISCREPRENCY</Header>
+        <Header size='medium' inverted>AVG MAX HEADWAY DISCREPANCY</Header>
         <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="small" inverted>
           <Statistic>
             <Statistic.Label>Last 24 hrs</Statistic.Label>
-            <Statistic.Value>{this.addPlusSignToPositiveNumber(this.props.stats.max_headway_discreprency.last_day_avg)} mins</Statistic.Value>
+            <Statistic.Value>{this.addPlusSignToPositiveNumber(this.props.stats.max_headway_discrepancy.last_day_avg)} mins</Statistic.Value>
           </Statistic>
           <Statistic>
             <Statistic.Label>Last week</Statistic.Label>
-            <Statistic.Value>{this.addPlusSignToPositiveNumber(this.props.stats.max_headway_discreprency.last_week_avg)} mins</Statistic.Value>
+            <Statistic.Value>{this.addPlusSignToPositiveNumber(this.props.stats.max_headway_discrepancy.last_week_avg)} mins</Statistic.Value>
           </Statistic>
         </Statistic.Group>
 

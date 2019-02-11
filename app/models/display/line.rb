@@ -19,13 +19,13 @@ module Display
     def status
       if delay >= 5
         "Delay"
-      elsif max_headway_discreprency.nil?
+      elsif max_headway_discrepancy.nil?
         if directions.any? {|_, d| d.any?(&:max_actual_headway) }
           "Good Service"
         else
           "No Service"
         end
-      elsif max_headway_discreprency > 2
+      elsif max_headway_discrepancy > 2
         "Not Good"
       else
         "Good Service"
@@ -52,13 +52,13 @@ module Display
       }.max || 0
     end
 
-    def max_headway_discreprency
+    def max_headway_discrepancy
       directions.map { |_, array|
         array.map { |ld|
-          ld.headway_discreprency
+          ld.headway_discrepancy
         }
-      }.flatten.reject { |headway_discreprency|
-        headway_discreprency.nil?
+      }.flatten.reject { |headway_discrepancy|
+        headway_discrepancy.nil?
       }.max
     end
   end

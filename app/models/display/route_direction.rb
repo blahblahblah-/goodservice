@@ -44,10 +44,10 @@ module Display
       end
     end
 
-    def headway_discreprency
+    def headway_discrepancy
       return nil if trips.empty?
-      line_directions.map(&:headway_discreprency).reject { |headway_discreprency|
-        headway_discreprency.nil?
+      line_directions.map(&:headway_discrepancy).reject { |headway_discrepancy|
+        headway_discrepancy.nil?
       }.max
     end
 

@@ -23,7 +23,7 @@ module Display
 
       if delay >= 5
         @status = "Delay"
-      elsif max_headway_discreprency.nil?
+      elsif max_headway_discrepancy.nil?
         if route.scheduled?
           @status = "No Service"
         else
@@ -31,18 +31,18 @@ module Display
         end
       elsif directions.any? {|_, d| d.lines_not_in_service.present? || d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
         @status = "Service Change"
-      elsif max_headway_discreprency > 2
+      elsif max_headway_discrepancy > 2
         @status = "Not Good"
       else
         @status = "Good Service"
       end
     end
 
-    def max_headway_discreprency
+    def max_headway_discrepancy
       directions.map { |_, rd|
-        rd.headway_discreprency
-      }.reject { |headway_discreprency|
-        headway_discreprency.nil?
+        rd.headway_discrepancy
+      }.reject { |headway_discrepancy|
+        headway_discrepancy.nil?
       }.max
     end
 
