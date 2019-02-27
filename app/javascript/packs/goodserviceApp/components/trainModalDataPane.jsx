@@ -320,7 +320,7 @@ class TrainModalDataPane extends React.Component {
 
         <Divider />
 
-        <Header size='medium' inverted>DELAYS</Header>
+        <Header size='medium' inverted>DELAYED TRAINS</Header>
         <Segment basic>
           <Grid columns={2} stackable relaxed='very'>
             <Grid.Row>
