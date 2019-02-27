@@ -270,8 +270,8 @@ class ScheduleProcessor
     last_day_avg_max_headway_discrepancy = RouteStatus.where("created_at >= ?", Time.current - 1.day).group(:route_internal_id).average(:max_headway_discrepancy)
     last_week_avg_max_headway_discrepancy = RouteStatus.where("created_at >= ?", Time.current - 1.week).group(:route_internal_id).average(:max_headway_discrepancy)
 
-    last_day_delays = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id).pluck(:route_id)
-    last_week_delays = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).pluck(:route_id)
+    last_day_delays = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id).pluck(:route_id, "count(*)")
+    last_week_delays = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).pluck(:route_id, "count(*)")
     last_day_avg_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id).average(:delayed_minutes)
     last_week_avg_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.week).joins(actual_trip_update: :actual_trip).group(:route_id).average(:delayed_minutes)
     last_day_max_delay_mins = Delay.where("delays.created_at >= ?", Time.current - 1.day).joins(actual_trip_update: :actual_trip).group(:route_id).maximum(:delayed_minutes)
@@ -305,12 +305,12 @@ class ScheduleProcessor
           },
           delays: {
             last_day: {
-              count: last_day_delays.select { |d| d.first == route.internal_id }.size,
+              count: last_day_delays.select { |d| d.first == route.internal_id }&.first&.second || 0,
               avg_mins: last_day_avg_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
               max_mins: last_day_max_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
             },
             last_week: {
-              count: last_week_delays.select { |d| d.first == route.internal_id }.size,
+              count: last_week_delays.select { |d| d.first == route.internal_id }&.first&.second || 0,
               avg_mins: last_week_avg_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
               max_mins: last_week_max_delay_mins[route.internal_id]&.to_f&.round(1) || 0,
             }
