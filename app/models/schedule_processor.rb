@@ -209,7 +209,7 @@ class ScheduleProcessor
         r.name == 'S' ? r.alternate_name : r.name
       }
       if delayed_routes.any?
-        tweet = "Delays detected on: #{delayed_routes.join(',')} trains"
+        tweet = "Delays detected on: #{delayed_routes.join(', ')} trains"
         twitter_client.update(tweet)
         puts "Tweeted #{tweet}"
       end
