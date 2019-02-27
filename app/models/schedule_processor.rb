@@ -87,7 +87,7 @@ class ScheduleProcessor
     update_route_feed_statuses
   end
 
-  def self.headway_info(force_refresh: false)
+  def self.headway_info(force_refresh: false, tweet_delays: false)
     return Rails.cache.read("headway-info") if !force_refresh && Rails.cache.read("headway-info")
 
     processor = self.instance
@@ -201,6 +201,19 @@ class ScheduleProcessor
     log_route_statuses(routes_data)
 
     Rails.cache.write("headway-info", data, expires_in: 1.day)
+
+    if tweet_delays && twitter_client
+      delayed_routes = processor.routes.sort_by { |_, r|
+        "#{r.name} #{r.alternate_name}"
+      }.select { |_, r| r.status == "Delay" }.map { |_, r|
+        r.name == 'S' ? r.alternate_name : r.name
+      }
+      if delayed_routes.any?
+        tweet = "Delays detected on: #{delayed_routes.join(',')} trains"
+        twitter_client.update(tweet)
+        puts "Tweeted #{tweet}"
+      end
+    end
 
     data
   end
@@ -344,6 +357,16 @@ class ScheduleProcessor
   private
 
   attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :stops, :recent_trips, :unavailable_feeds
+
+  def self.twitter_client
+    return unless ENV["TWITTER_CONSUMER_KEY"]
+    @twitter_client ||= Twitter::REST::Client.new do |config|
+      config.consumer_key        = ENV["TWITTER_CONSUMER_KEY"]
+      config.consumer_secret     = ENV["TWITTER_CONSUMER_SECRET"]
+      config.access_token        = ENV["TWITTER_ACCESS_TOKEN"]
+      config.access_token_secret = ENV["TWITTER_ACCESS_TOKEN_SECRET"]
+    end
+  end
 
   def retrieve_feed(feed_id)
     puts "Retrieving feed #{feed_id}"
