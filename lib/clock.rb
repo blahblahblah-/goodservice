@@ -18,7 +18,8 @@ module Clockwork
     ScheduleProcessor.instance.refresh_data
     midTime = Time.current
     puts "Refreshed data in #{midTime - startTime} seconds"
-    ScheduleProcessor.headway_info(force_refresh: true, tweet_delays: Time.current.min % 15 == 0)
+    twitter_interval = ENV["TWITTER_INTERVAL"] || 10
+    ScheduleProcessor.headway_info(force_refresh: true, tweet_delays: Time.current.min % twitter_interval == 0)
     processTime = Time.current
     puts "Processed headway info in #{processTime - midTime} seconds"
     ScheduleProcessor.stats_info(force_refresh: true)
