@@ -210,16 +210,16 @@ class ScheduleProcessor
           r.name == 'S' ? r.alternate_name : r.name
         }
         if delayed_routes.any?
-          tweet = "Delays detected: #{delayed_routes.join(', ')} trains"
+          status = "Delays detected: #{delayed_routes.join(', ')} trains"
         elsif !Rails.cache.read("delayed_routes").blank?
-          tweet = "Delays detected: none"
+          status = "Delays detected: none"
         end
 
         if tweet
           puts "Sending delay status to Twitter"
-          tweet = twitter_client.update(tweet)
+          tweet = twitter_client.update(status)
           Rails.cache.write("delayed_routes", [], expires_in: 30.minutes)
-          puts "Tweeted #{tweet}"
+          puts "Tweeted #{status}"
           puts "Tweet URI: #{tweet.uri}"
         end
       end
