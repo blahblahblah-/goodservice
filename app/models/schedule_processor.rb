@@ -202,25 +202,30 @@ class ScheduleProcessor
 
     Rails.cache.write("headway-info", data, expires_in: 1.day)
 
-    if tweet_delays && twitter_client
-      delayed_routes = processor.routes.sort_by { |_, r|
-        "#{r.name} #{r.alternate_name}"
-      }.select { |_, r| r.status == "Delay" }.map { |_, r|
-        r.name == 'S' ? r.alternate_name : r.name
-      }
-      if delayed_routes.any?
-        puts "Sending delay status to Twitter"
-        tweet = "Delays detected: #{delayed_routes.join(', ')} trains"
-        twitter_client.update(tweet)
-        Rails.cache.write("delayed_routes", delayed_routes, expires_in: 30.minutes)
-        puts "Tweeted #{tweet}"
-      elsif !Rails.cache.read("delayed_routes").blank?
-        puts "Sending delay status to Twitter"
-        tweet = "Delays detected: none"
-        twitter_client.update(tweet)
-        Rails.cache.write("delayed_routes", [], expires_in: 30.minutes)
-        puts "Tweeted #{tweet}"
+    begin
+      if tweet_delays && twitter_client
+        delayed_routes = processor.routes.sort_by { |_, r|
+          "#{r.name} #{r.alternate_name}"
+        }.select { |_, r| r.status == "Delay" }.map { |_, r|
+          r.name == 'S' ? r.alternate_name : r.name
+        }
+        if delayed_routes.any?
+          tweet = "Delays detected: #{delayed_routes.join(', ')} trains"
+        elsif !Rails.cache.read("delayed_routes").blank?
+          tweet = "Delays detected: none"
+        end
+
+        if tweet
+          puts "Sending delay status to Twitter"
+          tweet = twitter_client.update(tweet)
+          Rails.cache.write("delayed_routes", [], expires_in: 30.minutes)
+          puts "Tweeted #{tweet}"
+          puts "Tweet URI: #{tweet.uri}"
+        end
       end
+    rescue StandardError => e
+      puts "Error tweeting: #{e.message}"
+      puts e.backtrace
     end
 
     data
