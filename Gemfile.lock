@@ -200,6 +200,7 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
     simple_oauth (0.3.1)
+    snitcher (0.4.1)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -271,6 +272,7 @@ DEPENDENCIES
   redis (~> 4.0)
   sass-rails (~> 5.0)
   selenium-webdriver
+  snitcher
   spring
   spring-watcher-listen (~> 2.0.0)
   twitter

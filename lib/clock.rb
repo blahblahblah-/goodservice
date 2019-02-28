@@ -32,7 +32,9 @@ module Clockwork
       puts "Processed routes info in #{routesTime - statsTime} seconds"
     end
     endTime = Time.current
-    puts "Finished in #{endTime - startTime} seconds"
+    status = "Finished in #{endTime - startTime} seconds"
+    puts status
+    Snitcher.snitch(ENV["DEADMANSSNITCH_TOKEN"], message: status) if ENV["DEADMANSSNITCH_TOKEN"]
   }
 
   every(1.day, 'db.cleanup', at: '00:00', tz: 'America/New_York') {
