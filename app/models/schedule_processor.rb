@@ -214,6 +214,12 @@ class ScheduleProcessor
         twitter_client.update(tweet)
         Rails.cache.write("delayed_routes", delayed_routes, expires_in: 30.minutes)
         puts "Tweeted #{tweet}"
+      elsif !Rails.cache.read("delayed_routes").blank?
+        puts "Sending delay status to Twitter"
+        tweet = "Delays detected: none"
+        twitter_client.update(tweet)
+        Rails.cache.write("delayed_routes", [], expires_in: 30.minutes)
+        puts "Tweeted #{tweet}"
       end
     end
 
