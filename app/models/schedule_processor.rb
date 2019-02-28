@@ -202,31 +202,7 @@ class ScheduleProcessor
 
     Rails.cache.write("headway-info", data, expires_in: 1.day)
 
-    begin
-      if tweet_delays && twitter_client
-        delayed_routes = processor.routes.sort_by { |_, r|
-          "#{r.name} #{r.alternate_name}"
-        }.select { |_, r| r.status == "Delay" }.map { |_, r|
-          r.name == 'S' ? r.alternate_name : r.name
-        }
-        if delayed_routes.any?
-          status = "Delays detected: #{delayed_routes.join(', ')} trains"
-        elsif !Rails.cache.read("delayed_routes").blank?
-          status = "Delays detected: none"
-        end
-
-        if status
-          puts "Sending delay status to Twitter"
-          tweet = twitter_client.update(status)
-          Rails.cache.write("delayed_routes", delayed_routes, expires_in: 30.minutes)
-          puts "Tweeted #{status}"
-          puts "Tweet URI: #{tweet.uri}"
-        end
-      end
-    rescue StandardError => e
-      puts "Error tweeting: #{e.message}"
-      puts e.backtrace
-    end
+    tweet_delayed_routes(processor.routes) if tweet_delays
 
     data
   end
@@ -353,6 +329,33 @@ class ScheduleProcessor
     Rails.cache.write("stats-info", data, expires_in: 1.day)
 
     data
+  end
+
+  def self.tweet_delayed_routes(routes_info)
+    return unless twitter_client
+
+    delayed_routes = routes_info.sort_by { |_, r|
+      "#{r.name} #{r.alternate_name}"
+    }.select { |_, r| r.status == "Delay" }.map { |_, r|
+      r.name == 'S' ? r.alternate_name : r.name
+    }
+
+    if delayed_routes.any?
+      status = "Delays detected @ #{Time.current.strftime("%-l:%M%P")}: #{delayed_routes.join(', ')} trains"
+    elsif !Rails.cache.read("delayed_routes").blank?
+      status = "Delays detected @ #{Time.current.strftime("%-l:%M%P")}: none"
+    end
+
+    return unless status
+
+    puts "Sending delay status to Twitter"
+    tweet = twitter_client.update!(status)
+    Rails.cache.write("delayed_routes", delayed_routes, expires_in: 30.minutes)
+    puts "Tweeted #{status}"
+    puts "Tweet URI: #{tweet.uri}"
+  rescue StandardError => e
+    puts "Error tweeting: #{e.message}"
+    puts e.backtrace
   end
 
   def lines_by_borough(borough)
