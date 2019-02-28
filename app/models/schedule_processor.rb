@@ -218,7 +218,7 @@ class ScheduleProcessor
         if status
           puts "Sending delay status to Twitter"
           tweet = twitter_client.update(status)
-          Rails.cache.write("delayed_routes", [], expires_in: 30.minutes)
+          Rails.cache.write("delayed_routes", delayed_routes, expires_in: 30.minutes)
           puts "Tweeted #{status}"
           puts "Tweet URI: #{tweet.uri}"
         end
