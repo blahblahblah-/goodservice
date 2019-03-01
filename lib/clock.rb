@@ -14,12 +14,15 @@ module Clockwork
 
   every(1.minute, 'update.data') {
     puts "Updating Headways"
+    twitter_interval = ENV["TWITTER_INTERVAL"] || 10
+    tweet_delays = Time.current.min % twitter_interval == 0
+
     startTime = Time.current
     ScheduleProcessor.instance.refresh_data
     midTime = Time.current
     puts "Refreshed data in #{midTime - startTime} seconds"
-    twitter_interval = ENV["TWITTER_INTERVAL"] || 10
-    ScheduleProcessor.headway_info(force_refresh: true, tweet_delays: Time.current.min % twitter_interval == 0)
+
+    ScheduleProcessor.headway_info(force_refresh: true, tweet_delays: tweet_delays)
     processTime = Time.current
     puts "Processed headway info in #{processTime - midTime} seconds"
     ScheduleProcessor.stats_info(force_refresh: true)
