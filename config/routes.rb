@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :info, only: [:index]
     resources :routes, only: [:index]
     resources :stats, only: [:index]
+    post '/slack', to: 'slack#index'
   end
   get '/routes(/*id)', to: 'index#index'
   get '/boroughs(/*borough)(/*line)', to: 'index#index'
