@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :stats, only: [:index]
     post '/slack', to: 'slack#index'
   end
+  get '/oauth', to: 'oauth#index'
   get '/routes(/*id)', to: 'index#index'
   get '/boroughs(/*borough)(/*line)', to: 'index#index'
   get '/starred', to: 'index#index'
