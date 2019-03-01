@@ -17,4 +17,8 @@ class OauthController < ApplicationController
 
     redirect_to ENV["SLACK_REDIRECT_URI"]
   end
+
+  def slack_install
+    redirect_to ENV["SLACK_DIRECT_INSTALL_URI"]
+  end
 end
