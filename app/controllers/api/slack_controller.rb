@@ -4,10 +4,12 @@ class Api::SlackController < ApplicationController
 
   def index
     info = ScheduleProcessor.headway_info[:routes]
-    route = params[:text]
+    query = params[:text]
 
-    if (data = info.find { |r| r[:id] == route})
+    if (data = info.find { |r| r[:id] == query})
       result = route_response(data)
+    elsif query == 'delays'
+      result = delays_response(info)
     else
       result = default_response(info)
     end
@@ -19,8 +21,28 @@ class Api::SlackController < ApplicationController
 
   def default_response(info)
     {
-      text: "Usage: _/goodservice [route]_\nChoose from #{info.map { |r| r[:id] }.join(" ") }"
+      text: "Usage: _/goodservice [route]_ or _/goodservice delays_\nChoose from #{info.map { |r| r[:id] }.join(" ") }"
     }
+  end
+
+  def delays_response(info)
+    delayed_routes = info.sort_by { |r|
+      "#{r[:name]} #{r[:alternate_name]}"
+    }.select { |r| r[:status] == "Delay" }.map { |r|
+      r[:name] == 'S' ? r[:alternate_name] : r[:name]
+    }
+
+    if delayed_routes.any?
+      {
+        response_type: "in_channel",
+        channel: params[:channel_id],
+        text: "Delays detected on #{delayed_routes.join(', ')} trains"
+      }
+    else
+      {
+        text: "No delays currently detected."
+      }
+    end
   end
 
   def route_response(route_data)
@@ -75,20 +97,21 @@ class Api::SlackController < ApplicationController
       },
       {
         "type": "mrkdwn",
-        "text": "*Max Wait*"
+        "text": "*Maximum Wait Time*"
       },
     ]
 
     fields.push(*route_data[direction].map { |l|
-      delay = l[:delay] >= 5 ? ", Delay: #{l[:delay]}" : ""
+      delay = l[:delay] >= 5 ? ", *Delay: #{l[:delay]}*" : ""
+      max_actual_headway = l[:max_scheduled_headway] && (l[:max_actual_headway] - l[:max_scheduled_headway]) > 2 ? "*#{l[:max_actual_headway]}*" : l[:max_actual_headway]
       [
         {
           "type": "plain_text",
           "text": l[:name]
         },
         {
-          "type": "plain_text",
-          "text": "Actual: #{l[:max_actual_headway]}, Scheduled: #{l[:max_scheduled_headway] || "--"}#{delay}"
+          "type": "mrkdwn",
+          "text": "Actual: #{max_actual_headway}, Scheduled: #{l[:max_scheduled_headway] || "--"}#{delay}"
         },
       ]
     }.flatten)
