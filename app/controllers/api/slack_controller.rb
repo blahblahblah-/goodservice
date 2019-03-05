@@ -11,10 +11,13 @@ class Api::SlackController < ApplicationController
     query = params[:text]
 
     if (data = info[:routes].find { |r| r[:id] == query})
+      tracker.event(category: 'slack', action: 'route', label: query)
       result = route_response(data)
     elsif query == 'delays'
+      tracker.event(category: 'slack', action: 'slash', label: 'delays')
       result = delays_response(info[:routes])
     else
+      tracker.event(category: 'slack', action: 'slash', label: 'default')
       result = default_response(info)
     end
    
@@ -30,11 +33,13 @@ class Api::SlackController < ApplicationController
 
     if payload[:actions].first[:action_id] == 'select_route'
       if (data = info[:routes].find { |r| r[:id] == payload[:actions].first[:selected_option][:value]})
+        tracker.event(category: 'slack-default', action: 'route', value: data[:id])
         result = route_response(data)
       end
     elsif payload[:actions].first[:action_id] == 'select_line'
       lines = info[:lines].values.flatten
       if (data = lines.find { |l| l[:id] == payload[:actions].first[:selected_option][:value]})
+        tracker.event(category: 'slack-defaulr', action: 'line', value: data[:id])
         result = line_response(data)
       end
     end
@@ -319,5 +324,9 @@ class Api::SlackController < ApplicationController
     }
 
     result
+  end
+
+  def tracker
+    Staccato.tracker('UA-125010964-1', nil, ssl: true)
   end
 end
