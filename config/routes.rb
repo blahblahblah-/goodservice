@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :routes, only: [:index]
     resources :stats, only: [:index]
     post '/slack', to: 'slack#index'
+    post '/slack/query', to: 'slack#query'
   end
   get '/oauth', to: 'oauth#index'
   get '/slack_install', to: 'oauth#slack_install'
