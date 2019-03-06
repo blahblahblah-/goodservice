@@ -223,9 +223,9 @@ class LandingPage extends React.Component {
         <Segment inverted vertical style={{padding: '1em 2em'}}>
           <Grid>
             <Grid.Column width={6}>
-              <Button circular color='medium m' icon='medium m' onClick={() => window.open("https://www.medium.com/good-service")} />
+              <Button circular className='medium-icon' icon='medium m' onClick={() => window.open("https://www.medium.com/good-service")} />
               <Button circular color='twitter' icon='twitter' onClick={() => window.open("https://twitter.com/goodservice_io")} />
-              <Button circular color='purple' icon='slack hash' onClick={() => window.open("https://www.goodservice.io/slack_install")} />
+              <Button circular className='slack-icon' icon={{ className: 'slack-icon' }}  onClick={() => window.open("https://www.goodservice.io/slack_install")} />
             </Grid.Column>
             <Grid.Column width={10} textAlign='right'>
               <Header inverted as='h5'>
