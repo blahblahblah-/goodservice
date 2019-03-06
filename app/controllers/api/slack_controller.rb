@@ -4,6 +4,7 @@ class Api::SlackController < ApplicationController
   require 'uri'
 
   skip_before_action :verify_authenticity_token
+  before_action :verify_slack_request
 
   # Responds to slash commands
   def index
@@ -58,7 +59,7 @@ class Api::SlackController < ApplicationController
       text: "Usage:\n"\
         "_/goodservice_ is the main menu and will bring up select boxes of available routes and lines to then view statuses of.\n"\
         "_/goodservice delays_  displays a list of routes where delays are currently detected.\n"\
-        "_/goodservice [route]_ (i.e. _/goodservice A_) is a shortcut to display current status about the route. Choose from #{info.map { |r| r[:id] }.join(" ") }"
+        "_/goodservice [route]_ (i.e. _/goodservice A_) is a shortcut to display current status about the route.\n\nRoutes available: #{info.map { |r| r[:id] }.join(" ") }"
     }
   end
 
@@ -255,7 +256,8 @@ class Api::SlackController < ApplicationController
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "*#{line_data[:name]} Line - #{line_data[:routes].map { |r| r[:name]}.join(', ')}*"
+          "text": "*#{line_data[:name]} Line - #{line_data[:routes].map { |r| r[:name]}.join(', ')} Trains*\n"\
+                  "_Status_: *#{line_data[:status]}*"
         }
       },
       {
@@ -311,7 +313,7 @@ class Api::SlackController < ApplicationController
       [
         {
           "type": "plain_text",
-          "text": "#{s[:type] || 'Local'} - #{s[:routes].map { |r| r[:name]}.join(", ")}"
+          "text": "#{s[:type] || 'Local'} - #{s[:routes].map { |r| r[:name]}.join(", ")} Trains"
         },
         {
           "type": "mrkdwn",
@@ -341,5 +343,23 @@ class Api::SlackController < ApplicationController
 
   def tracker
     Staccato.tracker('UA-125010964-1', nil, ssl: true)
+  end
+
+  def verify_slack_request
+    slack_signature = request.headers["X-Slack-Signature"]
+    timestamp = request.headers["X-Slack-Request-Timestamp"]
+    body = request.body.read
+    base = "v0:#{timestamp}:#{body}"
+    key = ENV["SLACK_SIGNING_SECRET"]
+
+    signature = "v0=#{OpenSSL::HMAC.hexdigest("SHA256", key, base)}"
+
+    if (Time.current.to_i - timestamp.to_i).abs > 60 * 5
+      return head :forbidden
+    end
+
+    if signature != slack_signature
+      return head :forbidden
+    end
   end
 end
