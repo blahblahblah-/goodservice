@@ -334,7 +334,7 @@ class ScheduleProcessor
   def self.tweet_delayed_routes(routes_info)
     return unless twitter_client
 
-    time = Time.at((Time.current.to_f / 10.minutes).round * 10.minutes)
+    time = Time.zone.at((Time.current.to_f / 10.minutes).round * 10.minutes)
 
     delayed_routes = routes_info.sort_by { |_, r|
       "#{r.name} #{r.alternate_name}"
