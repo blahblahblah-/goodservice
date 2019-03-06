@@ -10,7 +10,9 @@ class Api::SlackController < ApplicationController
     info = ScheduleProcessor.headway_info
     query = params[:text]
 
-    if (data = info[:routes].find { |r| r[:id] == query})
+    if query == 'help'
+      result = help_response(info[:routes])
+    elsif (data = info[:routes].find { |r| r[:id] == query})
       tracker.event(category: 'slack', action: 'route', label: query)
       result = route_response(data)
     elsif query == 'delays'
@@ -50,6 +52,15 @@ class Api::SlackController < ApplicationController
   end
 
   private
+
+  def help_response(info)
+    {
+      text: "Usage:\n"\
+        "_/goodservice_ is the main menu and will bring up select boxes of available routes and lines to then view statuses of.\n"\
+        "_/goodservice delays_  displays a list of routes where delays are currently detected.\n"\
+        "_/goodservice [route]_ (i.e. _/goodservice A_) is a shortcut to display current status about the route. Choose from #{info.map { |r| r[:id] }.join(" ") }"
+    }
+  end
 
   def default_response(info)
     {
@@ -131,6 +142,8 @@ class Api::SlackController < ApplicationController
       }
     else
       {
+        response_type: "in_channel",
+        channel: params[:channel_id],
         text: "No delays currently detected."
       }
     end
