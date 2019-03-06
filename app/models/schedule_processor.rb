@@ -334,6 +334,8 @@ class ScheduleProcessor
   def self.tweet_delayed_routes(routes_info)
     return unless twitter_client
 
+    time = Time.at((Time.current.to_f / 10.minutes).round * 10.minutes)
+
     delayed_routes = routes_info.sort_by { |_, r|
       "#{r.name} #{r.alternate_name}"
     }.select { |_, r| r.status == "Delay" }.map { |_, r|
@@ -341,9 +343,9 @@ class ScheduleProcessor
     }
 
     if delayed_routes.any?
-      status = "Delays detected @ #{Time.current.strftime("%-l:%M%P")}: #{delayed_routes.join(', ')} trains"
+      status = "Delays detected @ #{time.strftime("%-l:%M%P")}: #{delayed_routes.join(', ')} trains"
     elsif !Rails.cache.read("delayed_routes").blank?
-      status = "Delays detected @ #{Time.current.strftime("%-l:%M%P")}: none"
+      status = "Delays detected @ #{time.strftime("%-l:%M%P")}: none"
     end
 
     return unless status
