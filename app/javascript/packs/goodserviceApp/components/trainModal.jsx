@@ -3,6 +3,7 @@ import { Header, Modal, Statistic, Grid, Responsive, Table, Rating, Tab } from '
 import TrainBullet from './trainBullet.jsx';
 import TrainModalStatusPane from './trainModalStatusPane.jsx';
 import TrainModalDataPane from './trainModalDataPane.jsx';
+import { withRouter } from 'react-router-dom';
 
 class TrainModal extends React.Component {
   state = {}
@@ -88,7 +89,10 @@ class TrainModal extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+      <Responsive as={Modal} basic fireOnMount
+        open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == ('/trains/' + this.props.train.id)} onUpdate={this.handleOnUpdate}
+        onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/trains')} trigger={this.props.trigger}
+        closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />
@@ -114,4 +118,4 @@ class TrainModal extends React.Component {
     )
   }
 }
-export default TrainModal
+export default withRouter(TrainModal);

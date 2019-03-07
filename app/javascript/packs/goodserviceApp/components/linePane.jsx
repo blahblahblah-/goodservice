@@ -38,7 +38,7 @@ class LinePane extends React.Component {
       }
       return {
         menuItem: <Menu.Item as={Link} to={'/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase()} key={borough}>{boroughName}</Menu.Item>,
-        render: () => <BoroughPane lines={this.props.lines[borough]} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} />
+        render: () => <BoroughPane borough={borough} lines={this.props.lines[borough]} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} />
       }
     })
   }

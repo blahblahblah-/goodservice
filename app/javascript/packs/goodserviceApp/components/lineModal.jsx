@@ -2,6 +2,7 @@ import React from 'react';
 import { Header, Modal, Statistic, Grid, Responsive, Table, Rating } from 'semantic-ui-react';
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
+import { withRouter } from 'react-router-dom';
 
 class LineModal extends React.Component {
   state = {}
@@ -254,7 +255,10 @@ class LineModal extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Modal} basic fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+      <Responsive as={Modal} basic
+      open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == '/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase() + '/' + this.props.line.name.replace(/\s+/g, '-').toLowerCase()}
+      fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount}
+      onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase())} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Modal.Header>
           {this.props.line.name}
           {
@@ -368,4 +372,4 @@ class LineModal extends React.Component {
     )
   }
 }
-export default LineModal
+export default withRouter(LineModal);

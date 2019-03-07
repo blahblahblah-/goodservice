@@ -52,12 +52,12 @@ class StarredPane extends React.Component {
       <Responsive as={Grid} stackable columns={3} fireOnMount onUpdate={this.handleOnUpdate}>
         {
           map(this.favTrains(), train => {
-            return <Grid.Column key={train.name + train.alternate_name}><Train train={train} stats={this.props.trainStats[train.id]} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} /></Grid.Column>
+            return <Grid.Column key={train.name + train.alternate_name}><Train starredPane={true} train={train} stats={this.props.trainStats[train.id]} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} /></Grid.Column>
           })
         }
         {
           map(this.favLines(), line => {
-            return <Grid.Column key={line.name}><Line line={line} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} /></Grid.Column>
+            return <Grid.Column key={line.name}><Line starredPane={true} line={line} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} /></Grid.Column>
           })
         }
       </Responsive>

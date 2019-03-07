@@ -11,9 +11,8 @@ Rails.application.routes.draw do
   get '/slack/help', to: 'slack#help'
   get '/slack/privacy', to: 'slack#privacy'
   get '/slack/install', to: 'oauth#slack_install'
-  get '/routes(/*id)', to: 'index#index'
+  get '/trains(/*id)', to: 'index#index'
   get '/boroughs(/*borough)(/*line)', to: 'index#index'
   get '/starred', to: 'index#index'
-  get '/trains', to: 'index#index'
   root 'index#index'
 end

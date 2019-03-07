@@ -3,9 +3,15 @@ import { Segment, Header, Button, Responsive } from "semantic-ui-react";
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
 import LineModal from './lineModal.jsx';
+import { withRouter } from 'react-router-dom';
 
 class Line extends React.Component {
-  state = {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      modelOpen: false
+    }
+  }
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
 
@@ -39,10 +45,26 @@ class Line extends React.Component {
     return (width < Responsive.onlyTablet.maxWidth) ? "h4" : "h3";
   }
 
+  handleClick = e => {
+    if (this.props.starredPane) {
+      this.setState({ modelOpen: true});
+    } else {
+      this.props.history.push('/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase() + '/' + this.props.line.name.replace(/\s+/g, '-').toLowerCase());
+    }
+  }
+
+  handleClose = e => {
+    if (this.props.starredPane) {
+      this.setState({ modelOpen: false});
+    }
+  }
+
   render() {
     return(
-      <Responsive as={LineModal} line={this.props.line} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} fireOnMount onUpdate={this.handleOnUpdate} trigger={
-        <Segment className='line-button' as={Button} fluid style={{minHeight: 92}}>
+      <Responsive as={LineModal} line={this.props.line} borough={this.props.borough} starredPane={this.props.starredPane}
+        onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} fireOnMount
+        onUpdate={this.handleOnUpdate} onClose={this.handleClose} trigger={
+        <Segment className='line-button' as={Button} fluid style={{minHeight: 92}} onClick={this.handleClick}>
           <Header as={this.headingSize()} floated='right' className='status' color={this.color()}>{this.props.line.status}</Header>
           <Header as={this.headingSize()} style={{textAlign: 'left', display: 'inline-block', float: 'left', marginTop: '0em'}}>{this.name()}</Header>
           {
@@ -55,4 +77,4 @@ class Line extends React.Component {
     )
   }
 }
-export default Line
+export default withRouter(Line);

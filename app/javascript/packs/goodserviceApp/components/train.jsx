@@ -3,8 +3,16 @@ import { Segment, Header, Button, Responsive } from "semantic-ui-react";
 import TrainBullet from './trainBullet.jsx';
 import TrainModal from './trainModal.jsx';
 import { Pie } from '@nivo/pie';
+import { withRouter } from 'react-router-dom';
 
 class Train extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modelOpen: false
+    }
+  }
+
   alternateName() {
     if (this.props.train.alternate_name) {
       const alt = this.props.train.alternate_name.replace("Shuttle", "");
@@ -114,10 +122,26 @@ class Train extends React.Component {
     )
   }
 
+  handleClick = e => {
+    if (this.props.starredPane) {
+      this.setState({ modelOpen: true});
+    } else {
+      this.props.history.push('/trains/' + this.props.train.id);
+    }
+  }
+
+  handleClose = e => {
+    if (this.props.starredPane) {
+      this.setState({ modelOpen: false});
+    }
+  }
+
   render() {
     return(
-      <TrainModal train={this.props.train} stats={this.props.stats} showStats={this.props.showStats} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} trigger={
-        <Segment as={Button} fluid id={"train-" + this.props.train.name}>
+      <TrainModal train={this.props.train} stats={this.props.stats} starredPane={this.props.starredPane}
+        modalOpen={this.state.modelOpen} showStats={this.props.showStats} onClose={this.handleClose}
+        onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} trigger={
+        <Segment as={Button} fluid id={"train-" + this.props.train.name} onClick={this.handleClick}>
           {this.renderInfo()}
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{ float: 'left' }} />
@@ -127,4 +151,4 @@ class Train extends React.Component {
     )
   }
 }
-export default Train
+export default withRouter(Train);
