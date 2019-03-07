@@ -17,7 +17,7 @@ module Display
 
     def destinations
       trips&.map(&:last_stop).uniq.map { |id|
-        stops.find { |s| s.internal_id == id}.stop_name
+        stops.find { |s| s.internal_id == id}&.stop_name
       }
     end
 
