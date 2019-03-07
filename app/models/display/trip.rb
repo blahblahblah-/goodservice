@@ -21,7 +21,7 @@ module Display
     end
 
     def last_stop
-      trip.stop_time_update.map(&:stop_id).last
+      trip.stop_time_update.map(&:stop_id).reverse.find { |stop_id| valid_stops.include?(stop_id)}
     end
 
     def stops
