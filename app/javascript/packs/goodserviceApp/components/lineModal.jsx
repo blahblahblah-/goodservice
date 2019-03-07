@@ -3,6 +3,7 @@ import { Header, Modal, Statistic, Grid, Responsive, Table, Rating } from 'seman
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
 import { withRouter } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 
 class LineModal extends React.Component {
   state = {}
@@ -259,6 +260,9 @@ class LineModal extends React.Component {
       open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == '/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase() + '/' + this.props.line.name.replace(/\s+/g, '-').toLowerCase()}
       fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount}
       onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase())} trigger={this.props.trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+        <Helmet>
+          <title>goodservice.io beta - Lines - {this.props.borough ? this.props.borough + ' - ' + this.props.line.name : this.props.line.name} Line</title>
+        </Helmet>
         <Modal.Header>
           {this.props.line.name}
           {

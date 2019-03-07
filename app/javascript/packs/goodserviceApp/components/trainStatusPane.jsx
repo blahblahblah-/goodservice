@@ -4,6 +4,7 @@ import Train from './train.jsx';
 import TrainBullet from "./trainBullet.jsx";
 import { map } from 'lodash';
 import Hammer from 'react-hammerjs';
+import { Helmet } from "react-helmet";
 
 class TrainStatusPane extends React.Component {
   constructor(props) {
@@ -89,6 +90,9 @@ class TrainStatusPane extends React.Component {
   render() {
     return(
       <div ref={this.handleContextRef}>
+        <Helmet>
+          <title>goodservice.io beta - Trains</title>
+        </Helmet>
         {
           this.shortcutMenu()
         }

@@ -7,6 +7,7 @@ import StarredPane from "./starredPane.jsx";
 import sampleData from "../data/sampleData.js";
 import { Parallax, Background } from 'react-parallax';
 import * as Cookies from 'es-cookie';
+import { Helmet } from "react-helmet";
 
 const API_URL = '/api/info';
 const STATS_URL = '/api/stats';
@@ -184,6 +185,9 @@ class LandingPage extends React.Component {
     const { trains, lines, activeIndex, timestamp, favLines, favTrains } = this.state;
     return(
       <div>
+        <Helmet>
+          <title>goodservice.io beta - a better new york city subway status page</title>
+        </Helmet>
         <Segment inverted vertical style={{padding: '2em 2em 1em 2em'}}>
           <Header inverted as='h1' color='blue'>
             goodservice.io<span id="beta">beta</span>

@@ -5,6 +5,7 @@ import TrainBullet from "./trainBullet.jsx";
 import Line from './line.jsx';
 import { map } from 'lodash';
 import Hammer from 'react-hammerjs';
+import { Helmet } from "react-helmet";
 
 class StarredPane extends React.Component {
   constructor(props) {
@@ -73,6 +74,9 @@ class StarredPane extends React.Component {
   render() {
     return(
       <div ref={this.handleContextRef}>
+        <Helmet>
+          <title>goodservice.io beta - Starred</title>
+        </Helmet>
         {
           this.renderContent()
         }
