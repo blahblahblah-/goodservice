@@ -49,20 +49,12 @@ class TrainModal extends React.Component {
   }
 
   hasLinesWithoutService() {
-    return (this.props.train.lines_not_in_service.north.size > 0 || this.props.train.lines_not_in_service.south.size > 0);
+    return (this.props.train.lines_not_in_service.north.length > 0 || this.props.train.lines_not_in_service.south.length > 0);
   }
 
   headingSize() {
     const { width } = this.state;
     return (width > Responsive.onlyMobile.maxWidth) ? 'h1' : 'h4';
-  }
-
-  alternateName() {
-    if (this.props.train.alternate_name) {
-      return (
-        <Header as={this.headingSize()} floated='right' inverted>{this.props.train.alternate_name}</Header>
-      )
-    }
   }
 
   renderStatus() {
@@ -100,8 +92,8 @@ class TrainModal extends React.Component {
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
             textColor={this.props.train.text_color} style={{display: "inline-block"}} size={(width > Responsive.onlyMobile.maxWidth) ? "large" : "medium"} />
+            {this.props.train.alternate_name}
           <Rating icon='star' size="massive" onRate={this.handleRateTrain} defaultRating={this.defaultRating()} />
-          {this.alternateName()}
         </Modal.Header>
         <Modal.Content>
           <Modal.Description>

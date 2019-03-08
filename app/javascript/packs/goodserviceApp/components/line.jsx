@@ -28,7 +28,7 @@ class Line extends React.Component {
   name() {
     const { width } = this.state;
     const name = this.props.line.name.replace(" Branch", "");
-    if (width < 470) {
+    if (width < 1400) {
       return name.replace("Washington Heights (8 Avenue)", "Wash Hts (8 Av)")
         .replace("Rockaway (Far Rockaway)", "Far Rockaway")
         .replace("Rockaway (Rockaway Park)", "Rockaway Park")

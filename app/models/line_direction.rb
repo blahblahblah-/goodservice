@@ -13,6 +13,10 @@ class LineDirection < ActiveRecord::Base
     line.name
   end
 
+  def boroughs
+    line.boroughs
+  end
+
   def self.scheduled_lines(route_internal_id, direction)
     stops = StopTime.soon_by_route(route_internal_id, direction).pluck(:stop_internal_id)
     self.where("type is null or type <> 'ExpressLineDirection'").where(last_stop: stops).or(self.where(type: 'ExpressLineDirection').where(penultimate_stop: stops).where(last_stop: stops))

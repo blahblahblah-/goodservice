@@ -123,7 +123,7 @@ class LineModal extends React.Component {
             </h5>
             {
               map(obj.routes, route => {
-                return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
               })
             }
           </Table.Cell>
@@ -195,7 +195,7 @@ class LineModal extends React.Component {
             </h5>
             {
               map(obj.routes, route => {
-                return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
               })
             }
           </Table.Cell>
@@ -225,7 +225,7 @@ class LineModal extends React.Component {
             </h5>
             {
               map(obj.routes, route => {
-                return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
               })
             }
           </Table.Cell>
@@ -267,7 +267,7 @@ class LineModal extends React.Component {
           {this.props.line.name}
           {
             map(this.props.line.routes, route => {
-              return <TrainBullet key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+              return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
             })
           }
           <Rating icon='star' size="massive" onRate={this.handleRateLine} defaultRating={this.defaultRating()} />

@@ -113,6 +113,7 @@ class ScheduleProcessor
           }.map { |ld|
           {
             name: ld.name,
+            boroughs: ld.boroughs,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
@@ -123,6 +124,7 @@ class ScheduleProcessor
           }.map { |ld|
           {
             name: ld.name,
+            boroughs: ld.boroughs,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
@@ -144,6 +146,7 @@ class ScheduleProcessor
           name: line.name,
           routes: line.routes.map { |route|
             {
+              id: route.internal_id,
               name: route.name,
               color: route.color && "##{route.color}",
               text_color: route.text_color && "##{route.text_color}",
@@ -164,6 +167,7 @@ class ScheduleProcessor
               delay: ld.delay,
               routes: ld.routes.map { |route|
                 {
+                  id: route.internal_id,
                   name: route.name,
                   color: route.color && "##{route.color}",
                   text_color: route.text_color && "##{route.text_color}",
@@ -181,6 +185,7 @@ class ScheduleProcessor
               delay: ld.delay,
               routes: ld.routes.map { |route|
                 {
+                  id: route.internal_id,
                   name: route.name,
                   color: route.color && "##{route.color}",
                   text_color: route.text_color && "##{route.text_color}",

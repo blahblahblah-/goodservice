@@ -1,7 +1,7 @@
 module Display
   class RouteDisplay
     include Comparable
-    delegate :color, :text_color, :name, :alternate_name, :visible?, :scheduled?, to: :route
+    delegate :internal_id, :color, :text_color, :name, :alternate_name, :visible?, :scheduled?, to: :route
 
     def initialize(route)
       @route = route

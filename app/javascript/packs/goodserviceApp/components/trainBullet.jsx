@@ -1,5 +1,6 @@
 import React from 'react';
 import { Segment, Header } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 class TrainBullet extends React.Component {
   name() {
@@ -35,11 +36,21 @@ class TrainBullet extends React.Component {
   }
 
   render() {
-    return(
-      <div className={this.classNames()} style={this.style()}>
-        <div className={this.innerClassNames()}>{this.name()}</div>
-      </div>
-    )
+    if (this.props.link) {
+      return(
+        <Link to={'/trains/' + this.props.id}>
+          <div className={this.classNames()} style={this.style()}>
+            <div className={this.innerClassNames()}>{this.name()}</div>
+          </div>
+        </Link>
+      )
+    } else {
+      return(
+        <div className={this.classNames()} style={this.style()}>
+          <div className={this.innerClassNames()}>{this.name()}</div>
+        </div>
+      )
+    }
   }
 }
 export default TrainBullet

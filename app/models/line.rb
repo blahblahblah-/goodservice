@@ -5,4 +5,10 @@ class Line < ActiveRecord::Base
   def boroughs
     line_boroughs.pluck(:borough)
   end
+
+  def as_json(*)
+    super.tap do |hash|
+      hash[:boroughs] = boroughs
+    end
+  end
 end
