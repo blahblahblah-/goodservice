@@ -32,10 +32,7 @@ class LandingPage extends React.Component {
     this.trackLoadFavLines(favLines);
 
     this.props.history.listen((location) => {
-      if (window.ga) {
-        window.ga('set', 'page', location.pathname);
-        window.ga('send', 'pageview');
-      }
+      gtag('config', 'UA-125010964-1', {'page_path': location.pathname});
     });
   }
 
