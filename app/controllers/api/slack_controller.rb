@@ -11,17 +11,18 @@ class Api::SlackController < ApplicationController
     info = ScheduleProcessor.headway_info
     query = params[:text]
     workspace = params[:enterprise_name] || params[:team_domain]
+    user_id = params[:user_id]
 
     if query == 'help'
       result = help_response(info[:routes])
     elsif (data = info[:routes].find { |r| r[:id] == query})
-      track_event('slash', "route/#{query}", workspace)
+      track_event('slash', "route/#{query}", user_id, workspace)
       result = route_response(data)
     elsif query == 'delays'
-      track_event('slash', 'delays', workspace)
+      track_event('slash', 'delays', user_id, workspace)
       result = delays_response(info[:routes])
     else
-      track_event('slash', 'default', workspace)
+      track_event('slash', 'default', user_id, workspace)
       result = default_response(info)
     end
    
@@ -35,16 +36,17 @@ class Api::SlackController < ApplicationController
 
     uri = URI(payload[:response_url])
     workspace = payload.dig(:enterprise)&.dig(:name) || payload.dig(:team)&.dig(:domain)
+    user_id = payload.dig(:user)&.dig(:id)
 
     if payload[:actions].first[:action_id] == 'select_route'
       if (data = info[:routes].find { |r| r[:id] == payload[:actions].first[:selected_option][:value]})
-        track_event('default', "route/#{data[:id]}")
+        track_event('default', "route/#{data[:id]}", user_id, workspace)
         result = route_response(data)
       end
     elsif payload[:actions].first[:action_id] == 'select_line'
       lines = info[:lines].values.flatten
       if (data = lines.find { |l| l[:id] == payload[:actions].first[:selected_option][:value]})
-        track_event('default', "line/#{data[:id]}")
+        track_event('default', "line/#{data[:id]}", user_id, workspace)
         result = line_response(data)
       end
     end
@@ -343,12 +345,12 @@ class Api::SlackController < ApplicationController
     result
   end
 
-  def tracker
-    @tracker ||= Staccato.tracker('UA-125010964-1', nil, ssl: true)
+  def tracker(user_id)
+    @tracker ||= Staccato.tracker('UA-125010964-1', user_id, ssl: true)
   end
 
-  def track_event(action, label, workspace)
-    event = tracker.build_event(category: 'slack', action: action, label: label)
+  def track_event(action, label, user_id, workspace)
+    event = tracker(user_id).build_event(category: 'slack', action: action, label: label)
     event.add_custom_dimension(1, workspace)
     event.track!
   end
