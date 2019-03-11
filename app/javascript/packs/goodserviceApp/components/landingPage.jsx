@@ -8,6 +8,7 @@ import sampleData from "../data/sampleData.js";
 import { Parallax, Background } from 'react-parallax';
 import * as Cookies from 'es-cookie';
 import { Helmet } from "react-helmet";
+import { withRouter } from 'react-router-dom';
 
 const API_URL = '/api/info';
 const STATS_URL = '/api/stats';
@@ -29,6 +30,13 @@ class LandingPage extends React.Component {
     };
     this.trackLoadFavTrains(favTrains);
     this.trackLoadFavLines(favLines);
+
+    this.props.history.listen((location) => {
+      if (window.ga) {
+        window.ga('set', 'page', location.pathname);
+        window.ga('send', 'pageview');
+      }
+    });
   }
 
   trackLoadFavTrains = (trains) => {
@@ -268,4 +276,4 @@ class LandingPage extends React.Component {
     this.timer = setInterval(() => this.fetchData(), 60000);
   }
 }
-export default LandingPage
+export default withRouter(LandingPage);

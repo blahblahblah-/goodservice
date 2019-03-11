@@ -11,10 +11,12 @@ class LineModal extends React.Component {
   handleOnUpdate = (e, { width }) => this.setState({ width })
 
   handleOnMount = e => {
-    gtag('event', 'open_line', {
-      'event_category': 'modal',
-      'event_label': this.props.line.id
-    });
+    if (this.props.starredPane) {
+      gtag('event', 'open_line', {
+        'event_category': 'modal',
+        'event_label': this.props.line.id
+      });
+    }
   }
 
   handleRateLine = (e, { rating }) => {

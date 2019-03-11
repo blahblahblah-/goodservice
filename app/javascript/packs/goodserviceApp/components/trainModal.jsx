@@ -12,10 +12,12 @@ class TrainModal extends React.Component {
   handleOnUpdate = (e, { width }) => this.setState({ width })
 
   handleOnMount = e => {
-    gtag('event', 'open_train', {
-      'event_category': 'modal',
-      'event_label': this.props.train.id
-    });
+    if (this.props.starredPane) {
+      gtag('event', 'open_train', {
+        'event_category': 'modal',
+        'event_label': this.props.train.id
+      });
+    }
   }
 
   handleRateTrain = (e, { rating }) => {
