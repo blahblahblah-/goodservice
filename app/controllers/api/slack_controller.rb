@@ -44,10 +44,9 @@ class Api::SlackController < ApplicationController
         result = route_response(data)
       end
     elsif payload[:actions].first[:action_id] == 'select_line'
-      lines = info[:lines].values.flatten
-      if (data = lines.find { |l| l[:id] == payload[:actions].first[:selected_option][:value]})
+      if (borough, _ = info[:lines].find { |borough, lines| data = lines.find { |l| l[:id] == payload[:actions].first[:selected_option][:value]}})
         track_event('default', "line/#{data[:id]}", user_id, workspace)
-        result = line_response(data)
+        result = line_response(borough, data)
       end
     end
 
@@ -176,7 +175,7 @@ class Api::SlackController < ApplicationController
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "More info on https://www.goodservice.io"
+          "text": "More info on https://www.goodservice.io/trains/#{route_data[:id]}"
         }
       ]
     }
@@ -254,7 +253,7 @@ class Api::SlackController < ApplicationController
     result
   end
 
-  def line_response(line_data)
+  def line_response(borough, line_data)
     result = [
       {
         "type": "section",
@@ -272,12 +271,15 @@ class Api::SlackController < ApplicationController
     result.push(*direction_line_response(line_data, :north)) unless line_data[:destinations][:north].blank?
     result.push(*direction_line_response(line_data, :south)) unless line_data[:destinations][:south].blank?
 
+    borough = borough.underscore.gsub(/\s/, '-')
+    line_slug = line_data[:name].underscore.gsub(/\s/, '-')
+
     result << {
       "type": "context",
       "elements": [
         {
           "type": "mrkdwn",
-          "text": "More info on https://www.goodservice.io"
+          "text": "More info on https://www.goodservice.io/boroughs/#{borough}/#{line_slug}"
         }
       ]
     }
