@@ -191,13 +191,13 @@ class LandingPage extends React.Component {
     return(
       <div>
         <Helmet>
-          <title>goodservice.io beta - a better new york city subway status page</title>
+          <title>goodservice.io beta - status page for new york city subway</title>
         </Helmet>
         <Segment inverted vertical style={{padding: '2em 2em 1em 2em'}}>
           <Header inverted as='h1' color='blue'>
             goodservice.io<span id="beta">beta</span>
             <Header.Subheader>
-              a better new york city subway status page
+              status page for new york city subway
             </Header.Subheader>
           </Header>
         </Segment>
