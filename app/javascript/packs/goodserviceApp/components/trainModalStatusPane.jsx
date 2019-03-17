@@ -69,7 +69,7 @@ class TrainModalStatusPane extends React.Component {
         <Table.Row key={obj.line.name}>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='small' horizontal inverted color={southColor}>
+              <Statistic size={(obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : "small"} horizontal inverted color={southColor}>
                 <Statistic.Value>
                   {obj.southActual}
                   {
@@ -97,7 +97,7 @@ class TrainModalStatusPane extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='small' horizontal inverted color={northColor}>
+              <Statistic size={(obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : "small"} horizontal inverted color={northColor}>
                 <Statistic.Value>
                   {obj.northActual}
                   {
@@ -278,8 +278,10 @@ class TrainModalStatusPane extends React.Component {
                 Max Wait
               </Table.HeaderCell>
             </Table.Row>
-            { this.tableData() }
           </Table.Header>
+          <Table.Body>
+            { this.tableData() }
+          </Table.Body>
         </Responsive>
         <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
           <Table.Header>
@@ -301,8 +303,10 @@ class TrainModalStatusPane extends React.Component {
                 Lines
               </Table.HeaderCell>
             </Table.Row>
-            { this.tableDataMobileSouth() }
           </Table.Header>
+          <Table.Body>
+            { this.tableDataMobileSouth() }
+          </Table.Body>
         </Responsive>
         <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
           <Table.Header>
@@ -324,8 +328,10 @@ class TrainModalStatusPane extends React.Component {
                 Max Wait
               </Table.HeaderCell>
             </Table.Row>
-            { this.tableDataMobileNorth() }
           </Table.Header>
+          <Table.Body>
+            { this.tableDataMobileNorth() }
+          </Table.Body>
         </Responsive>
         {
           this.renderNoService()
