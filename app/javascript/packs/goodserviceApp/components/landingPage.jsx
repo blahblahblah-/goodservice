@@ -5,6 +5,7 @@ import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
 import StarredPane from "./starredPane.jsx";
 import sampleData from "../data/sampleData.js";
+import sampleStats from "../data/sampleStats.js";
 import { Parallax, Background } from 'react-parallax';
 import * as Cookies from 'es-cookie';
 import { Helmet } from "react-helmet";
@@ -251,7 +252,7 @@ class LandingPage extends React.Component {
 
   fetchData() {
     if (TEST_DATA) {
-      this.setState({ trains: sampleData.routes, lines: sampleData.lines, loading: false });
+      this.setState({ trains: sampleData.routes, lines: sampleData.lines, trainStats: sampleStats.status, loading: false });
     } else {
       fetch(API_URL)
         .then(response => response.json())
