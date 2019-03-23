@@ -65,7 +65,7 @@ class Line extends React.Component {
         onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} fireOnMount
         onUpdate={this.handleOnUpdate} onClose={this.handleClose} trigger={
         <Segment className='line-button' as={Button} fluid style={{minHeight: 92}} onClick={this.handleClick}>
-          <Header as={this.headingSize()} floated='right' className='status' color={this.color()}>{this.props.line.status}</Header>
+          <Header as={this.headingSize()} floated='right' className='status' inverted color={this.color()}>{this.props.line.status}</Header>
           <Header as={this.headingSize()} style={{textAlign: 'left', display: 'inline-block', float: 'left', marginTop: '0em'}}>{this.name()}</Header>
           {
             map(this.props.line.routes, route => {
