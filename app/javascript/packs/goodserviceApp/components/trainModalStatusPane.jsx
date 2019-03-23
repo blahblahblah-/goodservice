@@ -229,14 +229,14 @@ class TrainModalStatusPane extends React.Component {
 
     if (linesBothDirection.length) {
       array.push(
-        <Header as='h4' inverted key="intro">*No service on {linesBothDirectionDOM.reduce((prev, curr) => [prev, ', ', curr])}.</Header>
+        <Header as='h4' inverted color="orange" key="intro">*No service on {linesBothDirectionDOM.reduce((prev, curr) => [prev, ', ', curr])}.</Header>
       )
     }
     if (linesNorth.length) {
-      array.push(<Header as='h4' inverted key="north">*No {train.scheduled_destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
+      array.push(<Header as='h4' inverted color="orange" key="north">*No {train.scheduled_destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
     }
     if (linesSouth.length) {
-      array.push(<Header as='h4' inverted key="south">*No {train.scheduled_destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
+      array.push(<Header as='h4' inverted color="orange" key="south">*No {train.scheduled_destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
     }
     return array;
   }
