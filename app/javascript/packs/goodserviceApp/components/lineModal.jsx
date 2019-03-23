@@ -288,19 +288,19 @@ class LineModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='2' width={4}>
-                        <h4>
+                        <Header as="h4" inverted>
                           To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
-                        </h4>
+                        </Header>
                       </Table.HeaderCell>
                       <Table.HeaderCell rowSpan='2' width={5}>
-                        <h4>
+                        <Header as="h4" inverted>
                           Service
-                        </h4>
+                        </Header>
                       </Table.HeaderCell>
                       <Table.HeaderCell colSpan='2' width={4}>
-                        <h4>
+                        <Header as="h4" inverted>
                           To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
-                        </h4>
+                        </Header>
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
@@ -330,7 +330,9 @@ class LineModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                        <Header as="h4" inverted>
+                          To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                        </Header>
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>
@@ -355,7 +357,9 @@ class LineModal extends React.Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell colSpan='3' width={16}>
-                        To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                        <Header as="h4" inverted>
+                          To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                        </Header>
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row>

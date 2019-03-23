@@ -25,6 +25,8 @@ module Display
         @status = "Delay"
       elsif directions.any? {|_, d| d.lines_not_in_service.present? || d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
         @status = "Service Change"
+      elsif (scheduled_destinations - destinations).any?
+        @status = "Service Change"
       elsif max_headway_discrepancy.nil?
         if route.scheduled?
           @status = "No Service"
@@ -58,6 +60,14 @@ module Display
       directions.map { |_, rd|
         rd.delay
       }.max || 0
+    end
+
+    def scheduled_destinations
+      directions.map { |_, v| v.scheduled_destinations }.flatten.sort.uniq
+    end
+
+    def destinations
+      directions.map { |_, v| v.destinations }.flatten.sort.uniq
     end
   end
 end

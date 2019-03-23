@@ -24,7 +24,10 @@ class TrainModalStatusPane extends React.Component {
     if (delay >= 5) {
       return "red";
     }
-    if (scheduledHeadway && (actualHeadway - scheduledHeadway > 2)) {
+    if (!scheduledHeadway) {
+      return "orange";
+    }
+    if (actualHeadway - scheduledHeadway > 2) {
       return "yellow";
     }
     return "black";
@@ -210,13 +213,14 @@ class TrainModalStatusPane extends React.Component {
   }
 
   renderNoService() {
-    if (this.props.train.status == 'No Data' ||
-      (!this.props.train.lines_not_in_service.north && !this.props.train.lines_not_in_service.south)
+    const { train } = this.props;
+    if (train.status == 'No Data' ||
+      (!train.lines_not_in_service.north && !train.lines_not_in_service.south)
     ) {
       return;
     }
-    const lineNamesNorth = this.props.train.lines_not_in_service.north;
-    const lineNamesSouth = this.props.train.lines_not_in_service.south;
+    const lineNamesNorth = train.lines_not_in_service.north;
+    const lineNamesSouth = train.lines_not_in_service.south;
     const linesBothDirection = lineNamesNorth.filter(x => lineNamesSouth.some(y => y.id === x.id))
     const linesBothDirectionDOM = linesBothDirection.map(x => (<LineDisplay link={true} line={x} key={x.id}/>));
     const linesNorth = lineNamesNorth.filter(x => !linesBothDirection.some(y => y.id === x.id)).map(x => (<LineDisplay link={true} line={x} key={x.id} />));
@@ -229,35 +233,36 @@ class TrainModalStatusPane extends React.Component {
       )
     }
     if (linesNorth.length) {
-      array.push(<Header as='h4' inverted key="north">*No {this.props.train.scheduled_destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
+      array.push(<Header as='h4' inverted key="north">*No {train.scheduled_destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
     }
     if (linesSouth.length) {
-      array.push(<Header as='h4' inverted key="south">*No {this.props.train.scheduled_destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
+      array.push(<Header as='h4' inverted key="south">*No {train.scheduled_destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
     }
     return array;
   }
 
   render() {
     const { width } = this.state;
+    const { train } = this.props;
     return(
       <div>
         <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='2' width={4}>
-                <h4>
-                  To {this.props.train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
-                </h4>
+                <Header as="h4" inverted color={train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest)).length ? "orange" : "black"}>
+                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
               </Table.HeaderCell>
               <Table.HeaderCell rowSpan='2' width={5}>
-                <h4>
+                <Header as="h4" inverted>
                   Lines
-                </h4>
+                </Header>
               </Table.HeaderCell>
               <Table.HeaderCell colSpan='2' width={4}>
-                <h4>
-                  To {this.props.train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
-                </h4>
+                <Header as="h4" inverted color={train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest)).length ? "orange" : "black"}>
+                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
               </Table.HeaderCell>
             </Table.Row>
             <Table.Row>
@@ -287,7 +292,9 @@ class TrainModalStatusPane extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={16}>
-                To {this.props.train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted color={train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest)).length ? "orange" : "black"}>
+                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
               </Table.HeaderCell>
             </Table.Row>
             <Table.Row>
@@ -312,7 +319,9 @@ class TrainModalStatusPane extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={16}>
-                To {this.props.train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted color={train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest)).length ? "orange" : "black"}>
+                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
               </Table.HeaderCell>
             </Table.Row>
             <Table.Row>
