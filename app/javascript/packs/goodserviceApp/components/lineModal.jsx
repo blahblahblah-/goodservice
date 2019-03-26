@@ -271,7 +271,7 @@ class LineModal extends React.Component {
         <Helmet>
           <title>{title}</title>
           <meta property="og:title" content={title} />
-          <meta name="twitter:title" value={title} />
+          <meta name="twitter:title" content={title} />
         </Helmet>
         <Modal.Header>
           {this.props.line.name}

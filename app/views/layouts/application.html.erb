@@ -19,20 +19,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-— facebook open graph tags -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.goodservice.io" />
+    <meta property="og:url" content="https://www.goodservice.io" data-react-helmet="true" />
     <meta property="og:title" content="goodservice.io" data-react-helmet="true" />
     <meta property="og:description" content="Status page for New York City subway" />
     <%= tag :meta, property: 'og:image', content: image_url('screenshot.png') %>
      
     <!-— twitter card tags additive with the og: tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:domain" value="goodservice.io" />
-    <meta name="twitter:title" value="goodservice.io" data-react-helmet="true" />
-    <meta name="twitter:description" value="Status page for New York City subway" />
-    <meta name="twitter:site" value="@goodservice_io" />
-    <meta name="twitter:creator" value="@_blahblahblah" />
+    <meta name="twitter:domain" content="goodservice.io" />
+    <meta name="twitter:title" content="goodservice.io" data-react-helmet="true" />
+    <meta name="twitter:description" content="Status page for New York City subway" />
+    <meta name="twitter:site" content="@goodservice_io" />
+    <meta name="twitter:creator" content="@_blahblahblah" />
     <%= tag :meta, property: 'twitter:image', content: image_url('screenshot.png') %>
-    <meta name="twitter:url" value="https://www.goodservice.io" />
+    <meta name="twitter:url" content="https://www.goodservice.io" data-react-helmet="true" />
     <%= favicon_link_tag asset_path('favicon.ico'), rel: 'icon', type: "image/x-icon" %>
     <meta name="slack-app-id" content="AGK7ZP2AH">
   </head>

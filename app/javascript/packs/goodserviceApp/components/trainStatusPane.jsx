@@ -93,7 +93,7 @@ class TrainStatusPane extends React.Component {
         <Helmet>
           <title>goodservice.io beta - Trains</title>
           <meta property="og:title" content="goodservice.io" />
-          <meta name="twitter:title" value="goodservice.io" />
+          <meta name="twitter:title" content="goodservice.io" />
         </Helmet>
         {
           this.shortcutMenu()

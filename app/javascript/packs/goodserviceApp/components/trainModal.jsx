@@ -92,7 +92,9 @@ class TrainModal extends React.Component {
         <Helmet>
           <title>{title}</title>
           <meta property="og:title" content={title} />
-          <meta name="twitter:title" value={title} />
+          <meta name="twitter:title" content={title} />
+          <meta property="og:url" content={"https://www.goodservice.io/trains/" + this.props.train.id} />
+          <meta name="twitter:url" content={"https://www.goodservice.io/trains/" + this.props.train.id} />
         </Helmet>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}
