@@ -343,7 +343,9 @@ class ScheduleProcessor
 
     delayed_routes = routes_info.sort_by { |_, r|
       "#{r.name} #{r.alternate_name}"
-    }.select { |_, r| r.status == "Delay" }.map { |_, r|
+    }.select { |_, r| r.status == "Delay" }.reject { |_, r|
+      r.internal_id = 'FS'
+    }.map { |_, r|
       r.name == 'S' ? r.alternate_name : r.name
     }
 
