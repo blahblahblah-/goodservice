@@ -18,6 +18,8 @@ class Line extends React.Component {
   color() {
     if (this.props.line.status == 'Good Service') {
       return 'green';
+    } else if (this.props.line.status == 'Service Change') {
+      return 'orange';
     } else if (this.props.line.status == 'Not Good') {
       return 'yellow';
     } else if (this.props.line.status == 'Delay') {

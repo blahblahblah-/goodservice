@@ -23,9 +23,9 @@ module Display
 
       if delay >= 5
         @status = "Delay"
-      elsif directions.any? {|_, d| d.lines_not_in_service.present? || d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
+      elsif directions.any? {|_, d| d.lines_not_in_service.present? && d.line_directions.any? { |ld| ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? } }
         @status = "Service Change"
-      elsif (scheduled_destinations - destinations).any?
+      elsif (scheduled_destinations - destinations).any? && destinations.present?
         @status = "Service Change"
       elsif max_headway_discrepancy.nil?
         if route.scheduled?

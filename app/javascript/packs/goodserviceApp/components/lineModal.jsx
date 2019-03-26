@@ -26,6 +26,8 @@ class LineModal extends React.Component {
   color() {
     if (this.props.line.status == 'Good Service') {
       return 'green';
+    } else if (this.props.line.status == 'Service Change') {
+      return 'orange';
     } else if (this.props.line.status == 'Not Good') {
       return 'yellow';
     } else if (this.props.line.status == 'Delay') {
@@ -36,6 +38,9 @@ class LineModal extends React.Component {
   cellColor(delay, scheduledHeadway, actualHeadway) {
     if (delay >= 5) {
       return "red";
+    }
+    if (scheduledHeadway && !actualHeadway && actualHeadway != 0) {
+      return "orange";
     }
     if (scheduledHeadway && (actualHeadway - scheduledHeadway > 2)) {
       return "yellow";
@@ -97,10 +102,10 @@ class LineModal extends React.Component {
       return (
         <Table.Row key={obj.type}>
           <Table.Cell>
-            { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size={(obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : "small"} horizontal inverted color={southColor}>
+            { (obj.southScheduled || obj.southActual || obj.southActual === 0) &&
+              <Statistic size={(obj.southActual && obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : "small"} horizontal inverted color={southColor}>
                 <Statistic.Value>
-                  {obj.southActual}
+                  {obj.southActual || "--"}
                   {
                     (obj.southDelay >= 5) && (<span style={{fontSize: "1rem"}}> + {obj.southDelay}</span>)
                   }
@@ -112,7 +117,7 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            { (obj.southActual || obj.southActual === 0) &&
+            { (obj.southScheduled || obj.southActual || obj.southActual === 0) &&
               <Statistic size='small' horizontal inverted color={southColor}>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -130,10 +135,10 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size={(obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : "small"} horizontal inverted color={northColor}>
+            { (obj.northScheduled || obj.northActual || obj.northActual === 0) &&
+              <Statistic size={(obj.northActual && obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : "small"} horizontal inverted color={northColor}>
                 <Statistic.Value>
-                  {obj.northActual}
+                  {obj.northActual || "--"}
                   {
                     (obj.northDelay >= 5) && (<span style={{fontSize: "1rem"}}> + {obj.northDelay}</span>)
                   }
@@ -145,7 +150,7 @@ class LineModal extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            { (obj.northActual || obj.northActual === 0) &&
+            { (obj.northScheduled || obj.northActual || obj.northActual === 0) &&
               <Statistic size='small' horizontal inverted color={northColor}>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -175,7 +180,7 @@ class LineModal extends React.Component {
           <Table.Cell>
             <Statistic size='small' inverted color={southColor}>
               <Statistic.Value>
-                {obj.southActual}
+                {obj.southActual || "--"}
                 {
                   (obj.southDelay >= 5) && (<span style={{fontSize: "0.9rem"}}> + {obj.southDelay}</span>)
                 }
@@ -234,7 +239,7 @@ class LineModal extends React.Component {
           <Table.Cell>
             <Statistic size='small' inverted color={northColor}>
               <Statistic.Value>
-                {obj.northActual}
+                {obj.northActual || "--"}
                 {
                   (obj.northDelay >= 5) && (<span style={{fontSize: "0.9rem"}}> + {obj.northDelay}</span>)
                 }

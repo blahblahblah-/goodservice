@@ -158,7 +158,7 @@ class ScheduleProcessor
             south: line.destinations[3],
           },
           north: line.directions[1].reject { |ld|
-            ld.max_actual_headway.nil?
+            ld.max_actual_headway.nil? && ld.max_scheduled_headway.nil?
           }.map { |ld|
             {
               type: ld.type,
@@ -176,7 +176,7 @@ class ScheduleProcessor
             }
           },
           south: line.directions[3].reject { |ld|
-            ld.max_actual_headway.nil?
+            ld.max_actual_headway.nil? && ld.max_scheduled_headway.nil?
           }.map { |ld|
             {
               type: ld.type,
@@ -403,6 +403,7 @@ class ScheduleProcessor
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
+        next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time > feed.header.timestamp + 60.minutes }
         direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i 
         route_id = route(entity.trip_update.trip.route_id)
         trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names, recent_trips)

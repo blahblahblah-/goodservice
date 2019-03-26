@@ -19,11 +19,17 @@ module Display
     def status
       if delay >= 5
         "Delay"
+      elsif directions.all? {|_, d| d.none?(&:max_actual_headway) }
+        "No Service"
+      elsif service_change?
+        "Service Change"
       elsif max_headway_discrepancy.nil?
         if directions.any? {|_, d| d.any?(&:max_actual_headway) }
           "Good Service"
-        else
+        elsif directions.any? {|_, d| d.any?(&:max_scheduled_headway) }
           "No Service"
+        else
+          "Not Scheduled"
         end
       elsif max_headway_discrepancy > 2
         "Not Good"
@@ -40,6 +46,14 @@ module Display
 
     def routes
       directions.map { |_, v| v.map(&:routes) }.flatten.uniq { |rd| rd.name }.sort
+    end
+
+    def service_change?
+      directions.any? { |_, array|
+        array.any? { |ld|
+          ld.max_scheduled_headway && !ld.headway_discrepancy
+        }
+      }
     end
 
     private
