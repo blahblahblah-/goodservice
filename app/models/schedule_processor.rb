@@ -406,8 +406,12 @@ class ScheduleProcessor
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time > feed.header.timestamp + 60.minutes }
-        direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i 
         route_id = route(entity.trip_update.trip.route_id)
+        direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i
+        if route_id == 'A' && entity.trip_update.stop_time_update.present? && ['A55S', 'A65N'].include?(entity.trip_update.stop_time_update.last.stop_id)
+          puts "A Shuttle found, reversing trip #{entity.trip_update.trip.trip_id}"
+          entity.trip_update, direction = reverse_trip_update(entity.trip_update)
+        end
         trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names, recent_trips)
         routes[route_id]&.push_trip(trip)
         trip.add_to_lines(lines)
@@ -459,5 +463,17 @@ class ScheduleProcessor
         route.set_unavailable!
       end
     end
+  end
+
+  def reverse_trip_update(trip_update)
+    direction = (trip_update.trip.nyct_trip_descriptor.direction.to_i == 1) ? 3 : 1
+
+    trip_update.stop_time_update = trip_update.stop_time_update.map do |stop_time_update|
+      stop_time_update.stop_id = "#{stop_time_update.stop_id[0..2]}#{stop_time_update.stop_id[3] == 'N' ? 'S' : 'N'}"
+
+      stop_time_update
+    end
+
+    return trip_update, direction
   end
 end
