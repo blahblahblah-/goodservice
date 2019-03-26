@@ -137,7 +137,7 @@ class TrainModalDataPane extends React.Component {
         return accumulator + day[key]
       }, 0);
       return {
-        date: moment().subtract(7 - i, 'days').format('dd M/D'),
+        date: `${moment().subtract(7 - i, 'days').format('dd')[0]} ${moment().subtract(7 - i, 'days').format('M/D')}`,
         goodService: day['good_service'] / total,
         goodServiceColor: this.statusColor("Good Service"),
         serviceChange: day['service_change'] / total,
