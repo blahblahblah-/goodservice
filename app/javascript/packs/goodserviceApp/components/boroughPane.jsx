@@ -6,10 +6,13 @@ import { Helmet } from "react-helmet";
 
 class BoroughPane extends React.Component {
   render() {
+    const title = "goodservice.io beta - Lines - " + this.props.borough;
     return(
       <Tab.Pane>
         <Helmet>
-          <title>goodservice.io beta - Lines - {this.props.borough}</title>
+          <title>{title}</title>
+          <meta property="og:title" content={title} />
+          <meta name="twitter:title" value={title} />
         </Helmet>
         <Grid stackable columns={2}>
           {

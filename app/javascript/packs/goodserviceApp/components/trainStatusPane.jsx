@@ -92,6 +92,8 @@ class TrainStatusPane extends React.Component {
       <div ref={this.handleContextRef}>
         <Helmet>
           <title>goodservice.io beta - Trains</title>
+          <meta property="og:title" content="goodservice.io" />
+          <meta name="twitter:title" value="goodservice.io" />
         </Helmet>
         {
           this.shortcutMenu()

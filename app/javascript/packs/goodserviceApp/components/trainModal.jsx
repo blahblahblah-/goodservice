@@ -83,13 +83,16 @@ class TrainModal extends React.Component {
 
   render() {
     const { width } = this.state;
+    const title = "goodservice.io beta - Trains - " + ((this.props.train.alternate_name) ? ("S - " + this.props.train.alternate_name) : this.props.train.name) + " Train";
     return(
       <Responsive as={Modal} basic fireOnMount
         open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == ('/trains/' + this.props.train.id)} onUpdate={this.handleOnUpdate}
         onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/trains')} trigger={this.props.trigger}
         closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Helmet>
-          <title>goodservice.io beta - Trains - {this.props.train.alternate_name ? "S - " + this.props.train.alternate_name : this.props.train.name + " Train"}</title>
+          <title>{title}</title>
+          <meta property="og:title" content={title} />
+          <meta name="twitter:title" value={title} />
         </Helmet>
         <Modal.Header>
           <TrainBullet name={this.props.train.name} color={this.props.train.color}

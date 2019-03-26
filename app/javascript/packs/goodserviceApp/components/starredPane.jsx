@@ -76,6 +76,8 @@ class StarredPane extends React.Component {
       <div ref={this.handleContextRef}>
         <Helmet>
           <title>goodservice.io beta - Starred</title>
+          <meta property="og:title" content="goodservice.io" />
+          <meta name="twitter:title" value="goodservice.io" />
         </Helmet>
         {
           this.renderContent()
