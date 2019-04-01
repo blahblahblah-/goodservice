@@ -243,7 +243,7 @@ class LandingPage extends React.Component {
               <Header inverted as='h5'>
                 Last updated {timestamp && (new Date(timestamp)).toLocaleTimeString('en-US')}.<br />
                 Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />
-                <a href='https://github.com/blahblahblah-/goodservice'>Souce code</a>.
+                <a href='https://github.com/blahblahblah-/goodservice'>Source code</a>.
               </Header>
             </Grid.Column>
           </Grid>
