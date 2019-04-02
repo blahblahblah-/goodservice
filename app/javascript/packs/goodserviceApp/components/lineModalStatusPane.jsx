@@ -1,33 +1,21 @@
 import React from 'react';
-import { Header, Statistic, Grid, Responsive, Table } from 'semantic-ui-react';
+import { Header, Statistic, Responsive, Table } from 'semantic-ui-react';
+import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
-import LineDisplay from './lineDisplay.jsx';
 
-class TrainModalStatusPane extends React.Component {
+class LineModalStatusPane extends React.Component {
   state = {}
 
   handleOnUpdate = (e, { width }) => this.setState({ width })
-
-  color() {
-    if (this.props.train.status == 'Good Service') {
-      return 'green';
-    } else if (this.props.train.status == 'Service Change') {
-      return 'orange';
-    } else if (this.props.train.status == 'Not Good') {
-      return 'yellow';
-    } else if (this.props.train.status == 'Delay') {
-      return 'red';
-    }
-  }
 
   cellColor(delay, scheduledHeadway, actualHeadway) {
     if (delay >= 5) {
       return "red";
     }
-    if (!scheduledHeadway) {
+    if (scheduledHeadway && !actualHeadway && actualHeadway != 0) {
       return "orange";
     }
-    if (actualHeadway - scheduledHeadway > 2) {
+    if (scheduledHeadway && (actualHeadway - scheduledHeadway > 2)) {
       return "yellow";
     }
     return "black";
@@ -46,38 +34,58 @@ class TrainModalStatusPane extends React.Component {
     return "black";
   }
 
+  formatPercent(number) {
+    if (number === null || isNaN(number)) {
+      return "--";
+    }
+    const integer = parseInt(number * 100);
+    if (integer >= 0) {
+      return "+" + integer + "%";
+    }
+    return integer + "%";
+  }
+
   tableData() {
-    const north = this.props.train.north.slice().reverse();
-    let data = this.props.train.south.map((obj, index) => {
-      let northLine = north.find((nObj) => {
+    const north = this.props.line.north;
+    let data = this.props.line.south.map((obj, index) => {
+      let northType = north.find((nObj) => {
         return obj.name === nObj.name;
       });
+      let routes = obj.routes;
+      if (northType) {
+        routes = routes.concat(northType.routes.filter((r) => {
+          return routes.every((route) => {
+            return r.name !== route.name
+          });
+        }));
+      }
       return {
-        line: obj,
+        name: obj.name || "Local",
+        routes: routes,
         southActual: obj.max_actual_headway,
         southScheduled: obj.max_scheduled_headway,
         southDelay: obj.delay,
         southTravelTime: obj.travel_time,
-        northActual: northLine && northLine.max_actual_headway,
-        northScheduled: northLine && northLine.max_scheduled_headway,
-        northDelay: northLine && northLine.delay,
-        northTravelTime: northLine && northLine.travel_time
+        northActual: northType && northType.max_actual_headway,
+        northScheduled: northType && northType.max_scheduled_headway,
+        northDelay: northType && northType.delay,
+        northTravelTime: northType && northType.travel_time,
       }
     });
-    let count = 1;
-    north.forEach((obj, index) => {
+    north.forEach((obj) => {
       let match = data.find((el) => {
-        return el.line.name === obj.name
+        let type = obj.name || "Local";
+        return el.name === type;
       });
       if (!match) {
-        data.splice(index + count - 1, 0, {
-          line: obj,
+        data.push({
+          name: obj.name || "Local",
+          routes: obj.routes,
           northActual: obj.max_actual_headway,
           northScheduled: obj.max_scheduled_headway,
           northDelay: obj.delay,
-          northTravelTime: obj.travel_time
+          northTravelTime: obj.travel_time,
         });
-        count++;
       }
     });
 
@@ -87,12 +95,12 @@ class TrainModalStatusPane extends React.Component {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
       return (
-        <Table.Row key={obj.line.name}>
+        <Table.Row key={obj.name}>
           <Table.Cell>
-            { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size={(obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : "small"} horizontal inverted color={southColor}>
+            { (obj.southScheduled || obj.southActual || obj.southActual === 0) &&
+              <Statistic size={(obj.southActual && obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : "small"} horizontal inverted color={southColor}>
                 <Statistic.Value>
-                  {obj.southActual}
+                  {obj.southActual || "--"}
                   {
                     (obj.southDelay >= 5) && (<span style={{fontSize: "1rem"}}> + {obj.southDelay}</span>)
                   }
@@ -104,7 +112,7 @@ class TrainModalStatusPane extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            { (obj.southActual || obj.southActual === 0) &&
+            { (obj.southScheduled || obj.southActual || obj.southActual === 0) &&
               <Statistic size='small' horizontal inverted color={southColor}>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -119,9 +127,14 @@ class TrainModalStatusPane extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            <h5>
-              <LineDisplay link={true} line={obj.line} />
+            <h5 style={{display: "inline-block"}}>
+              {obj.name}
             </h5>
+            {
+              map(obj.routes, route => {
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+              })
+            }
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
@@ -131,10 +144,10 @@ class TrainModalStatusPane extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size={(obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : "small"} horizontal inverted color={northColor}>
+            { (obj.northScheduled || obj.northActual || obj.northActual === 0) &&
+              <Statistic size={(obj.northActual && obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : "small"} horizontal inverted color={northColor}>
                 <Statistic.Value>
-                  {obj.northActual}
+                  {obj.northActual || "--"}
                   {
                     (obj.northDelay >= 5) && (<span style={{fontSize: "1rem"}}> + {obj.northDelay}</span>)
                   }
@@ -146,7 +159,7 @@ class TrainModalStatusPane extends React.Component {
             }
           </Table.Cell>
           <Table.Cell>
-            { (obj.northActual || obj.northActual === 0) &&
+            { (obj.northScheduled || obj.northActual || obj.northActual === 0) &&
               <Statistic size='small' horizontal inverted color={northColor}>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
@@ -158,10 +171,30 @@ class TrainModalStatusPane extends React.Component {
     });
   }
 
+  shortenName(name) {
+    if (name) {
+      return name.replace(/Avenue/g, "Av")
+          .replace(/Street/g, "St")
+          .replace(/Parkway/g, "Pkwy")
+          .replace(/Boulevard/g, "Blvd")
+          .replace(/Broadway/g, "Bway")
+          .replace(/Washington/g, "Wash")
+          .replace(/Manhattan/g, "Manh")
+          .replace(/Brooklyn/g, "Bklyn")
+          .replace(/Bridge/g, "Br")
+          .replace(/Williamsburg/g, "Wmsburg")
+          .replace(/Lexington/g, "Lex")
+          .replace(/Central Park West/g, "Central Pk W")
+          .replace(/North/g, "N")
+          .replace(/South/g, "S");
+    }
+  }
+
   tableDataMobileSouth() {
-    let data = this.props.train.south.map((obj, index) => {
+    let data = this.props.line.south.map((obj, index) => {
       return {
-        line: obj,
+        name: this.shortenName(obj.name) || "Local",
+        routes: obj.routes,
         southActual: obj.max_actual_headway,
         southScheduled: obj.max_scheduled_headway,
         southDelay: obj.delay,
@@ -173,11 +206,11 @@ class TrainModalStatusPane extends React.Component {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
       const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
       return (
-        <Table.Row key={obj.line.name}>
+        <Table.Row key={obj.name}>
           <Table.Cell>
             <Statistic size='mini' inverted color={southColor}>
               <Statistic.Value>
-                {obj.southActual}
+                {obj.southActual || "--"}
                 {
                   (obj.southDelay >= 5) && (<span style={{fontSize: "0.9rem"}}> + {obj.southDelay}</span>)
                 }
@@ -200,10 +233,15 @@ class TrainModalStatusPane extends React.Component {
               </Statistic>
             }
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell style={{paddingRight: 0, paddingLeft: 0}}>
             <h5>
-              <LineDisplay link={true} mobile={true} line={obj.line} />
+              {obj.name}
             </h5>
+            {
+              map(obj.routes, route => {
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+              })
+            }
           </Table.Cell>
         </Table.Row>
       )
@@ -211,9 +249,10 @@ class TrainModalStatusPane extends React.Component {
   }
 
   tableDataMobileNorth() {
-    let data = this.props.train.north.map((obj) => {
+    let data = this.props.line.north.map((obj, index) => {
       return {
-        line: obj,
+        name: this.shortenName(obj.name) || "Local",
+        routes: obj.routes,
         northActual: obj.max_actual_headway,
         northScheduled: obj.max_scheduled_headway,
         northDelay: obj.delay,
@@ -225,11 +264,16 @@ class TrainModalStatusPane extends React.Component {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
       return (
-        <Table.Row key={obj.line.name}>
-          <Table.Cell>
+        <Table.Row key={obj.name}>
+          <Table.Cell style={{paddingRight: 0, paddingLeft: 0}}>
             <h5>
-              <LineDisplay link={true} mobile={true} line={obj.line} />
+              {obj.name}
             </h5>
+            {
+              map(obj.routes, route => {
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+              })
+            }
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
@@ -241,7 +285,7 @@ class TrainModalStatusPane extends React.Component {
           <Table.Cell>
             <Statistic size='mini' inverted color={northColor}>
               <Statistic.Value>
-                {obj.northActual}
+                {obj.northActual || "--"}
                 {
                   (obj.northDelay >= 5) && (<span style={{fontSize: "0.9rem"}}> + {obj.northDelay}</span>)
                 }
@@ -262,67 +306,26 @@ class TrainModalStatusPane extends React.Component {
     });
   }
 
-  formatPercent(number) {
-    if (number === null || isNaN(number)) {
-      return "--";
-    }
-    const integer = parseInt(number * 100);
-    if (integer >= 0) {
-      return "+" + integer + "%";
-    }
-    return integer + "%";
-  }
-
-  renderNoService() {
-    const { train } = this.props;
-    if (train.status == 'No Data' ||
-      (!train.lines_not_in_service.north && !train.lines_not_in_service.south)
-    ) {
-      return;
-    }
-    const lineNamesNorth = train.lines_not_in_service.north;
-    const lineNamesSouth = train.lines_not_in_service.south;
-    const linesBothDirection = lineNamesNorth.filter(x => lineNamesSouth.some(y => y.id === x.id))
-    const linesBothDirectionDOM = linesBothDirection.map(x => (<LineDisplay link={true} line={x} key={x.id}/>));
-    const linesNorth = lineNamesNorth.filter(x => !linesBothDirection.some(y => y.id === x.id)).map(x => (<LineDisplay link={true} line={x} key={x.id} />));
-    const linesSouth = lineNamesSouth.filter(x => !linesBothDirection.some(y => y.id === x.id)).map(x => (<LineDisplay link={true} line={x} key={x.id} />));
-    const array = []
-
-    if (linesBothDirection.length) {
-      array.push(
-        <Header as='h4' inverted color="orange" key="intro">*No service on {linesBothDirectionDOM.reduce((prev, curr) => [prev, ', ', curr])}.</Header>
-      )
-    }
-    if (linesNorth.length) {
-      array.push(<Header as='h4' inverted color="orange" key="north">*No {train.scheduled_destinations.north.join('/').replace(/ - /g, "–") || "north"}-bound service on {linesNorth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
-    }
-    if (linesSouth.length) {
-      array.push(<Header as='h4' inverted color="orange" key="south">*No {train.scheduled_destinations.south.join('/').replace(/ - /g, "–") || "south"}-bound service on {linesSouth.reduce((prev, curr) => [prev, ', ', curr])}.</Header>)
-    }
-    return array;
-  }
-
   render() {
     const { width } = this.state;
-    const { train } = this.props;
     return(
       <div>
         <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={5}>
-                <Header as="h4" inverted color={train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted>
+                  To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
-              <Table.HeaderCell width={3} rowSpan='2'>
+              <Table.HeaderCell rowSpan='2' width={3}>
                 <Header as="h4" inverted>
-                  Lines
+                  Service
                 </Header>
               </Table.HeaderCell>
               <Table.HeaderCell colSpan='3' width={5}>
-                <Header as="h4" inverted color={train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted>
+                  To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -342,7 +345,7 @@ class TrainModalStatusPane extends React.Component {
                 Traffic Conditions
               </Table.HeaderCell>
               <Table.HeaderCell width={2}>
-                Actual <br />
+                Actual<br />
                 Max Wait
               </Table.HeaderCell>
               <Table.HeaderCell width={2}>
@@ -359,8 +362,8 @@ class TrainModalStatusPane extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
-                <Header as="h4" inverted color={train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted>
+                  To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -377,7 +380,7 @@ class TrainModalStatusPane extends React.Component {
                 Traffic Conditions
               </Table.HeaderCell>
               <Table.HeaderCell width={6}>
-                Lines
+                Service
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -389,14 +392,14 @@ class TrainModalStatusPane extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
-                <Header as="h4" inverted color={train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted>
+                  To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
             <Table.Row>
               <Table.HeaderCell width={6}>
-                Lines
+                Service
               </Table.HeaderCell>
               <Table.HeaderCell width={6}>
                 Traffic Conditions
@@ -415,11 +418,8 @@ class TrainModalStatusPane extends React.Component {
             { this.tableDataMobileNorth() }
           </Table.Body>
         </Responsive>
-        {
-          this.renderNoService()
-        }
       </div>
     )
   }
 }
-export default TrainModalStatusPane
+export default LineModalStatusPane;

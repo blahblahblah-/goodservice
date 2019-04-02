@@ -3,6 +3,7 @@ import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon, Respons
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
+import SlowZonesPane from "./slowZonesPane.jsx";
 import StarredPane from "./starredPane.jsx";
 import sampleData from "../data/sampleData.js";
 import sampleStats from "../data/sampleStats.js";
@@ -117,16 +118,22 @@ class LandingPage extends React.Component {
   panes() {
     const { trains, lines, favTrains, favLines, trainStats } = this.state;
     return [
-      { menuItem: <Menu.Item as={Link} to='/trains' key='train'>By Train</Menu.Item>,
+      { menuItem: <Menu.Item as={Link} to='/trains' key='train'>Trains</Menu.Item>,
         render: () =>
           <Tab.Pane>
             <TrainPane trains={trains} trainStats={trainStats} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} />
           </Tab.Pane>
       },
-      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>By Line</Menu.Item>,
+      { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>Lines</Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
             <LinePane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+          </Tab.Pane>
+      },
+      { menuItem: <Menu.Item as={Link} to='/slow-zones' key='slow-zones'>Slow Zones</Menu.Item>,
+        render: () =>
+          <Tab.Pane style={{minHeight: 650}}>
+            <SlowZonesPane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
@@ -221,8 +228,9 @@ class LandingPage extends React.Component {
                   {this.loading()}
                   <Switch>
                     <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
-                    <Route strict path="/starred" render={() => <Tab panes={this.panes()} activeIndex="2" />} />
+                    <Route strict path="/starred" render={() => <Tab panes={this.panes()} activeIndex="3" />} />
                     <Route strict path="/trains" render={() => <Tab panes={this.panes()} activeIndex="0" />} />
+                    <Route strict path="/slow-zones" render={() => <Tab panes={this.panes()} activeIndex="2" />} />
                     <Route render={() =>
                       favTrains.size || favLines.size ?
                       <Redirect to="/starred" /> :
@@ -234,12 +242,12 @@ class LandingPage extends React.Component {
         </Responsive>
         <Segment inverted vertical style={{padding: '1em 2em'}}>
           <Grid>
-            <Grid.Column width={6}>
+            <Grid.Column width={7}>
               <Button circular className='medium-icon' icon='medium m' onClick={() => window.open("https://www.medium.com/good-service")} />
               <Button circular color='twitter' icon='twitter' onClick={() => window.open("https://twitter.com/goodservice_io")} />
               <Button circular className='slack-icon' icon={{ className: 'slack-icon' }}  onClick={() => window.open("/slack")} />
             </Grid.Column>
-            <Grid.Column width={10} textAlign='right'>
+            <Grid.Column width={9} textAlign='right'>
               <Header inverted as='h5'>
                 Last updated {timestamp && (new Date(timestamp)).toLocaleTimeString('en-US')}.<br />
                 Created by <a href='https://twitter.com/_blahblahblah'>Sunny Ng</a>.<br />

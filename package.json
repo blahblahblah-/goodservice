@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@nivo/bar": "^0.52.0",
+    "@nivo/line": "^0.52.0",
     "@nivo/pie": "^0.52.0",
     "@rails/webpacker": "3.5",
     "babel-preset-react": "^6.24.1",

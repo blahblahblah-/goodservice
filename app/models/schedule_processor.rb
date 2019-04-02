@@ -40,7 +40,7 @@ class ScheduleProcessor
     "7X" => 51,
   }
 
-  attr_accessor :routes, :lines
+  attr_accessor :routes, :lines, :key_stops
 
   def initialize
     refresh_data
@@ -78,6 +78,7 @@ class ScheduleProcessor
           analyze_feed(feed, id)
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
+          puts e.backtrace
           retry if (retries += 1) < 3
           unavailable_feeds << id
         end
@@ -85,6 +86,7 @@ class ScheduleProcessor
     end
 
     update_route_feed_statuses
+    complete_trips
   end
 
   def self.headway_info(force_refresh: false, tweet_delays: false)
@@ -113,10 +115,12 @@ class ScheduleProcessor
           }.map { |ld|
           {
             name: ld.name,
+            parent_name: ld.parent_name,
             boroughs: ld.boroughs,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
+            travel_time: ld.travel_time,
           }
         },
         south: route.directions[3].line_directions.reject { |ld|
@@ -124,10 +128,12 @@ class ScheduleProcessor
           }.map { |ld|
           {
             name: ld.name,
+            parent_name: ld.parent_name,
             boroughs: ld.boroughs,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
+            travel_time: ld.travel_time,
           }
         },
         lines_not_in_service: {
@@ -153,6 +159,7 @@ class ScheduleProcessor
             }
           },
           status: line.status,
+          max_travel_time: line.max_travel_time,
           destinations: {
             north: line.destinations[1],
             south: line.destinations[3],
@@ -162,9 +169,11 @@ class ScheduleProcessor
           }.map { |ld|
             {
               type: ld.type,
+              name: ld.name,
               max_actual_headway: ld.max_actual_headway,
               max_scheduled_headway: ld.max_scheduled_headway,
               delay: ld.delay,
+              travel_time: ld.travel_time,
               routes: ld.routes.map { |route|
                 {
                   id: route.internal_id,
@@ -180,9 +189,11 @@ class ScheduleProcessor
           }.map { |ld|
             {
               type: ld.type,
+              name: ld.name,
               max_actual_headway: ld.max_actual_headway,
               max_scheduled_headway: ld.max_scheduled_headway,
               delay: ld.delay,
+              travel_time: ld.travel_time,
               routes: ld.routes.map { |route|
                 {
                   id: route.internal_id,
@@ -204,10 +215,12 @@ class ScheduleProcessor
     }
 
     log_route_statuses(routes_data)
+    log_line_direction_statuses
 
     Rails.cache.write("headway-info", data, expires_in: 1.day)
 
     tweet_delayed_routes(processor.routes) if tweet_delays
+    truncate_stop_time_data(processor.key_stops)
 
     data
   end
@@ -217,6 +230,12 @@ class ScheduleProcessor
       unless ["No Data", "Not Scheduled"].include?(route[:status])
         RouteStatus.create(route_internal_id: route[:id], status: route[:status], max_headway_discrepancy: route[:max_headway_discrepancy] || 0)
       end
+    end
+  end
+
+  def self.log_line_direction_statuses
+    LineDirection.all.each do |ld|
+      LineDirectionStatus.create(line_direction_id: ld.id, travel_time: ld.travel_time)
     end
   end
 
@@ -402,22 +421,66 @@ class ScheduleProcessor
   def analyze_feed(feed, id)
     raise "Error: Empty feed" if feed.entity.empty?
     puts "Feed id #{id}, timestamp: #{feed.header.timestamp}"
+    translations = Rails.cache.read("active-trips-translation-#{id}") || {}
+    new_translations = {}
+    previous_active_trips = Rails.cache.read("active-trips-#{id}") || {}
+    new_active_trips = {}
+    unmatched_trips = []
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time > feed.header.timestamp + 60.minutes }
-        route_id = route(entity.trip_update.trip.route_id)
-        direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i
-        if route_id == 'A' && entity.trip_update.stop_time_update.present? && ['A55S', 'A65N'].include?(entity.trip_update.stop_time_update.last.stop_id)
-          puts "A Shuttle found, reversing trip #{entity.trip_update.trip.trip_id}"
-          entity.trip_update, direction = reverse_trip_update(entity.trip_update)
+        actual_trip_id = entity.trip_update.trip.trip_id
+        if (translated_trip_id = translations[actual_trip_id])
+          process_trip(feed, translated_trip_id, entity)
+          new_translations[actual_trip_id] = translated_trip_id
+          previous_active_trips.delete(translated_trip_id)
+          new_active_trips[translated_trip_id] = entity
+        else
+          unmatched_trips << entity
         end
-        trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names, recent_trips)
-        routes[route_id]&.push_trip(trip)
-        trip.add_to_lines(lines)
-        puts "Error: #{route_id} not found" if routes[route_id].nil?
       end
     end
+
+    unmatched_trips.each do |entity|
+      unmatched_trip_id = entity.trip_update.trip.trip_id
+      trip_id = match_trip(feed.header.timestamp, previous_active_trips, entity) || unmatched_trip_id
+      translated_trip_id = translations[trip_id] || trip_id
+      puts "Matched #{unmatched_trip_id} with #{translated_trip_id}" if unmatched_trip_id != translated_trip_id
+      process_trip(feed, translated_trip_id, entity)
+      new_translations[unmatched_trip_id] = translated_trip_id
+      new_active_trips[translated_trip_id] = entity
+    end
+
+    Rails.cache.write("active-trips-translation-#{id}", new_translations, expires_in: 1.hour)
+    Rails.cache.write("active-trips-#{id}", new_active_trips, expires_in: 1.hour)
+  end
+
+  def match_trip(timestamp, possible_trips, entity)
+    cur_update_stops = entity.trip_update.stop_time_update.select { |update|
+      (update.departure || update.arrival) && (update.departure || update.arrival).time > timestamp
+    }.map(&:stop_id).uniq
+    cur_last_update = entity.trip_update.stop_time_update.last
+    cur_last_update_time = (cur_last_update.departure || cur_last_update.arrival).time
+
+    possible_trips.select { |_, v|
+      v.trip_update.trip.route_id == entity.trip_update.trip.route_id &&
+        v.trip_update.trip.nyct_trip_descriptor.direction == entity.trip_update.trip.nyct_trip_descriptor.direction &&
+        v.trip_update.stop_time_update.last.stop_id == entity.trip_update.stop_time_update.last.stop_id
+    }.select { |_, v|
+      prev_update_stops = v.trip_update.stop_time_update.select { |update|
+        (update.departure || update.arrival) && (update.departure || update.arrival).time > timestamp
+      }.map(&:stop_id).uniq
+      (prev_update_stops - cur_update_stops).size <= 1
+    }.min_by(1) { |_, v|
+      last_update = v.trip_update.stop_time_update.last
+      last_update_time = (last_update.departure || last_update.arrival).time
+      (cur_last_update_time - last_update_time).abs
+    }.find { |_, v|
+      last_update = v.trip_update.stop_time_update.last
+      last_update_time = (last_update.departure || last_update.arrival).time
+      (cur_last_update_time - last_update_time).abs <= 3.minutes.to_i
+    }&.second&.trip_update&.trip&.trip_id
   end
 
   def instantiate_data
@@ -444,6 +507,9 @@ class ScheduleProcessor
     pairs = Line.all.includes(:line_directions).map do |line|
       [line.id, Display::Line.new(line, stop_times, timestamp, stops)]
     end
+    @key_stops = LineDirection.all.pluck(
+      :first_stop, :last_stop, :first_branch_stop, :first_alternate_branch_stop, :last_branch_stop, :last_alternate_branch_stop
+    ).flatten.compact.uniq
     @lines = Hash[pairs]
   end
 
@@ -465,6 +531,44 @@ class ScheduleProcessor
     end
   end
 
+  def complete_trips
+    active_trips = Rails.cache.read("active-trips")
+    return unless active_trips
+    active_trips.select { |_, v| v < (timestamp - 3.minutes).to_i}.each do |k, _|
+      active_trips.delete(k) if complete_trip(k)
+    end
+    Rails.cache.write("active-trips", active_trips, expires_in: 1.hour)
+  end
+
+  def complete_trip(trip_id)
+    remaining_stops = Rails.cache.read("trip-#{trip_id}")
+    return true unless remaining_stops
+    return false if remaining_stops.any? { |stu| (stu.departure || stu.arrival).time > timestamp.to_i}
+
+    puts "Completing trip #{trip_id}, #{remaining_stops.size} stop(s)"
+
+    if remaining_stops.size < 4
+      remaining_stops.each do |stu|
+        stop_id = stu.stop_id
+        route_id = trip_id.split("..").first[-1]
+        # Flip direction for M train stops on Broadway (Brooklyn) Line
+        if route_id == "M" && ["M11", "M12", "M13", "M14", "M15", "M16", "M18"].include?(stop_id[0..2])
+          if stop_id[3] == 'S'
+            stop_id = stop_id[0..2] + 'N'
+          else
+            stop_id = stop_id[0..2] + 'S'
+          end
+        end
+        next unless key_stops.include?(stop_id)
+        stop_hash = Rails.cache.read("stoptime-#{stop_id}")
+        stop_hash ||= {}
+        stop_hash[trip_id] ||= (stu.departure || stu.arrival).time
+        Rails.cache.write("stoptime-#{stop_id}", stop_hash, expires_in: 1.hour)
+      end
+    end
+    true
+  end
+
   def reverse_trip_update(trip_update)
     direction = (trip_update.trip.nyct_trip_descriptor.direction.to_i == 1) ? 3 : 1
 
@@ -475,5 +579,27 @@ class ScheduleProcessor
     end
 
     return trip_update, direction
+  end
+
+  def process_trip(feed, trip_id, entity)
+    route_id = route(entity.trip_update.trip.route_id)
+    direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i
+    if route_id == 'A' && entity.trip_update.stop_time_update.present? && ['A55S', 'A65N'].include?(entity.trip_update.stop_time_update.last.stop_id)
+      puts "A Shuttle found, reversing trip #{trip_id}"
+      entity.trip_update, direction = reverse_trip_update(entity.trip_update)
+    end
+    trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names, recent_trips, key_stops, trip_id)
+    routes[route_id]&.push_trip(trip)
+    trip.add_to_lines(lines)
+    puts "Error: #{route_id} not found" if routes[route_id].nil?
+  end
+
+  def self.truncate_stop_time_data(key_stops)
+    key_stops.each do |stop_id|
+      stop_times = Rails.cache.read("stoptime-#{stop_id}")
+      next unless stop_times
+      stop_times.reject! { |_, v| v < Time.current.to_i - 120.minutes}
+      Rails.cache.write("stoptime-#{stop_id}", stop_times, expires_in: 1.hour)
+    end
   end
 end

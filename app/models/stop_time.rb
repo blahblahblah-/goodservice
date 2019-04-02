@@ -27,6 +27,22 @@ class StopTime < ActiveRecord::Base
     end
   end
 
+  def self.recent(time_range: 30.minutes)
+    if Time.current.hour < 4
+      where("(departure_time > ? and departure_time < ?) or (departure_time > ? and departure_time < ?)",
+        Time.current - Time.current.beginning_of_day - time_range.to_i,
+        Time.current - Time.current.beginning_of_day,
+        Time.current - Time.current.beginning_of_day + DAY_IN_MINUTES - time_range.to_i,
+        Time.current - Time.current.beginning_of_day + DAY_IN_MINUTES,
+      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today)
+    else
+      where("departure_time > ? and departure_time < ?",
+        Time.current - Time.current.beginning_of_day - time_range.to_i,
+        Time.current - Time.current.beginning_of_day
+      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today)
+    end
+  end
+
   def self.soon_by_route(route_id, direction, time_range: 60.minutes)
     soon(time_range: time_range).where(trips: {route_internal_id: route_id, direction: direction})
   end

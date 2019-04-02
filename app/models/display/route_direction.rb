@@ -44,6 +44,12 @@ module Display
       end
     end
 
+    def travel_time
+      line_directions.map(&:travel_time).reject { |travel_time|
+        travel_time.nil?
+      }.max
+    end
+
     def headway_discrepancy
       return nil if trips.empty?
       line_directions.map(&:headway_discrepancy).reject { |headway_discrepancy|

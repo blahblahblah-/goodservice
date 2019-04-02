@@ -1,6 +1,5 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid, Responsive, Table, Rating, Label, List, Divider, Segment } from 'semantic-ui-react';
-import TrainBullet from './trainBullet.jsx';
+import { Header, Statistic, Grid, Responsive, Label, List, Divider, Segment } from 'semantic-ui-react';
 import { Bar } from '@nivo/bar';
 import { Pie } from '@nivo/pie';
 import moment from 'moment';
@@ -282,7 +281,7 @@ class TrainModalDataPane extends React.Component {
   render() {
     const { width } = this.state;
     return(
-      <Responsive as={Segment} fireOnMount onUpdate={this.handleOnUpdate} basic>
+      <Responsive as={Segment} fireOnMount onUpdate={this.handleOnUpdate} basic style={{padding: "1em 0"}}>
         <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="mini" inverted>
           <Statistic>
             <Statistic.Label>Last hour</Statistic.Label>

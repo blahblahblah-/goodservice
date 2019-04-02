@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     resources :info, only: [:index]
     resources :routes, only: [:index]
     resources :stats, only: [:index]
+    resources :lines, only: [:show] do
+      get 'archive/:past_days', to:'lines#archive'
+    end
     post '/slack', to: 'slack#index'
     post '/slack/query', to: 'slack#query'
   end
@@ -14,5 +17,6 @@ Rails.application.routes.draw do
   get '/trains(/*id)', to: 'index#index'
   get '/boroughs(/*borough)(/*line)', to: 'index#index'
   get '/starred', to: 'index#index'
+  get '/slow-zones', to: 'index#index'
   root 'index#index'
 end

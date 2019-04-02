@@ -2,11 +2,12 @@ module Display
   class Trip
     TIME_ESTIMATE_LIMIT = 60.minutes.to_i
 
-    attr_accessor :line_directions, :upcoming_line_directions, :route_id, :timestamp, :direction
+    attr_accessor :line_directions, :upcoming_line_directions, :route_id, :timestamp, :direction, :trip_id
 
-    def initialize(route_id, trip, direction, timestamp, all_line_directions, valid_stops, recent_trips)
+    def initialize(route_id, trip, direction, timestamp, all_line_directions, valid_stops, recent_trips, key_stops, trip_id)
       @route_id = route_id
       @trip = trip
+      @trip_id = trip_id
       @direction = direction
       @timestamp = timestamp
       initialize_line_directions_time_hash(all_line_directions)
@@ -18,6 +19,7 @@ module Display
       @valid_stops = valid_stops
       instantiate_actual_trip(recent_trips)
       log_trip
+      check_runtimes(all_line_directions, key_stops)
     end
 
     def last_stop
@@ -37,7 +39,7 @@ module Display
     def add_to_lines(lines)
       stops = upcoming_line_directions.keys.map do |ld|
         # M train shuffle, M train stations are mapped on the opposite direction on Broadway-Brooklyn
-        if route_id == "M" && lines[ld.line_id].name == "Broadway (Brooklyn)"
+        if route_id == "M" && ["Broadway (Brooklyn)", "Williamsburg Bridge"].include?(lines[ld.line_id].name)
           actual_direction = (direction == 1) ? 3 : 1
           display_line_dir = lines[ld.line_id].directions[actual_direction].find { |dld| dld.line_direction.type == ld.type }
         else
@@ -56,7 +58,7 @@ module Display
       (update.departure || update.arrival).time
     end
 
-    def trip_id
+    def real_trip_id
       trip.trip.trip_id
     end
 
@@ -67,7 +69,7 @@ module Display
 
     private
 
-    attr_accessor :trip, :all_line_directions, :valid_stops, :line_directions_time_hash, :actual_trip
+    attr_accessor :trip, :valid_stops, :line_directions_time_hash, :actual_trip
 
     def arrival_time
       @arrival_time if @arrival_time
@@ -155,6 +157,68 @@ module Display
       }
 
       @line_directions_time_hash = time_hash
+    end
+
+    def check_runtimes(all_line_directions, key_stops)
+      return unless (next_stop_time - timestamp) <= 600
+
+      active_trips = Rails.cache.read("active-trips")
+      active_trips ||= {}
+      active_trips[trip_id] = timestamp
+
+      Rails.cache.write("active-trips", active_trips, expires_in: 1.hour)
+
+      previous_stop_time_estimates = Rails.cache.read("trip-#{trip_id}")
+      current_stop_time_estimates = trip.stop_time_update.reject { |stu|
+        (stu.departure || stu.arrival).time < timestamp
+      }
+      current_past_stop_time_estimates = trip.stop_time_update - current_stop_time_estimates
+
+      if previous_stop_time_estimates
+        mark_arrivals(previous_stop_time_estimates, current_stop_time_estimates, key_stops)
+      else
+        mark_past_stops(current_past_stop_time_estimates, key_stops)
+      end
+      Rails.cache.write("trip-#{trip_id}", current_stop_time_estimates, expires_in: 1.hour)
+    end
+
+    def mark_arrivals(previous_estimates, current_estimates, key_stops)
+      stops_made = previous_estimates.map(&:stop_id) - current_estimates.map(&:stop_id)
+      # The 7 train feed has a weird glitch that sometimes show a past station in its feed still
+      return unless stops_made &&
+        (stops_made.include?(previous_estimates.first.stop_id) || (["7", "7X"].include?(route_id) && stops_made.include?(previous_estimates.second&.stop_id)))
+
+      stops_made.each do |stop_id|
+        mark_arrival(stop_id, key_stops, previous_estimates)
+      end
+    end
+
+    def mark_past_stops(stop_time_estimates, key_stops)
+      return if stop_time_estimates.empty?
+
+      stop_time_estimates.each do |stu|
+        mark_arrival(stu.stop_id, key_stops, nil)
+      end
+    end
+
+    def mark_arrival(stop_id, key_stops, previous_estimates)
+      old_stop_id = stop_id
+      # Flip direction for M train stops on Broadway (Brooklyn) Line
+      if route_id == "M" && ["M11", "M12", "M13", "M14", "M15", "M16", "M18"].include?(stop_id[0..2])
+        if stop_id[3] == 'S'
+          stop_id = stop_id[0..2] + 'N'
+        else
+          stop_id = stop_id[0..2] + 'S'
+        end
+      end
+      return unless key_stops.include?(stop_id)
+      stop_hash = Rails.cache.read("stoptime-#{stop_id}")
+      stop_hash ||= {}
+      cur_update = trip.stop_time_update.find { |stu| stu.stop_id == old_stop_id}
+      stop_hash[trip_id] = (cur_update.departure || cur_update.arrival).time if cur_update
+      prev_update = previous_estimates&.find { |stu| stu.stop_id == old_stop_id}
+      stop_hash[trip_id] ||= (prev_update.departure || prev_update.arrival).time
+      Rails.cache.write("stoptime-#{stop_id}", stop_hash, expires_in: 1.hour)
     end
   end
 end

@@ -29,7 +29,7 @@ module Display
         }
       }
         @status = "Service Change"
-      elsif (scheduled_destinations - destinations).any? && destinations.present?
+      elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size > 1
         @status = "Service Change"
       elsif max_headway_discrepancy.nil?
         if route.scheduled?
@@ -37,11 +37,19 @@ module Display
         else
           @status = "Not Scheduled"
         end
-      elsif max_headway_discrepancy > 2
+      elsif max_headway_discrepancy > 2 || max_travel_time >= 0.25
         @status = "Not Good"
       else
         @status = "Good Service"
       end
+    end
+
+    def max_travel_time
+      directions.map { |_, rd|
+        rd.travel_time
+      }.reject { |travel_time|
+        travel_time.nil?
+      }.max || 0
     end
 
     def max_headway_discrepancy

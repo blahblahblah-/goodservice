@@ -1,6 +1,6 @@
 module Display
   class LineDirection
-    delegate :name, to: :line_direction
+    delegate :name, :scheduled_runtimes, :actual_runtimes, :alternate_name, to: :line_direction
     attr_accessor :line_direction
 
     def initialize(line_direction, stop_times, timestamp, stops)
@@ -39,7 +39,7 @@ module Display
         time = t.upcoming_line_directions[line_direction]
 
         # Facilitate M train shuffle (where M train stops for Broadway-Brooklyn line are reverse of J/Z trains)
-        if !time && t.route_id == "M" && line_direction.line.name == "Broadway (Brooklyn)"
+        if !time && t.route_id == "M" && ["Broadway (Brooklyn)", "Williamsburg Bridge"].include?(line_direction.line.name)
           time = t.find_time(last_stop_reverse)
         end
         time
@@ -53,7 +53,7 @@ module Display
       return nil if stop_times[line_direction.last_stop].nil?
 
       # Facilitate M train shuffle
-      if line_direction.line.name == "Broadway (Brooklyn)"
+      if ["Broadway (Brooklyn)", "Williamsburg Bridge"].include?(line_direction.line.name)
         st = stop_times[line_direction.last_stop].select { |st| st.trip.route_internal_id != "M"}
         st.concat(stop_times[last_stop_reverse].select { |st| st.trip.route_internal_id == "M"})
       else
@@ -77,6 +77,15 @@ module Display
     def headway_discrepancy
       return nil if trips.empty?
       max_actual_headway - max_scheduled_headway if max_scheduled_headway
+    end
+
+    def travel_time
+      line_direction.travel_time if headway_discrepancy.present?
+    end
+
+    def name
+      return alternate_name if alternate_name
+      type
     end
 
     def type

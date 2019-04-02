@@ -85,7 +85,7 @@ class TrainModal extends React.Component {
     const { width } = this.state;
     const title = "goodservice.io beta - Trains - " + ((this.props.train.alternate_name) ? ("S - " + this.props.train.alternate_name) : this.props.train.name) + " Train";
     return(
-      <Responsive as={Modal} basic fireOnMount
+      <Responsive as={Modal} basic fireOnMount size='large'
         open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == ('/trains/' + this.props.train.id)} onUpdate={this.handleOnUpdate}
         onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/trains')} trigger={this.props.trigger}
         closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>

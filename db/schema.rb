@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_11_043032) do
+ActiveRecord::Schema.define(version: 2019_04_13_222449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,14 @@ ActiveRecord::Schema.define(version: 2019_02_11_043032) do
     t.string "borough", null: false
   end
 
+  create_table "line_direction_statuses", force: :cascade do |t|
+    t.integer "line_direction_id", null: false
+    t.float "travel_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at", "line_direction_id"], name: "indx_line_direction_statuses_timestamp_id"
+  end
+
   create_table "line_directions", force: :cascade do |t|
     t.bigint "line_id", null: false
     t.integer "direction", null: false
@@ -68,6 +76,11 @@ ActiveRecord::Schema.define(version: 2019_02_11_043032) do
     t.integer "express_line_direction_id"
     t.string "first_stop", null: false
     t.string "penultimate_stop"
+    t.string "last_branch_stop"
+    t.string "last_alternate_branch_stop"
+    t.string "first_branch_stop"
+    t.string "first_alternate_branch_stop"
+    t.string "alternate_name"
     t.index ["line_id", "direction", "type"], name: "index_line_directions_on_line_id_and_direction_and_type", unique: true
     t.index ["line_id"], name: "index_line_directions_on_line_id"
   end
