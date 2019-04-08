@@ -38,6 +38,8 @@ module Display
         st.reject! { |st|
           stop_times[line_direction.local_line_direction.last_stop].any? { |local_st|
             st.trip_internal_id == local_st.trip_internal_id
+          } || stop_times[line_direction.penultimate_stop].none? { |pen_st|
+            st.trip_internal_id == pen_st.trip_internal_id
           }
         }
       end
