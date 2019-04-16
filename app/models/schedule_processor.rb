@@ -84,7 +84,6 @@ class ScheduleProcessor
         end
       end
     end
-
     update_route_feed_statuses
     complete_trips
   end
@@ -486,9 +485,9 @@ class ScheduleProcessor
   def instantiate_data
     @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
-    @line_directions = LineDirection.all.includes(:line).group_by(&:direction)
-    @stop_names = Stop.pluck(:internal_id).to_set
-    @stops = Stop.all
+    @line_directions ||= LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
+    @stop_names ||= Stop.pluck(:internal_id).to_set
+    @stops ||= Stop.all
     @unavailable_feeds = Set.new
 
     instantiate_routes
@@ -504,7 +503,7 @@ class ScheduleProcessor
   end
 
   def instantiate_lines
-    pairs = Line.all.includes(:line_directions).map do |line|
+    pairs = Line.all.includes({line_directions: [:line, :express_line_direction, :local_line_direction]}, :line_boroughs).map do |line|
       [line.id, Display::Line.new(line, stop_times, timestamp, stops)]
     end
     @key_stops = LineDirection.all.pluck(

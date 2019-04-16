@@ -1,6 +1,8 @@
 class LineDirection < ActiveRecord::Base
   belongs_to :line, foreign_key: "line_id"
   belongs_to :stop_time, foreign_key: "last_stop", primary_key: "stop_internal_id"
+  has_one :local_line_direction, inverse_of: :express_line_direction, class_name: "LocalLineDirection", foreign_key: "express_line_direction_id"
+  belongs_to :express_line_direction, class_name: "ExpressLineDirection", foreign_key: "express_line_direction_id"
 
   NORTH = 1
   SOUTH = 3

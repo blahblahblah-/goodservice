@@ -1,6 +1,6 @@
 module Display
   class LineDirection
-    delegate :name, :scheduled_runtimes, :actual_runtimes, :alternate_name, to: :line_direction
+    delegate :name, :alternate_name, to: :line_direction
     attr_accessor :line_direction
 
     def initialize(line_direction, stop_times, timestamp, stops)
