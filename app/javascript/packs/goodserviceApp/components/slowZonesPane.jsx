@@ -30,7 +30,7 @@ class SlowZonesPane extends React.Component {
           <meta property="og:title" content={title} />
           <meta name="twitter:title" content={title} />
         </Helmet>
-        <Grid stackable columns={3}>
+        <Grid stackable doubling columns={3}>
           {
             sortedLines.map(line => {
               return <Grid.Column key={line.name}><Line starredPane={true} showTravelTime={true} line={line} borough={this.props.borough} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} /></Grid.Column>
