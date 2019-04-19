@@ -329,11 +329,11 @@ class TrainModalDataPane extends React.Component {
                   </Statistic>
                 </Statistic.Group>
                 <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="tiny" inverted>
-                  <Statistic>
+                  <Statistic style={(width < Responsive.onlyTablet.maxWidth) ? { width: "100%", marginTop: "1em" } : {}}>
                     <Statistic.Value>{this.props.stats.delays.last_day.avg_mins} mins</Statistic.Value>
                     <Statistic.Label>Avg Duration</Statistic.Label>
                   </Statistic>
-                  <Statistic>
+                  <Statistic style={(width < Responsive.onlyTablet.maxWidth) ? { width: "100%", marginTop: "1em" } : {}}>
                     <Statistic.Value>{this.props.stats.delays.last_day.max_mins} mins</Statistic.Value>
                     <Statistic.Label>Longest Duration</Statistic.Label>
                   </Statistic>
@@ -347,11 +347,11 @@ class TrainModalDataPane extends React.Component {
                   </Statistic>
                 </Statistic.Group>
                 <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="tiny" inverted>
-                  <Statistic>
+                  <Statistic style={(width < Responsive.onlyTablet.maxWidth) ? { width: "100%", marginTop: "1em" } : {}}>
                     <Statistic.Value>{this.props.stats.delays.last_week.avg_mins} mins</Statistic.Value>
                     <Statistic.Label>Avg Duration</Statistic.Label>
                   </Statistic>
-                  <Statistic>
+                  <Statistic style={(width < Responsive.onlyTablet.maxWidth) ? { width: "100%", marginTop: "1em" } : {}}>
                     <Statistic.Value>{this.props.stats.delays.last_week.max_mins} mins</Statistic.Value>
                     <Statistic.Label>Longest Duration</Statistic.Label>
                   </Statistic>

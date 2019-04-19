@@ -46,6 +46,7 @@ class TrainModalStatusPane extends React.Component {
 
   tableData() {
     const north = this.props.train.north.slice().reverse();
+    const tablet = this.props.width < Responsive.onlyTablet.maxWidth;
     let data = this.props.train.south.map((obj, index) => {
       let northLine = north.find((nObj) => {
         return obj.name === nObj.name;
@@ -88,7 +89,7 @@ class TrainModalStatusPane extends React.Component {
         <Table.Row key={obj.line.name}>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size={(obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : "small"} horizontal inverted color={southColor}>
+              <Statistic size={(tablet && obj.southActual >= 10 && obj.southDelay >= 5) || (obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : (tablet ? "tiny" : "small")} horizontal={!tablet} inverted color={southColor}>
                 <Statistic.Value>
                   {obj.southActual}
                   {
@@ -103,7 +104,7 @@ class TrainModalStatusPane extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='small' horizontal inverted color={southColor}>
+              <Statistic size={tablet ? "tiny" : "small"}  horizontal={!tablet} inverted color={southColor}>
                 <Statistic.Value>{obj.southScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
@@ -111,7 +112,7 @@ class TrainModalStatusPane extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
-              <Statistic size='mini' horizontal inverted color={southTravelTimeColor}>
+              <Statistic size='mini' horizontal={!tablet} inverted color={southTravelTimeColor}>
                 <Statistic.Value>{this.formatPercent(obj.southTravelTime)}</Statistic.Value>
               </Statistic>
             }
@@ -123,14 +124,14 @@ class TrainModalStatusPane extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='mini' horizontal inverted color={northTravelTimeColor}>
+              <Statistic size='mini' horizontal={!tablet} inverted color={northTravelTimeColor}>
                 <Statistic.Value>{this.formatPercent(obj.northTravelTime)}</Statistic.Value>
               </Statistic>
             }
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size={(obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : "small"} horizontal inverted color={northColor}>
+              <Statistic size={(tablet && obj.northActual >= 10 && obj.northDelay >= 5) || (obj.northDelay >= 10 && obj.northActual >= 10) ? "mini" : (tablet ? "tiny" : "small")}  horizontal={!tablet} inverted color={northColor}>
                 <Statistic.Value>
                   {obj.northActual}
                   {
@@ -145,7 +146,7 @@ class TrainModalStatusPane extends React.Component {
           </Table.Cell>
           <Table.Cell>
             { (obj.northActual || obj.northActual === 0) &&
-              <Statistic size='small' horizontal inverted color={northColor}>
+              <Statistic size={tablet ? "tiny" : "small"}  horizontal={!tablet} inverted color={northColor}>
                 <Statistic.Value>{obj.northScheduled || "--"}</Statistic.Value>
                 <Statistic.Label>Mins</Statistic.Label>
               </Statistic>
