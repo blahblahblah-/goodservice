@@ -45,6 +45,7 @@ module Clockwork
     startTime = Time.current
     RouteStatus.where("created_at < ?", Date.current - 2.months).delete_all
     ActualTrip.where("created_at < ?", Date.current - 2.months).delete_all
+    Delay.where("created_at < ?", Date.current - 2.months).delete_all
     LineDirectionStatus.where("created_at < ?", Date.current - 2.months).delete_all
     endTime = Time.current
     puts "DB cleanup finished in #{endTime - startTime} seconds"
