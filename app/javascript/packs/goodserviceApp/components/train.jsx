@@ -113,7 +113,7 @@ class Train extends React.Component {
     return (
       <div>
         <Responsive as={Segment} basic maxWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-          <Header as='h4' floated='right' className='status' inverted style={{ width: "103px", textAlign: "right"}} color={this.color()}>{this.status()}</Header>
+          <Header as='h4' floated='right' className='status' inverted style={{ minWidth: "103px", textAlign: "right"}} color={this.color()}>{this.status()}</Header>
         </Responsive>
         <Responsive as={Segment} basic minWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
           <Header as='h3' floated='right' className='status' inverted color={this.color()}>{this.status()}</Header>
