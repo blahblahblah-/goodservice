@@ -13,8 +13,6 @@ class Line extends React.Component {
     }
   }
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   color() {
     if (this.props.line.status == 'Good Service') {
       return 'green';
@@ -28,8 +26,7 @@ class Line extends React.Component {
   }
 
   name() {
-    const { width } = this.state;
-    const { starredPane } = this.props;
+    const { starredPane, width } = this.props;
     const newWidth = this.props.starredPane ? newWidth * 2 / 3 : width;
     let name = this.props.line.name.replace(" Branch", "")
       .replace("Downtown Brooklyn", "Downtown BK")
@@ -103,7 +100,7 @@ class Line extends React.Component {
   }
 
   headingSize() {
-    const { width } = this.state;
+    const { width } = this.props;
     return (width < Responsive.onlyTablet.maxWidth) ? "h4" : "h3";
   }
 
@@ -158,11 +155,11 @@ class Line extends React.Component {
   }
 
   render() {
-    const { line, borough, starredPane, onFavLineChange, favLines } = this.props;
+    const { line, borough, starredPane, onFavLineChange, favLines, width } = this.props;
     return(
       <Responsive as={LineModal} line={line} borough={borough} starredPane={starredPane}
         onFavLineChange={onFavLineChange} favLines={favLines} fireOnMount
-        onUpdate={this.handleOnUpdate} onClose={this.handleClose} trigger={
+        onClose={this.handleClose} width={width} trigger={
         <Segment className='line-button' as={Button} fluid style={{minHeight: 92}} onClick={this.handleClick}>
           <Header as={this.headingSize()} floated='right' className='status' inverted color={this.color()}>{this.display()}</Header>
           <Header as={this.headingSize()} style={{textAlign: 'left', display: 'inline-block', float: 'left', marginTop: '0em'}}>{this.name()}</Header>

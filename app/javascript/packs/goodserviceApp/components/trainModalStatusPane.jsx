@@ -6,8 +6,6 @@ import LineDisplay from './lineDisplay.jsx';
 class TrainModalStatusPane extends React.Component {
   state = {}
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   color() {
     if (this.props.train.status == 'Good Service') {
       return 'green';
@@ -303,8 +301,7 @@ class TrainModalStatusPane extends React.Component {
   }
 
   render() {
-    const { width } = this.state;
-    const { train } = this.props;
+    const { train, width } = this.props;
     return(
       <div>
         <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>

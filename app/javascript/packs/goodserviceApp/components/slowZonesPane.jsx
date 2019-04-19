@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 
 class SlowZonesPane extends React.Component {
   render() {
-    const { lines } = this.props;
+    const { lines, width } = this.props;
     const title = "goodservice.io beta - Slow Zones";
     const allLines = [];
     const map = new Map();
@@ -33,7 +33,12 @@ class SlowZonesPane extends React.Component {
         <Grid stackable doubling columns={3}>
           {
             sortedLines.map(line => {
-              return <Grid.Column key={line.name}><Line starredPane={true} showTravelTime={true} line={line} borough={this.props.borough} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} /></Grid.Column>
+              return (
+                <Grid.Column key={line.name}>
+                  <Line starredPane={true} showTravelTime={true} line={line} borough={this.props.borough}
+                    onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} />
+                </Grid.Column>
+              )
             })
           }
         </Grid>

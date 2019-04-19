@@ -23,11 +23,10 @@ const BOROUGHS_SHORT_ABRV = {
 class LinePane extends React.Component {
   state = {}
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   panes() {
+    const { width } = this.props;
     return map(BOROUGHS, borough => {
-      const { width } = this.state;
+      const { width } = this.props;
       var boroughName = borough;
       if (width < 600) {
         if (width < 375) {
@@ -38,19 +37,20 @@ class LinePane extends React.Component {
       }
       return {
         menuItem: <Menu.Item as={Link} to={'/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase()} key={borough}>{boroughName}</Menu.Item>,
-        render: () => <BoroughPane borough={borough} lines={this.props.lines[borough]} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} />
+        render: () => <BoroughPane borough={borough} lines={this.props.lines[borough]}
+          onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} />
       }
     })
   }
 
   tab(vertical, activeIndex) {
     return (
-      <Responsive as={Tab} fireOnMount onUpdate={this.handleOnUpdate} menu={{ fluid: true, vertical: vertical, tabular: true }} activeIndex={activeIndex} panes={this.panes()} />
+      <Responsive as={Tab} fireOnMount menu={{ fluid: true, vertical: vertical, tabular: true }} activeIndex={activeIndex} panes={this.panes()} />
     )
   }
 
   render() {
-    const { width } = this.state;
+    const { width } = this.props;
     const vertical = width > Responsive.onlyComputer.minWidth;
 
     return(

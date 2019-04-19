@@ -10,8 +10,6 @@ const DATA_URL_PREFIX = '/api/lines/'
 class LineModalDataPane extends React.Component {
   state = { loading: true, selectedDay: 0 };
 
-  handleOnUpdate = (e, { width }) => this.setState({ width });
-
   handleItemClick = (e, {index}) => {
     this.setState({ selectedDay: index, loading: true })
     this.fetchData(index);
@@ -88,7 +86,7 @@ class LineModalDataPane extends React.Component {
   }
 
   graph() {
-    const { width } = this.state;
+    const { width } = this.props;
     const graphWidth = (width < Responsive.onlyMobile.maxWidth) ? width - 80 : (width < Responsive.onlyTablet.maxWidth) ? width - 140 : 900;
     const theme = {
       axis: {
@@ -203,9 +201,10 @@ class LineModalDataPane extends React.Component {
   }
 
   render() {
-    const { width, selectedDay } = this.state;
+    const { selectedDay } = this.state;
+    const { width } = this.props;
     return (
-      <Responsive as={Segment} fireOnMount onUpdate={this.handleOnUpdate} basic style={{padding: "1em 0"}}>
+      <Responsive as={Segment} fireOnMount basic style={{padding: "1em 0"}}>
         { this.loading() }
         <Header size='medium' inverted>COMPARISON OF ACTUAL RUNTIME VS. SCHEDULED RUNTIME</Header>
         { this.graph() }

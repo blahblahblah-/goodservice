@@ -13,7 +13,8 @@ class TrainStatusPane extends React.Component {
   }
 
   shortcutMenu() {
-    const { width, contextRef } = this.state;
+    const { contextRef } = this.state;
+    const { width } = this.props;
     if (width < Responsive.onlyMobile.maxWidth) {
       return (
         <Sticky context={contextRef}>
@@ -83,11 +84,10 @@ class TrainStatusPane extends React.Component {
     }
   }
 
-  handleOnUpdate = (e, { width }) => this.setState({ width });
-
   handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
+    const { width } = this.props;
     return(
       <div ref={this.handleContextRef}>
         <Helmet>
@@ -98,10 +98,14 @@ class TrainStatusPane extends React.Component {
         {
           this.shortcutMenu()
         }
-        <Responsive as={Grid} stackable columns={3} fireOnMount onUpdate={this.handleOnUpdate}>
+        <Responsive as={Grid} stackable columns={3} fireOnMount>
           {
             map(this.props.trains.filter(train => (this.props.showStats || train.visible || train.status !== 'Not Scheduled')), train => {
-              return <Grid.Column key={train.name + train.alternate_name}><Train train={train} stats={this.props.trainStats[train.id]} showStats={this.props.showStats} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} /></Grid.Column>
+              return (
+                <Grid.Column key={train.name + train.alternate_name}>
+                  <Train train={train} stats={this.props.trainStats[train.id]} showStats={this.props.showStats}
+                    onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} width={width} />
+                </Grid.Column>)
             })
           }
         </Responsive>

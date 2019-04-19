@@ -116,30 +116,31 @@ class LandingPage extends React.Component {
   }
 
   panes() {
-    const { trains, lines, favTrains, favLines, trainStats } = this.state;
+    const { trains, lines, favTrains, favLines, trainStats, width } = this.state;
     return [
       { menuItem: <Menu.Item as={Link} to='/trains' key='train'>Trains</Menu.Item>,
         render: () =>
           <Tab.Pane>
-            <TrainPane trains={trains} trainStats={trainStats} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} />
+            <TrainPane trains={trains} trainStats={trainStats} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>Lines</Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <LinePane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+            <LinePane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/slow-zones' key='slow-zones'>Slow Zones</Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <SlowZonesPane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+            <SlowZonesPane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <StarredPane trains={trains} trainStats={trainStats} lines={lines} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} />
+            <StarredPane trains={trains} trainStats={trainStats} lines={lines} onFavTrainChange={this.handleFavTrainChange}
+              favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
           </Tab.Pane>
       },
     ]

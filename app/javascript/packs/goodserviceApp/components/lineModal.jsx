@@ -10,8 +10,6 @@ import { Helmet } from "react-helmet";
 class LineModal extends React.Component {
   state = {}
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   handleOnMount = e => {
     if (this.props.starredPane) {
       gtag('event', 'open_line', {
@@ -45,29 +43,28 @@ class LineModal extends React.Component {
   }
 
   panes() {
-    const { line } = this.props;
+    const { line, width } = this.props;
     return [
       { menuItem: 'Current Status', render: () =>
         <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
-          <LineModalStatusPane line={line} />
+          <LineModalStatusPane line={line} width={width} />
         </Tab.Pane>
       },
       { menuItem: 'Stats', render: () =>
         <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
-          <LineModalDataPane line={line} />
+          <LineModalDataPane line={line} width={width} />
         </Tab.Pane>
       },
     ];
   }
 
   render() {
-    const { width } = this.state;
-    const { borough, line, starredPane, modalOpen, location, history, trigger } = this.props;
+    const { borough, line, starredPane, modalOpen, location, history, trigger, width } = this.props;
     const title = "goodservice.io beta - Lines - " + ((borough) ? (borough + ' - ' + line.name) : (line.name));
     return(
       <Responsive as={Modal} basic size='large'
       open={starredPane ? modalOpen : location.pathname == '/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase() + '/' + line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase()}
-      fireOnMount onUpdate={this.handleOnUpdate} onMount={this.handleOnMount}
+      fireOnMount onMount={this.handleOnMount}
       onClose={() => starredPane ? this.props.onClose() : history.push('/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase())} trigger={trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Helmet>
           <title>{title}</title>

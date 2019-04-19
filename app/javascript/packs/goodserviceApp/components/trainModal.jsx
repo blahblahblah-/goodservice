@@ -9,8 +9,6 @@ import { Helmet } from "react-helmet";
 class TrainModal extends React.Component {
   state = {}
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   handleOnMount = e => {
     if (this.props.starredPane) {
       gtag('event', 'open_train', {
@@ -55,7 +53,7 @@ class TrainModal extends React.Component {
   }
 
   headingSize() {
-    const { width } = this.state;
+    const { width } = this.props;
     return (width > Responsive.onlyMobile.maxWidth) ? 'h1' : 'h4';
   }
 
@@ -67,26 +65,27 @@ class TrainModal extends React.Component {
   }
 
   panes() {
+    const { width } = this.props;
     return [
       { menuItem: 'Current Status', render: () =>
         <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
-          <TrainModalStatusPane train={this.props.train} />
+          <TrainModalStatusPane train={this.props.train} width={width} />
         </Tab.Pane>
       },
       { menuItem: 'Stats', render: () =>
         <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
-          <TrainModalDataPane stats={this.props.stats} />
+          <TrainModalDataPane stats={this.props.stats} width={width} />
         </Tab.Pane>
       },
     ];
   }
 
   render() {
-    const { width } = this.state;
+    const { width } = this.props;
     const title = "goodservice.io beta - Trains - " + ((this.props.train.alternate_name) ? ("S - " + this.props.train.alternate_name) : this.props.train.name) + " Train";
     return(
       <Responsive as={Modal} basic fireOnMount size='large'
-        open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == ('/trains/' + this.props.train.id)} onUpdate={this.handleOnUpdate}
+        open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == ('/trains/' + this.props.train.id)}
         onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/trains')} trigger={this.props.trigger}
         closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Helmet>

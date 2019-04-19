@@ -13,8 +13,6 @@ class StarredPane extends React.Component {
     this.state = {};
   }
 
-  handleOnUpdate = (e, { width }) => this.setState({ width });
-
   handleContextRef = contextRef => this.setState({ contextRef });
 
   favTrains() {
@@ -49,16 +47,26 @@ class StarredPane extends React.Component {
   }
 
   renderGrid() {
+    const { width } = this.props;
     return (
-      <Responsive as={Grid} stackable columns={3} fireOnMount onUpdate={this.handleOnUpdate}>
+      <Responsive as={Grid} stackable doubling columns={3} fireOnMount>
         {
           map(this.favTrains(), train => {
-            return <Grid.Column key={train.name + train.alternate_name}><Train starredPane={true} train={train} stats={this.props.trainStats[train.id]} onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} /></Grid.Column>
+            return (
+              <Grid.Column key={train.name + train.alternate_name}>
+                <Train starredPane={true} train={train} stats={this.props.trainStats[train.id]}
+                  onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} width={width} />
+              </Grid.Column>
+            )
           })
         }
         {
           map(this.favLines(), line => {
-            return <Grid.Column key={line.name}><Line starredPane={true} line={line} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} /></Grid.Column>
+            return (
+              <Grid.Column key={line.name}><Line starredPane={true} line={line}
+                onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} />
+              </Grid.Column>
+            )
           })
         }
       </Responsive>

@@ -6,8 +6,6 @@ import TrainBullet from './trainBullet.jsx';
 class LineModalStatusPane extends React.Component {
   state = {}
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   cellColor(delay, scheduledHeadway, actualHeadway) {
     if (delay >= 5) {
       return "red";
@@ -307,7 +305,7 @@ class LineModalStatusPane extends React.Component {
   }
 
   render() {
-    const { width } = this.state;
+    const { width } = this.props;
     return(
       <div>
         <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>

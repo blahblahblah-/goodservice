@@ -7,8 +7,6 @@ import moment from 'moment';
 class TrainModalDataPane extends React.Component {
   state = {}
 
-  handleOnUpdate = (e, { width }) => this.setState({ width })
-
   statusColor(status) {
     if (status === 'Good Service') {
       return "#2ecc40";
@@ -45,7 +43,7 @@ class TrainModalDataPane extends React.Component {
   }
 
   lastHour() {
-    const { width } = this.state;
+    const { width } = this.props;
     const graphWidth = (width < Responsive.onlyMobile.maxWidth) ? width - 100 : 280;
     return (
       <Bar
@@ -151,7 +149,7 @@ class TrainModalDataPane extends React.Component {
   }
 
   lastWeek() {
-    const { width } = this.state;
+    const { width } = this.props;
     const graphWidth = (width < Responsive.onlyMobile.maxWidth) ? width - 100 : 600;
     return (
       <Bar
@@ -279,9 +277,9 @@ class TrainModalDataPane extends React.Component {
   }
 
   render() {
-    const { width } = this.state;
+    const { width } = this.props;
     return(
-      <Responsive as={Segment} fireOnMount onUpdate={this.handleOnUpdate} basic style={{padding: "1em 0"}}>
+      <Responsive as={Segment} fireOnMount basic style={{padding: "1em 0"}}>
         <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="mini" inverted>
           <Statistic>
             <Statistic.Label>Last hour</Statistic.Label>
