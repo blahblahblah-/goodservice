@@ -50,8 +50,12 @@ module Clockwork
     endTime = Time.current
     puts "DB cleanup finished in #{endTime - startTime} seconds"
 
+    Rails.cache.delete_matched("views/*/api/lines/*/archive/*")
+    cacheTime = Time.current
+    puts "Line stats cache cleared in #{cacheTime - endTime} seconds"
+
     ScheduleProcessor.stats_info(force_refresh: true, force_refresh_last_week_stats: true)
     statsTime = Time.current
-    puts "Processed stats in #{statsTime - endTime} seconds"
+    puts "Processed stats in #{statsTime - cacheTime} seconds"
   }
 end

@@ -1,7 +1,7 @@
 class Api::LinesController < ApplicationController
 
   caches_action :show, expires_in: 30.seconds
-  caches_action :archive, expires_in: 1.hour
+  caches_action :archive, expires_in: 1.day
 
   def show
     lds = LineDirection.where(line_id: params[:id])
