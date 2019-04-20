@@ -208,7 +208,7 @@ class LineModalDataPane extends React.Component {
         { this.loading() }
         <Header size='medium' inverted>COMPARISON OF ACTUAL RUNTIME VS. SCHEDULED RUNTIME</Header>
         { this.graph() }
-        <Menu widths={8} style={{margin: '1em 0'}} attached='bottom' inverted>
+        <Menu widths={8} style={{margin: '1em 0'}} attached='bottom' inverted style={{display: "none"}}>
           {
             [...Array(7)].map((_, i) => {
               const index = 7 - i;
