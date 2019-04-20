@@ -485,7 +485,7 @@ class ScheduleProcessor
   def instantiate_data
     @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
-    @line_directions ||= LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
+    @line_directions = LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
     @stop_names ||= Stop.pluck(:internal_id).to_set
     @stops ||= Stop.all
     @unavailable_feeds = Set.new
