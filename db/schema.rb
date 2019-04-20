@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_13_222449) do
+ActiveRecord::Schema.define(version: 2019_04_20_231924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,15 @@ ActiveRecord::Schema.define(version: 2019_04_13_222449) do
     t.index ["line_id"], name: "index_line_directions_on_line_id"
   end
 
+  create_table "line_status_summaries", force: :cascade do |t|
+    t.integer "line_id", null: false
+    t.date "date", null: false
+    t.json "summary", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date", "line_id"], name: "index_line_status_summaries_on_date_and_line_id", unique: true
+  end
+
   create_table "lines", force: :cascade do |t|
     t.string "name", null: false
     t.boolean "is_visible", default: true, null: false
@@ -154,6 +163,7 @@ ActiveRecord::Schema.define(version: 2019_04_13_222449) do
   add_foreign_key "line_directions", "stops", column: "first_stop", primary_key: "internal_id"
   add_foreign_key "line_directions", "stops", column: "last_stop", primary_key: "internal_id"
   add_foreign_key "line_directions", "stops", column: "penultimate_stop", primary_key: "internal_id"
+  add_foreign_key "line_status_summaries", "lines", on_delete: :cascade
   add_foreign_key "stop_times", "stops", column: "stop_internal_id", primary_key: "internal_id"
   add_foreign_key "stop_times", "trips", column: "trip_internal_id", primary_key: "internal_id"
   add_foreign_key "trips", "routes", column: "route_internal_id", primary_key: "internal_id"
