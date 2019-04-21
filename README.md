@@ -1,6 +1,6 @@
 # goodservice
 
-This is a Rails app that detects headway discrepancies on the New York City Subway system by comparing the data for live countdown clocks with the static schedule data provided by the MTA.
+This is a Rails app that detects headway discrepancies, track delays and compare runtimes to the schedule on the New York City Subway system by comparing the data for live countdown clocks with the static schedule data provided by the MTA.
 
 See it live at [https://www.goodservice.io](https://www.goodservice.io/).
 
@@ -44,9 +44,13 @@ This is a Rails app that uses React as a view manager. As such, there are a lot 
 
 ### Server side: Rails
 
-The server performs two major functions: First, it runs a cron job that updates the current status of all routes. This cron job is located in `/lib/clock.rb`. It is currently hard coded to refresh train data every minute and to refresh route data every five minutes.
+The server performs two major functions: First, it runs a cron job that updates the current status of all routes and lines. This cron job is located in `/lib/clock.rb`. It is currently hard coded to refresh train data every minute and to refresh route data every five minutes.
 
 Second, it actually serves up the route info that is processed by this cron job. In particular, a Redis cache maintains all the headway info that is served by API (described below). All of the models that are used to process this information live in either `/app/models` or, closer to the ultimate product, in `/app/models/display`. If you want to start tracing through the code, you should begin at the `self.headway_info` function in `/app/models/schedule_processor.rb`.
+
+A rake job at `/lib/tasks/scheduler.rake` is to be run daily to compile runtimes comparison history from the model LineDirectionStatus into JSON and stored into the LineStatusSummary model, as the LineDirectionStatus table can get really big. The job is indempotent, so it would not be a problem if it ran more than once.
+
+Another cron job located in `/lib/clock.rb` runs daily at midnight to clear out old rows of data storing train statuses that drive the pretty graphs and historical stats.
 
 ### Client side: React
 
