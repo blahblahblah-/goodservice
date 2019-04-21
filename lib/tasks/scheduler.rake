@@ -32,7 +32,7 @@ task :update_line_status_summaries, [:days_past] => :environment do |_, args|
     puts "LineStatusSummary created for #{line.id} - #{line.name}"
   end
 
-  LineDirectionStatus.where("created_at >= ? and created_at < ?", from_time, to_time).delete_all
+  LineDirectionStatus.where("created_at >= ? and created_at < ?", from_time, to_time).delete_all unless days_past == 1
 
   end_time = Time.current
   puts "LineStatusSummary populated for #{date} in #{end_time - start_time} seconds"
