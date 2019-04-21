@@ -66,7 +66,7 @@ class SeedEvenMoreLines < ActiveRecord::Migration[5.2]
       first_stop: "F29S", # Church Av
       last_stop: "F35S", # Kings Hwy
       first_branch_stop: "F27S", # Church Av
-      first_alternate_branch_stop: "F27NS",
+      first_alternate_branch_stop: "F27S",
       alternate_name: "Church Av—Kings Hwy"
     )
   end
