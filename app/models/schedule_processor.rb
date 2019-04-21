@@ -419,8 +419,11 @@ class ScheduleProcessor
 
   def analyze_feed(feed, id)
     raise "Error: Empty feed" if feed.entity.empty?
-    raise "Error: Outdated feed" if feed.header.timestamp < (Time.current - 1.hour).to_i
     puts "Feed id #{id}, timestamp: #{feed.header.timestamp}"
+    if feed.header.timestamp < (Time.current - 1.hour).to_i
+      puts "Feed id #{id} is outdated"
+      return
+    end
     translations = Rails.cache.read("active-trips-translation-#{id}") || {}
     new_translations = {}
     previous_active_trips = Rails.cache.read("active-trips-#{id}") || {}
