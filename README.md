@@ -24,7 +24,7 @@ brew install node
 npm install -g yarn
 ```
 
-Next, you'll need to sign up for a developer account with the MTA. To do so, go to [https://datamine.mta.info](https://datamine.mta.info). You'll get an API key.
+Next, you'll need to sign up for a developer account with the MTA. To do so, go to [https://datamine.mta.info](https://datamine.mta.info). You'll get an API key and set it as `MTA_KEY` env variable.
 
 Finally, you'll need to download the current static schedules from the MTA. Go to [https://web.mta.info/developers/developer-data-terms.html](https://web.mta.info/developers/developer-data-terms.html), agree to the terms, and then download the data for New York City Transit. (Ctrl+F for "GTFS".) Put this into the `import` folder and unzip it.
 
@@ -59,6 +59,25 @@ The client side view libraries are a React app that is compiled by the `webpacke
 ### In the middle: An API
 
 The React front end is fed by an API that Rails serves. The routes are specified in the `/app/controllers` directory. Specifically, routes are specified in `/config/routes.rb`. The `/api/info` route is probably most interesting as it drives the main React app. This route refers specifically to the `/app/controllers/api/info_controller.rb` controller. Note that that file is a very thin wrapper around the `ScheduleProcessor`'s `headway_info` function, which is specified in `/app/models/schedule_processor.rb`, simply returning a JSON of the results.
+
+## Supported external services
+
+### Twitter
+
+The cron job to update route statuses is also capable of tweeting a list of delayed routes every 10 minutes. Make sure the env variables `TWITTER_ACCESS_TOKEN`, `TWITTER_ACCESS_TOKEN_SECRET`, `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET` are populated.
+
+### Slack
+
+`/app/controllers/api/slack_controller.rb` handles the API endpoints used to serve the goodservice.io Slack App, found [here](https://www.slack.com/apps/AGK7ZP2AH-goodserviceio). The API pulls from Redis the JSON compiled by the cron job and transforms into a JSON structure that Slack can use. `SLACK_CLIENT_ID` and `SLACK_CLIENT_SECRET` env variables are required to allow installation of the app on to a Slack workspace. The env variable `SLACK_SIGNING_SECRET` is needed to process Slack API requests.
+
+### Dead Man's Snitch
+
+Dead Man's Switch integration is supported to allow monitoring of the cron jobs being run. Ensure the env variables `DEADMANSSNITCH_API_KEY` and `DEADMANSSNITCH_TOKEN` are populated.
+
+### Google Analytics
+
+The React frontend app uses `react-router` module to change browser's URL in the single-page app, so the app detects URL changes and sends the new URL to GA. Events that don't change the URL (i.e. certain modals and tabs, and Slack app events) are also sent to GA as events. Currently, the GA ID is hardcoded.
+
 
 ## Other resources
 
