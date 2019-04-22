@@ -57,6 +57,7 @@ class ScheduleProcessor
           feed = retrieve_feed(id)
           puts "Analyzing feed #{id}"
           Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
+          Rails.cache.write("feed-data-#{id}-current", feed, expires_in: 10.minutes)
           analyze_feed(feed, id)
           puts "Done analyzing feed #{id}"
         rescue StandardError => e
@@ -64,8 +65,18 @@ class ScheduleProcessor
           if (retries += 1) < 3
             sleep(5)
             retry
+          else
+            begin
+              puts "Falling back to backup feed #{id}"
+              feed = Rails.cache.read("feed-data-#{id}-current")
+              raise "No feed found" unless feed
+              analyze_feed(feed, id)
+              puts "Done analyzing feed #{id}"
+            rescue StandardError => e
+              puts "Error again for feed #{id}"
+              unavailable_feeds << id
+            end
           end
-          unavailable_feeds << id
         end
       end
     else
