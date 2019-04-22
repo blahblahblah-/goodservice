@@ -362,7 +362,7 @@ class TrainModalStatusPane extends React.Component {
             { this.tableData() }
           </Table.Body>
         </Responsive>
-        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted selectable>
+        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
@@ -392,7 +392,7 @@ class TrainModalStatusPane extends React.Component {
             { this.tableDataMobileSouth() }
           </Table.Body>
         </Responsive>
-        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted selectable>
+        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
