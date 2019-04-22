@@ -2,6 +2,7 @@ import React from 'react';
 import { Header, Statistic, Grid, Responsive, Table } from 'semantic-ui-react';
 import TrainBullet from './trainBullet.jsx';
 import LineDisplay from './lineDisplay.jsx';
+import { withRouter } from 'react-router-dom';
 
 class TrainModalStatusPane extends React.Component {
   state = {}
@@ -42,6 +43,14 @@ class TrainModalStatusPane extends React.Component {
       return "green";
     }
     return "black";
+  }
+
+  handleLinkClick(line) {
+    if (line.boroughs.length) {
+      const lineName = (line.parent_name || line.name).replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase();
+      const link =  `/boroughs\/${line.boroughs[0].replace(/\s+/g, '-').toLowerCase()}/${lineName}`
+      this.props.history.push(link);
+    }
   }
 
   tableData() {
@@ -86,7 +95,7 @@ class TrainModalStatusPane extends React.Component {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
       return (
-        <Table.Row key={obj.line.name}>
+        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}}>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
               <Statistic size={(tablet && obj.southActual >= 10 && obj.southDelay >= 5) || (obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : (tablet ? "tiny" : "small")} horizontal={!tablet} inverted color={southColor}>
@@ -172,7 +181,7 @@ class TrainModalStatusPane extends React.Component {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
       const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
       return (
-        <Table.Row key={obj.line.name}>
+        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}}>
           <Table.Cell>
             <Statistic size='mini' inverted color={southColor}>
               <Statistic.Value>
@@ -224,7 +233,7 @@ class TrainModalStatusPane extends React.Component {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
       return (
-        <Table.Row key={obj.line.name}>
+        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}}>
           <Table.Cell>
             <h5>
               <LineDisplay link={true} mobile={true} line={obj.line} />
@@ -305,7 +314,7 @@ class TrainModalStatusPane extends React.Component {
     const { train, width } = this.props;
     return(
       <div>
-        <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>
+        <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted selectable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={5}>
@@ -353,7 +362,7 @@ class TrainModalStatusPane extends React.Component {
             { this.tableData() }
           </Table.Body>
         </Responsive>
-        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
+        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted selectable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
@@ -383,7 +392,7 @@ class TrainModalStatusPane extends React.Component {
             { this.tableDataMobileSouth() }
           </Table.Body>
         </Responsive>
-        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted>
+        <Responsive as={Table} fixed textAlign='center' maxWidth={Responsive.onlyMobile.maxWidth} unstackable inverted selectable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
@@ -420,4 +429,4 @@ class TrainModalStatusPane extends React.Component {
     )
   }
 }
-export default TrainModalStatusPane
+export default withRouter(TrainModalStatusPane)
