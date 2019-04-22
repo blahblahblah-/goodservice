@@ -314,7 +314,7 @@ class TrainModalStatusPane extends React.Component {
     const { train, width } = this.props;
     return(
       <div>
-        <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted selectable>
+        <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted selectable={width > Responsive.onlyTablet.maxWidth}>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={5}>
