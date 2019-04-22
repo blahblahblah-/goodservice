@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header, Segment, Tab, Dimmer, Loader, Grid, Menu, Button, Icon, Responsive } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import AboutModal from "./aboutModal.jsx";
 import TrainPane from "./trainPane.jsx";
 import LinePane from "./linePane.jsx";
 import SlowZonesPane from "./slowZonesPane.jsx";
@@ -209,6 +210,7 @@ class LandingPage extends React.Component {
             goodservice.io<span id="beta">beta</span>
             <Header.Subheader>
               status page for new york city subway
+                <AboutModal trigger={(<sup>[<span id="about-link">?</span>]</sup>)} />
             </Header.Subheader>
           </Header>
         </Segment>
