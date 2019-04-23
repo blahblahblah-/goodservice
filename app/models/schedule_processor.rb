@@ -57,8 +57,8 @@ class ScheduleProcessor
           feed = retrieve_feed(id)
           puts "Analyzing feed #{id}"
           Rails.cache.write("feed-data-#{id}-#{Time.current.min}", feed, expires_in: 10.minutes)
-          Rails.cache.write("feed-data-#{id}-current", feed, expires_in: 10.minutes)
           analyze_feed(feed, id)
+          Rails.cache.write("feed-data-#{id}-current", feed, expires_in: 10.minutes)
           puts "Done analyzing feed #{id}"
         rescue StandardError => e
           puts "Error: #{e} from feed #{id}"
