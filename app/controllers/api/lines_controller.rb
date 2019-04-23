@@ -5,6 +5,7 @@ class Api::LinesController < ApplicationController
 
   def show
     lds = LineDirection.where(line_id: params[:id])
+    expires_now
     render json: {
       north: {
         local: travel_time_stats(lds.find {|ld| ld.type != "ExpressLineDirection" && ld.direction == 1 }),
