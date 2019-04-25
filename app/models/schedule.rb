@@ -6,6 +6,7 @@ class Schedule < ActiveRecord::Base
     Schedule.joins("LEFT OUTER JOIN calendar_exceptions ON schedules.service_id ="\
       "calendar_exceptions.schedule_service_id and calendar_exceptions.date = '#{Date.current}'"
       ).where("(calendar_exceptions.exception_type = 1 or "\
-      "(#{Date::DAYNAMES[(Date.current).wday].downcase} = 1 and calendar_exceptions.exception_type is null))")
+      "(#{Date::DAYNAMES[(Date.current).wday].downcase} = 1 and calendar_exceptions.exception_type is null) and
+      start_date <= '#{Date.current}' and end_date > '#{Date.current}')")
   end
 end

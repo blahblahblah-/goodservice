@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_20_231924) do
+ActiveRecord::Schema.define(version: 2019_04_25_025506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,8 @@ ActiveRecord::Schema.define(version: 2019_04_20_231924) do
     t.integer "friday", null: false
     t.integer "saturday", null: false
     t.integer "sunday", null: false
+    t.date "start_date"
+    t.date "end_date"
     t.index ["service_id"], name: "index_schedules_on_service_id", unique: true
   end
 
