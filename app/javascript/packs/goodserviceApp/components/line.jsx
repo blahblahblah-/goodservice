@@ -34,6 +34,7 @@ class Line extends React.Component {
       .replace("Manhattan Bridge/Montague Street (Broadway)", "Manhattan Br/Montague St (Bway)")
       .replace("Canarsie (Myrtle Avenue—Broadway Junction)", "Canarsie (Myrtle Av—Bway Jct)")
       .replace("Canarsie (Broadway Junction—Rockaway Parkway)", "Canarsie (Bway Jct—Rockaway Pkwy)")
+      .replace("Canarsie (Lorimer Street—Myrtle Avenue)", "Canarsie (Lorimer St—Myrtle Av)")
       .replace("Crosstown (Bedford–Nostrand Avs—Hoyt–Schermerhorn Sts)", "Crosstown (Bfd–Nstnd—Hyt–Schrmn)")
       .replace("Crosstown (Court Sq—Bedford–Nostrand Avs)", "Crosstown (Court—Bedfrd–Nostrand)")
       .replace("Jamaica (Crescent Street—Jamaica Center)", "Jamaica (Crescent St—Jamaica Ctr)")
@@ -48,6 +49,7 @@ class Line extends React.Component {
         .replace("Queens Boulevard (Eastern Queens)", "Queens Blvd (E Queens)")
         .replace("Canarsie (Myrtle Av—Bway Jct)", "Canarsie (Myrtle—Bway Jct)")
         .replace("Canarsie (Bway Jct—Rockaway Pkwy)", "Canarsie (Bway Jct—Canarsie)")
+        .replace("Canarsie (Lorimer St—Myrtle Av)", "Canarsie (Lorimer—Myrtle)")
         .replace("Crosstown (Bfd–Nstnd—Hyt–Schrmn)", "Bfd–Nstnd—Hyt–Schrmn")
         .replace("Crosstown (Court—Bedfrd–Nostrand)", "Court Sq—Bedford–Nostrand")
         .replace("Flushing (Hudson—Queensboro Plz)", "Hudson Yds—Queensboro Plz");
@@ -57,6 +59,7 @@ class Line extends React.Component {
         .replace("Fulton Street (Lefferts Boulevard)", "Lefferts Boulevard")
         .replace("Canarsie (Myrtle—Bway Jct)", "Myrtle—Bway Jct")
         .replace("Canarsie (Bway Jct—Canarsie)", "Bway Jct—Canarsie")
+        .replace("Canarsie (Lorimer—Myrtle)", "Lorimer St—Myrtle Av")
         .replace("Bfd–Nstnd—Hyt–Schrmn", "Bfd–Nstd—Hyt–Schn")
         .replace("Court Sq—Bedford–Nostrand", "Court Sq—Bfd–Nstd")
         .replace("Jamaica (Crescent St—Jamaica Ctr)", "Jamaica (Crescent—Jamaica)")
@@ -93,6 +96,7 @@ class Line extends React.Component {
         .replace("Parkway", "Pkwy")
         .replace("Manh Br/Montgue", "Br/Montague")
         .replace("Myrtle—Bway Jct", "Myrtle—B Jct")
+        .replace("Lorimer St—Myrtle Av", "Lorimer—Myrtle")
         .replace("Bway Jct—Canarsie", "B Jct—Canarsie")
         .replace("Crescent—Jamaica Ctr", "Crescent—Jamaica")
         .replace("Central Park W", "Central Pk W");
