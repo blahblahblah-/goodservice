@@ -601,7 +601,9 @@ class ScheduleProcessor
   def process_trip(feed, trip_id, entity)
     route_id = route(entity.trip_update.trip.route_id)
     direction = entity.trip_update.trip.nyct_trip_descriptor.direction.to_i
-    if route_id == 'A' && entity.trip_update.stop_time_update.present? && ['A55S', 'A65N'].include?(entity.trip_update.stop_time_update.last.stop_id)
+    if route_id == 'A' && entity.trip_update.stop_time_update.present? &&
+      ((entity.trip_update.stop_time_update.last.stop_id == 'A55S' && entity.trip_update.stop_time_update[-2] && entity.trip_update.stop_time_update[-2].stop_id =='A57S') ||
+            (entity.trip_update.stop_time_update.last.stop_id == 'A65N' && entity.trip_update.stop_time_update[-2] && entity.trip_update.stop_time_update[-2].stop_id =='A64N'))
       puts "A Shuttle found, reversing trip #{trip_id}"
       entity.trip_update, direction = reverse_trip_update(entity.trip_update)
     end
