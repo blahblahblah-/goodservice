@@ -442,6 +442,9 @@ class ScheduleProcessor
     unmatched_trips = []
     for entity in feed.entity do
       if entity.field?(:trip_update) && entity.trip_update.trip.nyct_trip_descriptor
+        entity.trip_update.stop_time_update.reject! { |update|
+          (update.departure || update.arrival)&.time.nil?
+        }
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time > feed.header.timestamp + 60.minutes }
         actual_trip_id = entity.trip_update.trip.trip_id
