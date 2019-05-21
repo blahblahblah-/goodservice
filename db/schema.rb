@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_25_183607) do
+ActiveRecord::Schema.define(version: 2019_05_21_010504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_04_25_183607) do
     t.index ["actual_trip_update_id"], name: "index_delays_on_actual_trip_update_id", unique: true
     t.index ["created_at"], name: "index_delays_on_created_at"
   end
+
 
   create_table "line_boroughs", force: :cascade do |t|
     t.integer "line_id", null: false
@@ -146,7 +147,14 @@ ActiveRecord::Schema.define(version: 2019_04_25_183607) do
     t.string "internal_id", null: false
     t.string "stop_name", null: false
     t.string "parent_stop_id"
+    t.boolean "is_accessible", default: false, null: false
     t.index ["internal_id"], name: "index_stops_on_internal_id", unique: true
+  end
+
+  create_table "transfers", force: :cascade do |t|
+    t.string "from_stop_internal_id", null: false
+    t.string "to_stop_internal_id", null: false
+    t.integer "min_transfer_time", default: 0, null: false
   end
 
   create_table "trips", force: :cascade do |t|
