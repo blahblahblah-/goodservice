@@ -3,6 +3,7 @@ import { Header, Modal, Statistic, Grid, Responsive, Table, Rating, Tab } from '
 import TrainBullet from './trainBullet.jsx';
 import TrainModalStatusPane from './trainModalStatusPane.jsx';
 import TrainModalDataPane from './trainModalDataPane.jsx';
+import TrainModalMapPane from './trainModalMapPane.jsx';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 
@@ -65,16 +66,21 @@ class TrainModal extends React.Component {
   }
 
   panes() {
-    const { width } = this.props;
+    const { train, stats, routing, stops, width } = this.props;
     return [
       { menuItem: 'Current Status', render: () =>
         <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
-          <TrainModalStatusPane train={this.props.train} width={width} />
+          <TrainModalStatusPane train={train} width={width} />
         </Tab.Pane>
       },
       { menuItem: 'Stats', render: () =>
         <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
-          <TrainModalDataPane stats={this.props.stats} width={width} />
+          <TrainModalDataPane stats={stats} width={width} />
+        </Tab.Pane>
+      },
+      { menuItem: 'Live Route Map', render: () =>
+        <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
+          <TrainModalMapPane routing={routing} stops={stops} width={width} />
         </Tab.Pane>
       },
     ];
@@ -111,7 +117,7 @@ class TrainModal extends React.Component {
                     <Statistic.Label>Status</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>
-                <Tab menu={{ widths: 2 }} panes={this.panes()} style={{margin: '1em 0'}} defaultActiveIndex={((this.props.showStats) ? 1 : 0)} />
+                <Tab menu={{ widths: 3 }} panes={this.panes()} style={{margin: '1em 0'}} defaultActiveIndex={((this.props.showStats) ? 1 : 0)} />
               </Grid.Column>
             </Grid>
           </Modal.Description>

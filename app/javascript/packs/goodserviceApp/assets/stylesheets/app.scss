@@ -32,7 +32,7 @@ body {
   }
 }
 
-.ui.two.item.menu .item{
+.ui.two.item.menu .item, .ui.three.item.menu .item{
   background: none;
   color: white;
 
@@ -48,7 +48,7 @@ body {
 }
 
 
-.ui.two.item.menu {
+.ui.two.item.menu, .ui.three.item.menu {
   background-color: rgba(51,51,51, 0.3);
 }
 

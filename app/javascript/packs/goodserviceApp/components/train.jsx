@@ -137,14 +137,14 @@ class Train extends React.Component {
   }
 
   render() {
-    const { width } = this.props;
+    const { width, train, stats, starredPane, modelOpen, showStats, handleClose, onFavTrainChange, favTrains, routing, stops } = this.props;
     return(
-      <TrainModal train={this.props.train} stats={this.props.stats} starredPane={this.props.starredPane}
-        modalOpen={this.state.modelOpen} showStats={this.props.showStats} onClose={this.handleClose}
-        onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} width={width} trigger={
-        <Segment as={Button} fluid id={"train-" + this.props.train.name} onClick={this.handleClick}>
+      <TrainModal train={train} stats={stats} starredPane={starredPane}
+        modalOpen={this.state.modelOpen} showStats={showStats} onClose={this.handleClose}
+        onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} stops={stops} trigger={
+        <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick}>
           {this.renderInfo()}
-          <TrainBullet name={this.props.train.name} color={this.props.train.color}
+          <TrainBullet name={train.name} color={train.color}
             textColor={this.props.train.text_color} style={{ float: 'left' }} />
           <div style={{ float: 'left', textAlign:'left' }}>{this.alternateName()}</div>
         </Segment>

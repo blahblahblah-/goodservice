@@ -87,7 +87,7 @@ class TrainStatusPane extends React.Component {
   handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
-    const { width } = this.props;
+    const { width, trains, showStats, trainStats, onFavTrainChange, favTrains, routing, stops } = this.props;
     return(
       <div ref={this.handleContextRef}>
         <Helmet>
@@ -100,11 +100,11 @@ class TrainStatusPane extends React.Component {
         }
         <Responsive as={Grid} stackable columns={3} fireOnMount>
           {
-            map(this.props.trains.filter(train => (this.props.showStats || train.visible || train.status !== 'Not Scheduled')), train => {
+            map(trains.filter(train => (showStats || train.visible || train.status !== 'Not Scheduled')), train => {
               return (
                 <Grid.Column key={train.name + train.alternate_name}>
-                  <Train train={train} stats={this.props.trainStats[train.id]} showStats={this.props.showStats}
-                    onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} width={width} />
+                  <Train train={train} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} stops={stops}
+                    onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} />
                 </Grid.Column>)
             })
           }

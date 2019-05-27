@@ -47,15 +47,15 @@ class StarredPane extends React.Component {
   }
 
   renderGrid() {
-    const { width } = this.props;
+    const { width, trainStats, onFavTrainChange, favTrains, onFavLineChange, favLines, routing, stops } = this.props;
     return (
       <Responsive as={Grid} stackable doubling columns={3} fireOnMount>
         {
           map(this.favTrains(), train => {
             return (
               <Grid.Column key={train.name + train.alternate_name}>
-                <Train starredPane={true} train={train} stats={this.props.trainStats[train.id]}
-                  onFavTrainChange={this.props.onFavTrainChange} favTrains={this.props.favTrains} width={width} />
+                <Train starredPane={true} train={train} stats={trainStats[train.id]} routing={routing[train.id]} stops={stops}
+                  onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} />
               </Grid.Column>
             )
           })
@@ -64,7 +64,7 @@ class StarredPane extends React.Component {
           map(this.favLines(), line => {
             return (
               <Grid.Column key={line.name}><Line starredPane={true} line={line}
-                onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} />
+                onFavLineChange={onFavLineChange} favLines={favLines} width={width} />
               </Grid.Column>
             )
           })

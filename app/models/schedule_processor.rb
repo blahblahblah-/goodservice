@@ -40,7 +40,7 @@ class ScheduleProcessor
     "7X" => 51,
   }
 
-  attr_accessor :routes, :lines, :key_stops
+  attr_accessor :routes, :lines, :key_stops, :stops
 
   def initialize
     refresh_data
@@ -253,10 +253,15 @@ class ScheduleProcessor
     return Rails.cache.read("routes-info") if !force_refresh && Rails.cache.read("routes-info")
     processor = self.instance
 
+    closed_stops = Stop.where(is_closed: true).pluck(:internal_id)
+
+    stop_trains = Hash.new { |h, k| h[k] = [] }
+
     results = Hash[processor.routes.reject { |_, route|
       !route.visible? && !route.scheduled?
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       [route.internal_id, {
+          id: route.internal_id,
           name: route.name,
           color: route.color && "##{route.color}",
           text_color: route.text_color && "##{route.text_color}",
@@ -266,15 +271,56 @@ class ScheduleProcessor
             south: route.directions[3].destination_stops,
           },
           routings: {
-            north: route.directions[1].routings,
-            south: route.directions[3].routings,
+            north: route.directions[1].routings.map { |routing|
+              routing.reject {|stop| closed_stops.include?(stop) }
+            },
+            south: route.directions[3].routings.map { |routing|
+              routing.reject {|stop| closed_stops.include?(stop) }
+            },
           },
         }
       ]
     end]
 
+    transfers = Transfer.where("from_stop_internal_id <> to_stop_internal_id").group_by(&:to_stop_internal_id)
+
+    results.each do |route_id, route|
+      route_obj = {
+        id: route_id,
+        name: route[:name],
+        color: route[:color],
+        text_color: route[:text_color],
+        alternate_name: route[:alternate_name],
+      }
+      route[:routings].each do |_, routings|
+        routings.each do |routing|
+          routing.each do |stop|
+            next if closed_stops.include?(stop)
+            stop_trains[stop[0..2]] << route_obj
+
+            next unless transfers_for_stop = transfers[stop[0..2]]
+
+            transfers_for_stop.each do |transfer|
+              stop_trains[transfer.from_stop_internal_id] << route_obj
+            end
+          end
+        end
+      end
+    end
+
+    stop_results = Hash[processor.stops.select { |stop| stop.internal_id.length == 3}.map do |stop|
+      [stop.internal_id, {
+        id: stop.internal_id,
+        name: stop.stop_name,
+        trains: stop_trains[stop.internal_id].uniq { |r| r[:id] },
+        # borough: nil,
+        # is_accessible: false,
+      }]
+    end]
+
     data = {
       routes: results,
+      stops: stop_results,
       timestamp: Time.current.iso8601,
     }
 
@@ -410,7 +456,7 @@ class ScheduleProcessor
 
   private
 
-  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :stops, :recent_trips, :unavailable_feeds
+  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :recent_trips, :unavailable_feeds
 
   def self.twitter_client
     return unless ENV["TWITTER_CONSUMER_KEY"]

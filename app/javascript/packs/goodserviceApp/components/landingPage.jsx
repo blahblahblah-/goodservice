@@ -15,6 +15,7 @@ import { withRouter } from 'react-router-dom';
 
 const API_URL = '/api/info';
 const STATS_URL = '/api/stats';
+const ROUTES_URL = '/api/routes';
 const TEST_DATA = false;
 
 class LandingPage extends React.Component {
@@ -26,6 +27,8 @@ class LandingPage extends React.Component {
       trains: [],
       lines: [],
       trainStats: [],
+      routingData: {},
+      stops: {},
       loading: false,
       backgroundImageId: this.randomizeBackground(),
       favTrains: new Set(favTrains),
@@ -117,12 +120,12 @@ class LandingPage extends React.Component {
   }
 
   panes() {
-    const { trains, lines, favTrains, favLines, trainStats, width } = this.state;
+    const { trains, lines, favTrains, favLines, trainStats, width, routing, stops } = this.state;
     return [
       { menuItem: <Menu.Item as={Link} to='/trains' key='train'>Trains</Menu.Item>,
         render: () =>
           <Tab.Pane>
-            <TrainPane trains={trains} trainStats={trainStats} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} width={width} />
+            <TrainPane trains={trains} trainStats={trainStats} routing={routing} stops={stops} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>Lines</Menu.Item>,
@@ -140,7 +143,7 @@ class LandingPage extends React.Component {
       { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <StarredPane trains={trains} trainStats={trainStats} lines={lines} onFavTrainChange={this.handleFavTrainChange}
+            <StarredPane trains={trains} trainStats={trainStats} lines={lines} routing={routing} stops={stops} onFavTrainChange={this.handleFavTrainChange}
               favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
           </Tab.Pane>
       },
@@ -274,6 +277,10 @@ class LandingPage extends React.Component {
       fetch(STATS_URL)
         .then(response => response.json())
         .then(data => this.setState({ trainStats: data.status }))
+
+      fetch(ROUTES_URL)
+        .then(response => response.json())
+        .then(data => this.setState({ routing: data.routes, stops: data.stops }))
     }
   }
 
