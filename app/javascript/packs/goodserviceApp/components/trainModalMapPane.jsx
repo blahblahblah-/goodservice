@@ -1,10 +1,9 @@
 import React from 'react';
 import { Header } from 'semantic-ui-react';
 import TrainBullet from './trainBullet.jsx';
+import TrainMapStop from './trainMapStop.jsx';
 
 class TrainModalMapPane extends React.Component {
-  state = {}
-
   calculateStops() {
     const { routing } = this.props;
     const southStops = {};
@@ -119,47 +118,62 @@ class TrainModalMapPane extends React.Component {
     const { width, routing, stops } = this.props;
     const segments = this.generateSegments();
     const stopPattern = this.calculateStops();
+    let currentBranch = 0;
     if (segments) {
       return(
-        <ul style={{listStyleType: "none", textAlign: "left"}}>
-          {          
+        <ul style={{listStyleType: "none", textAlign: "left", width: "700px", margin: "auto"}}>
+          {
             segments.line.map((stopId) => {
+              let branchStart = null;
+              let branchEnd = null;
+              let branchStops = [];
+              let count = 0;
               const stop = stops[stopId];
               const transfers = stop && stop.trains.filter(route => route.id != routing.id);
+              if (segments.branches.length > (currentBranch + 1) && (segments.branches[currentBranch + 1].includes(stopId))) {
+                // begin new branch
+                while (count <= currentBranch) {
+                  let branchStopsHere = segments.branches[count].includes(stopId);
+                  branchStops.push(branchStopsHere);
+                  if (branchStopsHere) {
+                    segments.branches[count].splice(0, 1);
+                  }
+                  count++;
+                }
+                currentBranch++;
+                branchStart = currentBranch;
+              } else if (currentBranch > 0 &&
+                  (segments.branches[currentBranch][segments.branches[currentBranch].length - 1] === stopId) &&
+                  segments.branches[currentBranch - 1].includes(stopId)) {
+                // close branch
+                while (count <= currentBranch) {
+                  let branchStopsHere = segments.branches[count].includes(stopId);
+                  branchStops.push(branchStopsHere);
+                  if (branchStopsHere) {
+                    segments.branches[count].splice(0, 1);
+                  }
+                  count++;
+                }
+                branchEnd = currentBranch;
+                segments.branches.splice(currentBranch, 1);
+                currentBranch--;
+              } else {
+                while (count <= currentBranch) {
+                  let branchStopsHere = segments.branches[count].includes(stopId);
+                  branchStops.push(branchStopsHere);
+                  if (branchStopsHere) {
+                    segments.branches[count].splice(0, 1);
+                  }
+                  count++;
+                }
+              }
+              const activeBranches = branchStops.map((isStopping, index) => {
+                return isStopping || segments.branches[index].length > 0;
+              });
               return (
-                <li key={stopId} style={{height: "50px"}}>
-                  <div style={{height: "50px", display: "flex"}}>
-                    <div style={{margin: "0 20px", height: "50px", width: "30px", backgroundColor: routing.color, display: "inline-block"}}>
-                      {
-                        stopPattern.southStops[stopId] && stopPattern.northStops[stopId] &&
-                          <div style={{height: "15px", width: "15px", borderRadius: "50%", position: "relative", backgroundColor: "white", left: "8px", top: "18px"}}>
-                          </div>
-                      }
-                      {
-                        !stopPattern.southStops[stopId] && stopPattern.northStops[stopId] &&
-                          <div style={{height: "8px", width: "15px", borderTopLeftRadius: "15px", borderTopRightRadius: "15px", position: "relative", backgroundColor: "white", left: "8px", top: "18px"}}>
-                          </div>
-                      }
-                      {
-                        stopPattern.southStops[stopId] && !stopPattern.northStops[stopId] &&
-                          <div style={{height: "8px", width: "15px", borderBottomLeftRadius: "15px", borderBottomRightRadius: "15px", position: "relative", backgroundColor: "white", left: "8px", top: "25px"}}>
-                          </div>
-                      }
-                    </div>
-                    <Header as='h3' inverted style={{display: "inline", lineHeight: "50px", height: "50px", margin: 0}}>
-                      {stop && stop.name.replace(/ - /g, "–")}
-                    </Header>
-                    <div style={{display: "inline-block", lineHeight: "50px"}}>
-                      {
-                        transfers && transfers.map((route) => {
-                          return (
-                            <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
-                          )
-                        })
-                      }
-                    </div>
-                  </div>
-                </li>
+                <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
+                  northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
+                  branchEnd={branchEnd} activeBranches={activeBranches} />
               )
             })
           }
