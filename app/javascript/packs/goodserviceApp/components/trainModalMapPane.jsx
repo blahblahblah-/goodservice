@@ -145,6 +145,9 @@ class TrainModalMapPane extends React.Component {
               } else if (currentBranch > 0 &&
                   (segments.branches[currentBranch][segments.branches[currentBranch].length - 1] === stopId) &&
                   segments.branches[currentBranch - 1].includes(stopId)) {
+                branchEnd = currentBranch;
+                segments.branches.splice(currentBranch, 1);
+                currentBranch--;
                 // close branch
                 while (count <= currentBranch) {
                   let branchStopsHere = segments.branches[count].includes(stopId);
@@ -154,9 +157,6 @@ class TrainModalMapPane extends React.Component {
                   }
                   count++;
                 }
-                branchEnd = currentBranch;
-                segments.branches.splice(currentBranch, 1);
-                currentBranch--;
               } else {
                 while (count <= currentBranch) {
                   let branchStopsHere = segments.branches[count].includes(stopId);
