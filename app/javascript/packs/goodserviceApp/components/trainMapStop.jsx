@@ -33,7 +33,7 @@ class TrainMapStop extends React.Component {
     const branchStartHere = (branchStart && (branchStart == index + 1));
     const branchEndHere = (branchEnd && (branchEnd == index + 1));
     const marginValue = isMobile ? "10px" : "20px"
-    const margin = branchStartHere || branchEndHere ? ("0 0 0 " + marginValue) : ("0 " + marginValue);
+    const margin = (branchStartHere !== null || branchEndHere !== null) ? ("0 0 0 " + marginValue) : ("0 " + marginValue);
     const doubleMarginValue = isMobile ? "20px" : "40px"
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
 
@@ -52,17 +52,17 @@ class TrainMapStop extends React.Component {
           }
         </div>
         {
-          (branchStartHere || branchEndHere) &&
+          (branchStartHere !== null || branchEndHere !== null) &&
           <div style={{margin: "15px 0", height: "20px", width: doubleMarginValue, backgroundColor: color, display: "inline-block"}}>
           </div>
         }
         {
-          branchStartHere &&
+          branchStartHere !== null &&
           <div style={{margin: "15px " + marginValue + " 0 0", height: "35px", width: "20px", backgroundColor: color, display: "inline-block"}}>
           </div>
         }
         {
-          branchEndHere &&
+          branchEndHere !== null &&
           <div style={{margin: "0px " + marginValue + " 15px 0", height: "35px", width: "20px", backgroundColor: color, display: "inline-block"}}>
           </div>
         }

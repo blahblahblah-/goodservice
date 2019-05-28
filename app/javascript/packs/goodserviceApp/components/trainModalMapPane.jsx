@@ -139,8 +139,14 @@ class TrainModalMapPane extends React.Component {
               const stop = stops[stopId];
               const transfers = stop && stop.trains.filter(route => route.id != routing.id);
               if (segments.branches.length > (currentBranch + 1) && (segments.branches[currentBranch + 1].includes(stopId))) {
+                let maxBranch = currentBranch;
+                if (segments.branches[currentBranch].includes(stopId)) {
+                  branchStart = currentBranch;
+                } else {
+                  maxBranch = currentBranch + 1;
+                }
                 // begin new branch
-                while (count <= currentBranch) {
+                while (count <= maxBranch) {
                   let branchStopsHere = segments.branches[count].includes(stopId);
                   branchStops.push(branchStopsHere);
                   if (branchStopsHere) {
@@ -149,7 +155,6 @@ class TrainModalMapPane extends React.Component {
                   count++;
                 }
                 currentBranch++;
-                branchStart = currentBranch;
               } else if (currentBranch > 0 &&
                   (segments.branches[currentBranch][segments.branches[currentBranch].length - 1] === stopId) &&
                   segments.branches[currentBranch - 1].includes(stopId)) {
