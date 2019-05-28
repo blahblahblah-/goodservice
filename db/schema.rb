@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_22_035929) do
+ActiveRecord::Schema.define(version: 2019_05_21_010504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,7 +147,6 @@ ActiveRecord::Schema.define(version: 2019_05_22_035929) do
     t.string "stop_name", null: false
     t.string "parent_stop_id"
     t.boolean "is_accessible", default: false, null: false
-    t.boolean "is_closed", default: false, null: false
     t.index ["internal_id"], name: "index_stops_on_internal_id", unique: true
   end
 

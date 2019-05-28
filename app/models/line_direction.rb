@@ -51,6 +51,14 @@ class LineDirection < ActiveRecord::Base
       .includes(:line).uniq.map(&:line).uniq.select(&:is_visible).sort_by(&:name)
   end
 
+  def first_stops
+    [first_branch_stop, first_alternate_branch_stop, first_stop].compact
+  end
+
+  def last_stops
+    [last_branch_stop, last_alternate_branch_stop, last_stop].compact
+  end
+
   private
 
   def scheduled_runtimes

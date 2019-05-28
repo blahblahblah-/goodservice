@@ -3,6 +3,14 @@ class LocalLineDirection < LineDirection
     alternate_name || "#{line.name} Local"
   end
 
+  def first_stops
+    [express_line_direction.first_branch_stop, express_line_direction.first_alternate_branch_stop, express_line_direction.first_stop].compact
+  end
+
+  def last_stops
+    [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop, express_line_direction.last_stop].compact
+  end
+
   private
 
   def scheduled_runtimes

@@ -131,6 +131,8 @@ class ScheduleProcessor
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
             travel_time: ld.travel_time,
+            first_stops: ld.first_stops,
+            last_stops: ld.last_stops,
           }
         },
         south: route.directions[3].line_directions.reject { |ld|
@@ -144,6 +146,8 @@ class ScheduleProcessor
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
             travel_time: ld.travel_time,
+            first_stops: ld.first_stops,
+            last_stops: ld.last_stops,
           }
         },
         lines_not_in_service: {
@@ -253,7 +257,7 @@ class ScheduleProcessor
     return Rails.cache.read("routes-info") if !force_refresh && Rails.cache.read("routes-info")
     processor = self.instance
 
-    closed_stops = Stop.where(is_closed: true).pluck(:internal_id)
+    closed_stops = ENV['CLOSED_STOPS']&.split(',') || []
 
     stop_trains = Hash.new { |h, k| h[k] = [] }
 
