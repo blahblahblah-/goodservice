@@ -9,20 +9,20 @@ class TrainMapStop extends React.Component {
 
     if (southStop && northStop) {
       return (
-        <div style={{height: "15px", width: "15px", borderRadius: "50%", position: "relative", backgroundColor: "white", left: "8px", top: "18px"}}>
+        <div style={{height: "10px", width: "10px", borderRadius: "50%", position: "relative", backgroundColor: "white", left: "5px", top: "20px"}}>
         </div>
       )
     }
 
     if (northStop) {
       return (
-        <div style={{height: "8px", width: "15px", borderTopLeftRadius: "15px", borderTopRightRadius: "15px", position: "relative", backgroundColor: "white", left: "8px", top: "18px"}}>
+        <div style={{height: "5px", width: "10px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", position: "relative", backgroundColor: "white", left: "5px", top: "20px"}}>
         </div>
       )
     }
 
     return (
-      <div style={{height: "8px", width: "15px", borderBottomLeftRadius: "15px", borderBottomRightRadius: "15px", position: "relative", backgroundColor: "white", left: "8px", top: "25px"}}>
+      <div style={{height: "5px", width: "10px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px", position: "relative", backgroundColor: "white", left: "5px", top: "25px"}}>
       </div>
     )
   }
@@ -36,14 +36,14 @@ class TrainMapStop extends React.Component {
 
     if (!isActiveBranch) {
       return (
-        <div style={{margin: margin, height: "50px", width: "30px", display: "inline-block"}}>
+        <div style={{margin: margin, height: "50px", width: "20px", display: "inline-block"}}>
         </div>
       )
     }
 
     return (
       <div key={index}>
-        <div style={{margin: margin, height: "50px", width: "30px", backgroundColor: color, display: "inline-block"}}>
+        <div style={{margin: margin, height: "50px", width: "20px", backgroundColor: color, display: "inline-block"}}>
           {
             stopExists && this.renderStop()
           }
@@ -55,12 +55,12 @@ class TrainMapStop extends React.Component {
         }
         {
           branchStartHere &&
-          <div style={{margin: "15px 20px 0 0", height: "35px", width: "30px", backgroundColor: color, display: "inline-block"}}>
+          <div style={{margin: "15px 20px 0 0", height: "35px", width: "20px", backgroundColor: color, display: "inline-block"}}>
           </div>
         }
         {
           branchEndHere &&
-          <div style={{margin: "0px 20px 15px 0", height: "35px", width: "30px", backgroundColor: color, display: "inline-block"}}>
+          <div style={{margin: "0px 20px 15px 0", height: "35px", width: "20px", backgroundColor: color, display: "inline-block"}}>
           </div>
         }
       </div>
