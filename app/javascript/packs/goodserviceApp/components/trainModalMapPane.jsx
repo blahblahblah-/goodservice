@@ -1,6 +1,4 @@
 import React from 'react';
-import { Header } from 'semantic-ui-react';
-import TrainBullet from './trainBullet.jsx';
 import TrainMapStop from './trainMapStop.jsx';
 
 class TrainModalMapPane extends React.Component {
@@ -8,6 +6,11 @@ class TrainModalMapPane extends React.Component {
     const { routing } = this.props;
     const southStops = {};
     const northStops = {};
+
+    if (!routing) {
+      return;
+    }
+
     routing.routings.south.forEach((r) => {
       r.forEach((obj) => {
         const stopId = obj.substring(0, 3);
@@ -25,7 +28,11 @@ class TrainModalMapPane extends React.Component {
   }
 
   generateSegments() {
-    const { routing, stops } = this.props;
+    const { routing } = this.props;
+
+    if (!routing ) {
+      return;
+    }
 
     const southRoutings = routing.routings.south.sort((a, b) => {
       return b.length - a.length ;

@@ -26,8 +26,8 @@ class Line extends React.Component {
   }
 
   name() {
-    const { starredPane, width } = this.props;
-    const newWidth = this.props.starredPane ? newWidth * 2 / 3 : width;
+    const { starredPane, slowZonesPane, width } = this.props;
+    const newWidth = (starredPane || slowZonesPane) ? newWidth * 2 / 3 : width;
     let name = this.props.line.name.replace(" Branch", "")
       .replace("Downtown Brooklyn", "Downtown BK")
       .replace("Lower Manhattan", "Lower Manh")
@@ -112,15 +112,11 @@ class Line extends React.Component {
 
   handleClick = e => {
     if (this.props.starredPane) {
-      this.setState({ modelOpen: true});
+      this.props.history.push('/starred/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase());
+    } else if (this.props.slowZonesPane) {
+      this.props.history.push('/slow-zones/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase());
     } else {
       this.props.history.push('/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase() + '/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase());
-    }
-  }
-
-  handleClose = e => {
-    if (this.props.starredPane) {
-      this.setState({ modelOpen: false});
     }
   }
 
@@ -161,9 +157,9 @@ class Line extends React.Component {
   }
 
   render() {
-    const { line, borough, starredPane, onFavLineChange, favLines, width } = this.props;
+    const { line, borough, starredPane, slowZonesPane, onFavLineChange, favLines, width } = this.props;
     return(
-      <Responsive as={LineModal} line={line} borough={borough} starredPane={starredPane}
+      <Responsive as={LineModal} line={line} borough={borough} starredPane={starredPane || slowZonesPane}
         onFavLineChange={onFavLineChange} favLines={favLines} fireOnMount
         onClose={this.handleClose} width={width} trigger={
         <Segment className='line-button' as={Button} fluid style={{minHeight: 92}} onClick={this.handleClick}>

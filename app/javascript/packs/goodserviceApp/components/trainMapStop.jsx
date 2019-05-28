@@ -83,7 +83,8 @@ class TrainMapStop extends React.Component {
             {
               transfers && transfers.map((route) => {
                 return (
-                  <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                  <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color}
+                    textColor={route.text_color} size='small' linkedView='route' />
                 )
               })
             }

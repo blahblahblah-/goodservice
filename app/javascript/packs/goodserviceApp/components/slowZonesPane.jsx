@@ -35,7 +35,7 @@ class SlowZonesPane extends React.Component {
             sortedLines.map(line => {
               return (
                 <Grid.Column key={line.name}>
-                  <Line starredPane={true} showTravelTime={true} line={line} borough={this.props.borough}
+                  <Line slowZonesPane={true} showTravelTime={true} line={line} borough={this.props.borough}
                     onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} />
                 </Grid.Column>
               )

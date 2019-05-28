@@ -1,23 +1,14 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid, Responsive, Table, Rating, Tab } from 'semantic-ui-react';
+import { Header, Modal, Statistic, Grid, Responsive, Table, Rating, Tab, Menu } from 'semantic-ui-react';
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
 import LineModalStatusPane from './lineModalStatusPane.jsx';
 import LineModalDataPane from './lineModalDataPane.jsx';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 
 class LineModal extends React.Component {
   state = {}
-
-  handleOnMount = e => {
-    if (this.props.starredPane) {
-      gtag('event', 'open_line', {
-        'event_category': 'modal',
-        'event_label': this.props.line.id
-      });
-    }
-  }
 
   handleRateLine = (e, { rating }) => {
     this.props.onFavLineChange(this.props.line.id, rating);
@@ -43,15 +34,16 @@ class LineModal extends React.Component {
   }
 
   panes() {
-    const { line, width } = this.props;
+    const { line, width, match, starredPane } = this.props;
+    const baseUrl = starredPane ? match.url.split('/').slice(0, 3).join('/') : match.url.split('/').slice(0, 4).join('/');
     return [
-      { menuItem: 'Current Status', render: () =>
-        <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='status'>Current Status</Menu.Item>, render: () =>
+        <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
           <LineModalStatusPane line={line} width={width} />
         </Tab.Pane>
       },
-      { menuItem: 'Stats', render: () =>
-        <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>Stats</Menu.Item>, render: () =>
+        <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
           <LineModalDataPane line={line} width={width} />
         </Tab.Pane>
       },
@@ -59,13 +51,15 @@ class LineModal extends React.Component {
   }
 
   render() {
-    const { borough, line, starredPane, modalOpen, location, history, trigger, width } = this.props;
+    const { borough, line, starredPane, modalOpen, location, history, trigger, width, match } = this.props;
     const title = "goodservice.io beta - Lines - " + ((borough) ? (borough + ' - ' + line.name) : (line.name));
+    const urlName = line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase();
+    const viewIndex =  match.params.view === 'stats' ? 1 : 0;
     return(
       <Responsive as={Modal} basic size='large'
-      open={starredPane ? modalOpen : location.pathname == '/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase() + '/' + line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase()}
+      open={match.params.line === urlName || match.params.id === urlName}
       fireOnMount onMount={this.handleOnMount}
-      onClose={() => starredPane ? this.props.onClose() : history.push('/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase())} trigger={trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
+      onClose={() => starredPane ? history.push(match.url.split('/').slice(0, 2).join('/')) : history.push('/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase())} trigger={trigger} closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Helmet>
           <title>{title}</title>
           <meta property="og:title" content={title} />
@@ -90,7 +84,7 @@ class LineModal extends React.Component {
                   <Statistic.Label>Status</Statistic.Label>
                 </Statistic>
               </Statistic.Group>
-              <Tab menu={{ widths: 2 }} panes={this.panes()} style={{margin: '1em 0'}} />
+              <Tab menu={{ widths: 2 }} panes={this.panes()} style={{margin: '1em 0'}} activeIndex={viewIndex} />
               </Grid.Column>
             </Grid>
           </Modal.Description>

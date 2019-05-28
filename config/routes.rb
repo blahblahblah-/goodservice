@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get '/slack/install', to: 'oauth#slack_install'
   get '/trains(/*id)', to: 'index#index'
   get '/boroughs(/*borough)(/*line)', to: 'index#index'
-  get '/starred', to: 'index#index'
-  get '/slow-zones', to: 'index#index'
+  get '/starred(/*id)', to: 'index#index'
+  get '/slow-zones(/*line)', to: 'index#index'
   root 'index#index'
 end

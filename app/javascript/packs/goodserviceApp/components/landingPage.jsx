@@ -233,10 +233,10 @@ class LandingPage extends React.Component {
               <Grid.Column width={14}>
                   {this.loading()}
                   <Switch>
-                    <Route strict path="/boroughs" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
-                    <Route strict path="/starred" render={() => <Tab panes={this.panes()} activeIndex="3" />} />
-                    <Route strict path="/trains" render={() => <Tab panes={this.panes()} activeIndex="0" />} />
-                    <Route strict path="/slow-zones" render={() => <Tab panes={this.panes()} activeIndex="2" />} />
+                    <Route path="/boroughs/:borough?/:line?/:view?" render={() => <Tab panes={this.panes()} activeIndex="1" />} />
+                    <Route path="/starred/:id?/:view?" render={() => <Tab panes={this.panes()} activeIndex="3" />} />
+                    <Route path="/trains/:trainId?/:view?" render={() => <Tab panes={this.panes()} activeIndex="0" />} />
+                    <Route path="/slow-zones/:line?/:view?" render={() => <Tab panes={this.panes()} activeIndex="2" />} />
                     <Route render={() =>
                       favTrains.size || favLines.size ?
                       <Redirect to="/starred" /> :

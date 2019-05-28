@@ -1,5 +1,6 @@
 import React from 'react';
-import { Header, Modal, Statistic, Grid, Responsive, Table, Rating, Tab } from 'semantic-ui-react';
+import { Header, Menu, Modal, Statistic, Grid, Responsive, Table, Rating, Tab } from 'semantic-ui-react';
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import TrainBullet from './trainBullet.jsx';
 import TrainModalStatusPane from './trainModalStatusPane.jsx';
 import TrainModalDataPane from './trainModalDataPane.jsx';
@@ -9,15 +10,6 @@ import { Helmet } from "react-helmet";
 
 class TrainModal extends React.Component {
   state = {}
-
-  handleOnMount = e => {
-    if (this.props.starredPane) {
-      gtag('event', 'open_train', {
-        'event_category': 'modal',
-        'event_label': this.props.train.id
-      });
-    }
-  }
 
   handleRateTrain = (e, { rating }) => {
     this.props.onFavTrainChange(this.props.train.id, rating);
@@ -66,33 +58,35 @@ class TrainModal extends React.Component {
   }
 
   panes() {
-    const { train, stats, routing, stops, width } = this.props;
+    const { train, stats, routing, stops, width, match } = this.props;
+    const baseUrl = match.url.split('/').slice(0, 3).join('/');
     return [
-      { menuItem: 'Current Status', render: () =>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='status'>Current Status</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
           <TrainModalStatusPane train={train} width={width} />
         </Tab.Pane>
       },
-      { menuItem: 'Stats', render: () =>
-        <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
-          <TrainModalDataPane stats={stats} width={width} />
-        </Tab.Pane>
-      },
-      { menuItem: 'Live Route Map', render: () =>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/route`} key='route'>Live Route Map</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
           <TrainModalMapPane routing={routing} stops={stops} width={width} />
+        </Tab.Pane>
+      },
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>Stats</Menu.Item>, render: () =>
+        <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
+          <TrainModalDataPane stats={stats} width={width} />
         </Tab.Pane>
       },
     ];
   }
 
   render() {
-    const { width } = this.props;
+    const { width, starredPane, train, location, match } = this.props;
+    const viewIndex = (match.params.view === 'route' ? 1 : (match.params.view === 'stats' ? 2 : 0));
     const title = "goodservice.io beta - Trains - " + ((this.props.train.alternate_name) ? ("S - " + this.props.train.alternate_name) : this.props.train.name) + " Train";
     return(
       <Responsive as={Modal} basic fireOnMount size='large'
-        open={this.props.starredPane ? this.props.modalOpen : this.props.location.pathname == ('/trains/' + this.props.train.id)}
-        onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.onClose() : this.props.history.push('/trains')} trigger={this.props.trigger}
+        open={match.params.trainId === train.id || match.params.id === train.id}
+        onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.history.push('/starred') : this.props.history.push('/trains')} trigger={this.props.trigger}
         closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Helmet>
           <title>{title}</title>
@@ -117,7 +111,7 @@ class TrainModal extends React.Component {
                     <Statistic.Label>Status</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>
-                <Tab menu={{ widths: 3 }} panes={this.panes()} style={{margin: '1em 0'}} defaultActiveIndex={((this.props.showStats) ? 1 : 0)} />
+                <Tab menu={{ widths: 3 }} panes={this.panes()} style={{margin: '1em 0'}} activeIndex={viewIndex} />
               </Grid.Column>
             </Grid>
           </Modal.Description>

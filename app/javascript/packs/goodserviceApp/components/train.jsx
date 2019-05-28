@@ -124,23 +124,19 @@ class Train extends React.Component {
 
   handleClick = e => {
     if (this.props.starredPane) {
-      this.setState({ modelOpen: true});
+      this.props.history.push('/starred/' + this.props.train.id);
+    } else if (this.props.showStats) {
+      this.props.history.push('/trains/' + this.props.train.id + '/stats');
     } else {
       this.props.history.push('/trains/' + this.props.train.id);
     }
   }
 
-  handleClose = e => {
-    if (this.props.starredPane) {
-      this.setState({ modelOpen: false});
-    }
-  }
-
   render() {
-    const { width, train, stats, starredPane, modelOpen, showStats, handleClose, onFavTrainChange, favTrains, routing, stops } = this.props;
+    const { width, train, stats, starredPane, modelOpen, handleClose, onFavTrainChange, favTrains, routing, stops } = this.props;
     return(
       <TrainModal train={train} stats={stats} starredPane={starredPane}
-        modalOpen={this.state.modelOpen} showStats={showStats} onClose={this.handleClose}
+        modalOpen={this.state.modelOpen} onClose={this.handleClose}
         onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} stops={stops} trigger={
         <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick}>
           {this.renderInfo()}

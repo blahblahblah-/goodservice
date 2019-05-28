@@ -50,16 +50,16 @@ class LinePane extends React.Component {
   }
 
   render() {
-    const { width } = this.props;
+    const { width, match } = this.props;
     const vertical = width > Responsive.onlyComputer.minWidth;
 
     return(
       <Switch>
-        <Route strict path="/boroughs/the-bronx" render={() => this.tab(vertical, 0)} />
-        <Route strict path="/boroughs/brooklyn" render={() => this.tab(vertical, 1)} />
-        <Route strict path="/boroughs/manhattan" render={() => this.tab(vertical, 2)} />
-        <Route strict path="/boroughs/queens" render={() => this.tab(vertical, 3)} />
-        <Route strict path="/boroughs/staten-island" render={() => this.tab(vertical, 4)} />
+        <Route strict path="/boroughs/the-bronx/:line?/:view?" render={() => this.tab(vertical, 0)} />
+        <Route strict path="/boroughs/brooklyn/:line?/:view?" render={() => this.tab(vertical, 1)} />
+        <Route strict path="/boroughs/manhattan/:line?/:view?" render={() => this.tab(vertical, 2)} />
+        <Route strict path="/boroughs/queens/:line?/:view?" render={() => this.tab(vertical, 3)} />
+        <Route strict path="/boroughs/staten-island/:line?/:view?" render={() => this.tab(vertical, 4)} />
         <Redirect to="/boroughs/the-bronx"/>
       </Switch>
     )
