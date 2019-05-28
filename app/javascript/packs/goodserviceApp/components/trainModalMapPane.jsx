@@ -1,4 +1,5 @@
 import React from 'react';
+import { Responsive } from 'semantic-ui-react';
 import TrainMapStop from './trainMapStop.jsx';
 
 class TrainModalMapPane extends React.Component {
@@ -128,7 +129,7 @@ class TrainModalMapPane extends React.Component {
     let currentBranch = 0;
     if (segments) {
       return(
-        <ul style={{listStyleType: "none", textAlign: "left", width: "700px", margin: "auto"}}>
+        <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
           {
             segments.line.map((stopId) => {
               let branchStart = null;
@@ -180,7 +181,7 @@ class TrainModalMapPane extends React.Component {
               return (
                 <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
                   northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
-                  branchEnd={branchEnd} activeBranches={activeBranches} />
+                  branchEnd={branchEnd} activeBranches={activeBranches} width={width} />
               )
             })
           }
