@@ -39,7 +39,7 @@ class TrainMapStop extends React.Component {
 
     if (!isActiveBranch) {
       return (
-        <div style={{margin: margin, height: (!isMobile ? "50px" : "100%"), minHeight: "50px", minWidth: "20px", display: "inline-block"}}>
+        <div key={index} style={{margin: margin, height: (!isMobile ? "50px" : "100%"), minHeight: "50px", minWidth: "20px", display: "inline-block"}}>
         </div>
       )
     }

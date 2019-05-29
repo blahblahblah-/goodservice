@@ -35,22 +35,23 @@ class TrainModalMapPane extends React.Component {
       return;
     }
 
-    const southRoutings = routing.routings.south.sort((a, b) => {
-      return b.length - a.length ;
-    }).map((obj) => {
+    const southRoutings = routing.routings.south.map((obj) => {
       return obj.map((stop) => {
         return stop.substring(0, 3);
       });
     });
-    const northRoutings = routing.routings.north.sort((a, b) => {
-      return b.length  - a.length;
-    }).map((obj) => {
+
+    const northRoutings = routing.routings.north.map((obj) => {
       return obj.map((stop) => {
         return stop.substring(0, 3);
       }).reverse();
     });
 
-    const line = southRoutings[0] || northRoutings[0];
+    const allRoutings = southRoutings.concat(northRoutings).sort((a, b) => {
+      return b.length - a.length ;
+    });
+
+    const line = allRoutings[0];
 
     if (!line) {
       return;
@@ -59,15 +60,20 @@ class TrainModalMapPane extends React.Component {
     const lineCopy = [...line];
     const branches = [lineCopy];
 
-    const lines = southRoutings.concat(northRoutings);
+    const remainingRoutings = [];
 
-    lines.forEach((lineObj) => {
+    allRoutings.forEach((lineObj) => {
+      if (lineObj.every(val => line.includes(val))) {
+        return;
+      }
       let lastMatchingStop = null;
       let stopsToBeAdded = [];
+
       lineObj.forEach((stop) => {
         if (line.includes(stop)) {
           if (stopsToBeAdded.length) {
             const currStopPosition = line.indexOf(stop);
+
             if (!lastMatchingStop) {
               if (currStopPosition) {
                 // branch from the top
@@ -75,17 +81,23 @@ class TrainModalMapPane extends React.Component {
                 stopsToBeAdded.push(stop)
                 branches.push(stopsToBeAdded);
               } else {
-                // prepand stops to the beginning of the line
+                // prepend stops to the beginning of the line
                 line.splice(0, 0, ...stopsToBeAdded);
                 branches[0].splice(0, 0, ...stopsToBeAdded);
               }
             } else {
-              const lastMatchingStopPosition = line.indexOf(lastMatchingStop);
-              if (currStopPosition - lastMatchingStopPosition == 1) {
+              const branchToAppend = branches.find((obj) => {
+                const prevMatchingStopPosition = obj.indexOf(lastMatchingStop);
+                const currMatchingStopPosition = obj.indexOf(stop);
+
+                return prevMatchingStopPosition > -1 && currMatchingStopPosition > -1 && (currMatchingStopPosition - prevMatchingStopPosition) === 1;
+              });
+
+              if (branchToAppend) {
                 // adding intermediate stops
-                const lastMatchingStopPositionMainBranch = branches[0].indexOf(lastMatchingStop);
-                line.splice(lastMatchingStopPosition + 1, 0, ...stopsToBeAdded);
-                branches[0].splice(lastMatchingStopPositionMainBranch + 1, 0, ...stopsToBeAdded);
+                line.splice(currStopPosition, 0, ...stopsToBeAdded);
+                const lastMatchingStopPositionInBranch = branchToAppend.indexOf(lastMatchingStop);
+                branchToAppend.splice(lastMatchingStopPositionInBranch + 1, 0, ...stopsToBeAdded);
               } else {
                 // adding middle branch
                 line.splice(currStopPosition - 1, 0, ...stopsToBeAdded);
@@ -97,10 +109,11 @@ class TrainModalMapPane extends React.Component {
           }
           stopsToBeAdded = [];
           lastMatchingStop = stop;
-        } else{
+        } else {
           stopsToBeAdded.push(stop);
         }
       });
+
       if (stopsToBeAdded.length) {
         if (lastMatchingStop === line[line.length - 1]) {
           // append to end of line
@@ -108,9 +121,14 @@ class TrainModalMapPane extends React.Component {
           branches[0].splice(branches[0].length - 1, 0, ...stopsToBeAdded);
         } else {
           // branch from the bottom
-          const lastMatchingStopPosition = line.indexOf(lastMatchingStop);
-          line.splice(line.length, 0, ...stopsToBeAdded);
-          stopsToBeAdded.splice(0, 0, lastMatchingStop);
+          if (lastMatchingStop) {
+            const lastMatchingStopPosition = line.indexOf(lastMatchingStop);
+            line.splice(lastMatchingStopPosition + 1, 0, ...stopsToBeAdded);
+            stopsToBeAdded.splice(0, 0, lastMatchingStop);
+          } else {
+            line.push("");
+            line.splice(line.length, 0, ...stopsToBeAdded);
+          }
           branches.push(stopsToBeAdded);
         }
       }
@@ -126,7 +144,7 @@ class TrainModalMapPane extends React.Component {
     const { width, routing, stops } = this.props;
     const segments = this.generateSegments();
     const stopPattern = this.calculateStops();
-    let currentBranch = 0;
+    let currentBranches = [0];
     if (segments) {
       return(
         <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
@@ -138,46 +156,70 @@ class TrainModalMapPane extends React.Component {
               let count = 0;
               const stop = stops[stopId];
               const transfers = stop && stop.trains.filter(route => route.id != routing.id);
-              if (segments.branches.length > (currentBranch + 1) && (segments.branches[currentBranch + 1].includes(stopId))) {
-                let maxBranch = currentBranch;
-                if (segments.branches[currentBranch].includes(stopId)) {
-                  branchStart = currentBranch;
-                } else {
-                  maxBranch = currentBranch + 1;
-                }
-                // begin new branch
-                while (count <= maxBranch) {
-                  let branchStopsHere = segments.branches[count].includes(stopId);
-                  branchStops.push(branchStopsHere);
-                  if (branchStopsHere) {
-                    segments.branches[count].splice(0, 1);
-                  }
-                  count++;
-                }
-                currentBranch++;
-              } else if (currentBranch > 0 &&
-                  (segments.branches[currentBranch][segments.branches[currentBranch].length - 1] === stopId) &&
-                  segments.branches[currentBranch - 1].includes(stopId)) {
-                branchEnd = currentBranch;
-                segments.branches.splice(currentBranch, 1);
-                currentBranch--;
-                // close branch
-                while (count <= currentBranch) {
-                  let branchStopsHere = segments.branches[count].includes(stopId);
-                  branchStops.push(branchStopsHere);
-                  if (branchStopsHere) {
-                    segments.branches[count].splice(0, 1);
-                  }
-                  count++;
-                }
+              const currentMaxBranch = currentBranches[currentBranches.length - 1];
+
+              if (stopId === "") {
+                segments.branches.splice(0, 1);
+                currentBranches = [0];
               } else {
-                while (count <= currentBranch) {
-                  let branchStopsHere = segments.branches[count].includes(stopId);
-                  branchStops.push(branchStopsHere);
-                  if (branchStopsHere) {
-                    segments.branches[count].splice(0, 1);
+                const potentialBranch = segments.branches.find((obj, index) => {
+                  return !currentBranches.includes(index) && obj.includes(stopId);
+                });
+                if (potentialBranch) {
+                  const potentialBranchIndex = segments.branches.indexOf(potentialBranch);
+                  const currentBranchIncludesStop = currentBranches.find((obj) => {
+                    return segments.branches[obj].includes(stopId);
+                  });
+                  const branchesToTraverse = [...currentBranches];
+                  if (currentBranchIncludesStop || currentBranchIncludesStop === 0) {
+                    branchStart = currentBranchIncludesStop;
+                    segments.branches[potentialBranchIndex].splice(0, 1);
+                  } else {
+                    branchesToTraverse.push(potentialBranchIndex);
                   }
-                  count++;
+
+                  branchesToTraverse.forEach((obj) => {
+                    let branchStopsHere = segments.branches[obj].includes(stopId);
+                    branchStops.push(branchStopsHere);
+                    if (branchStopsHere) {
+                      segments.branches[obj].splice(0, 1);
+                    }
+                  });
+                  currentBranches.push(potentialBranchIndex);
+                } else if (currentBranches.length > 1 &&
+                    (segments.branches[currentMaxBranch][segments.branches[currentMaxBranch].length - 1] === stopId) &&
+                    segments.branches[currentBranches[currentBranches.length - 2]].includes(stopId)) {
+                  branchEnd = currentBranches[currentBranches.length - 2];
+                  segments.branches.splice(currentMaxBranch, 1);
+                  currentBranches.pop();
+                  // branch back
+                  currentBranches.forEach((obj) => {
+                    let branchStopsHere = segments.branches[obj].includes(stopId);
+                    branchStops.push(branchStopsHere);
+                    if (branchStopsHere) {
+                      segments.branches[obj].splice(0, 1);
+                    }
+                  });
+                } else if (currentBranches.length > 1 && segments.branches[currentMaxBranch].length === 0) {
+                  // branch ends
+                  segments.branches.splice(currentMaxBranch, 1);
+                  currentBranches.pop();
+
+                  currentBranches.forEach((obj) => {
+                    let branchStopsHere = segments.branches[obj].includes(stopId);
+                    branchStops.push(branchStopsHere);
+                    if (branchStopsHere) {
+                      segments.branches[obj].splice(0, 1);
+                    }
+                  });
+                } else {
+                  currentBranches.forEach((obj) => {
+                    let branchStopsHere = segments.branches[obj].includes(stopId);
+                    branchStops.push(branchStopsHere);
+                    if (branchStopsHere) {
+                      segments.branches[obj].splice(0, 1);
+                    }
+                  });
                 }
               }
               const activeBranches = branchStops.map((isStopping, index) => {

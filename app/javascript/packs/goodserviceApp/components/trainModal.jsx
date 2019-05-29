@@ -60,18 +60,19 @@ class TrainModal extends React.Component {
   panes() {
     const { train, stats, routing, stops, width, match } = this.props;
     const baseUrl = match.url.split('/').slice(0, 3).join('/');
+    const captions = (width > Responsive.onlyMobile.maxWidth) ? ['Current Status', 'Live Route Map', 'Stats'] : ['Status', 'Route Map', 'Stats'];
     return [
-      { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='status'>Current Status</Menu.Item>, render: () =>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='status'>{captions[0]}</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
           <TrainModalStatusPane train={train} width={width} />
         </Tab.Pane>
       },
-      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/route`} key='route'>Live Route Map</Menu.Item>, render: () =>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/route`} key='route'>{captions[1]}</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
           <TrainModalMapPane routing={routing} stops={stops} width={width} />
         </Tab.Pane>
       },
-      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>Stats</Menu.Item>, render: () =>
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>{captions[2]}</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
           <TrainModalDataPane stats={stats} width={width} />
         </Tab.Pane>
