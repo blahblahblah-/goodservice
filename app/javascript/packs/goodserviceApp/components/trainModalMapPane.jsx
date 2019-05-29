@@ -182,7 +182,8 @@ class TrainModalMapPane extends React.Component {
                     let branchStopsHere = segments.branches[obj].includes(stopId);
                     branchStops.push(branchStopsHere);
                     if (branchStopsHere) {
-                      segments.branches[obj].splice(0, 1);
+                      const i = segments.branches[obj].indexOf(stopId);
+                      segments.branches[obj].splice(i, 1);
                     }
                   });
                   currentBranches.push(potentialBranchIndex);
@@ -197,7 +198,8 @@ class TrainModalMapPane extends React.Component {
                     let branchStopsHere = segments.branches[obj].includes(stopId);
                     branchStops.push(branchStopsHere);
                     if (branchStopsHere) {
-                      segments.branches[obj].splice(0, 1);
+                      const i = segments.branches[obj].indexOf(stopId);
+                      segments.branches[obj].splice(i, 1);
                     }
                   });
                 } else if (currentBranches.length > 1 && segments.branches[currentMaxBranch].length === 0) {
@@ -209,7 +211,8 @@ class TrainModalMapPane extends React.Component {
                     let branchStopsHere = segments.branches[obj].includes(stopId);
                     branchStops.push(branchStopsHere);
                     if (branchStopsHere) {
-                      segments.branches[obj].splice(0, 1);
+                      const i = segments.branches[obj].indexOf(stopId);
+                      segments.branches[obj].splice(i, 1);
                     }
                   });
                 } else {
@@ -217,7 +220,8 @@ class TrainModalMapPane extends React.Component {
                     let branchStopsHere = segments.branches[obj].includes(stopId);
                     branchStops.push(branchStopsHere);
                     if (branchStopsHere) {
-                      segments.branches[obj].splice(0, 1);
+                      const i = segments.branches[obj].indexOf(stopId);
+                      segments.branches[obj].splice(i, 1);
                     }
                   });
                 }
