@@ -75,7 +75,7 @@ class TrainMapStop extends React.Component {
     const { stop, transfers, activeBranches, branchStart, branchEnd, width } = this.props;
     return (
       <li>
-        <div style={{height: (width > Responsive.onlyMobile.maxWidth && "50px"), display: "flex"}}>
+        <div style={{height: (width > Responsive.onlyMobile.maxWidth && "50px"), minHeight: (width <= Responsive.onlyMobile.maxWidth && "50px"), display: "flex"}}>
           { activeBranches.map((obj, index) => {
               return this.renderLine(obj, index, branchStart, branchEnd);
             })
