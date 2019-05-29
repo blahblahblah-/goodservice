@@ -33,7 +33,8 @@ class TrainMapStop extends React.Component {
     const branchStartHere = (branchStart && (branchStart == index + 1));
     const branchEndHere = (branchEnd && (branchEnd == index + 1));
     const marginValue = isMobile ? "10px" : "20px"
-    const margin = (branchStartHere !== null || branchEndHere !== null) ? ("0 0 0 " + marginValue) : ("0 " + marginValue);
+    const branching = (branchStartHere !== null || branchEndHere !== null);
+    const margin = branching ? ("0 0 0 " + marginValue) : ("0 " + marginValue);
     const doubleMarginValue = isMobile ? "20px" : "40px"
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
 
@@ -45,25 +46,25 @@ class TrainMapStop extends React.Component {
     }
 
     return (
-      <div key={index}>
+      <div key={index} style={{minWidth: (branching ? "120px" : "60px")}}>
         <div style={{margin: margin, height: (!isMobile ? "50px" : "100%"), minHeight: "50px", minWidth: "20px", backgroundColor: color, display: "inline-block"}}>
           {
             stopExists && this.renderStop()
           }
         </div>
         {
-          (branchStartHere !== null || branchEndHere !== null) &&
-          <div style={{margin: "15px 0", height: "20px", width: doubleMarginValue, backgroundColor: color, display: "inline-block"}}>
+          branching &&
+          <div style={{margin: "15px 0", height: "20px", height: (isMobile ? "calc(100% - 30px)" : "20px"), width: doubleMarginValue, backgroundColor: color, display: "inline-block"}}>
           </div>
         }
         {
           branchStartHere !== null &&
-          <div style={{margin: "15px " + marginValue + " 0 0", height: "35px", width: "20px", backgroundColor: color, display: "inline-block"}}>
+          <div style={{margin: "15px " + marginValue + " 0 0", height: (!isMobile ? "35px" : "calc(100% - 15px)"), width: "20px", backgroundColor: color, display: "inline-block"}}>
           </div>
         }
         {
           branchEndHere !== null &&
-          <div style={{margin: "0px " + marginValue + " 15px 0", height: "35px", width: "20px", backgroundColor: color, display: "inline-block"}}>
+          <div style={{margin: "0px " + marginValue + " 15px 0", height: (!isMobile ? "35px" : "calc(100% - 15px)"), width: "20px", backgroundColor: color, display: "inline-block"}}>
           </div>
         }
       </div>
