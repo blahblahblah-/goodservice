@@ -146,7 +146,14 @@ class TrainModalMapPane extends React.Component {
     const serviceChanges = [];
     const notGoods = [];
 
-    train.north.forEach((obj) => {
+    train.north.map((obj) => {
+      const firstStops = obj.first_stops;
+      const lastStops = obj.last_stops;
+
+      obj.first_stops = lastStops;
+      obj.last_stops = firstStops;
+      return obj;
+    }).forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
       } else if (!obj.max_scheduled_headway)  {
@@ -156,14 +163,7 @@ class TrainModalMapPane extends React.Component {
       }
     });
 
-    train.south.map((obj) => {
-      const firstStops = obj.first_stops;
-      const lastStops = obj.last_stops;
-
-      obj.first_stops = lastStops;
-      obj.last_stops = firstStops;
-      return obj;
-    }).forEach((obj) => {
+    train.south.forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
       } else if (!obj.max_scheduled_headway)  {
