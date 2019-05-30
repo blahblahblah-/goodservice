@@ -140,11 +140,77 @@ class TrainModalMapPane extends React.Component {
     };
   }
 
+  calculateProblemSections() {
+    const { train } = this.props;
+    const delays = [];
+    const serviceChanges = [];
+    const notGoods = [];
+
+    train.north.forEach((obj) => {
+      if (obj.delay >= 5) {
+        delays.push(obj);
+      } else if (!obj.max_scheduled_headway)  {
+        serviceChanges.push(obj);
+      } else if ((obj.max_actual_headway - obj.max_scheduled_headway > 2) || obj.travel_time >= 0.25) {
+        notGoods.push(obj);
+      }
+    });
+
+    train.south.map((obj) => {
+      const firstStops = obj.first_stops;
+      const lastStops = obj.last_stops;
+
+      obj.first_stops = lastStops;
+      obj.last_stops = firstStops;
+      return obj;
+    }).forEach((obj) => {
+      if (obj.delay >= 5) {
+        delays.push(obj);
+      } else if (!obj.max_scheduled_headway)  {
+        serviceChanges.push(obj);
+      } else if (obj.max_actual_headway - obj.max_scheduled_headway > 2) {
+        notGoods.push(obj);
+      }
+    });
+
+    delays.forEach((obj) => {
+      let toBeRemoved;
+      if (toBeRemoved = serviceChanges.find((o) => obj.parent_name === o.parent_name)) {
+        serviceChanges.splice(serviceChanges.indexOf(toBeRemoved), 1);
+      }
+      if (toBeRemoved = notGoods.find((o) => obj.parent_name === o.parent_name)) {
+        notGoods.splice(notGoods.indexOf(toBeRemoved), 1);
+      }
+    });
+
+    serviceChanges.forEach((obj) => {
+      let toBeRemoved;
+      if (toBeRemoved = notGoods.find((o) => obj.parent_name === o.parent_name)) {
+        serviceChanges.splice(notGoods.indexOf(toBeRemoved), 1);
+      }
+    });
+
+
+    return delays.map((obj) => {
+      obj["problem"] = "delay";
+      return obj;
+    }).concat(serviceChanges.map((obj) => {
+      obj["problem"] = "service changes";
+      return obj;
+    })).concat(notGoods.map((obj) => {
+      obj["problem"] = "not good";
+      return obj;
+    }));
+  }
+
   render() {
     const { width, routing, stops } = this.props;
     const segments = this.generateSegments();
     const stopPattern = this.calculateStops();
+    const problemSections = this.calculateProblemSections();
     let currentBranches = [0];
+    let currentProblemSection = null;
+    let currentProblem = null;
     if (segments) {
       return(
         <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
@@ -161,7 +227,25 @@ class TrainModalMapPane extends React.Component {
               if (stopId === "") {
                 segments.branches.splice(0, 1);
                 currentBranches = [0];
+                currentProblemSection = null;
+                currentProblem = null;
               } else {
+                if (currentProblemSection) {
+                  if (currentProblemSection.last_stops.map((stop) => stop.substring(0, 3)).includes(stopId)) {
+                    currentProblemSection = null;
+                    currentProblem = null;
+                  }
+                } else {
+                  let potentialProblemSection;
+                  if (potentialProblemSection = problemSections.find((obj) => {
+                    return obj.first_stops.map((stop) => stop.substring(0, 3)).includes(stopId);
+                  })) {
+                    currentProblemSection = potentialProblemSection;
+                    currentProblem = currentProblemSection.problem;
+                    problemSections.splice(problemSections.indexOf(potentialProblemSection), 0);
+                  }
+                }
+
                 const potentialBranch = segments.branches.find((obj, index) => {
                   return !currentBranches.includes(index) && obj.includes(stopId);
                 });
@@ -232,7 +316,7 @@ class TrainModalMapPane extends React.Component {
               return (
                 <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
                   northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
-                  branchEnd={branchEnd} activeBranches={activeBranches} width={width} />
+                  branchEnd={branchEnd} activeBranches={activeBranches} width={width} problemSection={currentProblem} />
               )
             })
           }

@@ -69,7 +69,7 @@ class TrainModal extends React.Component {
       },
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}/route`} key='route'>{captions[1]}</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
-          <TrainModalMapPane routing={routing} stops={stops} width={width} />
+          <TrainModalMapPane routing={routing} stops={stops} train={train} width={width} />
         </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>{captions[2]}</Menu.Item>, render: () =>

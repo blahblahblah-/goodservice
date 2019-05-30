@@ -28,7 +28,7 @@ class TrainMapStop extends React.Component {
   }
 
   renderLine(isActiveBranch, index, branchStart, branchEnd) {
-    const { color, branchStops, width } = this.props;
+    const { color, branchStops, width, problemSection } = this.props;
     const stopExists = branchStops[index];
     const branchStartHere = (branchStart && (branchStart == index + 1));
     const branchEndHere = (branchEnd && (branchEnd == index + 1));
@@ -36,6 +36,17 @@ class TrainMapStop extends React.Component {
     const branching = (branchStartHere !== null || branchEndHere !== null);
     const margin = branching ? ("0 0 0 " + marginValue) : ("0 " + marginValue);
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
+    let background = color;
+
+    if (problemSection) {
+      let stripeColor = "transparent";
+      if (problemSection === "delay") {
+        stripeColor = "#ff695e";
+      } else if (problemSection === "not good") {
+        stripeColor = "#ffe21f";
+      }
+      background = `repeating-linear-gradient(0deg, ${color}, ${color} 5px, ${stripeColor} 5px, ${stripeColor} 10px, ${color} 10px)`;
+    }
 
     if (!isActiveBranch) {
       return (
@@ -46,7 +57,7 @@ class TrainMapStop extends React.Component {
 
     return (
       <div key={index} style={{minWidth: (branching ? "120px" : "60px")}}>
-        <div style={{margin: margin, height: (!isMobile ? "50px" : "100%"), minHeight: "50px", minWidth: "20px", backgroundColor: color, display: "inline-block"}}>
+        <div style={{margin: margin, height: (!isMobile ? "50px" : "100%"), minHeight: "50px", minWidth: "20px", background: background, display: "inline-block"}}>
           {
             stopExists && this.renderStop()
           }
