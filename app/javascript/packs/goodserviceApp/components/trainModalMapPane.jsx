@@ -146,14 +146,33 @@ class TrainModalMapPane extends React.Component {
     const serviceChanges = [];
     const notGoods = [];
 
-    train.north.map((obj) => {
-      const firstStops = obj.first_stops;
-      const lastStops = obj.last_stops;
+    const northStops = train.north.map((obj) => {
+      return {
+        name: obj.name,
+        parent_name: obj.parent_name,
+        max_actual_headway: obj.max_actual_headway,
+        max_scheduled_headway: obj.max_scheduled_headway,
+        delay: obj.delay,
+        travel_time: obj.travel_time,
+        first_stops: obj.last_stops,
+        last_stops: obj.first_stops
+      };
+    });
 
-      obj.first_stops = lastStops;
-      obj.last_stops = firstStops;
-      return obj;
-    }).forEach((obj) => {
+    const southStops = train.north.map((obj) => {
+      return {
+        name: obj.name,
+        parent_name: obj.parent_name,
+        max_actual_headway: obj.max_actual_headway,
+        max_scheduled_headway: obj.max_scheduled_headway,
+        delay: obj.delay,
+        travel_time: obj.travel_time,
+        first_stops: obj.first_stops,
+        last_stops: obj.last_stops
+      };
+    });
+    
+    northStops.forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
       } else if (!obj.max_scheduled_headway)  {
@@ -163,7 +182,7 @@ class TrainModalMapPane extends React.Component {
       }
     });
 
-    train.south.forEach((obj) => {
+    southStops.forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
       } else if (!obj.max_scheduled_headway)  {
