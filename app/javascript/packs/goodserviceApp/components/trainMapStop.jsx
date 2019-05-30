@@ -41,9 +41,9 @@ class TrainMapStop extends React.Component {
     if (problemSection) {
       let stripeColor = "transparent";
       if (problemSection === "delay") {
-        stripeColor = "#ff695e";
+        stripeColor = "red";
       } else if (problemSection === "not good") {
-        stripeColor = "#ffe21f";
+        stripeColor = "yellow";
       }
       background = `repeating-linear-gradient(0deg, ${color}, ${color} 5px, ${stripeColor} 5px, ${stripeColor} 10px, ${color} 10px)`;
     }

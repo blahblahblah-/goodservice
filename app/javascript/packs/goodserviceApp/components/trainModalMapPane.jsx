@@ -1,8 +1,14 @@
 import React from 'react';
-import { Responsive } from 'semantic-ui-react';
+import { Responsive, Checkbox } from 'semantic-ui-react';
 import TrainMapStop from './trainMapStop.jsx';
 
 class TrainModalMapPane extends React.Component {
+  state = { displayProblems: false }
+
+  handleToggleChange = (e, {checked}) => {
+    this.setState({displayProblems: checked});
+  }
+
   calculateStops() {
     const { routing } = this.props;
     const southStops = {};
@@ -159,7 +165,7 @@ class TrainModalMapPane extends React.Component {
       };
     });
 
-    const southStops = train.north.map((obj) => {
+    const southStops = train.south.map((obj) => {
       return {
         name: obj.name,
         parent_name: obj.parent_name,
@@ -224,6 +230,7 @@ class TrainModalMapPane extends React.Component {
 
   render() {
     const { width, routing, stops } = this.props;
+    const { displayProblems } = this.state;
     const segments = this.generateSegments();
     const stopPattern = this.calculateStops();
     const problemSections = this.calculateProblemSections();
@@ -232,114 +239,117 @@ class TrainModalMapPane extends React.Component {
     let currentProblem = null;
     if (segments) {
       return(
-        <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
-          {
-            segments.line.map((stopId) => {
-              let branchStart = null;
-              let branchEnd = null;
-              let branchStops = [];
-              let count = 0;
-              const stop = stops[stopId];
-              const transfers = stop && stop.trains.filter(route => route.id != routing.id);
-              const currentMaxBranch = currentBranches[currentBranches.length - 1];
+        <div>
+          <Checkbox toggle onChange={this.handleToggleChange} label={<label className="toggle-label">Display problem areas</label>} />
+          <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
+            {
+              segments.line.map((stopId) => {
+                let branchStart = null;
+                let branchEnd = null;
+                let branchStops = [];
+                let count = 0;
+                const stop = stops[stopId];
+                const transfers = stop && stop.trains.filter(route => route.id != routing.id);
+                const currentMaxBranch = currentBranches[currentBranches.length - 1];
 
-              if (stopId === "") {
-                segments.branches.splice(0, 1);
-                currentBranches = [0];
-                currentProblemSection = null;
-                currentProblem = null;
-              } else {
-                if (currentProblemSection) {
-                  if (currentProblemSection.last_stops.map((stop) => stop.substring(0, 3)).includes(stopId)) {
-                    currentProblemSection = null;
-                    currentProblem = null;
-                  }
+                if (stopId === "") {
+                  segments.branches.splice(0, 1);
+                  currentBranches = [0];
+                  currentProblemSection = null;
+                  currentProblem = null;
                 } else {
-                  let potentialProblemSection;
-                  if (potentialProblemSection = problemSections.find((obj) => {
-                    return obj.first_stops.map((stop) => stop.substring(0, 3)).includes(stopId);
-                  })) {
-                    currentProblemSection = potentialProblemSection;
-                    currentProblem = currentProblemSection.problem;
-                    problemSections.splice(problemSections.indexOf(potentialProblemSection), 0);
-                  }
-                }
-
-                const potentialBranch = segments.branches.find((obj, index) => {
-                  return !currentBranches.includes(index) && obj.includes(stopId);
-                });
-                if (potentialBranch) {
-                  const potentialBranchIndex = segments.branches.indexOf(potentialBranch);
-                  const currentBranchIncludesStop = currentBranches.find((obj) => {
-                    return segments.branches[obj].includes(stopId);
-                  });
-                  const branchesToTraverse = [...currentBranches];
-                  if (currentBranchIncludesStop || currentBranchIncludesStop === 0) {
-                    branchStart = currentBranchIncludesStop;
-                    segments.branches[potentialBranchIndex].splice(0, 1);
+                  if (currentProblemSection) {
+                    if (currentProblemSection.last_stops.map((stop) => stop.substring(0, 3)).includes(stopId)) {
+                      currentProblemSection = null;
+                      currentProblem = null;
+                    }
                   } else {
-                    branchesToTraverse.push(potentialBranchIndex);
+                    let potentialProblemSection;
+                    if (potentialProblemSection = problemSections.find((obj) => {
+                      return obj.first_stops.map((stop) => stop.substring(0, 3)).includes(stopId);
+                    })) {
+                      currentProblemSection = potentialProblemSection;
+                      currentProblem = currentProblemSection.problem;
+                      problemSections.splice(problemSections.indexOf(potentialProblemSection), 0);
+                    }
                   }
 
-                  branchesToTraverse.forEach((obj) => {
-                    let branchStopsHere = segments.branches[obj].includes(stopId);
-                    branchStops.push(branchStopsHere);
-                    if (branchStopsHere) {
-                      const i = segments.branches[obj].indexOf(stopId);
-                      segments.branches[obj].splice(i, 1);
-                    }
+                  const potentialBranch = segments.branches.find((obj, index) => {
+                    return !currentBranches.includes(index) && obj.includes(stopId);
                   });
-                  currentBranches.push(potentialBranchIndex);
-                } else if (currentBranches.length > 1 &&
-                    (segments.branches[currentMaxBranch][segments.branches[currentMaxBranch].length - 1] === stopId) &&
-                    segments.branches[currentBranches[currentBranches.length - 2]].includes(stopId)) {
-                  branchEnd = currentBranches[currentBranches.length - 2];
-                  segments.branches.splice(currentMaxBranch, 1);
-                  currentBranches.pop();
-                  // branch back
-                  currentBranches.forEach((obj) => {
-                    let branchStopsHere = segments.branches[obj].includes(stopId);
-                    branchStops.push(branchStopsHere);
-                    if (branchStopsHere) {
-                      const i = segments.branches[obj].indexOf(stopId);
-                      segments.branches[obj].splice(i, 1);
+                  if (potentialBranch) {
+                    const potentialBranchIndex = segments.branches.indexOf(potentialBranch);
+                    const currentBranchIncludesStop = currentBranches.find((obj) => {
+                      return segments.branches[obj].includes(stopId);
+                    });
+                    const branchesToTraverse = [...currentBranches];
+                    if (currentBranchIncludesStop || currentBranchIncludesStop === 0) {
+                      branchStart = currentBranchIncludesStop;
+                      segments.branches[potentialBranchIndex].splice(0, 1);
+                    } else {
+                      branchesToTraverse.push(potentialBranchIndex);
                     }
-                  });
-                } else if (currentBranches.length > 1 && segments.branches[currentMaxBranch].length === 0) {
-                  // branch ends
-                  segments.branches.splice(currentMaxBranch, 1);
-                  currentBranches.pop();
 
-                  currentBranches.forEach((obj) => {
-                    let branchStopsHere = segments.branches[obj].includes(stopId);
-                    branchStops.push(branchStopsHere);
-                    if (branchStopsHere) {
-                      const i = segments.branches[obj].indexOf(stopId);
-                      segments.branches[obj].splice(i, 1);
-                    }
-                  });
-                } else {
-                  currentBranches.forEach((obj) => {
-                    let branchStopsHere = segments.branches[obj].includes(stopId);
-                    branchStops.push(branchStopsHere);
-                    if (branchStopsHere) {
-                      const i = segments.branches[obj].indexOf(stopId);
-                      segments.branches[obj].splice(i, 1);
-                    }
-                  });
+                    branchesToTraverse.forEach((obj) => {
+                      let branchStopsHere = segments.branches[obj].includes(stopId);
+                      branchStops.push(branchStopsHere);
+                      if (branchStopsHere) {
+                        const i = segments.branches[obj].indexOf(stopId);
+                        segments.branches[obj].splice(i, 1);
+                      }
+                    });
+                    currentBranches.push(potentialBranchIndex);
+                  } else if (currentBranches.length > 1 &&
+                      (segments.branches[currentMaxBranch][segments.branches[currentMaxBranch].length - 1] === stopId) &&
+                      segments.branches[currentBranches[currentBranches.length - 2]].includes(stopId)) {
+                    branchEnd = currentBranches[currentBranches.length - 2];
+                    segments.branches.splice(currentMaxBranch, 1);
+                    currentBranches.pop();
+                    // branch back
+                    currentBranches.forEach((obj) => {
+                      let branchStopsHere = segments.branches[obj].includes(stopId);
+                      branchStops.push(branchStopsHere);
+                      if (branchStopsHere) {
+                        const i = segments.branches[obj].indexOf(stopId);
+                        segments.branches[obj].splice(i, 1);
+                      }
+                    });
+                  } else if (currentBranches.length > 1 && segments.branches[currentMaxBranch].length === 0) {
+                    // branch ends
+                    segments.branches.splice(currentMaxBranch, 1);
+                    currentBranches.pop();
+
+                    currentBranches.forEach((obj) => {
+                      let branchStopsHere = segments.branches[obj].includes(stopId);
+                      branchStops.push(branchStopsHere);
+                      if (branchStopsHere) {
+                        const i = segments.branches[obj].indexOf(stopId);
+                        segments.branches[obj].splice(i, 1);
+                      }
+                    });
+                  } else {
+                    currentBranches.forEach((obj) => {
+                      let branchStopsHere = segments.branches[obj].includes(stopId);
+                      branchStops.push(branchStopsHere);
+                      if (branchStopsHere) {
+                        const i = segments.branches[obj].indexOf(stopId);
+                        segments.branches[obj].splice(i, 1);
+                      }
+                    });
+                  }
                 }
-              }
-              const activeBranches = branchStops.map((isStopping, index) => {
-                return isStopping || segments.branches[index].length > 0;
-              });
-              return (
-                <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
-                  northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
-                  branchEnd={branchEnd} activeBranches={activeBranches} width={width} problemSection={currentProblem} />
-              )
-            })
-          }
-        </ul>
+                const activeBranches = branchStops.map((isStopping, index) => {
+                  return isStopping || segments.branches[index].length > 0;
+                });
+                return (
+                  <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
+                    northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
+                    branchEnd={branchEnd} activeBranches={activeBranches} width={width} problemSection={displayProblems && currentProblem} />
+                )
+              })
+            }
+          </ul>
+        </div>
       )
     }
     return (<div></div>)
