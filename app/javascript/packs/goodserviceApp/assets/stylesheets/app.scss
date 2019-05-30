@@ -177,3 +177,23 @@ button.ui.slack-icon {
     color: white;
   }
 }
+
+.branch-corner {
+  overflow: hidden;
+  width: 40px;
+  display: inline-block;
+}
+
+.branch-start {
+  height: 35px;
+  width: 30px;
+  border-top-right-radius: 50%;
+  display: block;
+}
+
+.branch-end {
+  height: 35px;
+  width: 30px;
+  border-bottom-right-radius: 50%;
+  display: block;
+}

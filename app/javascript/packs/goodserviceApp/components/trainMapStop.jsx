@@ -35,7 +35,6 @@ class TrainMapStop extends React.Component {
     const marginValue = isMobile ? "10px" : "20px"
     const branching = (branchStartHere !== null || branchEndHere !== null);
     const margin = branching ? ("0 0 0 " + marginValue) : ("0 " + marginValue);
-    const doubleMarginValue = isMobile ? "20px" : "40px"
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
 
     if (!isActiveBranch) {
@@ -54,17 +53,21 @@ class TrainMapStop extends React.Component {
         </div>
         {
           branching &&
-          <div style={{margin: "15px 0", height: "20px", height: (isMobile ? "calc(100% - 30px)" : "20px"), width: doubleMarginValue, backgroundColor: color, display: "inline-block"}}>
+          <div style={{margin: "15px 0", height: "20px", width: marginValue, backgroundColor: color, display: "inline-block"}}>
           </div>
         }
         {
           branchStartHere !== null &&
-          <div style={{margin: "15px " + marginValue + " 0 0", height: (!isMobile ? "35px" : "calc(100% - 15px)"), width: "20px", backgroundColor: color, display: "inline-block"}}>
+          <div style={{height: (!isMobile ? "50px" : "100%")}} className="branch-corner">
+            <div style={{boxShadow: "0 0 0 20px " + color, transform: (!isMobile ? "translate(-10px, 35px)" : "translate(-10px, 39px)")}} className="branch-start">
+            </div>
           </div>
         }
         {
           branchEndHere !== null &&
-          <div style={{margin: "0px " + marginValue + " 15px 0", height: (!isMobile ? "35px" : "calc(100% - 15px)"), width: "20px", backgroundColor: color, display: "inline-block"}}>
+          <div style={{height: (!isMobile ? "50px" : "100%")}} className="branch-corner">
+            <div style={{boxShadow: "0 0 0 20px " + color, transform: (!isMobile ? "translate(-10px, -20px)" : "translate(-10px, -14px)")}} className="branch-end">
+            </div>
           </div>
         }
       </div>
