@@ -3,7 +3,7 @@ import { Responsive, Checkbox } from 'semantic-ui-react';
 import TrainMapStop from './trainMapStop.jsx';
 
 class TrainModalMapPane extends React.Component {
-  state = { displayProblems: false }
+  state = { displayProblems: true }
 
   handleToggleChange = (e, {checked}) => {
     this.setState({displayProblems: checked});
@@ -149,10 +149,9 @@ class TrainModalMapPane extends React.Component {
   calculateProblemSections() {
     const { train } = this.props;
     const delays = [];
-    const serviceChanges = [];
     const notGoods = [];
 
-    const northStops = train.north.map((obj) => {
+    const northLinesDirections = train.north.map((obj) => {
       return {
         name: obj.name,
         parent_name: obj.parent_name,
@@ -165,7 +164,7 @@ class TrainModalMapPane extends React.Component {
       };
     });
 
-    const southStops = train.south.map((obj) => {
+    const southLineDirections = train.south.map((obj) => {
       return {
         name: obj.name,
         parent_name: obj.parent_name,
@@ -178,40 +177,26 @@ class TrainModalMapPane extends React.Component {
       };
     });
     
-    northStops.forEach((obj) => {
+    northLinesDirections.forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
-      } else if (!obj.max_scheduled_headway)  {
-        serviceChanges.push(obj);
-      } else if ((obj.max_actual_headway - obj.max_scheduled_headway > 2) || obj.travel_time >= 0.25) {
+      } else if (obj.max_scheduled_headway && (obj.max_actual_headway - obj.max_scheduled_headway > 2) || obj.travel_time >= 0.25) {
         notGoods.push(obj);
       }
     });
 
-    southStops.forEach((obj) => {
+    southLineDirections.forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
-      } else if (!obj.max_scheduled_headway)  {
-        serviceChanges.push(obj);
-      } else if (obj.max_actual_headway - obj.max_scheduled_headway > 2) {
+      } else if (obj.max_scheduled_headway && obj.max_actual_headway - obj.max_scheduled_headway > 2) {
         notGoods.push(obj);
       }
     });
 
     delays.forEach((obj) => {
       let toBeRemoved;
-      if (toBeRemoved = serviceChanges.find((o) => obj.parent_name === o.parent_name)) {
-        serviceChanges.splice(serviceChanges.indexOf(toBeRemoved), 1);
-      }
       if (toBeRemoved = notGoods.find((o) => obj.parent_name === o.parent_name)) {
         notGoods.splice(notGoods.indexOf(toBeRemoved), 1);
-      }
-    });
-
-    serviceChanges.forEach((obj) => {
-      let toBeRemoved;
-      if (toBeRemoved = notGoods.find((o) => obj.parent_name === o.parent_name)) {
-        serviceChanges.splice(notGoods.indexOf(toBeRemoved), 1);
       }
     });
 
@@ -219,10 +204,7 @@ class TrainModalMapPane extends React.Component {
     return delays.map((obj) => {
       obj["problem"] = "delay";
       return obj;
-    }).concat(serviceChanges.map((obj) => {
-      obj["problem"] = "service changes";
-      return obj;
-    })).concat(notGoods.map((obj) => {
+    }).concat(notGoods.map((obj) => {
       obj["problem"] = "not good";
       return obj;
     }));
@@ -240,7 +222,7 @@ class TrainModalMapPane extends React.Component {
     if (segments) {
       return(
         <div>
-          <Checkbox toggle onChange={this.handleToggleChange} label={<label className="toggle-label">Highlight issues</label>} />
+          <Checkbox toggle onChange={this.handleToggleChange} label={<label className="toggle-label">Highlight issues</label>} defaultChecked />
           <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
             {
               segments.line.map((stopId) => {

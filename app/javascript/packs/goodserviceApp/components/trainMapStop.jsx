@@ -43,7 +43,7 @@ class TrainMapStop extends React.Component {
       if (problemSection === "delay") {
         stripeColor = "red";
       } else if (problemSection === "not good") {
-        stripeColor = "yellow";
+        stripeColor = "#ffe21f";
       }
       background = `repeating-linear-gradient(0deg, ${color}, ${color} 5px, ${stripeColor} 5px, ${stripeColor} 10px, ${color} 10px)`;
     }
@@ -76,7 +76,7 @@ class TrainMapStop extends React.Component {
         }
         {
           branchEndHere !== null &&
-          <div style={{height: (!isMobile ? "50px" : "100%")}} className="branch-corner">
+          <div style={{height: "50px"}} className="branch-corner">
             <div style={{boxShadow: "0 0 0 20px " + color, transform: "translate(-9px, -35px)"}} className="branch-end">
             </div>
           </div>
