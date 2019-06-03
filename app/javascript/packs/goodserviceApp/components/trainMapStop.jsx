@@ -56,7 +56,7 @@ class TrainMapStop extends React.Component {
     }
 
     return (
-      <div key={index} style={{minWidth: (branching ? "120px" : "60px")}}>
+      <div key={index} style={{minWidth: (branching ? "120px" : "60px"), display: "flex"}}>
         <div style={{margin: margin, height: (!isMobile ? "50px" : "100%"), minHeight: "50px", minWidth: "20px", background: background, display: "inline-block"}}>
           {
             stopExists && this.renderStop()
@@ -64,20 +64,20 @@ class TrainMapStop extends React.Component {
         </div>
         {
           branching &&
-          <div style={{margin: "15px 0", height: "20px", width: marginValue, backgroundColor: color, display: "inline-block"}}>
+          <div style={{margin: "15px 0", height: "20px", width: marginValue, backgroundColor: color, display: "inline-block", alignSelf: "flex-start"}}>
           </div>
         }
         {
           branchStartHere !== null &&
           <div style={{height: (!isMobile ? "50px" : "100%")}} className="branch-corner">
-            <div style={{boxShadow: "0 0 0 20px " + color, transform: (!isMobile ? "translate(-10px, 35px)" : "translate(-10px, 39px)")}} className="branch-start">
+            <div style={{boxShadow: "0 0 0 20px " + color, transform: "translate(-10px, 35px)"}} className="branch-start">
             </div>
           </div>
         }
         {
           branchEndHere !== null &&
           <div style={{height: (!isMobile ? "50px" : "100%")}} className="branch-corner">
-            <div style={{boxShadow: "0 0 0 20px " + color, transform: (!isMobile ? "translate(-10px, -20px)" : "translate(-10px, -14px)")}} className="branch-end">
+            <div style={{boxShadow: "0 0 0 20px " + color, transform: "translate(-9px, -35px)"}} className="branch-end">
             </div>
           </div>
         }

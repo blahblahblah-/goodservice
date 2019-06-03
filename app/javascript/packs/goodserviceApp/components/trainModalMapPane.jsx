@@ -240,7 +240,7 @@ class TrainModalMapPane extends React.Component {
     if (segments) {
       return(
         <div>
-          <Checkbox toggle onChange={this.handleToggleChange} label={<label className="toggle-label">Display problem areas</label>} />
+          <Checkbox toggle onChange={this.handleToggleChange} label={<label className="toggle-label">Highlight issues</label>} />
           <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
             {
               segments.line.map((stopId) => {
