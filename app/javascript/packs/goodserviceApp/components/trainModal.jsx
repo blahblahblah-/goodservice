@@ -58,18 +58,18 @@ class TrainModal extends React.Component {
   }
 
   panes() {
-    const { train, stats, routing, stops, width, match } = this.props;
+    const { train, stats, routing, routingTimestamp, stops, width, match } = this.props;
     const baseUrl = match.url.split('/').slice(0, 3).join('/');
-    const captions = (width > Responsive.onlyMobile.maxWidth) ? ['Current Status', 'Live Route Map', 'Stats'] : ['Status', 'Route Map', 'Stats'];
+    const captions = (width > Responsive.onlyMobile.maxWidth) ? ['Live Route Map', 'Status Details', 'Stats'] : ['Route Map', 'Status', 'Stats'];
     return [
-      { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='status'>{captions[0]}</Menu.Item>, render: () =>
-        <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
-          <TrainModalStatusPane train={train} width={width} />
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='route'>{captions[0]}</Menu.Item>, render: () =>
+        <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
+          <TrainModalMapPane routing={routing} routingTimestamp={routingTimestamp} stops={stops} train={train} width={width} />
         </Tab.Pane>
       },
-      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/route`} key='route'>{captions[1]}</Menu.Item>, render: () =>
-        <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
-          <TrainModalMapPane routing={routing} stops={stops} train={train} width={width} />
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/status`} key='status'>{captions[1]}</Menu.Item>, render: () =>
+        <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
+          <TrainModalStatusPane train={train} width={width} />
         </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>{captions[2]}</Menu.Item>, render: () =>
@@ -82,7 +82,7 @@ class TrainModal extends React.Component {
 
   render() {
     const { width, starredPane, train, location, match } = this.props;
-    const viewIndex = (match.params.view === 'route' ? 1 : (match.params.view === 'stats' ? 2 : 0));
+    const viewIndex = (match.params.view === 'status' ? 1 : (match.params.view === 'stats' ? 2 : 0));
     const title = "goodservice.io beta - Trains - " + ((this.props.train.alternate_name) ? ("S - " + this.props.train.alternate_name) : this.props.train.name) + " Train";
     return(
       <Responsive as={Modal} basic fireOnMount size='large'

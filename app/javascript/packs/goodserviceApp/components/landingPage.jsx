@@ -121,12 +121,12 @@ class LandingPage extends React.Component {
   }
 
   panes() {
-    const { trains, lines, favTrains, favLines, trainStats, width, routing, stops } = this.state;
+    const { trains, lines, favTrains, favLines, trainStats, width, routing, routingTimestamp, stops } = this.state;
     return [
       { menuItem: <Menu.Item as={Link} to='/trains' key='train'>Trains</Menu.Item>,
         render: () =>
           <Tab.Pane>
-            <TrainPane trains={trains} trainStats={trainStats} routing={routing} stops={stops} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} width={width} />
+            <TrainPane trains={trains} trainStats={trainStats} routing={routing} routingTimestamp={routingTimestamp} stops={stops} onFavTrainChange={this.handleFavTrainChange} favTrains={favTrains} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>Lines</Menu.Item>,
@@ -144,7 +144,7 @@ class LandingPage extends React.Component {
       { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <StarredPane trains={trains} trainStats={trainStats} lines={lines} routing={routing} stops={stops} onFavTrainChange={this.handleFavTrainChange}
+            <StarredPane trains={trains} trainStats={trainStats} lines={lines} routing={routing} routingTimestamp={routingTimestamp} stops={stops} onFavTrainChange={this.handleFavTrainChange}
               favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
           </Tab.Pane>
       },
@@ -269,7 +269,7 @@ class LandingPage extends React.Component {
 
   fetchData() {
     if (TEST_DATA) {
-      this.setState({ trains: sampleData.routes, lines: sampleData.lines, trainStats: sampleStats.status, routing: sampleRoutes.routes, stops: sampleRoutes.stops, loading: false });
+      this.setState({ trains: sampleData.routes, lines: sampleData.lines, trainStats: sampleStats.status, routing: sampleRoutes.routes, routingTimestamp: sampleRoutes.timestamp, stops: sampleRoutes.stops, loading: false });
     } else {
       fetch(API_URL)
         .then(response => response.json())
@@ -281,7 +281,7 @@ class LandingPage extends React.Component {
 
       fetch(ROUTES_URL)
         .then(response => response.json())
-        .then(data => this.setState({ routing: data.routes, stops: data.stops }))
+        .then(data => this.setState({ routing: data.routes, routingTimestamp: data.timestamp, stops: data.stops }))
     }
   }
 

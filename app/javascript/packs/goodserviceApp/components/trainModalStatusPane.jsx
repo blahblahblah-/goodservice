@@ -54,9 +54,10 @@ class TrainModalStatusPane extends React.Component {
   }
 
   tableData() {
-    const north = this.props.train.north.slice().reverse();
-    const tablet = this.props.width < Responsive.onlyTablet.maxWidth;
-    let data = this.props.train.south.map((obj, index) => {
+    const { train, width, location } = this.props;
+    const north = train.north.slice().reverse();
+    const tablet = width < Responsive.onlyTablet.maxWidth;
+    let data = train.south.map((obj, index) => {
       let northLine = north.find((nObj) => {
         return obj.name === nObj.name;
       });
@@ -95,7 +96,7 @@ class TrainModalStatusPane extends React.Component {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
       return (
-        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}}>
+        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}} active={obj.line.parent_name === location.hash.substring(1)}>
           <Table.Cell>
             { (obj.southActual || obj.southActual === 0) &&
               <Statistic size={(tablet && obj.southActual >= 10 && obj.southDelay >= 5) || (obj.southDelay >= 10 && obj.southActual >= 10) ? "mini" : (tablet ? "tiny" : "small")} horizontal={!tablet} inverted color={southColor}>
@@ -167,7 +168,8 @@ class TrainModalStatusPane extends React.Component {
   }
 
   tableDataMobileSouth() {
-    let data = this.props.train.south.map((obj, index) => {
+    const { train, location } = this.props;
+    let data = train.south.map((obj, index) => {
       return {
         line: obj,
         southActual: obj.max_actual_headway,
@@ -181,7 +183,7 @@ class TrainModalStatusPane extends React.Component {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
       const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
       return (
-        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}}>
+        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}} active={obj.line.parent_name === location.hash.substring(1)}>
           <Table.Cell>
             <Statistic size='mini' inverted color={southColor}>
               <Statistic.Value>
@@ -219,7 +221,8 @@ class TrainModalStatusPane extends React.Component {
   }
 
   tableDataMobileNorth() {
-    let data = this.props.train.north.map((obj) => {
+    const { train, location } = this.props;
+    let data = train.north.map((obj) => {
       return {
         line: obj,
         northActual: obj.max_actual_headway,
@@ -233,7 +236,7 @@ class TrainModalStatusPane extends React.Component {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
       const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
       return (
-        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}}>
+        <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}} active={obj.line.parent_name === location.hash.substring(1)}>
           <Table.Cell>
             <h5>
               <LineDisplay link={true} mobile={true} line={obj.line} />

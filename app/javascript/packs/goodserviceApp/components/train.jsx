@@ -133,11 +133,11 @@ class Train extends React.Component {
   }
 
   render() {
-    const { width, train, stats, starredPane, modelOpen, handleClose, onFavTrainChange, favTrains, routing, stops } = this.props;
+    const { width, train, stats, starredPane, modelOpen, handleClose, onFavTrainChange, favTrains, routing, routingTimestamp, stops } = this.props;
     return(
       <TrainModal train={train} stats={stats} starredPane={starredPane}
         modalOpen={this.state.modelOpen} onClose={this.handleClose}
-        onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} stops={stops} trigger={
+        onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} routingTimestamp={routingTimestamp} stops={stops} trigger={
         <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick}>
           {this.renderInfo()}
           <TrainBullet name={train.name} color={train.color}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Responsive, Checkbox } from 'semantic-ui-react';
+import { Responsive, Checkbox, Header } from 'semantic-ui-react';
 import TrainMapStop from './trainMapStop.jsx';
 
 class TrainModalMapPane extends React.Component {
@@ -92,18 +92,42 @@ class TrainModalMapPane extends React.Component {
                 branches[0].splice(0, 0, ...stopsToBeAdded);
               }
             } else {
-              const branchToAppend = branches.find((obj) => {
+              const branchToInsert = branches.find((obj) => {
                 const prevMatchingStopPosition = obj.indexOf(lastMatchingStop);
                 const currMatchingStopPosition = obj.indexOf(stop);
 
                 return prevMatchingStopPosition > -1 && currMatchingStopPosition > -1 && (currMatchingStopPosition - prevMatchingStopPosition) === 1;
               });
+              const branchToPrependBeginning = branches.find((obj) => {
+                const prevMatchingStopPosition = obj.indexOf(lastMatchingStop);
+                const currMatchingStopPosition = obj.indexOf(stop);
 
-              if (branchToAppend) {
+                return prevMatchingStopPosition == -1 && currMatchingStopPosition == 0;
+              });
+
+              const branchToAppendEnd = branches.find((obj) => {
+                const prevMatchingStopPosition = obj.indexOf(lastMatchingStop);
+                const currMatchingStopPosition = obj.indexOf(stop);
+
+                return prevMatchingStopPosition == (obj.length - 1) && currMatchingStopPosition == -1;
+              });
+
+              if (branchToInsert) {
                 // adding intermediate stops
                 line.splice(currStopPosition, 0, ...stopsToBeAdded);
-                const lastMatchingStopPositionInBranch = branchToAppend.indexOf(lastMatchingStop);
-                branchToAppend.splice(lastMatchingStopPositionInBranch + 1, 0, ...stopsToBeAdded);
+                const lastMatchingStopPositionInBranch = branchToInsert.indexOf(lastMatchingStop);
+                branchToInsert.splice(lastMatchingStopPositionInBranch + 1, 0, ...stopsToBeAdded);
+              } else if (branchToPrependBeginning) {
+                // prepend to beginning of a branch
+                line.splice(currStopPosition - 1, 0, ...stopsToBeAdded);
+                stopsToBeAdded.splice(0, 0, lastMatchingStop);
+                branchToPrependBeginning.splice(0, 0, ...stopsToBeAdded);
+              } else if (branchToAppendEnd) {
+                // append to end of a branch
+                const linePos = line.indexOf(lastMatchingStop);
+                line.splice(linePos + 1, 0, ...stopsToBeAdded);
+                stopsToBeAdded.push(stop);
+                branchToAppendEnd.splice(branchToAppendEnd.length - 1, 0, ...stopsToBeAdded);
               } else {
                 // adding middle branch
                 line.splice(currStopPosition - 1, 0, ...stopsToBeAdded);
@@ -211,14 +235,15 @@ class TrainModalMapPane extends React.Component {
   }
 
   render() {
-    const { width, routing, stops } = this.props;
+    const { width, routing, routingTimestamp, stops } = this.props;
     const { displayProblems } = this.state;
     const segments = this.generateSegments();
     const stopPattern = this.calculateStops();
     const problemSections = this.calculateProblemSections();
     let currentBranches = [0];
     let currentProblemSection = null;
-    let currentProblem = null;
+    let currentProblemTop = null;
+    let currentProblemBottom = null;
     if (segments) {
       return(
         <div>
@@ -238,20 +263,28 @@ class TrainModalMapPane extends React.Component {
                   segments.branches.splice(0, 1);
                   currentBranches = [0];
                   currentProblemSection = null;
-                  currentProblem = null;
+                  currentProblemTop = null;
+                  currentProblemBottom = null;
                 } else {
+                  if (!currentProblemBottom) {
+                    currentProblemTop = null;
+                  }
+
                   if (currentProblemSection) {
+                    currentProblemTop = currentProblemBottom;
                     if (currentProblemSection.last_stops.map((stop) => stop.substring(0, 3)).includes(stopId)) {
                       currentProblemSection = null;
-                      currentProblem = null;
+                      currentProblemBottom = null;
                     }
-                  } else {
+                  }
+
+                  if (!currentProblemSection) {
                     let potentialProblemSection;
                     if (potentialProblemSection = problemSections.find((obj) => {
                       return obj.first_stops.map((stop) => stop.substring(0, 3)).includes(stopId);
                     })) {
                       currentProblemSection = potentialProblemSection;
-                      currentProblem = currentProblemSection.problem;
+                      currentProblemBottom = currentProblemSection.problem;
                       problemSections.splice(problemSections.indexOf(potentialProblemSection), 0);
                     }
                   }
@@ -285,7 +318,7 @@ class TrainModalMapPane extends React.Component {
                       (segments.branches[currentMaxBranch][segments.branches[currentMaxBranch].length - 1] === stopId) &&
                       segments.branches[currentBranches[currentBranches.length - 2]].includes(stopId)) {
                     branchEnd = currentBranches[currentBranches.length - 2];
-                    segments.branches.splice(currentMaxBranch, 1);
+
                     currentBranches.pop();
                     // branch back
                     currentBranches.forEach((obj) => {
@@ -298,7 +331,6 @@ class TrainModalMapPane extends React.Component {
                     });
                   } else if (currentBranches.length > 1 && segments.branches[currentMaxBranch].length === 0) {
                     // branch ends
-                    segments.branches.splice(currentMaxBranch, 1);
                     currentBranches.pop();
 
                     currentBranches.forEach((obj) => {
@@ -326,11 +358,15 @@ class TrainModalMapPane extends React.Component {
                 return (
                   <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
                     northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
-                    branchEnd={branchEnd} activeBranches={activeBranches} width={width} problemSection={displayProblems && currentProblem} />
+                    branchEnd={branchEnd} activeBranches={activeBranches} width={width} problemSection={displayProblems && currentProblemSection}
+                    displayProblemTop={displayProblems && currentProblemTop} displayProblemBottom={displayProblems && currentProblemBottom} />
                 )
               })
             }
           </ul>
+          <Header inverted as='h5' textAlign='right'>
+            Last updated {new Date(routingTimestamp).toLocaleTimeString('en-US')}<br />
+          </Header>
         </div>
       )
     }

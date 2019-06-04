@@ -47,7 +47,7 @@ class StarredPane extends React.Component {
   }
 
   renderGrid() {
-    const { width, trainStats, onFavTrainChange, favTrains, onFavLineChange, favLines, routing, stops } = this.props;
+    const { width, trainStats, onFavTrainChange, favTrains, onFavLineChange, favLines, routing, routingTimestamp, stops } = this.props;
     return (
       <Responsive as={Grid} stackable doubling columns={3} fireOnMount>
         {
@@ -55,7 +55,7 @@ class StarredPane extends React.Component {
             return (
               <Grid.Column key={train.name + train.alternate_name}>
                 <Train starredPane={true} train={train} stats={trainStats[train.id]} routing={routing[train.id]} stops={stops}
-                  onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} />
+                  onFavTrainChange={onFavTrainChange} favTrains={favTrains} routingTimestamp={routingTimestamp} width={width} />
               </Grid.Column>
             )
           })
