@@ -250,7 +250,7 @@ class TrainModalMapPane extends React.Component {
           <Checkbox toggle onChange={this.handleToggleChange} label={<label className="toggle-label">Highlight issues</label>} defaultChecked />
           <ul style={{listStyleType: "none", textAlign: "left", width: (width > Responsive.onlyMobile.maxWidth && "700px"), margin: "auto", padding: 0}}>
             {
-              segments.line.map((stopId) => {
+              segments.line.map((stopId, lineIndex) => {
                 let branchStart = null;
                 let branchEnd = null;
                 let branchStops = [];
@@ -272,9 +272,13 @@ class TrainModalMapPane extends React.Component {
 
                   if (currentProblemSection) {
                     currentProblemTop = currentProblemBottom;
-                    if (currentProblemSection.last_stops.map((stop) => stop.substring(0, 3)).includes(stopId)) {
-                      currentProblemSection = null;
-                      currentProblemBottom = null;
+                    if (currentProblemSection.last_stops.map((obj) => obj.substring(0, 3)).includes(stopId)) {
+                      if (!segments.line.slice(lineIndex + 1).some(
+                        (lineStop) => currentProblemSection.last_stops.map((obj) => obj.substring(0, 3)).includes(lineStop))
+                      ) {
+                        currentProblemSection = null;
+                        currentProblemBottom = null;
+                      }
                     }
                   }
 
