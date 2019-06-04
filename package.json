@@ -8,6 +8,7 @@
     "@rails/webpacker": "3.5",
     "babel-preset-react": "^6.24.1",
     "es-cookie": "^1.2.0",
+    "fstream": "^1.0.12",
     "moment": "^2.24.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
