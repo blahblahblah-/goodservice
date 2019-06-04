@@ -212,7 +212,7 @@ class TrainModalMapPane extends React.Component {
     southLineDirections.forEach((obj) => {
       if (obj.delay >= 5) {
         delays.push(obj);
-      } else if (obj.max_scheduled_headway && obj.max_actual_headway - obj.max_scheduled_headway > 2) {
+      } else if (obj.max_scheduled_headway && (obj.max_actual_headway - obj.max_scheduled_headway > 2) || obj.travel_time >= 0.25) {
         notGoods.push(obj);
       }
     });
