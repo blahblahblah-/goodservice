@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Segment, Sticky, Menu, Responsive } from 'semantic-ui-react';
 import Train from './train.jsx';
 import TrainBullet from "./trainBullet.jsx";
-import { map } from 'lodash';
 import Hammer from 'react-hammerjs';
 import { Helmet } from "react-helmet";
 
@@ -100,9 +99,10 @@ class TrainStatusPane extends React.Component {
         }
         <Responsive as={Grid} stackable columns={3} fireOnMount>
           {
-            map(trains.filter(train => (showStats || train.visible || train.status !== 'Not Scheduled')), train => {
+            trains.map(train => {
+              const visible = train.visible || train.status !== 'Not Scheduled';
               return (
-                <Grid.Column key={train.name + train.alternate_name}>
+                <Grid.Column key={train.name + train.alternate_name} style={{display: (visible ? 'block' : 'none')}}>
                   <Train train={train} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} routingTimestamp={routingTimestamp} stops={stops}
                     onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} />
                 </Grid.Column>)
