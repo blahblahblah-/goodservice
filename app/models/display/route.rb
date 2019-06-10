@@ -26,7 +26,7 @@ module Display
       elsif directions.any? { |_, d|
         d.line_directions.any? { |ld|
           (ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? && d.line_directions.none? { |ld2|
-            ld.line == ld2.line && ld.max_actual_headway.present? && ld.max_scheduled_headway.present?
+            ld.line == ld2.line && ld2.max_actual_headway.present? && ld2.max_scheduled_headway.present?
           }) ||
           (ld.max_scheduled_headway.present? && ld.max_actual_headway.nil? && max_headway_discrepancy.present?)
         }
