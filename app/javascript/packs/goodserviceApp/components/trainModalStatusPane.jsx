@@ -315,14 +315,35 @@ class TrainModalStatusPane extends React.Component {
 
   render() {
     const { train, width } = this.props;
+    const unScheduledDestinationsSouth = train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest));
+    const unScheduledDestinationsNorth = train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest));
+    const southDestinations = train.destinations.south.map(dest => (<span>{dest.replace(/ - /g, "–")}</span>)).concat(unScheduledDestinationsSouth.map(dest => (<s>{dest.replace(/ - /g, "–")}</s>)));
+    const northDestinations = train.destinations.north.map(dest => (<span>{dest.replace(/ - /g, "–")}</span>)).concat(unScheduledDestinationsNorth.map(dest => (<s>{dest.replace(/ - /g, "–")}</s>)));
+    const southDestinationsFormatted = southDestinations.reduce((result, child, i) => {
+      const childEl = (<span key={i}>{child}</span>);
+      const separator = (<span key={'separator' + i}>, </span>);
+      if (i < southDestinations.length - 1) {
+        return result.concat([childEl, separator]);
+      }
+      return result.concat(childEl);
+    }, []);
+    const northDestinationsFormatted = northDestinations.reduce((result, child, i) => {
+      const childEl = (<span key={i}>{child}</span>);
+      const separator = (<span key={'separator' + i}>, </span>);
+      if (i < northDestinations.length - 1) {
+        return result.concat([childEl, separator]);
+      }
+      return result.concat(childEl);
+    }, []);
     return(
       <div>
         <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted selectable={width > Responsive.onlyTablet.maxWidth}>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={5}>
-                <Header as="h4" inverted color={train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted color={unScheduledDestinationsSouth.length ? "orange" : "black"}>
+                  {southDestinationsFormatted.length > 0 && "To "}
+                  {(southDestinationsFormatted.length && southDestinationsFormatted )|| "--"}
                 </Header>
               </Table.HeaderCell>
               <Table.HeaderCell width={3} rowSpan='2'>
@@ -331,8 +352,9 @@ class TrainModalStatusPane extends React.Component {
                 </Header>
               </Table.HeaderCell>
               <Table.HeaderCell colSpan='3' width={5}>
-                <Header as="h4" inverted color={train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted color={unScheduledDestinationsNorth.length ? "orange" : "black"}>
+                  {northDestinationsFormatted.length > 0 && "To "}
+                  {(northDestinationsFormatted.length && northDestinationsFormatted) || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -369,8 +391,9 @@ class TrainModalStatusPane extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
-                <Header as="h4" inverted color={train.scheduled_destinations.south.filter(dest => !train.destinations.south.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted color={unScheduledDestinationsSouth.length ? "orange" : "black"}>
+                  {southDestinationsFormatted.length > 0 && "To "}
+                  {(southDestinationsFormatted.length && southDestinationsFormatted )|| "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -399,8 +422,9 @@ class TrainModalStatusPane extends React.Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
-                <Header as="h4" inverted color={train.scheduled_destinations.north.filter(dest => !train.destinations.north.includes(dest)).length ? "orange" : "black"}>
-                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                <Header as="h4" inverted color={unScheduledDestinationsNorth.length ? "orange" : "black"}>
+                  {northDestinationsFormatted.length > 0&& "To "}
+                  {(northDestinationsFormatted.length && northDestinationsFormatted) || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
