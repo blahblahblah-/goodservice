@@ -25,7 +25,10 @@ module Display
         @status = "Delay"
       elsif directions.any? { |_, d|
         d.line_directions.any? { |ld|
-          (ld.max_actual_headway.present? && ld.max_scheduled_headway.nil?) || (ld.max_scheduled_headway.present? && ld.max_actual_headway.nil? && max_headway_discrepancy.present?)
+          (ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? && d.line_directions.none? { |ld2|
+            ld.line == ld2.line && ld.max_actual_headway.present? && ld.max_scheduled_headway.present?
+          }) ||
+          (ld.max_scheduled_headway.present? && ld.max_actual_headway.nil? && max_headway_discrepancy.present?)
         }
       }
         @status = "Service Change"

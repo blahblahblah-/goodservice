@@ -1,7 +1,7 @@
 module Display
   class RouteLineDirection
 
-    delegate :name, :boroughs, :travel_time, :parent_name, :first_stops, :last_stops, to: :line_direction
+    delegate :name, :boroughs, :travel_time, :parent_name, :first_stops, :last_stops, :line, to: :line_direction
 
     def initialize(route_id, line_direction, trips, stop_times, timestamp)
       @route_id = route_id
