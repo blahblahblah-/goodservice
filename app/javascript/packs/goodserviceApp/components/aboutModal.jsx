@@ -27,7 +27,8 @@ class AboutModal extends React.Component {
               goodservice.io's goal is to provide an up-to-date and detailed view of the New York City subway system
               using the publicly available GTFS and GTFS-RT data. It is an open source project, and
               the source code can be found on <a href="https://github.com/blahblahblah-/goodservice" target="_blank">GitHub</a>.
-              Currently, it displays maximum wait times (i.e. train headways or frequency), train delays and traffic conditions.
+              Currently, it displays live route maps, maximum wait times (i.e. train headways or
+              frequency), train delays and traffic conditions.
             </p>
             <p>
               You can view this data by train (e.g. 1, 2, A, F, L) or by line (e.g. Broadway, Lexington Avenue, Flushing), and
@@ -50,7 +51,8 @@ class AboutModal extends React.Component {
               but mostly about this site. Some highlights:
 
               <ul>
-                <li><a href="https://medium.com/good-service/what-is-good-service-891fed6cdd78" target="_blank"> Why I started this site</a></li>
+                <li><a href="https://medium.com/good-service/introducing-dynamic-route-maps-a8e56dd8a33" target="_blank">How live route maps are dynamically-generated</a></li>
+                <li><a href="https://medium.com/good-service/what-is-good-service-891fed6cdd78" target="_blank">Why I started this site</a></li>
                 <li><a href="https://medium.com/good-service/what-is-good-service-part-ii-the-technical-part-88a2ec93dd8a" target="_blank">How this site works</a></li>
                 <li><a href="https://medium.com/good-service/new-feature-detecting-delays-48d29df9ba54" target="_blank">How it detects delays</a></li>
                 <li><a href="https://medium.com/good-service/get-ahead-of-train-traffic-with-goodservice-io-a4a800ac0882" target="_blank">What are traffic conditions and how they're measured</a></li>

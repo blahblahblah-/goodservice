@@ -1,6 +1,6 @@
 # goodservice
 
-This is a Rails app that detects headway discrepancies, track delays and compare runtimes to the schedule on the New York City Subway system by comparing the data for live countdown clocks with the static schedule data provided by the MTA.
+This is a Rails app that generates live route maps, detects headway discrepancies, track delays and compare runtimes to the schedule on the New York City Subway system by comparing the data for live countdown clocks with the static schedule data provided by the MTA.
 
 See it live at [https://www.goodservice.io](https://www.goodservice.io/).
 
@@ -58,7 +58,7 @@ The client side view libraries are a React app that is compiled by the `webpacke
 
 ### In the middle: An API
 
-The React front end is fed by an API that Rails serves. The routes are specified in the `/app/controllers` directory. Specifically, routes are specified in `/config/routes.rb`. The `/api/info` route is probably most interesting as it drives the main React app. This route refers specifically to the `/app/controllers/api/info_controller.rb` controller. Note that that file is a very thin wrapper around the `ScheduleProcessor`'s `headway_info` function, which is specified in `/app/models/schedule_processor.rb`, simply returning a JSON of the results.
+The React front end is fed by an API that Rails serves. The routes are specified in the `/app/controllers` directory. Specifically, dynamically-generated routes are specified in `/config/routes.rb`. The `/api/info` route is probably most interesting as it drives the main React app. This route refers specifically to the `/app/controllers/api/info_controller.rb` controller. Note that that file is a very thin wrapper around the `ScheduleProcessor`'s `headway_info` function, which is specified in `/app/models/schedule_processor.rb`, simply returning a JSON of the results.
 
 ## Supported external services
 
