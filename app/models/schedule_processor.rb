@@ -188,6 +188,8 @@ class ScheduleProcessor
               max_scheduled_headway: ld.max_scheduled_headway,
               delay: ld.delay,
               travel_time: ld.travel_time,
+              scheduled_runtimes: ld.scheduled_runtimes,
+              actual_runtimes: ld.actual_runtimes,
               routes: ld.routes.map { |route|
                 {
                   id: route.internal_id,
@@ -208,6 +210,8 @@ class ScheduleProcessor
               max_scheduled_headway: ld.max_scheduled_headway,
               delay: ld.delay,
               travel_time: ld.travel_time,
+              scheduled_runtimes: ld.scheduled_runtimes,
+              actual_runtimes: ld.actual_runtimes,
               routes: ld.routes.map { |route|
                 {
                   id: route.internal_id,

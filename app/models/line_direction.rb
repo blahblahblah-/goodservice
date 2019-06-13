@@ -59,8 +59,6 @@ class LineDirection < ActiveRecord::Base
     [last_branch_stop, last_alternate_branch_stop, last_stop].compact
   end
 
-  private
-
   def scheduled_runtimes
     return @scheduled_runtimes if @scheduled_runtimes
     if first_branch_stop.present?

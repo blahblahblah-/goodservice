@@ -11,8 +11,6 @@ class LocalLineDirection < LineDirection
     [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop, express_line_direction.last_stop].compact
   end
 
-  private
-
   def scheduled_runtimes
     return @scheduled_runtimes if @scheduled_runtimes
     if express_line_direction.first_branch_stop.present?

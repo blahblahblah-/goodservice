@@ -3,8 +3,6 @@ class ExpressLineDirection < LineDirection
     alternate_name || "#{line.name} Express"
   end
 
-  private
-
   def scheduled_runtimes
     return @scheduled_runtimes if @scheduled_runtimes
     if first_branch_stop.present?

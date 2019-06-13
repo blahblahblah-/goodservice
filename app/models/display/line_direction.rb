@@ -96,6 +96,28 @@ module Display
       end
     end
 
+    def scheduled_runtimes
+      line_direction.scheduled_runtimes.map do |k, v|
+        {
+          id: k,
+          time: v
+        }
+      end
+    end
+
+    def actual_runtimes
+      line_direction.actual_runtimes.reject { |k, v| v.empty? }.map do |k, v|
+        runtime_stops = k.split("-")
+        first_stop = stops.find { |s| s.internal_id == runtime_stops[0]}&.stop_name
+        last_stop = stops.find { |s| s.internal_id == runtime_stops[1]}&.stop_name
+        {
+          id: k,
+          description: "#{first_stop} to #{last_stop}#{type && ' via '}#{type && name&.sub('via', '')}",
+          time: v.inject { |sum, el| sum + el }.to_f / v.size
+        }
+      end
+    end
+
     private
 
     attr_accessor :trips, :stop_times, :timestamp, :stops

@@ -190,7 +190,7 @@ class LineModalStatusPane extends React.Component {
   }
 
   tableDataMobileSouth() {
-    let data = this.props.line.south.map((obj, index) => {
+    let data = this.props.line.south.map((obj) => {
       return {
         name: this.shortenName(obj.name) || "Local",
         routes: obj.routes,
@@ -248,7 +248,7 @@ class LineModalStatusPane extends React.Component {
   }
 
   tableDataMobileNorth() {
-    let data = this.props.line.north.map((obj, index) => {
+    let data = this.props.line.north.map((obj) => {
       return {
         name: this.shortenName(obj.name) || "Local",
         routes: obj.routes,
@@ -305,8 +305,72 @@ class LineModalStatusPane extends React.Component {
     });
   }
 
+  travelTimeSouth() {
+    const { line } = this.props;
+    return line.south.map((obj, i) => {
+      return obj.actual_runtimes.map((xobj, j) => {
+        const scheduled_runtime = obj.scheduled_runtimes.find((yobj) => yobj.id === xobj.id);
+        return (
+          <Table.Row key={obj.type + xobj.id}>
+            <Table.Cell>
+              {xobj.description.replace(/ - /g, "–")}
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+                <Statistic.Value>
+                  {Math.round(xobj.time * 10) / 10}
+                </Statistic.Value>
+                <Statistic.Label>
+                  Mins
+                </Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted>
+                <Statistic.Value>{(scheduled_runtime && Math.round(scheduled_runtime.time * 10) / 10) || "--"}</Statistic.Value>
+                <Statistic.Label>Mins</Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+          </Table.Row>
+        )
+      });
+    });
+  }
+
+  travelTimeNorth() {
+    const { line } = this.props;
+    return line.north.map((obj, i) => {
+      return obj.actual_runtimes.map((xobj, j) => {
+        const scheduled_runtime = obj.scheduled_runtimes.find((yobj) => yobj.id === xobj.id);
+        return (
+          <Table.Row key={obj.type + xobj.id}>
+            <Table.Cell>
+              {xobj.description.replace(/ - /g, "–")}
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+                <Statistic.Value>
+                  {Math.round(xobj.time * 10) / 10}
+                </Statistic.Value>
+                <Statistic.Label>
+                  Mins
+                </Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted>
+                <Statistic.Value>{(scheduled_runtime && Math.round(scheduled_runtime.time * 10) / 10) || "--"}</Statistic.Value>
+                <Statistic.Label>Mins</Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+          </Table.Row>
+        )
+      });
+    });
+  }
+
   render() {
-    const { width } = this.props;
+    const { width, line } = this.props;
     return(
       <div>
         <Responsive as={Table} fixed textAlign='center' minWidth={Responsive.onlyMobile.maxWidth} inverted>
@@ -314,7 +378,7 @@ class LineModalStatusPane extends React.Component {
             <Table.Row>
               <Table.HeaderCell colSpan='3' width={5}>
                 <Header as="h4" inverted>
-                  To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                  To {line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
               <Table.HeaderCell rowSpan='2' width={3}>
@@ -324,7 +388,7 @@ class LineModalStatusPane extends React.Component {
               </Table.HeaderCell>
               <Table.HeaderCell colSpan='3' width={5}>
                 <Header as="h4" inverted>
-                  To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                  To {line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -362,7 +426,7 @@ class LineModalStatusPane extends React.Component {
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
                 <Header as="h4" inverted>
-                  To {this.props.line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                  To {line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -392,7 +456,7 @@ class LineModalStatusPane extends React.Component {
             <Table.Row>
               <Table.HeaderCell colSpan='4' width={16}>
                 <Header as="h4" inverted>
-                  To {this.props.line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                  To {line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
                 </Header>
               </Table.HeaderCell>
             </Table.Row>
@@ -417,6 +481,49 @@ class LineModalStatusPane extends React.Component {
             { this.tableDataMobileNorth() }
           </Table.Body>
         </Responsive>
+
+        <Header size='medium' inverted>TRAVEL TIMES</Header>
+        <Table unstackable inverted>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell width={6}>
+                <Header as="h4" inverted>
+                  To {line.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Actual
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Scheduled
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            { this.travelTimeSouth() }
+          </Table.Body>
+        </Table>
+
+        <Table unstackable inverted>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell width={6}>
+                <Header as="h4" inverted>
+                  To {line.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Actual
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Scheduled
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            { this.travelTimeNorth() }
+          </Table.Body>
+        </Table>
       </div>
     )
   }
