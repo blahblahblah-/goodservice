@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Statistic, Responsive, Table } from 'semantic-ui-react';
+import { Header, Statistic, Responsive, Table, Divider } from 'semantic-ui-react';
 import { map } from 'lodash';
 import TrainBullet from './trainBullet.jsx';
 
@@ -482,7 +482,9 @@ class LineModalStatusPane extends React.Component {
           </Table.Body>
         </Responsive>
 
-        <Header size='medium' inverted>TRAVEL TIMES</Header>
+        <Divider inverted horizontal style={{marginTop: "2em"}}>
+          <Header size='medium' inverted>TRAVEL TIMES</Header>
+        </Divider>
         <Table unstackable inverted>
           <Table.Header>
             <Table.Row>
@@ -524,6 +526,7 @@ class LineModalStatusPane extends React.Component {
             { this.travelTimeNorth() }
           </Table.Body>
         </Table>
+        <Header size='tiny' inverted>Average completed runtimes in the last 30 minutes.</Header>
       </div>
     )
   }
