@@ -7,15 +7,17 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["101N"],
-        "south": ["142S"]
+        "north": ["301N", "101N"],
+        "south": ["142S", "109S"]
       },
       "routings": {
         "north": [
-          ["142N", "139N", "138N", "137N", "136N", "135N", "134N", "133N", "132N", "131N", "130N", "129N", "128N", "127N", "126N", "125N", "124N", "123N", "122N", "121N", "120N", "119N", "118N", "117N", "116N", "115N", "114N", "113N", "111N", "110N", "109N", "108N", "107N", "106N", "104N", "103N", "101N"]
+          ["142N", "139N", "138N", "137N", "136N", "135N", "134N", "133N", "132N", "131N", "130N", "129N", "128N", "127N", "126N", "125N", "124N", "123N", "122N", "121N", "120N", "227N", "226N", "225N", "224N", "301N"],
+          ["109N", "108N", "107N", "106N", "104N", "103N", "101N"]
         ],
         "south": [
-          ["101S", "103S", "104S", "106S", "107S", "108S", "109S", "110S", "111S", "113S", "114S", "115S", "116S", "117S", "118S", "119S", "120S", "121S", "122S", "123S", "124S", "125S", "126S", "127S", "128S", "129S", "130S", "131S", "132S", "133S", "134S", "135S", "136S", "137S", "138S", "139S", "142S"]
+          ["301S", "224S", "225S", "226S", "227S", "120S", "121S", "122S", "123S", "124S", "125S", "126S", "127S", "128S", "129S", "130S", "131S", "132S", "133S", "134S", "135S", "136S", "137S", "138S", "139S", "142S"],
+          ["101S", "103S", "104S", "106S", "107S", "109S"]
         ]
       }
     },
@@ -27,15 +29,14 @@ const sampleRoutes = {
       "alternate_name": null,
       "destinations": {
         "north": ["201N"],
-        "south": ["257S", "247S"]
+        "south": ["247S"]
       },
       "routings": {
         "north": [
-          ["247N", "246N", "245N", "244N", "243N", "242N", "241N", "239N", "238N", "237N", "236N", "235N", "234N", "233N", "232N", "231N", "230N", "229N", "228N", "137N", "132N", "128N", "127N", "123N", "120N", "227N", "226N", "225N", "224N", "222N", "221N", "220N", "219N", "218N", "217N", "216N", "215N", "214N", "213N", "212N", "211N", "210N", "209N", "208N", "207N", "206N", "205N", "204N", "201N"]
+          ["247N", "246N", "245N", "244N", "243N", "242N", "241N", "239N", "235N", "234N", "233N", "232N", "231N", "230N", "229N", "228N", "137N", "136N", "135N", "134N", "133N", "132N", "131N", "130N", "129N", "128N", "127N", "126N", "125N", "124N", "123N", "122N", "121N", "120N", "227N", "226N", "225N", "224N", "222N", "221N", "220N", "219N", "218N", "217N", "216N", "215N", "214N", "213N", "212N", "211N", "210N", "209N", "208N", "207N", "206N", "205N", "204N", "201N"]
         ],
         "south": [
-          ["204S", "205S", "206S", "207S", "208S", "209S", "210S", "211S", "212S", "213S", "214S", "215S", "216S", "217S", "218S", "219S", "220S", "221S", "222S", "224S", "225S", "226S", "227S", "120S", "123S", "127S", "128S", "132S", "137S", "228S", "229S", "230S", "231S", "232S", "233S", "234S", "235S", "236S", "237S", "238S", "239S", "248S", "249S", "250S", "251S", "252S", "253S", "254S", "255S", "256S", "257S"],
-          ["201S", "204S", "205S", "206S", "207S", "208S", "209S", "210S", "211S", "212S", "213S", "214S", "215S", "216S", "217S", "218S", "219S", "220S", "221S", "222S", "224S", "225S", "226S", "227S", "120S", "123S", "127S", "128S", "132S", "137S", "228S", "229S", "230S", "231S", "232S", "233S", "234S", "235S", "236S", "237S", "238S", "239S", "242S", "244S", "245S", "246S", "247S"]
+          ["201S", "204S", "205S", "206S", "207S", "208S", "209S", "210S", "211S", "212S", "213S", "214S", "215S", "216S", "217S", "218S", "219S", "220S", "221S", "222S", "224S", "225S", "226S", "227S", "120S", "121S", "122S", "123S", "124S", "125S", "126S", "127S", "128S", "129S", "130S", "131S", "132S", "133S", "134S", "135S", "136S", "137S", "228S", "229S", "230S", "231S", "232S", "233S", "234S", "235S", "236S", "237S", "238S", "239S", "242S", "244S", "245S", "246S", "247S"]
         ]
       }
     },
@@ -47,14 +48,15 @@ const sampleRoutes = {
       "alternate_name": null,
       "destinations": {
         "north": ["301N"],
-        "south": ["257S"]
+        "south": ["142S", "127S"]
       },
       "routings": {
         "north": [
-          ["257N", "256N", "255N", "254N", "253N", "252N", "251N", "250N", "249N", "248N", "239N", "238N", "237N", "236N", "235N", "234N", "233N", "232N", "231N", "230N", "229N", "228N", "137N", "132N", "128N", "127N", "123N", "120N", "227N", "226N", "225N", "224N", "302N", "301N"]
+          ["127N", "126N", "125N", "124N", "123N", "122N", "121N", "120N", "227N", "226N", "225N", "224N", "302N", "301N"]
         ],
         "south": [
-          ["301S", "302S", "224S", "225S", "226S", "227S", "120S", "123S", "127S", "128S", "132S", "137S", "228S", "229S", "230S", "231S", "232S", "233S", "234S", "235S", "236S", "237S", "238S", "239S", "248S", "249S", "250S", "251S", "252S", "253S", "254S", "255S", "256S", "257S"]
+          ["302S", "224S", "225S", "226S", "227S", "120S", "121S", "122S", "123S", "124S", "125S", "126S", "127S", "128S", "129S", "130S", "131S", "132S", "133S", "134S", "135S", "136S", "137S", "138S", "139S", "142S"],
+          ["301S", "302S", "224S", "225S", "226S", "227S", "120S", "123S", "127S"]
         ]
       }
     },
@@ -66,14 +68,14 @@ const sampleRoutes = {
       "alternate_name": null,
       "destinations": {
         "north": ["401N"],
-        "south": ["250S"]
+        "south": ["257S"]
       },
       "routings": {
         "north": [
-          ["250N", "239N", "235N", "234N", "423N", "420N", "419N", "418N", "640N", "635N", "631N", "629N", "626N", "621N", "416N", "415N", "414N", "413N", "412N", "411N", "410N", "409N", "408N", "407N", "406N", "405N", "402N", "401N"]
+          ["257N", "256N", "255N", "254N", "253N", "252N", "251N", "250N", "249N", "248N", "239N", "235N", "234N", "423N", "420N", "419N", "418N", "640N", "639N", "638N", "637N", "636N", "635N", "634N", "633N", "632N", "631N", "630N", "629N", "628N", "627N", "626N", "625N", "624N", "623N", "622N", "621N", "415N", "414N", "413N", "412N", "411N", "410N", "409N", "408N", "407N", "406N", "405N", "402N", "401N"]
         ],
         "south": [
-          ["401S", "402S", "405S", "406S", "407S", "408S", "409S", "410S", "411S", "412S", "413S", "414S", "415S", "416S", "621S", "626S", "629S", "631S", "635S", "640S", "418S", "419S", "420S", "423S", "234S", "235S", "239S", "250S"]
+          ["401S", "402S", "405S", "406S", "407S", "408S", "409S", "410S", "411S", "412S", "413S", "414S", "415S", "416S", "621S", "626S", "629S", "631S", "632S", "633S", "634S", "635S", "636S", "637S", "638S", "639S", "640S", "418S", "419S", "420S", "423S", "234S", "235S", "236S", "237S", "238S", "239S", "248S", "249S", "250S", "251S", "252S", "253S", "254S", "255S", "256S", "257S"]
         ]
       }
     },
@@ -84,19 +86,15 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["501N", "213N"],
-        "south": ["247S", "250S"]
+        "north": ["501N"],
+        "south": ["213S"]
       },
       "routings": {
         "north": [
-          ["247N", "246N", "245N", "244N", "243N", "242N", "241N", "239N", "235N", "234N", "423N", "420N", "419N", "418N", "640N", "635N", "631N", "629N", "626N", "621N", "416N", "222N", "221N", "220N", "219N", "218N", "217N", "216N", "215N", "214N", "213N", "505N", "504N", "502N", "501N"],
-          ["250N", "239N", "235N", "234N", "423N", "420N", "419N", "418N", "640N", "635N", "631N", "629N", "626N", "621N", "416N", "222N", "221N", "213N"]
+          ["213N", "505N", "504N", "502N", "501N"]
         ],
         "south": [
-          ["501S", "502S", "503S", "504S", "505S", "213S", "221S", "222S", "416S", "621S", "626S", "629S", "631S", "635S", "640S", "418S", "419S", "420S", "423S", "234S", "235S", "239S", "242S", "244S", "245S", "246S", "247S"],
-          ["212S", "213S", "221S", "222S", "416S", "621S", "626S", "629S", "631S", "635S", "640S", "418S", "419S", "420S", "423S", "234S", "235S", "239S", "242S", "244S", "245S", "246S", "247S"],
-          ["227S", "120S", "123S", "127S", "128S", "132S", "137S", "228S", "229S", "230S", "231S", "232S", "233S", "234S", "235S", "239S", "242S", "244S", "245S", "246S", "247S"],
-          ["416S", "621S", "626S", "629S", "631S", "635S", "640S", "418S", "419S", "420S", "423S", "234S", "235S", "239S", "250S"]
+          ["501S", "502S", "503S", "504S", "505S", "213S"]
         ]
       }
     },
@@ -115,24 +113,7 @@ const sampleRoutes = {
           ["640N", "639N", "638N", "637N", "636N", "635N", "634N", "633N", "632N", "631N", "630N", "629N", "628N", "627N", "626N", "625N", "624N", "623N", "622N", "621N", "619N", "618N", "617N", "616N", "615N", "614N", "613N", "612N", "611N", "610N", "609N", "608N", "607N", "606N", "604N", "603N", "602N", "601N"]
         ],
         "south": [
-          ["608S", "609S", "610S", "611S", "612S", "613S", "614S", "615S", "616S", "617S", "618S", "619S", "621S", "622S", "623S", "624S", "625S", "626S", "627S", "628S", "629S", "630S", "631S", "632S", "633S", "634S", "635S", "636S", "637S", "638S", "639S", "640S"]
-        ]
-      }
-    },
-    "6X": {
-      "id": "6X",
-      "name": "6X",
-      "color": "#21ba45",
-      "text_color": null,
-      "alternate_name": null,
-      "destinations": {
-        "north": [],
-        "south": ["640S"]
-      },
-      "routings": {
-        "north": [],
-        "south": [
-          ["601S", "602S", "603S", "604S", "606S", "607S", "608S", "613S", "619S", "621S", "622S", "623S", "624S", "625S", "626S", "627S", "628S", "629S", "630S", "631S", "632S", "633S", "634S", "635S", "636S", "637S", "638S", "639S", "640S"]
+          ["601S", "602S", "603S", "604S", "606S", "607S", "608S", "609S", "610S", "611S", "612S", "613S", "614S", "615S", "616S", "617S", "618S", "619S", "621S", "626S", "629S", "631S", "632S", "633S", "634S", "635S", "636S", "637S", "638S", "639S", "640S"]
         ]
       }
     },
@@ -155,23 +136,6 @@ const sampleRoutes = {
         ]
       }
     },
-    "7X": {
-      "id": "7X",
-      "name": "7X",
-      "color": "#a333c8",
-      "text_color": null,
-      "alternate_name": null,
-      "destinations": {
-        "north": [],
-        "south": ["726S"]
-      },
-      "routings": {
-        "north": [],
-        "south": [
-          ["701S", "702S", "707S", "712S", "718S", "719S", "720S", "721S", "723S", "724S", "725S", "726S"]
-        ]
-      }
-    },
     "A": {
       "id": "A",
       "name": "A",
@@ -179,18 +143,18 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["A02N"],
+        "north": ["A02N", "A55N"],
         "south": ["H11S", "A65S"]
       },
       "routings": {
         "north": [
-          ["H11N", "H10N", "H09N", "H08N", "H07N", "H06N", "H04N", "H03N", "H02N", "A61N", "A60N", "A59N", "A57N", "A55N", "A51N", "A48N", "A46N", "A43N", "A42N", "A41N", "A40N", "A38N", "A36N", "A34N", "A33N", "A32N", "A31N", "A28N", "A27N", "A24N", "A15N", "A12N", "A09N", "A07N", "A06N", "A05N", "A03N", "A02N"],
-          ["H11N", "H10N", "H09N", "H08N", "H07N", "H06N", "H04N", "H03N", "H02N", "H01N", "A61N", "A60N", "A59N", "A57N", "A55N", "A51N", "A48N", "A46N", "A42N", "A41N", "A40N", "A38N", "A36N", "A34N", "A32N", "A31N", "A28N", "A27N", "A24N", "A15N", "A12N", "A09N", "A07N", "A06N", "A05N", "A03N", "A02N"],
-          ["A65N", "A64N", "A63N", "A61N", "A60N", "A59N", "A57N", "A55N", "A51N", "A48N", "A46N", "A42N", "A41N", "A40N", "A38N", "A36N", "A34N", "A32N", "A31N", "A28N", "A27N", "A24N", "A15N", "A12N", "A09N", "A07N", "A06N", "A05N", "A03N", "A02N"]
+          ["H11N", "H10N", "H09N", "H08N", "H07N", "H06N", "H04N", "H03N", "H02N", "H01N", "A61N", "A60N", "A59N", "A57N", "A55N", "A51N", "A48N", "A46N", "A42N", "A41N", "F18N", "F16N", "F15N", "F14N", "D21N", "A32N", "A31N", "A30N", "A28N", "A27N", "A25N", "A24N", "A22N", "A21N", "A20N", "A19N", "A18N", "A17N", "A16N", "A15N", "A14N", "A12N", "A11N", "A10N", "A09N", "A07N", "A06N", "A05N", "A03N", "A02N"],
+          ["D21N", "D20N", "D19N", "D18N", "D17N", "D16N", "D15N", "D14N", "A24N", "A22N", "A21N", "A20N", "A19N", "A18N", "A17N", "A16N", "A15N", "A14N", "A12N", "A11N", "A10N", "A09N", "A07N", "A06N", "A05N", "A03N", "A02N"],
+          ["A65N", "A64N", "A63N", "A61N", "A60N", "A59N", "A57N", "A55N"]
         ],
         "south": [
-          ["A02S", "A03S", "A05S", "A06S", "A07S", "A09S", "A12S", "A15S", "A24S", "A27S", "A28S", "A31S", "A32S", "A34S", "A36S", "A38S", "A40S", "A41S", "A42S", "A46S", "A48S", "A51S", "A55S", "A57S", "A59S", "A60S", "A61S", "H02S", "H03S", "H04S", "H06S", "H07S", "H08S", "H09S", "H10S", "H11S"],
-          ["A02S", "A03S", "A05S", "A06S", "A07S", "A09S", "A12S", "A15S", "A24S", "A27S", "A28S", "A31S", "A32S", "A34S", "A36S", "A38S", "A40S", "A41S", "A42S", "A46S", "A48S", "A51S", "A55S", "A57S", "A59S", "A60S", "A61S", "A63S", "A64S", "A65S"]
+          ["A02S", "A03S", "A05S", "A06S", "A07S", "A09S", "A10S", "A11S", "A12S", "A14S", "A15S", "A16S", "A17S", "A18S", "A19S", "A20S", "A21S", "A22S", "A24S", "A25S", "A27S", "A28S", "A30S", "A31S", "A32S", "A33S", "A34S", "A36S", "A38S", "A40S", "A41S", "A42S", "A43S", "A44S", "A45S", "A46S", "A47S", "A48S", "A49S", "A50S", "A51S", "A52S", "A53S", "A54S", "A55S", "A57S", "A59S", "A60S", "A61S", "H02S", "H03S", "H04S", "H06S", "H07S", "H08S", "H09S", "H10S", "H11S"],
+          ["A55S", "A57S", "A59S", "A60S", "A61S", "A63S", "A64S", "A65S"]
         ]
       }
     },
@@ -201,18 +165,12 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["D03N", "D13N", "A12N"],
-        "south": ["D40S"]
+        "north": [],
+        "south": []
       },
       "routings": {
-        "north": [
-          ["D28N", "D26N", "D25N", "D24N", "R30N", "D22N", "D21N", "D20N", "D17N", "D16N", "D15N", "D14N", "A24N", "A22N", "A21N", "A20N", "A19N", "A18N", "A17N", "A16N", "A15N", "A14N", "D13N", "D12N", "D11N", "D10N", "D09N", "D08N", "D07N", "D06N", "D05N", "D04N", "D03N"],
-          ["D40N", "D39N", "D35N", "D31N", "D28N", "D26N", "D25N", "D24N", "R30N", "D22N", "D21N", "D20N", "D17N", "D16N", "D15N", "D14N", "A24N", "A22N", "A21N", "A20N", "A19N", "A18N", "A17N", "A16N", "A15N", "A14N", "D13N"],
-          ["D40N", "D39N", "D35N", "D31N", "D28N", "D26N", "D25N", "D24N", "R30N", "D22N", "D21N", "D20N", "D17N", "D16N", "D15N", "D14N", "A24N", "A22N", "A21N", "A20N", "A19N", "A18N", "A17N", "A16N", "A15N", "A14N", "A12N"]
-        ],
-        "south": [
-          ["D03S", "D04S", "D05S", "D06S", "D07S", "D08S", "D09S", "D10S", "D11S", "D12S", "D13S", "A14S", "A15S", "A16S", "A17S", "A18S", "A19S", "A20S", "A21S", "A22S", "A24S", "D14S", "D15S", "D16S", "D17S", "D20S", "D21S", "D22S", "R30S", "D24S", "D25S", "D26S", "D28S", "D31S", "D35S", "D39S", "D40S"]
-        ]
+        "north": [],
+        "south": []
       }
     },
     "C": {
@@ -222,16 +180,12 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["A09N"],
-        "south": ["A55S"]
+        "north": [],
+        "south": []
       },
       "routings": {
-        "north": [
-          ["A55N", "A54N", "A53N", "A52N", "A51N", "A50N", "A49N", "A48N", "A47N", "A46N", "A45N", "A44N", "A43N", "A42N", "A41N", "A40N", "A38N", "A36N", "A34N", "A33N", "A32N", "A31N", "A30N", "A28N", "A27N", "A25N", "A24N", "A22N", "A21N", "A20N", "A19N", "A18N", "A17N", "A16N", "A15N", "A14N", "A12N", "A11N", "A10N", "A09N"]
-        ],
-        "south": [
-          ["A09S", "A10S", "A11S", "A12S", "A14S", "A15S", "A16S", "A17S", "A18S", "A19S", "A20S", "A21S", "A22S", "A24S", "A25S", "A27S", "A28S", "A30S", "A31S", "A32S", "A33S", "A34S", "A36S", "A38S", "A40S", "A41S", "A42S", "A43S", "A44S", "A45S", "A46S", "A47S", "A48S", "A49S", "A50S", "A51S", "A52S", "A53S", "A54S", "A55S"]
-        ]
+        "north": [],
+        "south": []
       }
     },
     "D": {
@@ -246,11 +200,10 @@ const sampleRoutes = {
       },
       "routings": {
         "north": [
-          ["D43N", "B23N", "B22N", "B21N", "B20N", "B19N", "B18N", "B17N", "B16N", "B15N", "B14N", "B13N", "B12N", "R36N", "R31N", "D22N", "D21N", "D20N", "D17N", "D16N", "D15N", "D14N", "A24N", "A15N", "D13N", "D12N", "D11N", "D10N", "D09N", "D08N", "D07N", "D06N", "D05N", "D04N", "D03N", "D01N"]
+          ["D43N", "B23N", "B22N", "B21N", "B20N", "B19N", "B18N", "B17N", "B16N", "B15N", "B14N", "B13N", "B12N", "R36N", "R35N", "R34N", "R33N", "R32N", "R31N", "R30N", "D22N", "D21N", "D20N", "D17N", "D16N", "D15N", "D14N", "A24N", "A15N", "D13N", "D12N", "D11N", "D10N", "D07N", "D05N", "D04N", "D03N", "D01N"]
         ],
         "south": [
-          ["D03S", "D04S", "D05S", "D06S", "D07S", "D08S", "D09S", "D10S", "D11S", "D12S", "D13S", "A15S", "A24S", "D14S", "D15S", "D16S", "D17S", "D20S", "D21S", "D22S", "R31S", "R36S", "B12S", "B13S", "B14S", "B15S", "B16S", "B17S", "B18S", "B19S", "B20S", "B21S", "B22S", "B23S", "D43S"],
-          ["N08S", "N09S", "N10S", "N12S", "D43S"],
+          ["D03S", "D04S", "D05S", "D06S", "D07S", "D08S", "D09S", "D10S", "D11S", "D12S", "D13S", "A15S", "A24S", "D14S", "D15S", "D16S", "D17S", "D20S", "D21S", "D22S", "R30S", "R31S", "R32S", "R33S", "R34S", "R35S", "R36S", "B12S", "B13S", "B14S", "B15S", "B16S", "B17S", "B18S", "B19S", "B20S", "B21S", "B22S", "B23S", "D43S"],
           ["D01S", "D03S"]
         ]
       }
@@ -262,15 +215,15 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["G05N"],
+        "north": ["F01N"],
         "south": ["E01S"]
       },
       "routings": {
         "north": [
-          ["E01N", "A34N", "A33N", "A32N", "A31N", "A30N", "A28N", "A27N", "A25N", "D14N", "F12N", "F11N", "F09N", "G21N", "G14N", "G08N", "F06N", "G07N", "G06N", "G05N"]
+          ["E01N", "A34N", "A33N", "A32N", "A31N", "A30N", "A28N", "A27N", "A25N", "D14N", "F12N", "F11N", "F09N", "G21N", "G20N", "G19N", "G18N", "G16N", "G15N", "G14N", "G13N", "G12N", "G11N", "G10N", "G09N", "G08N", "F07N", "F06N", "F05N", "F04N", "F03N", "F02N", "F01N"]
         ],
         "south": [
-          ["G05S", "G06S", "G07S", "F06S", "G08S", "G14S", "G21S", "F09S", "F11S", "F12S", "D14S", "A25S", "A27S", "A28S", "A30S", "A31S", "A32S", "A33S", "A34S", "E01S"]
+          ["F01S", "F02S", "F03S", "F04S", "F05S", "F06S", "F07S", "G08S", "G09S", "G10S", "G11S", "G12S", "G13S", "G14S", "G15S", "G16S", "G18S", "G19S", "G20S", "G21S", "F09S", "F11S", "F12S", "D14S", "A25S", "A27S", "A28S", "A30S", "A31S", "A32S", "A33S", "A34S", "E01S"]
         ]
       }
     },
@@ -286,10 +239,10 @@ const sampleRoutes = {
       },
       "routings": {
         "north": [
-          ["D43N", "D42N", "F39N", "F38N", "F36N", "F35N", "F34N", "F33N", "F32N", "F31N", "F30N", "F29N", "F27N", "F26N", "F25N", "F24N", "F23N", "F22N", "F21N", "F20N", "A41N", "F18N", "F16N", "F15N", "F14N", "D21N", "D20N", "D19N", "D18N", "D17N", "D16N", "D15N", "B10N", "B08N", "B06N", "B04N", "G14N", "G08N", "F07N", "F06N", "F05N", "F04N", "F03N", "F02N", "F01N"]
+          ["D43N", "D42N", "F39N", "F38N", "F36N", "F35N", "F34N", "F33N", "F32N", "F31N", "F30N", "F29N", "F27N", "F26N", "F25N", "F24N", "F23N", "F22N", "F21N", "F20N", "A41N", "F18N", "F16N", "F15N", "F14N", "D21N", "D20N", "D19N", "D18N", "D17N", "D16N", "D15N", "B10N", "B08N", "B06N", "B04N", "G20N", "G19N", "G18N", "G16N", "G15N", "G14N", "G13N", "G12N", "G11N", "G10N", "G09N", "G08N", "F07N", "F06N", "F05N", "F04N", "F03N", "F02N", "F01N"]
         ],
         "south": [
-          ["F01S", "F02S", "F03S", "F04S", "F05S", "F06S", "F07S", "G08S", "G14S", "B04S", "B06S", "B08S", "B10S", "D15S", "D16S", "D17S", "D18S", "D19S", "D20S", "D21S", "F14S", "F15S", "F16S", "F18S", "A41S", "F20S", "F21S", "F22S", "F23S", "F24S", "F25S", "F26S", "F27S", "F29S", "F30S", "F31S", "F32S", "F33S", "F34S", "F35S", "F36S", "F38S", "F39S", "D42S", "D43S"]
+          ["F01S", "F02S", "F03S", "F04S", "F05S", "F06S", "F07S", "G08S", "G09S", "G10S", "G11S", "G12S", "G13S", "G14S", "G15S", "G16S", "G18S", "G19S", "G20S", "B04S", "B06S", "B08S", "B10S", "D15S", "D16S", "D17S", "D18S", "D19S", "D20S", "D21S", "F14S", "F15S", "F16S", "F18S", "A41S", "F20S", "F21S", "F22S", "F24S", "F27S", "F29S", "F30S", "F31S", "F32S", "F33S", "F34S", "F35S", "F36S", "F38S", "F39S", "D42S", "D43S"]
         ]
       }
     },
@@ -308,7 +261,7 @@ const sampleRoutes = {
           ["F27N", "F26N", "F25N", "F24N", "F23N", "F22N", "F21N", "F20N", "A42N", "G36N", "G35N", "G34N", "G33N", "G32N", "G31N", "G30N", "G29N", "G28N", "G26N", "G24N", "G22N"]
         ],
         "south": [
-          ["G22S", "G24S", "G26S", "G28S", "G29S", "G30S", "G31S", "G32S", "G33S", "G34S", "G35S", "G36S", "A42S", "F20S", "F21S", "F22S", "F23S", "F24S", "F25S", "F26S", "F27S"]
+          ["G22S", "G24S", "G26S", "G28S", "G29S", "G30S", "G31S", "G32S", "G33S", "G34S", "G35S", "G36S", "A42S", "F20S", "F21S", "F22S", "F24S", "F27S"]
         ]
       }
     },
@@ -327,7 +280,7 @@ const sampleRoutes = {
           ["M23N", "M22N", "M21N", "M20N", "M19N", "M18N", "M16N", "M14N", "M13N", "M12N", "M11N", "J31N", "J30N", "J29N", "J28N", "J27N", "J24N", "J23N", "J22N", "J21N", "J20N", "J19N", "J17N", "J16N", "J15N", "J14N", "J12N", "G06N", "G05N"]
         ],
         "south": [
-          ["G05S", "G06S", "J12S", "J14S", "J15S", "J16S", "J17S", "J19S", "J20S", "J21S", "J22S", "J23S", "J24S", "J27S", "J28S", "J29S", "J30S", "J31S", "M11S", "M16S", "M18S", "M19S", "M20S", "M21S", "M22S", "M23S"]
+          ["G05S", "G06S", "J12S", "J14S", "J15S", "J16S", "J17S", "J19S", "J20S", "J21S", "J22S", "J23S", "J24S", "J27S", "J28S", "J29S", "J30S", "J31S", "M11S", "M12S", "M13S", "M14S", "M16S", "M18S", "M19S", "M20S", "M21S", "M22S", "M23S"]
         ]
       }
     },
@@ -357,15 +310,15 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": null,
       "destinations": {
-        "north": ["G08N"],
+        "north": ["M11N"],
         "south": ["M01S"]
       },
       "routings": {
         "north": [
-          ["M01N", "M04N", "M05N", "M06N", "M08N", "M09N", "M10N", "M11N", "M12N", "M13N", "M14N", "M16N", "M18N", "D21N", "D20N", "D19N", "D18N", "D17N", "D16N", "D15N", "F12N", "F11N", "F09N", "G21N", "G20N", "G19N", "G18N", "G16N", "G15N", "G14N", "G13N", "G12N", "G11N", "G10N", "G09N", "G08N"]
+          ["M01N", "M04N", "M05N", "M06N", "M08N", "M09N", "M10N", "M11N"]
         ],
         "south": [
-          ["G08S", "G09S", "G10S", "G11S", "G12S", "G13S", "G14S", "G15S", "G16S", "G18S", "G19S", "G20S", "G21S", "F09S", "F11S", "F12S", "D15S", "D16S", "D17S", "D18S", "D19S", "D20S", "D21S", "M18S", "M16S", "M14S", "M13S", "M12S", "M11S", "M10S", "M09S", "M08S", "M06S", "M05S", "M04S", "M01S"]
+          ["M11S", "M10S", "M09S", "M08S", "M06S", "M05S", "M04S", "M01S"]
         ]
       }
     },
@@ -381,12 +334,10 @@ const sampleRoutes = {
       },
       "routings": {
         "north": [
-          ["D43N", "N10N", "N09N", "N08N", "N07N", "N06N", "N05N", "N04N", "N03N", "N02N", "R41N", "R40N", "R39N", "R36N", "R31N", "Q01N", "R20N", "R17N", "R16N", "R15N", "R14N", "R13N", "R11N", "R09N", "R08N", "R06N", "R05N", "R04N", "R01N"]
+          ["D43N", "N10N", "N09N", "N08N", "N07N", "N06N", "N05N", "N04N", "N03N", "N02N", "R41N", "R40N", "R39N", "R36N", "R35N", "R34N", "R33N", "R32N", "R31N", "R30N", "R29N", "R28N", "R27N", "R26N", "R25N", "R24N", "R23N", "R20N", "R17N", "R16N", "R15N", "R14N", "R13N", "R11N", "R09N", "R08N", "R06N", "R05N", "R04N", "R01N"]
         ],
         "south": [
-          ["R01S", "R04S", "R05S", "R06S", "R08S", "R09S", "R11S", "R13S", "R14S", "R15S", "R16S", "R17S", "R20S", "Q01S", "R31S", "R36S", "R39S", "R40S", "R41S", "N02S", "N07S", "N08S", "N09S", "N10S", "D43S"],
-          ["Q05S", "Q04S", "Q03S", "B08S", "R14S", "R16S", "R17S", "R20S", "Q01S", "R31S", "R36S", "R39S", "R40S", "R41S", "N02S", "N07S", "N08S", "N09S", "N10S", "D43S"],
-          ["R35S", "R36S", "R41S", "N02S", "N07S", "N08S", "N09S", "N10S", "N12S", "D43S"]
+          ["R01S", "R04S", "R05S", "R06S", "R08S", "R09S", "R11S", "R13S", "R14S", "R15S", "R16S", "R17S", "R18S", "R19S", "R20S", "R21S", "R22S", "Q01S", "R30S", "R31S", "R32S", "R33S", "R34S", "R35S", "R36S", "R39S", "R40S", "R41S", "N02S", "N07S", "N08S", "N09S", "N10S", "D43S"]
         ]
       }
     },
@@ -402,10 +353,10 @@ const sampleRoutes = {
       },
       "routings": {
         "north": [
-          ["D43N", "D42N", "D41N", "D40N", "D39N", "D38N", "D37N", "D35N", "D34N", "D33N", "D32N", "D31N", "D30N", "D29N", "D28N", "D27N", "D26N", "D25N", "D24N", "R30N", "Q01N", "R20N", "R17N", "R16N", "R14N", "B08N", "Q03N", "Q04N", "Q05N"]
+          ["D43N", "D42N", "D41N", "D40N", "D39N", "D38N", "D37N", "D35N", "D34N", "D33N", "D32N", "D31N", "D30N", "D29N", "D28N", "D27N", "D26N", "D25N", "D24N", "R30N", "Q01N", "R20N", "R17N", "R16N", "R15N", "R14N", "B08N", "Q03N", "Q04N", "Q05N"]
         ],
         "south": [
-          ["Q05S", "Q04S", "Q03S", "B08S", "R14S", "R16S", "R17S", "R20S", "Q01S", "R30S", "D24S", "D25S", "D26S", "D27S", "D28S", "D29S", "D30S", "D31S", "D32S", "D33S", "D34S", "D35S", "D37S", "D38S", "D39S", "D40S", "D41S", "D42S", "D43S"]
+          ["Q05S", "Q04S", "Q03S", "B08S", "R14S", "R15S", "R16S", "R17S", "R18S", "R19S", "R20S", "R21S", "R22S", "Q01S", "R30S", "D24S", "D25S", "D26S", "D27S", "D28S", "D29S", "D30S", "D31S", "D32S", "D33S", "D34S", "D35S", "D37S", "D38S", "D39S", "D40S", "D41S", "D42S", "D43S"]
         ]
       }
     },
@@ -416,17 +367,15 @@ const sampleRoutes = {
       "text_color": "#000000",
       "alternate_name": null,
       "destinations": {
-        "north": ["G08N"],
-        "south": ["R45S", "R41S"]
+        "north": ["R31N"],
+        "south": ["R45S"]
       },
       "routings": {
         "north": [
-          ["R45N", "R44N", "R43N", "R42N", "R41N", "R40N", "R39N", "R36N", "R35N", "R34N", "R33N", "R32N", "R31N", "R30N", "R29N", "R28N", "R27N", "R26N", "R25N", "R24N", "R23N", "R22N", "R21N", "R20N", "R19N", "R18N", "R17N", "R16N", "R15N", "R14N", "R13N", "R11N", "G21N", "G20N", "G19N", "G18N", "G16N", "G15N", "G14N", "G13N", "G12N", "G11N", "G10N", "G09N", "G08N"]
+          ["R45N", "R44N", "R43N", "R42N", "R41N", "R40N", "R39N", "R36N", "R31N"]
         ],
         "south": [
-          ["G08S", "G09S", "G10S", "G11S", "G12S", "G13S", "G14S", "G15S", "G16S", "G18S", "G19S", "G20S", "G21S", "R11S", "R13S", "R14S", "R15S", "R16S", "R17S", "R18S", "R19S", "R20S", "R21S", "R22S", "R23S", "R24S", "R25S", "R26S", "R27S", "R28S", "R29S", "R30S", "R31S", "R32S", "R33S", "R34S", "R35S", "R36S", "R39S", "R40S", "R41S", "R42S", "R43S", "R44S", "R45S"],
-          ["B06S", "B08S", "R14S", "R15S", "R16S", "R17S", "R18S", "R19S", "R20S", "R21S", "R22S", "R23S", "R24S", "R25S", "R26S", "R27S", "R28S", "R29S", "R30S", "R31S", "R32S", "R33S", "R34S", "R35S", "R36S", "R39S", "R40S", "R41S", "R42S", "R43S", "R44S", "R45S"],
-          ["G20S", "B04S", "B06S", "B08S", "R14S", "R15S", "R16S", "R17S", "R18S", "R19S", "R20S", "R21S", "R22S", "R23S", "R24S", "R25S", "R26S", "R27S", "R28S", "R29S", "R30S", "R31S", "R32S", "R33S", "R34S", "R35S", "R36S", "R39S", "R40S", "R41S"]
+          ["R31S", "R36S", "R39S", "R40S", "R41S", "R42S", "R43S", "R44S", "R45S"]
         ]
       }
     },
@@ -437,16 +386,12 @@ const sampleRoutes = {
       "text_color": null,
       "alternate_name": "42 St Shuttle",
       "destinations": {
-        "north": ["902N"],
-        "south": ["901S"]
+        "north": [],
+        "south": []
       },
       "routings": {
-        "north": [
-          ["901N", "902N"]
-        ],
-        "south": [
-          ["902S", "901S"]
-        ]
+        "north": [],
+        "south": []
       }
     },
     "FS": {
@@ -513,16 +458,12 @@ const sampleRoutes = {
       "text_color": "#000000",
       "alternate_name": null,
       "destinations": {
-        "north": ["R01N"],
-        "south": ["N10S"]
+        "north": [],
+        "south": []
       },
       "routings": {
-        "north": [
-          ["R27N", "R26N", "R25N", "R24N", "R23N", "R22N", "R21N", "R20N", "R19N", "R18N", "R17N", "R16N", "R15N", "R14N", "R13N", "R11N", "R09N", "R08N", "R06N", "R05N", "R04N", "R01N"]
-        ],
-        "south": [
-          ["R01S", "R04S", "R05S", "R06S", "R08S", "R09S", "R11S", "R13S", "R14S", "R15S", "R16S", "R17S", "R18S", "R19S", "R20S", "R21S", "R22S", "R23S", "R24S", "R25S", "R26S", "R27S", "R28S", "R29S", "R30S", "R31S", "R32S", "R33S", "R34S", "R35S", "R36S", "R39S", "R40S", "R41S", "N02S", "N07S", "N08S", "N09S", "N10S"]
-        ]
+        "north": [],
+        "south": []
       }
     },
     "Z": {
@@ -533,13 +474,11 @@ const sampleRoutes = {
       "alternate_name": null,
       "destinations": {
         "north": [],
-        "south": ["M23S"]
+        "south": []
       },
       "routings": {
         "north": [],
-        "south": [
-          ["J24S", "J27S", "J28S", "J30S", "M11S", "M16S", "M18S", "M19S", "M20S", "M21S", "M22S", "M23S"]
-        ]
+        "south": []
       }
     }
   },
@@ -624,21 +563,20 @@ const sampleRoutes = {
     "110": {
       "id": "110",
       "name": "191 St",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "111": {
       "id": "111",
       "name": "181 St",
+      "trains": []
+    },
+    "112": {
+      "id": "112",
+      "name": "168 St - Washington Hts",
       "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }]
@@ -646,79 +584,37 @@ const sampleRoutes = {
     "113": {
       "id": "113",
       "name": "157 St",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "114": {
       "id": "114",
       "name": "145 St",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "115": {
       "id": "115",
       "name": "137 St - City College",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "116": {
       "id": "116",
       "name": "125 St",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "117": {
       "id": "117",
       "name": "116 St - Columbia University",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "118": {
       "id": "118",
       "name": "Cathedral Pkwy",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "119": {
       "id": "119",
       "name": "103 St",
-      "trains": [{
-        "id": "1",
-        "name": "1",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "120": {
       "id": "120",
@@ -741,12 +637,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "121": {
@@ -758,6 +648,18 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
       }]
     },
     "122": {
@@ -766,6 +668,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -792,12 +706,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "124": {
@@ -806,6 +714,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -821,20 +741,20 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -852,6 +772,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -879,32 +811,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "7",
         "name": "7",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -923,24 +837,6 @@ const sampleRoutes = {
       }, {
         "id": "Q",
         "name": "Q",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -967,12 +863,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "129": {
@@ -981,6 +871,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -995,6 +897,18 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
       }]
     },
     "131": {
@@ -1003,6 +917,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -1030,9 +956,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -1047,12 +973,6 @@ const sampleRoutes = {
         "color": "#A0A0A0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "133": {
@@ -1061,6 +981,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -1075,6 +1007,18 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
       }]
     },
     "135": {
@@ -1086,6 +1030,18 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
       }]
     },
     "136": {
@@ -1094,6 +1050,18 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -1120,12 +1088,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "139": {
@@ -1137,20 +1099,20 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
       }]
     },
     "140": {
       "id": "140",
       "name": "South Ferry Loop",
       "trains": [{
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -1162,6 +1124,12 @@ const sampleRoutes = {
       "trains": [{
         "id": "1",
         "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
@@ -1275,12 +1243,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "213": {
@@ -1309,12 +1271,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "215": {
@@ -1324,12 +1280,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1343,12 +1293,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "217": {
@@ -1358,12 +1302,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1377,12 +1315,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "219": {
@@ -1392,12 +1324,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1411,12 +1337,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "221": {
@@ -1426,12 +1346,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1451,18 +1365,18 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "224": {
       "id": "224",
       "name": "135 St",
       "trains": [{
+        "id": "1",
+        "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "2",
         "name": "2",
         "color": "#db2828",
@@ -1480,6 +1394,12 @@ const sampleRoutes = {
       "id": "225",
       "name": "125 St",
       "trains": [{
+        "id": "1",
+        "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "2",
         "name": "2",
         "color": "#db2828",
@@ -1497,6 +1417,12 @@ const sampleRoutes = {
       "id": "226",
       "name": "116 St",
       "trains": [{
+        "id": "1",
+        "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "2",
         "name": "2",
         "color": "#db2828",
@@ -1514,6 +1440,12 @@ const sampleRoutes = {
       "id": "227",
       "name": "Central Park North (110 St)",
       "trains": [{
+        "id": "1",
+        "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "2",
         "name": "2",
         "color": "#db2828",
@@ -1523,12 +1455,6 @@ const sampleRoutes = {
         "id": "3",
         "name": "3",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1543,26 +1469,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -1573,14 +1481,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -1596,20 +1498,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -1620,20 +1510,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -1648,18 +1526,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "231": {
@@ -1669,18 +1535,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1695,32 +1549,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -1735,18 +1571,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "234": {
@@ -1759,20 +1583,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -1788,27 +1600,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
         "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -1835,12 +1629,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "236": {
@@ -1853,9 +1641,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1870,9 +1658,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1887,9 +1675,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1904,20 +1692,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -1938,12 +1714,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "242": {
@@ -1953,12 +1723,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -1972,12 +1736,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "244": {
@@ -1987,12 +1745,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2006,12 +1758,6 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "246": {
@@ -2021,12 +1767,6 @@ const sampleRoutes = {
         "id": "2",
         "name": "2",
         "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2040,27 +1780,15 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "248": {
       "id": "248",
       "name": "Nostrand Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2069,15 +1797,9 @@ const sampleRoutes = {
       "id": "249",
       "name": "Kingston Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2086,26 +1808,8 @@ const sampleRoutes = {
       "id": "250",
       "name": "Crown Hts - Utica Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2115,15 +1819,9 @@ const sampleRoutes = {
       "id": "251",
       "name": "Sutter Av - Rutland Rd",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2132,15 +1830,9 @@ const sampleRoutes = {
       "id": "252",
       "name": "Saratoga Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2149,15 +1841,9 @@ const sampleRoutes = {
       "id": "253",
       "name": "Rockaway Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2166,15 +1852,9 @@ const sampleRoutes = {
       "id": "254",
       "name": "Junius St",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -2189,15 +1869,9 @@ const sampleRoutes = {
       "id": "255",
       "name": "Pennsylvania Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2206,15 +1880,9 @@ const sampleRoutes = {
       "id": "256",
       "name": "Van Siclen Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2223,15 +1891,9 @@ const sampleRoutes = {
       "id": "257",
       "name": "New Lots Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }]
@@ -2240,6 +1902,12 @@ const sampleRoutes = {
       "id": "301",
       "name": "Harlem - 148 St",
       "trains": [{
+        "id": "1",
+        "name": "1",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "3",
         "name": "3",
         "color": "#db2828",
@@ -2389,12 +2057,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -2417,12 +2079,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "416": {
@@ -2431,12 +2087,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2452,20 +2102,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2476,20 +2114,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -2504,12 +2130,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "420": {
@@ -2518,12 +2138,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2539,32 +2153,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -2634,12 +2230,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "602": {
@@ -2648,12 +2238,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2668,12 +2252,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "604": {
@@ -2682,12 +2260,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2702,12 +2274,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "607": {
@@ -2719,12 +2285,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "608": {
@@ -2733,12 +2293,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2794,12 +2348,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2869,12 +2417,6 @@ const sampleRoutes = {
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "621": {
@@ -2887,20 +2429,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2910,14 +2440,14 @@ const sampleRoutes = {
       "id": "622",
       "name": "116 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2927,14 +2457,14 @@ const sampleRoutes = {
       "id": "623",
       "name": "110 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2944,14 +2474,14 @@ const sampleRoutes = {
       "id": "624",
       "name": "103 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2961,14 +2491,14 @@ const sampleRoutes = {
       "id": "625",
       "name": "96 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -2984,20 +2514,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3007,14 +2525,14 @@ const sampleRoutes = {
       "id": "627",
       "name": "77 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3024,14 +2542,14 @@ const sampleRoutes = {
       "id": "628",
       "name": "68 St - Hunter College",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3047,20 +2565,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3082,32 +2588,20 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "630": {
       "id": "630",
       "name": "51 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3115,12 +2609,6 @@ const sampleRoutes = {
         "id": "E",
         "name": "E",
         "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -3135,20 +2623,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3158,32 +2634,20 @@ const sampleRoutes = {
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
       }]
     },
     "632": {
       "id": "632",
       "name": "33 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3193,14 +2657,14 @@ const sampleRoutes = {
       "id": "633",
       "name": "28 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3210,14 +2674,14 @@ const sampleRoutes = {
       "id": "634",
       "name": "23 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3233,20 +2697,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3268,32 +2720,20 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "636": {
       "id": "636",
       "name": "Astor Pl",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3303,21 +2743,21 @@ const sampleRoutes = {
       "id": "637",
       "name": "Bleecker St",
       "trains": [{
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "6",
         "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -3332,26 +2772,20 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "638": {
       "id": "638",
       "name": "Spring St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3361,14 +2795,14 @@ const sampleRoutes = {
       "id": "639",
       "name": "Canal St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3390,24 +2824,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "640": {
@@ -3420,32 +2836,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -3460,12 +2858,6 @@ const sampleRoutes = {
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "702": {
@@ -3474,12 +2866,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "7",
         "name": "7",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
@@ -3513,12 +2899,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "7",
         "name": "7",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
@@ -3567,18 +2947,6 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "711": {
@@ -3598,12 +2966,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "7",
         "name": "7",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
@@ -3663,20 +3025,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -3692,12 +3042,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "E",
         "name": "E",
         "color": "#2185d0",
@@ -3707,12 +3051,6 @@ const sampleRoutes = {
         "id": "G",
         "name": "G",
         "color": "#b5cc18",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -3726,12 +3064,6 @@ const sampleRoutes = {
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "721": {
@@ -3740,12 +3072,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "7",
         "name": "7",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
@@ -3761,20 +3087,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3784,18 +3098,6 @@ const sampleRoutes = {
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
       }]
     },
     "724": {
@@ -3808,15 +3110,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -3828,12 +3124,6 @@ const sampleRoutes = {
       }, {
         "id": "F",
         "name": "F",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
@@ -3861,32 +3151,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "7",
         "name": "7",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -3908,24 +3180,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "901": {
@@ -3938,20 +3192,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -3961,18 +3203,6 @@ const sampleRoutes = {
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
       }]
     },
     "902": {
@@ -3997,32 +3227,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "7",
         "name": "7",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4041,24 +3253,6 @@ const sampleRoutes = {
       }, {
         "id": "Q",
         "name": "Q",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -4128,20 +3322,14 @@ const sampleRoutes = {
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "A10": {
       "id": "A10",
       "name": "163 St - Amsterdam Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4151,8 +3339,8 @@ const sampleRoutes = {
       "id": "A11",
       "name": "155 St",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4168,18 +3356,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -4191,14 +3367,8 @@ const sampleRoutes = {
       "id": "A14",
       "name": "135 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4214,18 +3384,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -4237,14 +3395,8 @@ const sampleRoutes = {
       "id": "A16",
       "name": "116 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4254,14 +3406,8 @@ const sampleRoutes = {
       "id": "A17",
       "name": "Cathedral Pkwy (110 St)",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4271,14 +3417,8 @@ const sampleRoutes = {
       "id": "A18",
       "name": "103 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4288,14 +3428,8 @@ const sampleRoutes = {
       "id": "A19",
       "name": "96 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4305,14 +3439,8 @@ const sampleRoutes = {
       "id": "A20",
       "name": "86 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4322,14 +3450,8 @@ const sampleRoutes = {
       "id": "A21",
       "name": "81 St - Museum of Natural History",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4339,14 +3461,8 @@ const sampleRoutes = {
       "id": "A22",
       "name": "72 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4362,20 +3478,20 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
+        "id": "2",
+        "name": "2",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4391,8 +3507,8 @@ const sampleRoutes = {
       "id": "A25",
       "name": "50 St",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4426,32 +3542,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "7",
         "name": "7",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4473,24 +3571,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "A28": {
@@ -4499,12 +3579,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4520,8 +3594,8 @@ const sampleRoutes = {
       "id": "A30",
       "name": "23 St",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4539,12 +3613,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4572,18 +3640,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -4601,12 +3657,6 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "A33": {
@@ -4615,12 +3665,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4642,12 +3686,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "E",
         "name": "E",
         "color": "#2185d0",
@@ -4665,26 +3703,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4695,14 +3715,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -4718,20 +3732,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -4742,20 +3744,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -4767,12 +3757,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4788,26 +3772,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -4819,12 +3791,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4845,20 +3811,14 @@ const sampleRoutes = {
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "A44": {
       "id": "A44",
       "name": "Clinton - Washington Avs",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4868,8 +3828,8 @@ const sampleRoutes = {
       "id": "A45",
       "name": "Franklin Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4890,20 +3850,14 @@ const sampleRoutes = {
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "A47": {
       "id": "A47",
       "name": "Kingston - Throop Avs",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4918,20 +3872,14 @@ const sampleRoutes = {
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "A49": {
       "id": "A49",
       "name": "Ralph Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4941,8 +3889,8 @@ const sampleRoutes = {
       "id": "A50",
       "name": "Rockaway Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4958,12 +3906,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
         "color": "#a5673f",
@@ -4975,20 +3917,14 @@ const sampleRoutes = {
         "color": "#A0A0A0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "A52": {
       "id": "A52",
       "name": "Liberty Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -4998,8 +3934,8 @@ const sampleRoutes = {
       "id": "A53",
       "name": "Van Siclen Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -5009,8 +3945,8 @@ const sampleRoutes = {
       "id": "A54",
       "name": "Shepherd Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -5022,12 +3958,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -5119,12 +4049,6 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "B06": {
@@ -5135,12 +4059,6 @@ const sampleRoutes = {
         "name": "F",
         "color": "#f2711c",
         "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
         "alternate_name": null
       }]
     },
@@ -5154,20 +4072,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -5186,18 +4092,6 @@ const sampleRoutes = {
       }, {
         "id": "Q",
         "name": "Q",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -5367,12 +4261,6 @@ const sampleRoutes = {
       "id": "D03",
       "name": "Bedford Park Blvd",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5384,12 +4272,6 @@ const sampleRoutes = {
       "id": "D04",
       "name": "Kingsbridge Rd",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5401,12 +4283,6 @@ const sampleRoutes = {
       "id": "D05",
       "name": "Fordham Rd",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5418,12 +4294,6 @@ const sampleRoutes = {
       "id": "D06",
       "name": "182-183 Sts",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5435,12 +4305,6 @@ const sampleRoutes = {
       "id": "D07",
       "name": "Tremont Av",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5452,12 +4316,6 @@ const sampleRoutes = {
       "id": "D08",
       "name": "174-175 Sts",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5469,12 +4327,6 @@ const sampleRoutes = {
       "id": "D09",
       "name": "170 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5486,12 +4338,6 @@ const sampleRoutes = {
       "id": "D10",
       "name": "167 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5509,12 +4355,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5526,12 +4366,6 @@ const sampleRoutes = {
       "id": "D12",
       "name": "155 St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5549,18 +4383,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5572,9 +4394,9 @@ const sampleRoutes = {
       "id": "D14",
       "name": "7 Av",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5595,9 +4417,9 @@ const sampleRoutes = {
       "id": "D15",
       "name": "47-50 Sts - Rockefeller Ctr",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5609,12 +4431,6 @@ const sampleRoutes = {
       }, {
         "id": "F",
         "name": "F",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
@@ -5630,15 +4446,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5650,12 +4460,6 @@ const sampleRoutes = {
       }, {
         "id": "F",
         "name": "F",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
@@ -5665,9 +4469,9 @@ const sampleRoutes = {
       "id": "D17",
       "name": "34 St - Herald Sq",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5679,12 +4483,6 @@ const sampleRoutes = {
       }, {
         "id": "F",
         "name": "F",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
@@ -5700,32 +4498,20 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "D18": {
       "id": "D18",
       "name": "23 St",
       "trains": [{
-        "id": "F",
-        "name": "F",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "M",
-        "name": "M",
+        "id": "F",
+        "name": "F",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
@@ -5753,9 +4539,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5770,12 +4556,6 @@ const sampleRoutes = {
         "color": "#A0A0A0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "D20": {
@@ -5784,18 +4564,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -5817,33 +4585,27 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "D21": {
       "id": "D21",
       "name": "Broadway-Lafayette St",
       "trains": [{
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "6",
         "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5858,24 +4620,12 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "D22": {
       "id": "D22",
       "name": "Grand St",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "D",
         "name": "D",
         "color": "#f2711c",
@@ -5893,27 +4643,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
         "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -5940,24 +4672,12 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "D25": {
       "id": "D25",
       "name": "7 Av",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -5969,12 +4689,6 @@ const sampleRoutes = {
       "id": "D26",
       "name": "Prospect Park",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -6003,12 +4717,6 @@ const sampleRoutes = {
       "id": "D28",
       "name": "Church Av",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -6042,12 +4750,6 @@ const sampleRoutes = {
       "id": "D31",
       "name": "Newkirk Plaza",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -6092,12 +4794,6 @@ const sampleRoutes = {
       "id": "D35",
       "name": "Kings Hwy",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -6131,12 +4827,6 @@ const sampleRoutes = {
       "id": "D39",
       "name": "Sheepshead Bay",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -6148,12 +4838,6 @@ const sampleRoutes = {
       "id": "D40",
       "name": "Brighton Beach",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -6228,26 +4912,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -6258,14 +4924,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -6275,6 +4935,12 @@ const sampleRoutes = {
       "id": "F01",
       "name": "Jamaica - 179 St",
       "trains": [{
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6286,6 +4952,12 @@ const sampleRoutes = {
       "id": "F02",
       "name": "169 St",
       "trains": [{
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6297,6 +4969,12 @@ const sampleRoutes = {
       "id": "F03",
       "name": "Parsons Blvd",
       "trains": [{
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6308,6 +4986,12 @@ const sampleRoutes = {
       "id": "F04",
       "name": "Sutphin Blvd",
       "trains": [{
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6319,6 +5003,12 @@ const sampleRoutes = {
       "id": "F05",
       "name": "Briarwood - Van Wyck Blvd",
       "trains": [{
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6347,6 +5037,12 @@ const sampleRoutes = {
       "id": "F07",
       "name": "75 Av",
       "trains": [{
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6364,12 +5060,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "E",
         "name": "E",
         "color": "#2185d0",
@@ -6381,26 +5071,20 @@ const sampleRoutes = {
         "color": "#b5cc18",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "F11": {
       "id": "F11",
       "name": "Lexington Av/53 St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -6408,12 +5092,6 @@ const sampleRoutes = {
         "id": "E",
         "name": "E",
         "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -6427,18 +5105,18 @@ const sampleRoutes = {
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "F14": {
       "id": "F14",
       "name": "2 Av",
       "trains": [{
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6450,6 +5128,12 @@ const sampleRoutes = {
       "id": "F15",
       "name": "Delancey St",
       "trains": [{
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6461,24 +5145,18 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "F16": {
       "id": "F16",
       "name": "East Broadway",
       "trains": [{
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6490,6 +5168,12 @@ const sampleRoutes = {
       "id": "F18",
       "name": "York St",
       "trains": [{
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6552,6 +5236,12 @@ const sampleRoutes = {
       "id": "F23",
       "name": "4 Av",
       "trains": [{
+        "id": "D",
+        "name": "D",
+        "color": "#f2711c",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -6564,14 +5254,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -6759,12 +5443,6 @@ const sampleRoutes = {
       "id": "G05",
       "name": "Jamaica Center - Parsons/Archer",
       "trains": [{
-        "id": "E",
-        "name": "E",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
         "color": "#a5673f",
@@ -6776,12 +5454,6 @@ const sampleRoutes = {
       "id": "G06",
       "name": "Sutphin Blvd - Archer Av - JFK Airport",
       "trains": [{
-        "id": "E",
-        "name": "E",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
         "color": "#a5673f",
@@ -6792,13 +5464,7 @@ const sampleRoutes = {
     "G07": {
       "id": "G07",
       "name": "Jamaica - Van Wyck",
-      "trains": [{
-        "id": "E",
-        "name": "E",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "G08": {
       "id": "G08",
@@ -6815,34 +5481,22 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "G09": {
       "id": "G09",
       "name": "67 Av",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6850,16 +5504,16 @@ const sampleRoutes = {
       "id": "G10",
       "name": "63 Dr - Rego Park",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6867,16 +5521,16 @@ const sampleRoutes = {
       "id": "G11",
       "name": "Woodhaven Blvd",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6884,16 +5538,16 @@ const sampleRoutes = {
       "id": "G12",
       "name": "Grand Av - Newtown",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6901,16 +5555,16 @@ const sampleRoutes = {
       "id": "G13",
       "name": "Elmhurst Av",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6935,34 +5589,22 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "G15": {
       "id": "G15",
       "name": "65 St",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6970,16 +5612,16 @@ const sampleRoutes = {
       "id": "G16",
       "name": "Northern Blvd",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -6987,16 +5629,16 @@ const sampleRoutes = {
       "id": "G18",
       "name": "46 St",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -7004,16 +5646,16 @@ const sampleRoutes = {
       "id": "G19",
       "name": "Steinway St",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -7021,16 +5663,16 @@ const sampleRoutes = {
       "id": "G20",
       "name": "36 St",
       "trains": [{
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
+        "id": "E",
+        "name": "E",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "F",
+        "name": "F",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }]
     },
@@ -7042,18 +5684,6 @@ const sampleRoutes = {
         "name": "E",
         "color": "#2185d0",
         "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
         "alternate_name": null
       }]
     },
@@ -7067,12 +5697,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "E",
         "name": "E",
         "color": "#2185d0",
@@ -7082,12 +5706,6 @@ const sampleRoutes = {
         "id": "G",
         "name": "G",
         "color": "#b5cc18",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -7401,6 +6019,11 @@ const sampleRoutes = {
         "alternate_name": null
       }]
     },
+    "J13": {
+      "id": "J13",
+      "name": "111 St",
+      "trains": []
+    },
     "J14": {
       "id": "J14",
       "name": "104 St",
@@ -7509,12 +6132,6 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "J27": {
@@ -7523,12 +6140,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -7544,12 +6155,6 @@ const sampleRoutes = {
         "color": "#A0A0A0",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "J28": {
@@ -7558,12 +6163,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -7589,12 +6188,6 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "J31": {
@@ -7614,12 +6207,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -7659,9 +6246,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -7674,12 +6261,6 @@ const sampleRoutes = {
         "id": "L",
         "name": "L",
         "color": "#A0A0A0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -7839,11 +6420,6 @@ const sampleRoutes = {
         "alternate_name": null
       }]
     },
-    "J13": {
-      "id": "J13",
-      "name": "111 St",
-      "trains": []
-    },
     "L21": {
       "id": "L21",
       "name": "Bushwick Av - Aberdeen St",
@@ -7865,12 +6441,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
         "color": "#a5673f",
@@ -7880,12 +6450,6 @@ const sampleRoutes = {
         "id": "L",
         "name": "L",
         "color": "#A0A0A0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
       }]
@@ -7916,15 +6480,9 @@ const sampleRoutes = {
       "id": "L26",
       "name": "Livonia Av",
       "trains": [{
-        "id": "2",
-        "name": "2",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -7965,6 +6523,41 @@ const sampleRoutes = {
         "name": "L",
         "color": "#A0A0A0",
         "text_color": null,
+        "alternate_name": null
+      }]
+    },
+    "L03": {
+      "id": "L03",
+      "name": "14 St - Union Sq",
+      "trains": [{
+        "id": "4",
+        "name": "4",
+        "color": "#21ba45",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "6",
+        "name": "6",
+        "color": "#21ba45",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "L",
+        "name": "L",
+        "color": "#A0A0A0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
+        "id": "N",
+        "name": "N",
+        "color": "#fbbd08",
+        "text_color": "#000000",
+        "alternate_name": null
+      }, {
+        "id": "Q",
+        "name": "Q",
+        "color": "#fbbd08",
+        "text_color": "#000000",
         "alternate_name": null
       }]
     },
@@ -8066,12 +6659,6 @@ const sampleRoutes = {
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "M12": {
@@ -8081,12 +6668,6 @@ const sampleRoutes = {
         "id": "J",
         "name": "J",
         "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -8100,12 +6681,6 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "M14": {
@@ -8115,12 +6690,6 @@ const sampleRoutes = {
         "id": "J",
         "name": "J",
         "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }]
@@ -8134,24 +6703,18 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "M18": {
       "id": "M18",
       "name": "Essex St",
       "trains": [{
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -8160,18 +6723,6 @@ const sampleRoutes = {
       }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -8186,26 +6737,20 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "M20": {
       "id": "M20",
       "name": "Canal St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -8227,24 +6772,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "M21": {
@@ -8257,32 +6784,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -8298,20 +6807,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -8322,20 +6819,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "J",
         "name": "J",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
@@ -8350,12 +6835,6 @@ const sampleRoutes = {
         "color": "#a5673f",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "N02": {
@@ -8364,12 +6843,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8434,32 +6907,14 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "N08": {
       "id": "N08",
       "name": "Kings Hwy",
       "trains": [{
-        "id": "D",
-        "name": "D",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8469,20 +6924,8 @@ const sampleRoutes = {
       "id": "N09",
       "name": "Avenue U",
       "trains": [{
-        "id": "D",
-        "name": "D",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8492,20 +6935,8 @@ const sampleRoutes = {
       "id": "N10",
       "name": "86 St",
       "trains": [{
-        "id": "D",
-        "name": "D",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8514,32 +6945,20 @@ const sampleRoutes = {
     "N12": {
       "id": "N12",
       "name": "S.B. Coney Island",
-      "trains": [{
-        "id": "D",
-        "name": "D",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "N",
-        "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }]
+      "trains": []
     },
     "Q01": {
       "id": "Q01",
       "name": "Canal St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -8561,36 +6980,12 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "Q03": {
       "id": "Q03",
       "name": "72 St",
       "trains": [{
-        "id": "N",
-        "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -8602,12 +6997,6 @@ const sampleRoutes = {
       "id": "Q04",
       "name": "86 St",
       "trains": [{
-        "id": "N",
-        "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -8619,12 +7008,6 @@ const sampleRoutes = {
       "id": "Q05",
       "name": "96 St",
       "trains": [{
-        "id": "N",
-        "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
         "id": "Q",
         "name": "Q",
         "color": "#fbbd08",
@@ -8641,13 +7024,12 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
+    },
+    "R03": {
+      "id": "R03",
+      "name": "Astoria Blvd",
+      "trains": []
     },
     "R04": {
       "id": "R04",
@@ -8655,12 +7037,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8675,12 +7051,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R06": {
@@ -8692,12 +7062,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R08": {
@@ -8706,12 +7070,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8727,20 +7085,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8756,20 +7102,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -8791,18 +7125,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R13": {
@@ -8811,18 +7133,6 @@ const sampleRoutes = {
       "trains": [{
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8843,18 +7153,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R15": {
@@ -8867,14 +7165,8 @@ const sampleRoutes = {
         "text_color": "#000000",
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "Q",
+        "name": "Q",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -8902,32 +7194,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "7",
         "name": "7",
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -8949,33 +7223,15 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "GS",
-        "name": "S",
-        "color": "#767676",
-        "text_color": null,
-        "alternate_name": "42 St Shuttle"
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R17": {
       "id": "R17",
       "name": "34 St - Herald Sq",
       "trains": [{
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
+        "id": "A",
+        "name": "A",
+        "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -8991,12 +7247,6 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "M",
-        "name": "M",
-        "color": "#f2711c",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "N",
         "name": "N",
         "color": "#fbbd08",
@@ -9008,32 +7258,20 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R18": {
       "id": "R18",
       "name": "28 St",
       "trains": [{
-        "id": "R",
-        "name": "R",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
       }, {
-        "id": "W",
-        "name": "W",
+        "id": "Q",
+        "name": "Q",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9043,14 +7281,14 @@ const sampleRoutes = {
       "id": "R19",
       "name": "23 St",
       "trains": [{
-        "id": "R",
-        "name": "R",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
       }, {
-        "id": "W",
-        "name": "W",
+        "id": "Q",
+        "name": "Q",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9066,20 +7304,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "6",
         "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -9101,32 +7327,20 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R21": {
       "id": "R21",
       "name": "8 St - NYU",
       "trains": [{
-        "id": "R",
-        "name": "R",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
       }, {
-        "id": "W",
-        "name": "W",
+        "id": "Q",
+        "name": "Q",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9136,14 +7350,14 @@ const sampleRoutes = {
       "id": "R22",
       "name": "Prince St",
       "trains": [{
-        "id": "R",
-        "name": "R",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
       }, {
-        "id": "W",
-        "name": "W",
+        "id": "Q",
+        "name": "Q",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9153,14 +7367,14 @@ const sampleRoutes = {
       "id": "R23",
       "name": "Canal St",
       "trains": [{
-        "id": "6",
-        "name": "6",
+        "id": "4",
+        "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "6X",
-        "name": "6X",
+        "id": "6",
+        "name": "6",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -9182,38 +7396,14 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "Z",
-        "name": "Z",
-        "color": "#a5673f",
-        "text_color": null,
-        "alternate_name": null
       }]
     },
     "R24": {
       "id": "R24",
       "name": "City Hall",
       "trains": [{
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9229,26 +7419,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "A",
         "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -9259,14 +7431,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9276,14 +7442,8 @@ const sampleRoutes = {
       "id": "R26",
       "name": "Rector St",
       "trains": [{
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9293,14 +7453,8 @@ const sampleRoutes = {
       "id": "R27",
       "name": "Whitehall St",
       "trains": [{
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9316,32 +7470,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9357,26 +7493,14 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9386,26 +7510,20 @@ const sampleRoutes = {
       "id": "R30",
       "name": "DeKalb Av",
       "trains": [{
-        "id": "B",
-        "name": "B",
+        "id": "D",
+        "name": "D",
         "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }, {
+        "id": "N",
+        "name": "N",
+        "color": "#fbbd08",
+        "text_color": "#000000",
+        "alternate_name": null
+      }, {
         "id": "Q",
         "name": "Q",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9421,27 +7539,9 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
         "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "B",
-        "name": "B",
-        "color": "#f2711c",
         "text_color": null,
         "alternate_name": null
       }, {
@@ -9468,26 +7568,20 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R32": {
       "id": "R32",
       "name": "Union St",
       "trains": [{
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "D",
+        "name": "D",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9497,6 +7591,12 @@ const sampleRoutes = {
       "id": "R33",
       "name": "9 St",
       "trains": [{
+        "id": "D",
+        "name": "D",
+        "color": "#f2711c",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "F",
         "name": "F",
         "color": "#f2711c",
@@ -9509,14 +7609,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9526,14 +7620,14 @@ const sampleRoutes = {
       "id": "R34",
       "name": "Prospect Av",
       "trains": [{
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
+        "id": "D",
+        "name": "D",
+        "color": "#f2711c",
+        "text_color": null,
         "alternate_name": null
       }, {
-        "id": "W",
-        "name": "W",
+        "id": "N",
+        "name": "N",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9543,20 +7637,14 @@ const sampleRoutes = {
       "id": "R35",
       "name": "25 St",
       "trains": [{
+        "id": "D",
+        "name": "D",
+        "color": "#f2711c",
+        "text_color": null,
+        "alternate_name": null
+      }, {
         "id": "N",
         "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9583,12 +7671,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R39": {
@@ -9603,12 +7685,6 @@ const sampleRoutes = {
       }, {
         "id": "R",
         "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9629,12 +7705,6 @@ const sampleRoutes = {
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
       }]
     },
     "R41": {
@@ -9649,12 +7719,6 @@ const sampleRoutes = {
       }, {
         "id": "R",
         "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
         "color": "#fbbd08",
         "text_color": "#000000",
         "alternate_name": null
@@ -9708,8 +7772,8 @@ const sampleRoutes = {
       "id": "S01",
       "name": "Franklin Av",
       "trains": [{
-        "id": "C",
-        "name": "C",
+        "id": "A",
+        "name": "A",
         "color": "#2185d0",
         "text_color": null,
         "alternate_name": null
@@ -9742,20 +7806,8 @@ const sampleRoutes = {
         "text_color": null,
         "alternate_name": null
       }, {
-        "id": "3",
-        "name": "3",
-        "color": "#db2828",
-        "text_color": null,
-        "alternate_name": null
-      }, {
         "id": "4",
         "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
         "color": "#21ba45",
         "text_color": null,
         "alternate_name": null
@@ -10017,6 +8069,12 @@ const sampleRoutes = {
         "color": "#db2828",
         "text_color": null,
         "alternate_name": null
+      }, {
+        "id": "3",
+        "name": "3",
+        "color": "#db2828",
+        "text_color": null,
+        "alternate_name": null
       }]
     },
     "726": {
@@ -10028,97 +8086,10 @@ const sampleRoutes = {
         "color": "#a333c8",
         "text_color": null,
         "alternate_name": null
-      }, {
-        "id": "7X",
-        "name": "7X",
-        "color": "#a333c8",
-        "text_color": null,
-        "alternate_name": null
       }]
-    },
-    "L03": {
-      "id": "L03",
-      "name": "14 St - Union Sq",
-      "trains": [{
-        "id": "4",
-        "name": "4",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "5",
-        "name": "5",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6",
-        "name": "6",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "6X",
-        "name": "6X",
-        "color": "#21ba45",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "L",
-        "name": "L",
-        "color": "#A0A0A0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "N",
-        "name": "N",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "Q",
-        "name": "Q",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "R",
-        "name": "R",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }, {
-        "id": "W",
-        "name": "W",
-        "color": "#fbbd08",
-        "text_color": "#000000",
-        "alternate_name": null
-      }]
-    },
-    "112": {
-      "id": "112",
-      "name": "168 St - Washington Hts",
-      "trains": [{
-        "id": "A",
-        "name": "A",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }, {
-        "id": "C",
-        "name": "C",
-        "color": "#2185d0",
-        "text_color": null,
-        "alternate_name": null
-      }]
-    },
-    "R03": {
-      "id": "R03",
-      "name": "Astoria Blvd",
-      "trains": []
     }
   },
-  "timestamp": "2019-06-03T08:21:51-04:00"
+  "timestamp": "2019-06-11T02:26:51-04:00"
 };
 
 export default sampleRoutes;
