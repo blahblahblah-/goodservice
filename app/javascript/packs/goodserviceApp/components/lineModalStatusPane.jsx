@@ -131,7 +131,7 @@ class LineModalStatusPane extends React.Component {
             </h5>
             {
               map(obj.routes, route => {
-                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' linkedView='status' />
               })
             }
           </Table.Cell>
@@ -238,7 +238,7 @@ class LineModalStatusPane extends React.Component {
             </h5>
             {
               map(obj.routes, route => {
-                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' linkedView='status' />
               })
             }
           </Table.Cell>
@@ -270,7 +270,7 @@ class LineModalStatusPane extends React.Component {
             </h5>
             {
               map(obj.routes, route => {
-                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' />
+                return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' linkedView='status' />
               })
             }
           </Table.Cell>
