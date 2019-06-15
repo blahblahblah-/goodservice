@@ -314,6 +314,11 @@ class LineModalStatusPane extends React.Component {
           <Table.Row key={obj.type + xobj.id}>
             <Table.Cell>
               {xobj.description.replace(/ - /g, "–")}
+              {
+                map(xobj.routes, route => {
+                  return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' linkedView='status' />
+                })
+              }
             </Table.Cell>
             <Table.Cell textAlign='center' >
               <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
@@ -346,6 +351,11 @@ class LineModalStatusPane extends React.Component {
           <Table.Row key={obj.type + xobj.id}>
             <Table.Cell>
               {xobj.description.replace(/ - /g, "–")}
+              {
+                map(xobj.routes, route => {
+                  return <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color} textColor={route.text_color} size='small' linkedView='status' />
+                })
+              }
             </Table.Cell>
             <Table.Cell textAlign='center' >
               <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>

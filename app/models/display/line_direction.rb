@@ -1,6 +1,6 @@
 module Display
   class LineDirection
-    delegate :name, :alternate_name, to: :line_direction
+    delegate :name, :alternate_name, :direction, to: :line_direction
     attr_accessor :line_direction
 
     def initialize(line_direction, stop_times, timestamp, stops)
@@ -100,9 +100,27 @@ module Display
       line_direction.scheduled_runtimes.map do |k, v|
         {
           id: k,
-          time: v
+          time: v,
         }
       end
+    end
+
+    def determine_applicable_routes(stop_pattern)
+      stops = stop_pattern.split('-')
+      trips.select {|t|
+        stops.all? { |s|
+          t.stops.include?(s)
+        }
+      }.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(::Route.find_by(internal_id: route)) }.reject {
+        |rd| rd.route.nil?
+      }.map{ |route|
+        {
+          id: route.internal_id,
+          name: route.name,
+          color: route.color && "##{route.color}",
+          text_color: route.text_color && "##{route.text_color}",
+        }
+      }
     end
 
     def actual_runtimes
@@ -115,7 +133,8 @@ module Display
         {
           id: k,
           description: "#{first_stop_name} to #{last_stop_name}#{type && ' via '}#{type && name&.sub('via', '')}",
-          time: v.inject { |sum, el| sum + el }.to_f / v.size
+          time: v.inject { |sum, el| sum + el }.to_f / v.size,
+          routes: determine_applicable_routes(k)
         }
       end
     end
