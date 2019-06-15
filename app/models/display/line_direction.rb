@@ -106,10 +106,10 @@ module Display
     end
 
     def determine_applicable_routes(stop_pattern)
-      stops = stop_pattern.split('-')
+      stops = stop_pattern.split('-').map { |s| s[0..2] }
       trips.select {|t|
         stops.all? { |s|
-          t.stops.include?(s)
+          t.stops.map { |st| st[0..2] }.include?(s)
         }
       }.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(::Route.find_by(internal_id: route)) }.reject {
         |rd| rd.route.nil?
