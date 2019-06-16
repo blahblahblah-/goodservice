@@ -495,6 +495,7 @@ class LineModalStatusPane extends React.Component {
         <Divider inverted horizontal style={{marginTop: "2em"}}>
           <Header size='medium' inverted>TRAVEL TIMES</Header>
         </Divider>
+
         <Table unstackable inverted>
           <Table.Header>
             <Table.Row>

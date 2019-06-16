@@ -301,9 +301,10 @@ class TrainModalDataPane extends React.Component {
         </Statistic.Group>
 
 
-        <Divider />
+        <Divider inverted horizontal style={{marginTop: "2em"}}>
+          <Header size='medium' inverted>AVG MAX HEADWAY DISCREPANCY</Header>
+        </Divider>
 
-        <Header size='medium' inverted>AVG MAX HEADWAY DISCREPANCY</Header>
         <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="small" inverted>
           <Statistic>
             <Statistic.Label>Last 24 hrs</Statistic.Label>
@@ -315,9 +316,10 @@ class TrainModalDataPane extends React.Component {
           </Statistic>
         </Statistic.Group>
 
-        <Divider />
+        <Divider inverted horizontal style={{marginTop: "2em"}}>
+          <Header size='medium' inverted>DELAYED TRAINS</Header>
+        </Divider>
 
-        <Header size='medium' inverted>DELAYED TRAINS</Header>
         <Segment basic>
           <Grid columns={2} stackable relaxed='very'>
             <Grid.Row>
