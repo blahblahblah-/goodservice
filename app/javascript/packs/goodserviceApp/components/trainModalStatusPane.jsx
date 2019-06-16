@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Statistic, Grid, Responsive, Table } from 'semantic-ui-react';
+import { Header, Statistic, Grid, Responsive, Table, Divider } from 'semantic-ui-react';
 import TrainBullet from './trainBullet.jsx';
 import LineDisplay from './lineDisplay.jsx';
 import { withRouter } from 'react-router-dom';
@@ -284,6 +284,70 @@ class TrainModalStatusPane extends React.Component {
     return integer + "%";
   }
 
+  travelTimeSouth() {
+    const { train } = this.props;
+    return train.south.map((obj, i) => {
+      return obj.actual_runtimes.map((xobj, j) => {
+        const scheduled_runtime = obj.scheduled_runtimes.find((yobj) => yobj.id === xobj.id);
+        return (
+          <Table.Row key={obj.type + xobj.id} onClick={() => this.handleLinkClick(obj)} style={{cursor: "pointer"}}>
+            <Table.Cell>
+              {xobj.description.replace(/ - /g, "–")}
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+                <Statistic.Value>
+                  {Math.round(xobj.time * 10) / 10}
+                </Statistic.Value>
+                <Statistic.Label>
+                  Mins
+                </Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted>
+                <Statistic.Value>{(scheduled_runtime && Math.round(scheduled_runtime.time * 10) / 10) || "--"}</Statistic.Value>
+                <Statistic.Label>Mins</Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+          </Table.Row>
+        )
+      });
+    });
+  }
+
+  travelTimeNorth() {
+    const { train } = this.props;
+    return train.north.map((obj, i) => {
+      return obj.actual_runtimes.map((xobj, j) => {
+        const scheduled_runtime = obj.scheduled_runtimes.find((yobj) => yobj.id === xobj.id);
+        return (
+          <Table.Row key={obj.type + xobj.id} onClick={() => this.handleLinkClick(obj)} style={{cursor: "pointer"}}>
+            <Table.Cell>
+              {xobj.description.replace(/ - /g, "–")}
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+                <Statistic.Value>
+                  {Math.round(xobj.time * 10) / 10}
+                </Statistic.Value>
+                <Statistic.Label>
+                  Mins
+                </Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+            <Table.Cell textAlign='center' >
+              <Statistic size='mini' inverted>
+                <Statistic.Value>{(scheduled_runtime && Math.round(scheduled_runtime.time * 10) / 10) || "--"}</Statistic.Value>
+                <Statistic.Label>Mins</Statistic.Label>
+              </Statistic>
+            </Table.Cell>
+          </Table.Row>
+        )
+      });
+    });
+  }
+
   renderNoService() {
     const { train } = this.props;
     if (train.status == 'No Data' ||
@@ -452,6 +516,53 @@ class TrainModalStatusPane extends React.Component {
         {
           this.renderNoService()
         }
+
+        <Divider inverted horizontal style={{marginTop: "2em"}}>
+          <Header size='medium' inverted>TRAVEL TIMES</Header>
+        </Divider>
+
+        <Table unstackable inverted selectable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell width={6}>
+                <Header as="h4" inverted>
+                  To {train.destinations.south.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Actual
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Scheduled
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            { this.travelTimeSouth() }
+          </Table.Body>
+        </Table>
+
+        <Table unstackable inverted selectable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell width={6}>
+                <Header as="h4" inverted>
+                  To {train.destinations.north.join(', ').replace(/ - /g, "–") || "--"}
+                </Header>
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Actual
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign='center' width={2}>
+                Scheduled
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            { this.travelTimeNorth() }
+          </Table.Body>
+        </Table>
+        <Header size='tiny' inverted>Average completed runtimes in the last 30 minutes.</Header>
       </div>
     )
   }

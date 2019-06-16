@@ -40,7 +40,7 @@ module Display
     def line_directions
       return [] if trips.empty?
       @line_directions ||= line_directions_data.map do |ld|
-        Display::RouteLineDirection.new(route_id, ld, trips, stop_times, timestamp)
+        Display::RouteLineDirection.new(route_id, ld, trips, stop_times, timestamp, stops)
       end
     end
 

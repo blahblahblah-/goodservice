@@ -3,7 +3,7 @@ module Display
 
     delegate :name, :boroughs, :travel_time, :parent_name, :first_stops, :last_stops, :line, to: :line_direction
 
-    def initialize(route_id, line_direction, trips, stop_times, timestamp)
+    def initialize(route_id, line_direction, trips, stop_times, timestamp, stops)
       @route_id = route_id
       @line_direction = line_direction
       @trips = trips.select { |t|
@@ -11,6 +11,7 @@ module Display
       }
       @stop_times = stop_times
       @timestamp = timestamp
+      @stops = stops
     end
 
     def delay
@@ -53,9 +54,42 @@ module Display
       max_actual_headway - max_scheduled_headway if max_scheduled_headway
     end
 
+    def scheduled_runtimes
+      line_direction.scheduled_runtimes.map do |k, v|
+        {
+          id: k,
+          time: v,
+        }
+      end
+    end
+
+    def actual_runtimes
+      line_direction.actual_runtimes.reject { |k, v| v.empty? || !is_route_applicable?(k) }.map do |k, v|
+        runtime_stops = k.split("-")
+        first_stop = stops.find { |s| s.internal_id == runtime_stops[0]}
+        last_stop = stops.find { |s| s.internal_id == runtime_stops[1]}
+        first_stop_name = first_stop&.alternate_name || first_stop&.stop_name
+        last_stop_name = last_stop&.alternate_name || last_stop&.stop_name
+        {
+          id: k,
+          description: "#{first_stop_name} to #{last_stop_name} via #{name}",
+          time: v.inject { |sum, el| sum + el }.to_f / v.size,
+        }
+      end
+    end
+
     private
 
-    attr_accessor :trips, :stop_times, :line_direction, :route_id, :timestamp
+    attr_accessor :trips, :stop_times, :line_direction, :route_id, :timestamp, :stops
+
+    def is_route_applicable?(stop_pattern)
+      stops = stop_pattern.split('-').map { |s| s[0..2] }
+      trips.any? {|t|
+        stops.all? { |s|
+          t.stops.map { |st| st[0..2] }.include?(s)
+        }
+      }
+    end
 
     def treat_times(times)
       if (timestamp + 60.minutes).to_date == (timestamp.to_date + 1.day)

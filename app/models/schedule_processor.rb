@@ -131,6 +131,8 @@ class ScheduleProcessor
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
             travel_time: ld.travel_time,
+            scheduled_runtimes: ld.scheduled_runtimes,
+            actual_runtimes: ld.actual_runtimes,
             first_stops: ld.first_stops,
             last_stops: ld.last_stops,
           }
@@ -146,6 +148,8 @@ class ScheduleProcessor
             max_scheduled_headway: ld.max_scheduled_headway,
             delay: ld.delay,
             travel_time: ld.travel_time,
+            scheduled_runtimes: ld.scheduled_runtimes,
+            actual_runtimes: ld.actual_runtimes,
             first_stops: ld.first_stops,
             last_stops: ld.last_stops,
           }
