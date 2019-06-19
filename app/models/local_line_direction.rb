@@ -3,6 +3,10 @@ class LocalLineDirection < LineDirection
     alternate_name || "#{line.name} Local"
   end
 
+  def line_display_name
+    name
+  end
+
   def first_stops
     [express_line_direction.first_branch_stop, express_line_direction.first_alternate_branch_stop, express_line_direction.first_stop].compact
   end

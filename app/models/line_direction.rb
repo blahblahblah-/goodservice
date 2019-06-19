@@ -19,6 +19,10 @@ class LineDirection < ActiveRecord::Base
     alternate_name || line.name
   end
 
+  def line_display_name
+    line.name.gsub(/\s\((\w|\s|–)+—(\w|\s|–)+\)/, "")
+  end
+
   def boroughs
     line.boroughs
   end

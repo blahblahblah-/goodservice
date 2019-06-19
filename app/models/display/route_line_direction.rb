@@ -72,7 +72,7 @@ module Display
         last_stop_name = last_stop&.alternate_name || last_stop&.stop_name
         {
           id: k,
-          description: "#{first_stop_name} to #{last_stop_name} via #{name}",
+          description: "#{first_stop_name} to #{last_stop_name} via #{line_direction.line_display_name}",
           time: v.inject { |sum, el| sum + el }.to_f / v.size,
         }
       end
