@@ -132,17 +132,44 @@ class Train extends React.Component {
     }
   }
 
+  renderBullet() {
+    const { mini, train } = this.props;
+    if (mini && train.alternate_name) {
+      return (
+        <TrainBullet name={train.name + train.alternate_name[0]} color={train.color} size={'small'}
+              textColor={train.text_color} style={{ float: 'left' }} />
+      )
+    }
+    if (train.alternate_name) {
+      return (
+        <div>
+          <TrainBullet name={train.name} color={train.color} size={'normal'}
+              textColor={train.text_color} style={{ float: 'left' }} />
+          <div style={{ float: 'left', textAlign:'left' }}>{this.alternateName()}</div>
+        </div>
+      )
+    }
+    return (
+      <TrainBullet name={train.name} color={train.color} size={mini ? 'small' : 'normal'}
+              textColor={train.text_color} style={{ float: 'left' }} />
+    )
+  }
+
   render() {
-    const { width, train, stats, starredPane, modelOpen, handleClose, onFavTrainChange, favTrains, routing, routingTimestamp, stops } = this.props;
+    const { width, train, stats, starredPane, modelOpen, handleClose, onFavTrainChange, favTrains, routing, routingTimestamp, stops, mini } = this.props;
+    const buttonStyle = {};
+    if (mini) {
+      buttonStyle.padding = "0";
+      buttonStyle.border = "none";
+      buttonStyle.background = "none";
+    }
     return(
       <TrainModal train={train} stats={stats} starredPane={starredPane}
         modalOpen={this.state.modelOpen} onClose={this.handleClose}
         onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} routingTimestamp={routingTimestamp} stops={stops} trigger={
-        <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick}>
-          {this.renderInfo()}
-          <TrainBullet name={train.name} color={train.color}
-            textColor={this.props.train.text_color} style={{ float: 'left' }} />
-          <div style={{ float: 'left', textAlign:'left' }}>{this.alternateName()}</div>
+        <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick} style={buttonStyle}>
+          { !mini && this.renderInfo() }
+          { this.renderBullet() }
         </Segment>
       }/>
     )

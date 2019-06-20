@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Responsive } from 'semantic-ui-react';
 import TrainStatusPane from './trainStatusPane.jsx';
 
 class TrainPane extends React.Component {
@@ -23,6 +23,13 @@ class TrainPane extends React.Component {
   }
 
   render() {
+    const { width, trains, trainStats, onFavTrainChange, favTrains, routing, routingTimestamp, stops } = this.props;
+    if (width < Responsive.onlyMobile.maxWidth) {
+      return (
+        <TrainStatusPane trains={trains} trainStats={trainStats} routing={routing} routingTimestamp={routingTimestamp} stops={stops}
+            onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} />
+      )
+    }
     return(
       <Tab menu={{ widths: 2 }} panes={this.panes()} />
     )
