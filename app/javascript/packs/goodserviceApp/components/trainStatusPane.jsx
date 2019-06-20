@@ -36,7 +36,7 @@ class TrainStatusPane extends React.Component {
               return (
                 <Grid key={status}>
                   <Grid.Row columns={1} style={{paddingBottom: 0}}>
-                    <Grid.Column><Header size='medium' color={color} inverted>{status}</Header></Grid.Column>
+                    <Grid.Column><Header size='small' color={color} inverted>{status}</Header></Grid.Column>
                   </Grid.Row>
                   <Grid.Row columns={6} textAlign='center'>
                     {
