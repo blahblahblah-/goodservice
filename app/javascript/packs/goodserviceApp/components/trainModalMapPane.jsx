@@ -81,15 +81,19 @@ class TrainModalMapPane extends React.Component {
             const currStopPosition = line.indexOf(stop);
 
             if (!lastMatchingStop) {
-              if (currStopPosition) {
+              const matchingBranchToAppend = branches.find((obj) => {
+                return obj.indexOf(stop) == 0;
+              })
+
+              if (matchingBranchToAppend) {
+                const branchStartPosInLine = line.indexOf(matchingBranchToAppend[0]);
+                line.splice(branchStartPosInLine, 0, ...stopsToBeAdded);
+                matchingBranchToAppend.splice(0, 0, ...stopsToBeAdded);
+              } else {
                 // branch from the top
                 line.splice(currStopPosition, 0, ...stopsToBeAdded);
                 stopsToBeAdded.push(stop)
                 branches.push(stopsToBeAdded);
-              } else {
-                // prepend stops to the beginning of the line
-                line.splice(0, 0, ...stopsToBeAdded);
-                branches[0].splice(0, 0, ...stopsToBeAdded);
               }
             } else {
               const branchToInsert = branches.find((obj) => {
