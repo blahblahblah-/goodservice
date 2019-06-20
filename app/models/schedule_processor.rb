@@ -112,6 +112,7 @@ class ScheduleProcessor
         alternate_name: route.alternate_name,
         status: route.status,
         max_headway_discrepancy: route.max_headway_discrepancy,
+        max_travel_time_discrepancy: route.max_travel_time_discrepancy,
         destinations: {
           north: route.directions[1].destinations,
           south: route.directions[3].destinations,
@@ -129,6 +130,7 @@ class ScheduleProcessor
             boroughs: ld.boroughs,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
+            travel_time_discrepancy: ld.travel_time_discrepancy,
             delay: ld.delay,
             travel_time: ld.travel_time,
             scheduled_runtimes: ld.scheduled_runtimes,
@@ -146,6 +148,7 @@ class ScheduleProcessor
             boroughs: ld.boroughs,
             max_actual_headway: ld.max_actual_headway,
             max_scheduled_headway: ld.max_scheduled_headway,
+            travel_time_discrepancy: ld.travel_time_discrepancy,
             delay: ld.delay,
             travel_time: ld.travel_time,
             scheduled_runtimes: ld.scheduled_runtimes,
@@ -178,6 +181,7 @@ class ScheduleProcessor
           },
           status: line.status,
           max_travel_time: line.max_travel_time,
+          max_travel_time_discrepancy: line.max_travel_time_discrepancy,
           destinations: {
             north: line.destinations[1],
             south: line.destinations[3],
@@ -192,6 +196,7 @@ class ScheduleProcessor
               max_scheduled_headway: ld.max_scheduled_headway,
               delay: ld.delay,
               travel_time: ld.travel_time,
+              travel_time_discrepancy: ld.travel_time_discrepancy,
               scheduled_runtimes: ld.scheduled_runtimes,
               actual_runtimes: ld.actual_runtimes,
               routes: ld.routes.map { |route|
@@ -214,6 +219,7 @@ class ScheduleProcessor
               max_scheduled_headway: ld.max_scheduled_headway,
               delay: ld.delay,
               travel_time: ld.travel_time,
+              travel_time_discrepancy: ld.travel_time_discrepancy,
               scheduled_runtimes: ld.scheduled_runtimes,
               actual_runtimes: ld.actual_runtimes,
               routes: ld.routes.map { |route|

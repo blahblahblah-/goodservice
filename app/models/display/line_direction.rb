@@ -83,6 +83,10 @@ module Display
       line_direction.travel_time if headway_discrepancy.present?
     end
 
+    def travel_time_discrepancy
+      line_direction.travel_time_discrepancy if headway_discrepancy.present?
+    end
+
     def name
       return alternate_name if alternate_name
       type

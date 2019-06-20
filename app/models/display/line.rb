@@ -31,7 +31,7 @@ module Display
         else
           "Not Scheduled"
         end
-      elsif max_headway_discrepancy > 2 || max_travel_time >= 0.25
+      elsif max_headway_discrepancy > 2 || (max_travel_time >= 0.25 && max_travel_time_discrepancy >= 2)
         "Not Good"
       else
         "Good Service"
@@ -64,6 +64,16 @@ module Display
       }.flatten.reject { |travel_time|
         travel_time.nil?
       }.max || 0
+    end
+
+    def max_travel_time_discrepancy
+      directions.map { |_, array|
+        array.map { |ld|
+          ld.travel_time_discrepancy
+        }
+      }.flatten.reject { |travel_time_discrepancy|
+        travel_time_discrepancy.nil?
+      }.max
     end
 
     private

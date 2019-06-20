@@ -43,6 +43,23 @@ class LineDirection < ActiveRecord::Base
     @travel_time = results.inject { |sum, el| sum + el }.to_f / results.size
   end
 
+  def travel_time_discrepancy
+    return @travel_time_discrepancy if @travel_time_discrepancy
+
+    results = []
+    scheduled_runtimes.each do |trip_pattern, runtime|
+      if actual_runtimes[trip_pattern] && runtime > 0
+        actual_runtimes[trip_pattern].each do |actual_runtime|
+          results << (actual_runtime - runtime)
+        end
+      end
+    end
+
+    return nil if results.empty?
+    @travel_time_discrepancy = results.inject { |sum, el| sum + el }.to_f / results.size
+  end
+
+
   def runtimes_count
     return @runtimes_count if @runtimes_count
     actual_runtimes

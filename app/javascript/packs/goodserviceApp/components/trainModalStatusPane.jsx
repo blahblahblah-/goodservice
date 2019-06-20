@@ -32,14 +32,14 @@ class TrainModalStatusPane extends React.Component {
     return "black";
   }
 
-  travelTimeColor(travelTime) {
-    if (travelTime >= 0.5) {
+  travelTimeColor(travelTime, travelTimeDiscrepancy) {
+    if (travelTime >= 0.5 && travelTimeDiscrepancy >= 2) {
       return "red";
     }
-    if (travelTime >= 0.25) {
+    if (travelTime >= 0.25 && travelTimeDiscrepancy >= 2) {
       return "yellow";
     }
-    if (travelTime < 0.25) {
+    if (travelTime < 0.25 || travelTimeDiscrepancy < 2) {
       return "green";
     }
     return "black";
@@ -67,10 +67,12 @@ class TrainModalStatusPane extends React.Component {
         southScheduled: obj.max_scheduled_headway,
         southDelay: obj.delay,
         southTravelTime: obj.travel_time,
+        southTravelTimeDiscrepancy: obj.travel_time_discrepancy,
         northActual: northLine && northLine.max_actual_headway,
         northScheduled: northLine && northLine.max_scheduled_headway,
         northDelay: northLine && northLine.delay,
-        northTravelTime: northLine && northLine.travel_time
+        northTravelTime: northLine && northLine.travel_time,
+        northTravelTimeDiscrepancy: northLine && northLine.travel_time_discrepancy,
       }
     });
     let count = 1;
@@ -84,7 +86,8 @@ class TrainModalStatusPane extends React.Component {
           northActual: obj.max_actual_headway,
           northScheduled: obj.max_scheduled_headway,
           northDelay: obj.delay,
-          northTravelTime: obj.travel_time
+          northTravelTime: obj.travel_time,
+          northTravelTimeDiscrepancy: obj.travel_time_discrepancy,
         });
         count++;
       }
@@ -92,9 +95,9 @@ class TrainModalStatusPane extends React.Component {
 
     return data.map((obj) => {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
-      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
+      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime, obj.southTravelTimeDiscrepancy);
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
-      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
+      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime, obj.northTravelTimeDiscrepancy);
       return (
         <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}} active={obj.line.parent_name === location.hash.substring(1)}>
           <Table.Cell>
@@ -176,12 +179,13 @@ class TrainModalStatusPane extends React.Component {
         southScheduled: obj.max_scheduled_headway,
         southDelay: obj.delay,
         southTravelTime: obj.travel_time,
+        southTravelTimeDiscrepancy: obj.travel_time_discrepancy,
       }
     });
 
     return data.map((obj) => {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
-      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
+      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime, obj.southTravelTimeDiscrepancy);
       return (
         <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}} active={obj.line.parent_name === location.hash.substring(1)}>
           <Table.Cell>
@@ -229,12 +233,13 @@ class TrainModalStatusPane extends React.Component {
         northScheduled: obj.max_scheduled_headway,
         northDelay: obj.delay,
         northTravelTime: obj.travel_time,
+        northTravelTimeDiscrepancy: obj.travel_time_discrepancy,
       }
     });
 
     return data.map((obj) => {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
-      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
+      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime, obj.northTravelTimeDiscrepancy);
       return (
         <Table.Row key={obj.line.name} onClick={() => this.handleLinkClick(obj.line)} style={{cursor: "pointer"}} active={obj.line.parent_name === location.hash.substring(1)}>
           <Table.Cell>
@@ -295,7 +300,7 @@ class TrainModalStatusPane extends React.Component {
               {xobj.description.replace(/ - /g, "–")}
             </Table.Cell>
             <Table.Cell textAlign='center' >
-              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time, xobj.time - scheduled_runtime.time)}>
                 <Statistic.Value>
                   {Math.round(xobj.time * 10) / 10}
                 </Statistic.Value>
@@ -327,7 +332,7 @@ class TrainModalStatusPane extends React.Component {
               {xobj.description.replace(/ - /g, "–")}
             </Table.Cell>
             <Table.Cell textAlign='center' >
-              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time, xobj.time - scheduled_runtime.time)}>
                 <Statistic.Value>
                   {Math.round(xobj.time * 10) / 10}
                 </Statistic.Value>

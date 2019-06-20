@@ -50,6 +50,13 @@ module Display
       }.max
     end
 
+    def max_travel_time_discrepancy
+      return nil if trips.empty?
+      line_directions.map(&:travel_time_discrepancy).reject { |travel_time_discrepancy|
+        travel_time_discrepancy.nil?
+      }.max
+    end
+
     def headway_discrepancy
       return nil if trips.empty?
       line_directions.map(&:headway_discrepancy).reject { |headway_discrepancy|

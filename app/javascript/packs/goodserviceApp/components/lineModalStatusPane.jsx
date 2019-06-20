@@ -19,14 +19,14 @@ class LineModalStatusPane extends React.Component {
     return "black";
   }
 
-  travelTimeColor(travelTime) {
-    if (travelTime >= 0.5) {
+  travelTimeColor(travelTime, travelTimeDiscrepancy) {
+    if (travelTime >= 0.5 && travelTimeDiscrepancy >= 2) {
       return "red";
     }
-    if (travelTime >= 0.25) {
+    if (travelTime >= 0.25 && travelTimeDiscrepancy >= 2) {
       return "yellow";
     }
-    if (travelTime < 0.25) {
+    if (travelTime < 0.25 || travelTimeDiscrepancy < 2) {
       return "green";
     }
     return "black";
@@ -65,10 +65,12 @@ class LineModalStatusPane extends React.Component {
         southScheduled: obj.max_scheduled_headway,
         southDelay: obj.delay,
         southTravelTime: obj.travel_time,
+        southTravelTimeDiscrepancy: obj.travel_time_discrepancy,
         northActual: northType && northType.max_actual_headway,
         northScheduled: northType && northType.max_scheduled_headway,
         northDelay: northType && northType.delay,
         northTravelTime: northType && northType.travel_time,
+        northTravelTimeDiscrepancy: northType && northType.travel_time_discrepancy,
       }
     });
     north.forEach((obj) => {
@@ -84,15 +86,16 @@ class LineModalStatusPane extends React.Component {
           northScheduled: obj.max_scheduled_headway,
           northDelay: obj.delay,
           northTravelTime: obj.travel_time,
+          northTravelTimeDiscrepancy: obj.travel_time_discrepancy,
         });
       }
     });
 
     return data.map((obj) => {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
-      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
+      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime, obj.southTravelTimeDiscrepancy);
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
-      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
+      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime, obj.northTravelTimeDiscrepancy);
       return (
         <Table.Row key={obj.name}>
           <Table.Cell>
@@ -198,12 +201,13 @@ class LineModalStatusPane extends React.Component {
         southScheduled: obj.max_scheduled_headway,
         southDelay: obj.delay,
         southTravelTime: obj.travel_time,
+        southTravelTimeDiscrepancy: obj.travel_time_discrepancy,
       }
     });
 
     return data.map((obj) => {
       const southColor = this.cellColor(obj.southDelay, obj.southScheduled, obj.southActual);
-      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime);
+      const southTravelTimeColor = this.travelTimeColor(obj.southTravelTime, obj.southTravelTimeDiscrepancy);
       return (
         <Table.Row key={obj.name}>
           <Table.Cell>
@@ -256,12 +260,13 @@ class LineModalStatusPane extends React.Component {
         northScheduled: obj.max_scheduled_headway,
         northDelay: obj.delay,
         northTravelTime: obj.travel_time,
+        northTravelTimeDiscrepancy: obj.travel_time_discrepancy,
       }
     });
 
     return data.map((obj) => {
       const northColor = this.cellColor(obj.northDelay, obj.northScheduled, obj.northActual);
-      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime);
+      const northTravelTimeColor = this.travelTimeColor(obj.northTravelTime, obj.northTravelTimeDiscrepancy);
       return (
         <Table.Row key={obj.name}>
           <Table.Cell style={{paddingRight: 0, paddingLeft: 0}}>
@@ -321,7 +326,7 @@ class LineModalStatusPane extends React.Component {
               }
             </Table.Cell>
             <Table.Cell textAlign='center' >
-              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time, xobj.time - scheduled_runtime.time)}>
                 <Statistic.Value>
                   {Math.round(xobj.time * 10) / 10}
                 </Statistic.Value>
@@ -358,7 +363,7 @@ class LineModalStatusPane extends React.Component {
               }
             </Table.Cell>
             <Table.Cell textAlign='center' >
-              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time)}>
+              <Statistic size='mini' inverted color={scheduled_runtime && this.travelTimeColor((xobj.time - scheduled_runtime.time) / scheduled_runtime.time, xobj.time - scheduled_runtime.time)}>
                 <Statistic.Value>
                   {Math.round(xobj.time * 10) / 10}
                 </Statistic.Value>
