@@ -36,20 +36,20 @@ class TrainBullet extends React.Component {
   }
 
   render() {
-    const { link, id, linkedView } = this.props;
+    const { link, id, linkedView, alternateName } = this.props;
     const view = linkedView && '/' + linkedView || ""
     if (link) {
       return(
         <Link to={'/trains/' + id + view}>
           <div className={this.classNames()} style={this.style()}>
-            <div className={this.innerClassNames()}>{this.name()}</div>
+            <div className={this.innerClassNames()}>{this.name()}<sup>{alternateName}</sup></div>
           </div>
         </Link>
       )
     } else {
       return(
         <div className={this.classNames()} style={this.style()}>
-          <div className={this.innerClassNames()}>{this.name()}</div>
+          <div className={this.innerClassNames()}>{this.name()}<sup>{alternateName}</sup></div>
         </div>
       )
     }

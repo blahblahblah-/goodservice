@@ -136,7 +136,7 @@ class Train extends React.Component {
     const { mini, train } = this.props;
     if (mini && train.alternate_name) {
       return (
-        <TrainBullet name={train.name + train.alternate_name[0]} color={train.color} size={'small'}
+        <TrainBullet name={train.name} alternateName={train.alternate_name[0]} color={train.color} size={'small'}
               textColor={train.text_color} style={{ float: 'left' }} />
       )
     }
@@ -162,6 +162,7 @@ class Train extends React.Component {
       buttonStyle.padding = "0";
       buttonStyle.border = "none";
       buttonStyle.background = "none";
+      buttonStyle.minWidth = "2em";
     }
     return(
       <TrainModal train={train} stats={stats} starredPane={starredPane}
