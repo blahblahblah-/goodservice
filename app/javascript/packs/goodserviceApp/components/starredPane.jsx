@@ -80,6 +80,7 @@ class StarredPane extends React.Component {
   }
 
   render() {
+    const { trains, routing, trainStats } = this.props;
     return(
       <div ref={this.handleContextRef}>
         <Helmet>
@@ -88,7 +89,7 @@ class StarredPane extends React.Component {
           <meta name="twitter:title" content="goodservice.io" />
         </Helmet>
         {
-          this.renderContent()
+          trains && routing && trainStats && this.renderContent()
         }
       </div>
     )
