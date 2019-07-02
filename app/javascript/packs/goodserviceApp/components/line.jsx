@@ -114,7 +114,7 @@ class Line extends React.Component {
     if (this.props.starredPane) {
       this.props.history.push('/starred/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase());
     } else if (this.props.slowZonesPane) {
-      this.props.history.push('/slow-zones/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase());
+      this.props.history.push('/slow-zones/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase() + '/travel-times');
     } else {
       this.props.history.push('/boroughs/' + this.props.borough.replace(/\s+/g, '-').toLowerCase() + '/' + this.props.line.name.replace(/\//g, '-').replace(/\s+/g, '-').toLowerCase());
     }

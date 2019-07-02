@@ -36,14 +36,15 @@ class LineModal extends React.Component {
   panes() {
     const { line, width, match, starredPane } = this.props;
     const baseUrl = starredPane ? match.url.split('/').slice(0, 3).join('/') : match.url.split('/').slice(0, 4).join('/');
+    const isMobile = (width <= Responsive.onlyMobile.maxWidth);
     return [
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='status'>Current Status</Menu.Item>, render: () =>
-        <Tab.Pane attached={false} basic={true} key='status' style={{padding: '1em 0'}}>
-          <LineModalStatusPane line={line} width={width} />
+        <Tab.Pane attached={false} basic={true} key='status' style={isMobile ? {padding: '0'} : {padding: '1em 0'}}>
+          <LineModalStatusPane line={line} width={width} starredPane={starredPane} />
         </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>Stats</Menu.Item>, render: () =>
-        <Tab.Pane attached={false} basic={true} key='stats' style={{padding: '1em 0'}}>
+        <Tab.Pane attached={false} basic={true} key='stats' style={isMobile ? {padding: '0'} : {padding: '1em 0'}}>
           <LineModalDataPane line={line} width={width} />
         </Tab.Pane>
       },

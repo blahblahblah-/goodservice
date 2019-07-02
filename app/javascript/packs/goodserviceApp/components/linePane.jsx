@@ -55,11 +55,11 @@ class LinePane extends React.Component {
 
     return(
       <Switch>
-        <Route strict path="/boroughs/the-bronx/:line?/:view?" render={() => this.tab(vertical, 0)} />
-        <Route strict path="/boroughs/brooklyn/:line?/:view?" render={() => this.tab(vertical, 1)} />
-        <Route strict path="/boroughs/manhattan/:line?/:view?" render={() => this.tab(vertical, 2)} />
-        <Route strict path="/boroughs/queens/:line?/:view?" render={() => this.tab(vertical, 3)} />
-        <Route strict path="/boroughs/staten-island/:line?/:view?" render={() => this.tab(vertical, 4)} />
+        <Route strict path="/boroughs/the-bronx/:line?/:view?/:subview?" render={() => this.tab(vertical, 0)} />
+        <Route strict path="/boroughs/brooklyn/:line?/:view?/:subview?" render={() => this.tab(vertical, 1)} />
+        <Route strict path="/boroughs/manhattan/:line?/:view?/:subview?" render={() => this.tab(vertical, 2)} />
+        <Route strict path="/boroughs/queens/:line?/:view?/:subview?" render={() => this.tab(vertical, 3)} />
+        <Route strict path="/boroughs/staten-island/:line?/:view?/:subview?" render={() => this.tab(vertical, 4)} />
         <Redirect to="/boroughs/the-bronx"/>
       </Switch>
     )
