@@ -61,7 +61,7 @@ class TrainModal extends React.Component {
     const { train, stats, routing, routingTimestamp, stops, width, match } = this.props;
     const baseUrl = match.url.split('/').slice(0, 3).join('/');
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
-    const captions = isMobile ? ['Live Route Map', 'Status Details', 'Stats'] : ['Route Map', 'Status', 'Stats'];
+    const captions = isMobile ? ['Route Map', 'Status', 'Stats'] : ['Live Route Map', 'Status Details', 'Stats'];
     return [
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}`} key='route'>{captions[0]}</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='map' style={{padding: '1em 0'}}>
