@@ -11,20 +11,20 @@ class TrainMapStop extends React.Component {
 
     if (southStop && northStop) {
       return (
-        <div style={{border: "1px #ccc solid", height: "10px", width: "10px", borderRadius: "50%", position: "relative", backgroundColor: "white", left: "5px", top: "20px"}}>
+        <div style={{border: "1px #999 solid", height: "10px", width: "10px", borderRadius: "50%", position: "relative", backgroundColor: "white", left: "5px", top: "20px"}}>
         </div>
       )
     }
 
     if (northStop) {
       return (
-        <div style={{border: "1px #ccc solid", height: "5px", width: "10px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", position: "relative", backgroundColor: "white", left: "5px", top: "20px"}}>
+        <div style={{border: "1px #999 solid", height: "5px", width: "10px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", position: "relative", backgroundColor: "white", left: "5px", top: "20px"}}>
         </div>
       )
     }
 
     return (
-      <div style={{border: "1px #ccc solid", height: "5px", width: "10px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px", position: "relative", backgroundColor: "white", left: "5px", top: "25px"}}>
+      <div style={{border: "1px #999 solid", height: "5px", width: "10px", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px", position: "relative", backgroundColor: "white", left: "5px", top: "25px"}}>
       </div>
     )
   }
@@ -84,11 +84,7 @@ class TrainMapStop extends React.Component {
       topStripeColor = topStripeColor || color;
       bottomStripeColor = bottomStripeColor || color;
 
-      if (isMobile) {
-        background = `repeating-linear-gradient(0deg, ${color}, ${color} 1px, ${middleStripeColor} 1px, ${middleStripeColor} 2px)`;
-      } else {
-        background = `repeating-linear-gradient(180deg, ${color}, ${color} 5px, ${topStripeColor} 5px, ${topStripeColor} 11px, ${color} 11px, ${color} 22px, ${middleStripeColor} 22px, ${middleStripeColor} 28px, ${color} 28px, ${color} 39px, ${bottomStripeColor} 39px, ${bottomStripeColor} 45px, ${color} 45px)`;
-      }
+      background = `repeating-linear-gradient(0deg, ${color}, ${color} 1px, ${middleStripeColor} 1px, ${middleStripeColor} 2px)`;
     } else {
       background = color;
     }
