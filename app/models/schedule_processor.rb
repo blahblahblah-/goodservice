@@ -586,7 +586,7 @@ class ScheduleProcessor
 
   def instantiate_lines
     pairs = Line.all.includes({line_directions: [:line, :express_line_direction, :local_line_direction]}, :line_boroughs).map do |line|
-      [line.id, Display::Line.new(line, stop_times, timestamp, stops)]
+      [line.id, Display::Line.new(line, stop_times, timestamp, stops, routes)]
     end
     @key_stops = LineDirection.all.pluck(
       :first_stop, :last_stop, :first_branch_stop, :first_alternate_branch_stop, :last_branch_stop, :last_alternate_branch_stop

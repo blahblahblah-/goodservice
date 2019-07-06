@@ -3,12 +3,13 @@ module Display
     delegate :name, :alternate_name, :direction, to: :line_direction
     attr_accessor :line_direction
 
-    def initialize(line_direction, stop_times, timestamp, stops)
+    def initialize(line_direction, stop_times, timestamp, stops, routes_data)
       @line_direction = line_direction
       @stop_times = stop_times
       @timestamp = timestamp
       @trips = []
       @stops = stops
+      @routes_data = routes_data
     end
 
     def push_trip(trip)
@@ -22,7 +23,7 @@ module Display
     end
 
     def routes
-      trips.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(::Route.find_by(internal_id: route)) }.reject { |rd| rd.route.nil? }
+      @routes ||= trips.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(routes_data[route]) }.reject { |rd| rd.route.nil? }
     end
 
     def delay
@@ -115,7 +116,7 @@ module Display
         stops.all? { |s|
           t.stops.map { |st| st[0..2] }.include?(s)
         }
-      }.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(::Route.find_by(internal_id: route)) }.reject {
+      }.map(&:route_id).uniq.sort.map { |route| Display::RouteDisplay.new(routes_data[route]) }.reject {
         |rd| rd.route.nil?
       }.map{ |route|
         {
@@ -145,7 +146,7 @@ module Display
 
     private
 
-    attr_accessor :trips, :stop_times, :timestamp, :stops
+    attr_accessor :trips, :stop_times, :timestamp, :stops, :routes_data
 
     def last_stop_reverse
       line_direction.last_stop[0..2] + (line_direction.last_stop[3] == "N" ? "S" : "N")
