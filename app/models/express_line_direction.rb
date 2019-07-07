@@ -21,10 +21,10 @@ class ExpressLineDirection < LineDirection
       last_stops = [last_stop]
     end
 
-    first = StopTime.recent(time_range: 1.hour).where(stop_internal_id: first_stops).to_a
-    last = StopTime.recent.where(stop_internal_id: last_stops).to_a
+    first = recent_stop_times(first_stops)
+    last = recent_stop_times(last_stops, time_range: 30.minutes)
 
-    local_stop = StopTime.recent(time_range: 1.hour).where(stop_internal_id: local_line_direction.last_stop).to_a
+    local_stop = recent_stop_times(local_line_direction.last_stop)
 
     # M train shuffle
     if line.name == "Broadway (Brooklyn)" # line has no branches, so will need to take address that

@@ -94,8 +94,8 @@ class LineDirection < ActiveRecord::Base
       last_stops = [last_stop]
     end
 
-    first = StopTime.recent(time_range: 1.hour).where(stop_internal_id: first_stops).to_a
-    last = StopTime.recent.where(stop_internal_id: last_stops).to_a
+    first = recent_stop_times(first_stops)
+    last = recent_stop_times(last_stops, time_range: 30.minutes)
 
     # M train shuffle
     if line.name == "Williamsburg Bridge"
@@ -210,5 +210,16 @@ class LineDirection < ActiveRecord::Base
     return @actual_runtimes = {} if results.empty?
 
     @actual_runtimes = results
+  end
+
+  def recent_stop_times(stops, time_range: nil)
+    stop_key = stops.is_a?(Array) ? stops.join('-') : stops
+    times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{StopTime.rounded_time}", expires_in: 5.minutes) do
+      StopTime.recent(time_range: 1.hour).where(stop_internal_id: stops).to_a
+    end
+    if time_range
+      return times.select { |t| t.departure_time <= (StopTime.rounded_time - time_range).to_i}
+    end
+    times
   end
 end
