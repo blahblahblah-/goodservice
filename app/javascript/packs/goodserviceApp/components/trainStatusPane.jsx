@@ -28,7 +28,7 @@ class TrainStatusPane extends React.Component {
       return (
         <div>
           {
-            map(STATUSES, (color, status) => {
+            trainStats && routing && map(STATUSES, (color, status) => {
               const trains = groups[status];
               if (!trains || !trains.length) {
                 return (<div key={status}></div>)
@@ -61,7 +61,7 @@ class TrainStatusPane extends React.Component {
     return (
       <Grid stackable columns={3}>
         {
-          trains.map(train => {
+          trainStats && routing && trains.map(train => {
             const visible = train.visible || train.status !== 'Not Scheduled';
             return (
               <Grid.Column key={train.name + train.alternate_name} style={{display: (visible ? 'block' : 'none')}}>
