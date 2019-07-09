@@ -72,7 +72,7 @@ module Display
     attr_accessor :trip, :valid_stops, :line_directions_time_hash, :actual_trip
 
     def arrival_time
-      @arrival_time if @arrival_time
+      return @arrival_time if @arrival_time
 
       update = trip.stop_time_update.last
       @arrival_time = (update.arrival || update.departure).time
