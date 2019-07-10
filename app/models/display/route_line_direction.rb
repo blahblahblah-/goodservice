@@ -45,7 +45,7 @@ module Display
     end
 
     def min_scheduled_headway
-      scheduled_headways.max
+      scheduled_headways.min
     end
 
     def headway_discrepancy
