@@ -3,6 +3,7 @@ import { Tab, Menu, Responsive } from 'semantic-ui-react';
 import { withRouter, Link } from 'react-router-dom';
 import LineModalStatusOverviewPane from './lineModalStatusOverviewPane.jsx'
 import LineModalStatusTravelTimesPane from './lineModalStatusTravelTimesPane.jsx'
+import LineModalStatusHeadwaysPane from './lineModalStatusHeadwaysPane.jsx'
 
 class LineModalStatusPane extends React.Component {
   panes() {
@@ -20,15 +21,20 @@ class LineModalStatusPane extends React.Component {
           <LineModalStatusTravelTimesPane line={line} width={width} />
         </Tab.Pane>
       },
+      { menuItem: <Menu.Item as={Link} to={`${baseUrl}/headways`} key='headways'>Headways</Menu.Item>, render: () =>
+        <Tab.Pane attached={false} basic={true} key='stats' style={isMobile ? {padding: '0'} : {padding: '1em 0'}}>
+          <LineModalStatusHeadwaysPane line={line} width={width} />
+        </Tab.Pane>
+      },
     ];
   }
 
   render() {
     const { match, width } = this.props;
-    const viewIndex = (match.params.view === 'travel-times' ? 1 : 0);
+    const viewIndex = (match.params.view === 'travel-times' ? 1 : (match.params.view === 'headways' ? 2 : 0));
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
     return (
-      <Tab menu={{ widths: 2 }} panes={this.panes()} style={isMobile ? {margin: '0'} : {margin: '1em 0'}} activeIndex={viewIndex} />
+      <Tab menu={{ widths: 3 }} panes={this.panes()} style={isMobile ? {margin: '0'} : {margin: '1em 0'}} activeIndex={viewIndex} />
     )
   }
 }

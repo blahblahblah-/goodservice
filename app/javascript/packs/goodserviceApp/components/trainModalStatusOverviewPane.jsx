@@ -7,19 +7,6 @@ import { withRouter } from 'react-router-dom';
 class TrainModalStatusOverviewPane extends React.Component {
   state = {}
 
-  color() {
-    const { train } = this.props;
-    if (train.status == 'Good Service') {
-      return 'green';
-    } else if (train.status == 'Service Change') {
-      return 'orange';
-    } else if (train.status == 'Not Good') {
-      return 'yellow';
-    } else if (train.status == 'Delay') {
-      return 'red';
-    }
-  }
-
   cellColor(delay, scheduledHeadway, actualHeadway) {
     if (delay >= 5) {
       return "red";
