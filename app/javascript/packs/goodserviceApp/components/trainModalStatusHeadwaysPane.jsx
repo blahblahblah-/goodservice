@@ -101,7 +101,13 @@ class TrainModalStatusHeadwaysPane extends React.Component {
     const { width } = this.props;
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
     if (isMobile) {
-      return data;
+      const style = {}
+      if (color === 'yellow') {
+        style.color = '#ffe21f';
+      }
+      return (
+        <span style={style}>{data}</span>
+      );
     }
     return (
       <Statistic size='mini' inverted color={color || "black"}>
