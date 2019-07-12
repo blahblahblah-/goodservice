@@ -113,6 +113,7 @@ class ScheduleProcessor
         status: route.status,
         max_headway_discrepancy: route.max_headway_discrepancy,
         max_travel_time_discrepancy: route.max_travel_time_discrepancy,
+        max_travel_time: route.max_travel_time,
         destinations: {
           north: route.directions[1].destinations,
           south: route.directions[3].destinations,
@@ -190,6 +191,7 @@ class ScheduleProcessor
           status: line.status,
           max_travel_time: line.max_travel_time,
           max_travel_time_discrepancy: line.max_travel_time_discrepancy,
+          max_headway_discrepancy: line.max_headway_discrepancy,
           destinations: {
             north: line.destinations[1],
             south: line.destinations[3],

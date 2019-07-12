@@ -57,7 +57,7 @@ module Display
     end
 
     def max_travel_time
-      directions.map { |_, array|
+      @max_travel_time ||= directions.map { |_, array|
         array.map { |ld|
           ld.travel_time
         }
@@ -67,12 +67,22 @@ module Display
     end
 
     def max_travel_time_discrepancy
-      directions.map { |_, array|
+      @max_travel_time_discrepancy ||= directions.map { |_, array|
         array.map { |ld|
           ld.travel_time_discrepancy
         }
       }.flatten.reject { |travel_time_discrepancy|
         travel_time_discrepancy.nil?
+      }.max
+    end
+
+    def max_headway_discrepancy
+      @max_headway_discrepancy ||= directions.map { |_, array|
+        array.map { |ld|
+          ld.headway_discrepancy
+        }
+      }.flatten.reject { |headway_discrepancy|
+        headway_discrepancy.nil?
       }.max
     end
 
@@ -84,16 +94,6 @@ module Display
           ld.delay
         }.max
       }.max || 0
-    end
-
-    def max_headway_discrepancy
-      directions.map { |_, array|
-        array.map { |ld|
-          ld.headway_discrepancy
-        }
-      }.flatten.reject { |headway_discrepancy|
-        headway_discrepancy.nil?
-      }.max
     end
   end
 end

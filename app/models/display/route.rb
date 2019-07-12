@@ -48,7 +48,7 @@ module Display
     end
 
     def max_travel_time
-      directions.map { |_, rd|
+      @max_travel_time ||= directions.map { |_, rd|
         rd.travel_time
       }.reject { |travel_time|
         travel_time.nil?
@@ -56,7 +56,7 @@ module Display
     end
 
     def max_headway_discrepancy
-      directions.map { |_, rd|
+      @max_headway_discrepancy ||= directions.map { |_, rd|
         rd.headway_discrepancy
       }.reject { |headway_discrepancy|
         headway_discrepancy.nil?
@@ -64,7 +64,7 @@ module Display
     end
 
     def max_travel_time_discrepancy
-      directions.map { |_, rd|
+      @max_travel_time_discrepancy ||= directions.map { |_, rd|
         rd.max_travel_time_discrepancy
       }.reject { |max_travel_time_discrepancy|
         max_travel_time_discrepancy.nil?
