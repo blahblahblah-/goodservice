@@ -20,7 +20,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "resolve-url-loader": "^2.3.0",
-    "semantic-ui-react": "^0.82.3",
+    "semantic-ui-react": "^0.87.3",
     "webpack-cli": "^3.1.0"
   },
   "devDependencies": {
