@@ -8,7 +8,7 @@ import LineModalStatusHeadwaysPane from './lineModalStatusHeadwaysPane.jsx'
 class LineModalStatusPane extends React.Component {
   travelTimesColor() {
     const { line } = this.props;
-    if (line.max_travel_time_discrepancy === null || line.max_travel_time_discrepancy < 2) {
+    if (line.max_travel_time_discrepancy === null || line.max_travel_time_discrepancy < 2 || line.max_travel_time < 0.25) {
       return '#fff';
     }
     if (line.max_travel_time >= 0.5) {

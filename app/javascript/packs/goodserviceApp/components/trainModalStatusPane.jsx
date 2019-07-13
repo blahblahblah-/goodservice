@@ -8,7 +8,7 @@ import TrainModalStatusHeadwaysPane from './trainModalStatusHeadwaysPane.jsx';
 class TrainModalStatusPane extends React.Component {
   travelTimesColor() {
     const { train } = this.props;
-    if (train.max_travel_time_discrepancy === null || train.max_travel_time_discrepancy < 2) {
+    if (train.max_travel_time_discrepancy === null || train.max_travel_time_discrepancy < 2 || train.max_travel_time < 0.25) {
       return '#fff';
     }
     if (train.max_travel_time >= 0.5) {
