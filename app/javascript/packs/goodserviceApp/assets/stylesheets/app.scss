@@ -61,6 +61,32 @@ body {
   background: none;
 }
 
+.ui.selection.dropdown.fluid {
+  background-color: rgba(0,0,0, 0.3);
+  color: rgba(255,255,255,.8);
+  margin-bottom: 2em;
+
+  .menu {
+    background-color: black;
+
+    .item {
+      border: none;
+
+      &.selected {
+        background-color: rgba(255,255,255,.15);
+      }
+
+      &:hover {
+        background-color: rgba(255,255,255,.08);
+      }
+    }
+  }
+}
+
+.ui.selection.visible.dropdown.fluid>.text:not(.default) {
+  color: white;
+}
+
 button.ui.segment {
   background-color: rgba(0,0,0, 0.1);
   color: white;

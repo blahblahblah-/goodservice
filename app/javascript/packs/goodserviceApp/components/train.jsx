@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Header, Button, Responsive } from "semantic-ui-react";
+import { Segment, Header, Button, Responsive, Statistic } from "semantic-ui-react";
 import TrainBullet from './trainBullet.jsx';
 import TrainModal from './trainModal.jsx';
 import { Pie } from '@nivo/pie';
@@ -92,43 +92,27 @@ class Train extends React.Component {
   }
 
   renderInfo() {
-    if (this.props.showStats) {
-      return (
-        <div style={{float: "right", marginTop: '5px'}}>
-          <Pie
-            width={60}
-            height={60}
-            sliceLabelFormat=".0%"
-            data={this.lastDayData()}
-            colorBy={( data ) => data.color }
-            enableRadialLabels={false}
-            enableSlicesLabels={false}
-            animate
-            isInteractive={false}
-            innerRadius={0.6}
-          />
-        </div>
-      )
-    }
+    const { showStats, statsValue } = this.props;
     return (
       <div>
         <Responsive as={Segment} basic maxWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-          <Header as='h4' floated='right' className='status' inverted style={{ minWidth: "103px", textAlign: "right"}} color={this.color()}>{this.status()}</Header>
+          <Header as='h4' floated='right' className='status' inverted style={{ minWidth: "103px", textAlign: "right"}} color={showStats ? "black" : this.color()}>{showStats ? statsValue : this.status()}</Header>
         </Responsive>
         <Responsive as={Segment} basic minWidth={Responsive.onlyTablet.maxWidth} style={{margin: 0, padding: 0}}>
-          <Header as='h3' floated='right' className='status' inverted color={this.color()}>{this.status()}</Header>
+          <Header as='h3' floated='right' className='status' inverted color={showStats ? "black" : this.color()}>{showStats ? statsValue : this.status()}</Header>
         </Responsive>
       </div>
     )
   }
 
   handleClick = e => {
-    if (this.props.starredPane) {
-      this.props.history.push('/starred/' + this.props.train.id);
-    } else if (this.props.showStats) {
-      this.props.history.push('/trains/' + this.props.train.id + '/stats');
+    const { starredPane, history, showStats, train } = this.props
+    if (starredPane) {
+      history.push('/starred/' + train.id);
+    } else if (showStats) {
+      history.push('/trains/' + train.id + '/stats#stats');
     } else {
-      this.props.history.push('/trains/' + this.props.train.id);
+      history.push('/trains/' + train.id);
     }
   }
 
@@ -156,7 +140,7 @@ class Train extends React.Component {
   }
 
   render() {
-    const { width, train, stats, starredPane, modelOpen, handleClose, onFavTrainChange, favTrains, routing, routingTimestamp, stops, mini } = this.props;
+    const { width, train, stats, starredPane, modelOpen, onFavTrainChange, favTrains, routing, routingTimestamp, stops, showStats, mini } = this.props;
     const buttonStyle = {};
     if (mini) {
       buttonStyle.padding = "0";
@@ -166,7 +150,7 @@ class Train extends React.Component {
     }
     return(
       <TrainModal train={train} stats={stats} starredPane={starredPane}
-        modalOpen={this.state.modelOpen} onClose={this.handleClose}
+        modalOpen={this.state.modelOpen} showStats={showStats}
         onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} routingTimestamp={routingTimestamp} stops={stops} trigger={
         <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick} style={buttonStyle}>
           { !mini && this.renderInfo() }

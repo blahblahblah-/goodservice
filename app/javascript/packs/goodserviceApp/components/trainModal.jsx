@@ -15,6 +15,17 @@ class TrainModal extends React.Component {
     this.props.onFavTrainChange(this.props.train.id, rating);
   };
 
+  handleOnClose = () => {
+    const { starredPane, showStats, history } = this.props;
+    if (starredPane) {
+      return history.push('/starred')
+    }
+    if (showStats) {
+      return history.push('/trains#stats');
+    }
+    return history.push('/trains');
+  };
+
   color() {
     if (this.props.train.status == 'Good Service') {
       return 'green';
@@ -88,7 +99,7 @@ class TrainModal extends React.Component {
     return(
       <Responsive as={Modal} basic fireOnMount size='large'
         open={match.params.trainId === train.id || match.params.id === train.id}
-        onMount={this.handleOnMount} onClose={() => this.props.starredPane ? this.props.history.push('/starred') : this.props.history.push('/trains')} trigger={this.props.trigger}
+        onMount={this.handleOnMount} onClose={this.handleOnClose} trigger={this.props.trigger}
         closeIcon dimmer="blurring" closeOnDocumentClick closeOnDimmerClick>
         <Helmet>
           <title>{title}</title>
