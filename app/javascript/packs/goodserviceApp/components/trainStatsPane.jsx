@@ -211,11 +211,10 @@ class TrainStatsPane extends React.Component {
         <Grid stackable columns={3}>
           {
             trainStats && routing && trains.map(train => {
-              const visible = train.visible || train.status !== 'Not Scheduled';
               const statsValue = this.getValue(trainStats[train.id]);
               const formattedValue = this.formatValue(statsValue);
               return (
-                <Grid.Column key={train.name + train.alternate_name} style={{display: (visible ? 'block' : 'none')}}>
+                <Grid.Column key={train.name + train.alternate_name} style={{display: 'block'}}>
                   <Train train={train} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} routingTimestamp={routingTimestamp} stops={stops}
                     onFavTrainChange={onFavTrainChange} favTrains={favTrains} statsValue={formattedValue} sortIndex={statsValue} width={width} />
                 </Grid.Column>
