@@ -5,6 +5,7 @@ import Train from './train.jsx';
 import TrainBullet from "./trainBullet.jsx";
 import Hammer from 'react-hammerjs';
 import { Helmet } from "react-helmet";
+import { withRouter } from 'react-router-dom';
 
 const STATUSES = {
   'Delay': 'red',
@@ -112,10 +113,28 @@ const RANKING_OPTIONS = [
 class TrainStatsPane extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentRanking: 'status-day-good_service' };
+    this.state = {};
   }
 
-  handleChange = (e, { value }) => this.setState({ currentRanking: value })
+  componentDidMount() {
+    const sortOption = this.getSortOptionFromUrl();
+    this.setState({ currentRanking: sortOption });
+  }
+
+  handleChange = (e, { value }) => {
+    const { history } = this.props;
+    history.push(`#stats/${value}`);
+    this.setState({ currentRanking: value });
+  };
+
+  getSortOptionFromUrl() {
+    const { location } = this.props;
+    const sortOption = location.hash.split('/')[1];
+    const foundOption = RANKING_OPTIONS.find((obj => {
+      return sortOption === obj.value;
+    }));
+    return (foundOption && foundOption.value) || RANKING_OPTIONS[0].value;
+  }
 
   getValue(trainStats) {
     const { currentRanking } = this.state;
@@ -183,6 +202,9 @@ class TrainStatsPane extends React.Component {
     }
 
     const { currentRanking } = this.state;
+    if (!currentRanking) {
+      return;
+    }
     const rankingOption = currentRanking.split('-');
     if (rankingOption[0] === 'status') {
       return this.formatPercent(value);
@@ -206,7 +228,7 @@ class TrainStatsPane extends React.Component {
           selection
           options={RANKING_OPTIONS}
           onChange={this.handleChange}
-          defaultValue='status-day-good_service'
+          defaultValue={this.getSortOptionFromUrl()}
         />
         <Grid stackable columns={3}>
           {
@@ -232,7 +254,7 @@ class TrainStatsPane extends React.Component {
     return(
       <div>
         <Helmet>
-          <title>goodservice.io beta - Trains</title>
+          <title>goodservice.io beta - Trains - Rankings</title>
           <meta property="og:title" content="goodservice.io" />
           <meta name="twitter:title" content="goodservice.io" />
         </Helmet>
@@ -243,4 +265,4 @@ class TrainStatsPane extends React.Component {
     )
   }
 }
-export default TrainStatsPane
+export default withRouter(TrainStatsPane)

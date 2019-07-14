@@ -16,12 +16,12 @@ class TrainModal extends React.Component {
   };
 
   handleOnClose = () => {
-    const { starredPane, showStats, history } = this.props;
+    const { starredPane, showStats, history, location } = this.props;
     if (starredPane) {
       return history.push('/starred')
     }
     if (showStats) {
-      return history.push('/trains#stats');
+      return history.push(`/trains${location.hash}`);
     }
     return history.push('/trains');
   };

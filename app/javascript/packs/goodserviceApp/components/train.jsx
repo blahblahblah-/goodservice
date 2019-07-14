@@ -106,11 +106,11 @@ class Train extends React.Component {
   }
 
   handleClick = e => {
-    const { starredPane, history, showStats, train } = this.props
+    const { starredPane, history, showStats, train, location } = this.props
     if (starredPane) {
       history.push('/starred/' + train.id);
     } else if (showStats) {
-      history.push('/trains/' + train.id + '/stats#stats');
+      history.push(`/trains/${train.id}/stats${location.hash}`);
     } else {
       history.push('/trains/' + train.id);
     }

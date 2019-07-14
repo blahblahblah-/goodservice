@@ -28,7 +28,7 @@ class TrainPane extends React.Component {
   render() {
     const { location } = this.props;
     return(
-      <Tab menu={{ widths: 2 }} panes={this.panes()} activeIndex={location.hash.substring(1) === 'stats' ? 1 : 0} />
+      <Tab menu={{ widths: 2 }} panes={this.panes()} activeIndex={location.hash.substring(1, 6) === 'stats' ? 1 : 0} />
     )
   }
 }
