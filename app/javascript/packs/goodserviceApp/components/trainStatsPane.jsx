@@ -174,7 +174,7 @@ class TrainStatsPane extends React.Component {
     if (number < 0 || !addPlusSign) {
       return `${number} mins`;
     }
-    return `+ ${number} mins`;
+    return `+${number} mins`;
   }
 
   formatValue(value) {
