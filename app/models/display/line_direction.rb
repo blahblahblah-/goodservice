@@ -145,7 +145,7 @@ module Display
         time
       }
       times << trips.first.timestamp if times.size == 1
-      @actual_headways = times.sort.each_cons(2).map { |a,b| (b - a) / 60 }
+      @actual_headways = times.compact.sort.each_cons(2).map { |a,b| (b - a) / 60 }
     end
 
     def scheduled_headways
