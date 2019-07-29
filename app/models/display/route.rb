@@ -32,7 +32,9 @@ module Display
         }
       }
         @status = "Service Change"
-      elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size > 1
+      elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
+        @status = "Service Change"
+      elsif any_lines_not_in_service?
         @status = "Service Change"
       elsif max_headway_discrepancy.nil?
         if route.scheduled?
@@ -91,6 +93,10 @@ module Display
 
     def destinations
       directions.map { |_, v| v.destinations }.flatten.sort.uniq
+    end
+
+    def any_lines_not_in_service?
+      directions.any? { |_, rd| rd.lines_not_in_service.present? }
     end
   end
 end

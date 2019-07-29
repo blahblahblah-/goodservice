@@ -69,10 +69,11 @@ module Display
     end
 
     def lines_not_in_service
+      return @lines_not_in_service if @lines_not_in_service
       scheduled_lines = ::LineDirection.scheduled_lines(route_id, (direction - 1) / 2)
       lines_in_service = line_directions_data&.map(&:line) || []
 
-      scheduled_lines - lines_in_service
+      @lines_not_in_service = scheduled_lines - lines_in_service
     end
 
     private
