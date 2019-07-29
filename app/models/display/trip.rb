@@ -23,7 +23,7 @@ module Display
     end
 
     def last_stop
-      trip.stop_time_update.map(&:stop_id).reverse.find { |stop_id| valid_stops.include?(stop_id)}
+      normalized_stops.reverse.find { |stop_id| valid_stops.include?(stop_id)}
     end
 
     def stops
@@ -132,11 +132,12 @@ module Display
     def initialize_line_directions_time_hash(line_directions)
       time_hash = ActiveSupport::OrderedHash[
         trip.stop_time_update.select { |u|
-          (u.departure || u.arrival).time > timestamp &&
-            line_directions.map(&:last_stop).include?(u.stop_id)
+          stop_id = convert_stop_id_for_m_shuffle(u.stop_id)
+          (u.departure || u.arrival).time > timestamp && line_directions.map(&:last_stop).include?(stop_id)
         }.map { |u|
+          stop_id = convert_stop_id_for_m_shuffle(u.stop_id)
           [line_directions.find { |ld|
-            ld.last_stop == u.stop_id
+            ld.last_stop == stop_id
           }, (u.departure || u.arrival).time]
         }
       ]
@@ -145,10 +146,10 @@ module Display
       }.reject { |ld|
         ld.kind_of?(LocalLineDirection) && time_hash.keys.map(&:id).include?(ld.express_line_direction_id)
       }.find { |ld|
-        trip.stop_time_update.map(&:stop_id).include?(ld.first_stop) && !trip.stop_time_update.map(&:stop_id).include?(ld.last_stop)
+        normalized_stops.include?(ld.first_stop) && !normalized_stops.include?(ld.last_stop)
       }
       if short_turn_ld
-        update = trip.stop_time_update.find { |u| u.stop_id == short_turn_ld.first_stop}
+        update = trip.stop_time_update.find { |u| convert_stop_id_for_m_shuffle(u.stop_id) == short_turn_ld.first_stop}
         time_hash[short_turn_ld] = (update.departure || update.arrival).time
       end
 
@@ -203,14 +204,7 @@ module Display
 
     def mark_arrival(stop_id, key_stops, previous_estimates)
       old_stop_id = stop_id
-      # Flip direction for M train stops on Broadway (Brooklyn) Line
-      if route_id == "M" && ["M11", "M12", "M13", "M14", "M15", "M16", "M18"].include?(stop_id[0..2])
-        if stop_id[3] == 'S'
-          stop_id = stop_id[0..2] + 'N'
-        else
-          stop_id = stop_id[0..2] + 'S'
-        end
-      end
+      stop_id = convert_stop_id_for_m_shuffle(stop_id)
       return unless key_stops.include?(stop_id)
       stop_hash = Rails.cache.read("stoptime-#{stop_id}")
       stop_hash ||= {}
@@ -219,6 +213,22 @@ module Display
       prev_update = previous_estimates&.find { |stu| stu.stop_id == old_stop_id}
       stop_hash[trip_id] ||= (prev_update.departure || prev_update.arrival).time
       Rails.cache.write("stoptime-#{stop_id}", stop_hash, expires_in: 1.hour)
+    end
+
+    def convert_stop_id_for_m_shuffle(stop_id)
+      if route_id == "M" && ["M11", "M12", "M13", "M14", "M15", "M16", "M18"].include?(stop_id[0..2])
+        if stop_id[3] == 'S'
+          stop_id[0..2] + 'N'
+        else
+          stop_id[0..2] + 'S'
+        end
+      else
+        stop_id
+      end
+    end
+
+    def normalized_stops
+      trip.stop_time_update.map(&:stop_id).map {|s| convert_stop_id_for_m_shuffle(s)}
     end
   end
 end

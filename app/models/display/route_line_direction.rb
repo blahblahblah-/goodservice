@@ -92,13 +92,13 @@ module Display
 
     def scheduled_headways
       return @scheduled_headways if @scheduled_headways
-      return @scheduled_headways = [] if stop_times[line_direction.last_stop].nil?
-      st = stop_times[line_direction.last_stop].select { |st| st.trip.route_internal_id == route_id}
+      return @scheduled_headways = [] if stop_times[flip_stop_id_for_m_shuffle(line_direction.last_stop)].nil?
+      st = stop_times[flip_stop_id_for_m_shuffle(line_direction.last_stop)].select { |st| st.trip.route_internal_id == route_id}
       if line_direction.kind_of?(ExpressLineDirection)
         st.reject! { |st|
-          stop_times[line_direction.local_line_direction.last_stop].any? { |local_st|
+          stop_times[flip_stop_id_for_m_shuffle(line_direction.local_line_direction.last_stop)].any? { |local_st|
             st.trip_internal_id == local_st.trip_internal_id
-          } || stop_times[line_direction.penultimate_stop].none? { |pen_st|
+          } || stop_times[flip_stop_id_for_m_shuffle(line_direction.penultimate_stop)].none? { |pen_st|
             st.trip_internal_id == pen_st.trip_internal_id
           }
         }
@@ -128,6 +128,18 @@ module Display
         }
       end
       times
+    end
+
+    def flip_stop_id_for_m_shuffle(stop_id)
+      if route_id == "M" && ["M11", "M12", "M13", "M14", "M15", "M16", "M18"].include?(stop_id[0..2])
+        if stop_id[3] == 'S'
+          stop_id[0..2] + 'N'
+        else
+          stop_id[0..2] + 'S'
+        end
+      else
+        stop_id
+      end
     end
   end
 end

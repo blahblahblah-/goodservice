@@ -585,13 +585,13 @@ class ScheduleProcessor
   def instantiate_data
     @timestamp = Time.current
     @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
-    @line_directions = LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
     @stop_names ||= Stop.pluck(:internal_id).to_set
     @stops ||= Stop.all
     @unavailable_feeds = Set.new
 
     instantiate_routes
     instantiate_lines
+    instantiate_line_directions
     instantiate_recent_trips
   end
 
@@ -614,6 +614,14 @@ class ScheduleProcessor
 
   def instantiate_recent_trips
     @recent_trips = ActualTrip.includes(:actual_trip_updates).where("created_at > ?", Time.current - 3.hours)
+  end
+
+  def instantiate_line_directions
+    @line_directions = LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
+
+    # Facilitate M train shuffle
+    @line_directions[1].push(*@line_directions[3].select { |ld| ["Broadway (Brooklyn)", "Williamsburg Bridge"].include?(ld.line.name)})
+    @line_directions[3].push(*@line_directions[1].select { |ld| ["Broadway (Brooklyn)", "Williamsburg Bridge"].include?(ld.line.name)})
   end
 
   def route(route_id)
