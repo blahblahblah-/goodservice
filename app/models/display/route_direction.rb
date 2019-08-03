@@ -76,6 +76,10 @@ module Display
       @lines_not_in_service = scheduled_lines - lines_in_service
     end
 
+    def any_lines_in_service?
+      line_directions.any?
+    end
+
     private
 
     attr_accessor :trips, :stop_times, :route_id, :timestamp, :direction, :stops

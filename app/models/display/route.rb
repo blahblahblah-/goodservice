@@ -34,7 +34,7 @@ module Display
         @status = "Service Change"
       elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
         @status = "Service Change"
-      elsif any_lines_not_in_service?
+      elsif any_lines_not_in_service? && any_lines_in_service?
         @status = "Service Change"
       elsif max_headway_discrepancy.nil?
         if route.scheduled?
@@ -97,6 +97,10 @@ module Display
 
     def any_lines_not_in_service?
       directions.any? { |_, rd| rd.lines_not_in_service.present? }
+    end
+
+    def any_lines_in_service?
+      directions.any? { |_, rd| rd.any_lines_in_service? }
     end
   end
 end
