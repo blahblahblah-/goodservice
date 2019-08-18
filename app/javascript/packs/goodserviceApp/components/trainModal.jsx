@@ -127,7 +127,8 @@ class TrainModal extends React.Component {
         strs.push(`terminating at ${shortTurns}`);
       }
       if (strs.length) {
-        const intro = `${train.scheduled_destinations[direction].map(dest => dest.replace(/ - /g, "–")).join('/')}-bound trains are `;
+        const destinations = (train.scheduled_destinations[direction].length && train.scheduled_destinations[direction]) || train.destinations[direction]
+        const intro = `${destinations.map(dest => dest.replace(/ - /g, "–")).join('/')}-bound trains are `;
         if (strs.length > 1) {
           strs[strs.length - 1] = `and ${strs[strs.length - 1]}`;
         }
