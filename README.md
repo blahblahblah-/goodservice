@@ -34,7 +34,9 @@ Finally, to run the app locally, do
 export MTA_KEY=<<YOUR API KEY>>
 bundle install
 yarn install
+initdb
 rails db:reset  # This will take a *very* long time on its first run
+rails dev:cache
 foreman start
 ```
 

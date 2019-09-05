@@ -49,6 +49,8 @@ csv.each do |row|
   s.friday = row['friday']
   s.saturday = row['saturday']
   s.sunday = row['sunday']
+  s.start_date = Date.today - 1.day
+  s.end_date = Date.today + 1.year
   s.save!
   puts "#{s.service_id} saved"
 end
@@ -140,24 +142,24 @@ cpw = Line.create(name: "Central Park West")
 wh = Line.create(name: "Washington Heights (8 Avenue)")
 si = Line.create(name: "Staten Island")
 
-canarsie2 = Line.create("Canarsie (Broadway Junction—Rockaway Parkway)")
-culver2 = Line.create("Culver (Kings Highway—Coney Island)")
-lefferts = Line.create("Fulton Street (Lefferts Boulevard Branch)")
-cranberry = Line.create("Cranberry Street (8 Avenue)")
-rutgers = Line.create("Rutgers Street (6 Avenue)")
-fiftythird = Line.create("53 Street")
-sixtythird = Line.create("63 Street")
-manhbrbway = Line.create("Manhattan Bridge/Montague Street (Broadway)")
-manhbrsixth = Line.create("Manhattan Bridge (6 Avenue)")
-wburgbr = Line.create("Williamsburg Bridge")
-fiftyninth = Line.create("59 Street")
-queensblvd2 = Line.create("Queens Boulevard (Eastern Queens)")
-culver3 = Line.create("Culver (Church Avenue—Kings Highway)")
-crosstown2 = Line.create("Crosstown (Bedford–Nostrand Avs—Hoyt–Schermerhorn Sts)")
-flushing2 = Line.create("Flushing (34 Street–Hudson Yards—Queensboro Plaza)")
-canarsie3 = Line.create("Canarsie (Myrtle Avenue—Broadway Junction)")
-jamaica2 = Line.create("Jamaica (Crescent Street—Jamaica Center)")
-canarsie4 = Line.create("Canarsie (Lorimer Street—Myrtle Avenue)")
+canarsie2 = Line.create(name: "Canarsie (Broadway Junction—Rockaway Parkway)")
+culver2 = Line.create(name: "Culver (Kings Highway—Coney Island)")
+lefferts = Line.create(name: "Fulton Street (Lefferts Boulevard Branch)")
+cranberry = Line.create(name: "Cranberry Street (8 Avenue)")
+rutgers = Line.create(name: "Rutgers Street (6 Avenue)")
+fiftythird = Line.create(name: "53 Street")
+sixtythird = Line.create(name: "63 Street")
+manhbrbway = Line.create(name: "Manhattan Bridge/Montague Street (Broadway)")
+manhbrsixth = Line.create(name: "Manhattan Bridge (6 Avenue)")
+wburgbr = Line.create(name: "Williamsburg Bridge")
+fiftyninth = Line.create(name: "59 Street")
+queensblvd2 = Line.create(name: "Queens Boulevard (Eastern Queens)")
+culver3 = Line.create(name: "Culver (Church Avenue—Kings Highway)")
+crosstown2 = Line.create(name: "Crosstown (Bedford–Nostrand Avs—Hoyt–Schermerhorn Sts)")
+flushing2 = Line.create(name: "Flushing (34 Street–Hudson Yards—Queensboro Plaza)")
+canarsie3 = Line.create(name: "Canarsie (Myrtle Avenue—Broadway Junction)")
+jamaica2 = Line.create(name: "Jamaica (Crescent Street—Jamaica Center)")
+canarsie4 = Line.create(name: "Canarsie (Lorimer Street—Myrtle Avenue)")
 
 LineBorough.create(borough: "Manhattan", line: secav)
 LineBorough.create(borough: "Manhattan", line: lex)
