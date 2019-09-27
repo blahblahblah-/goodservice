@@ -4,40 +4,40 @@ require 'uri'
 
 class ScheduleProcessor
   include Singleton
-  BASE_URI = "http://datamine.mta.info/mta_esi.php"
-  FEED_IDS = [1, 26, 16, 21, 2, 11, 31, 36, 51]
+  BASE_URI = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs"
+  FEED_IDS = ["", "-ace", "-bdfm", "-g", "-jz", "-nqrw", "-l", "-7", "-si"]
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
   STATUSES = ["Good Service", "Service Change", "Not Good", "Delay", "No Service"]
   ROUTE_FEED_MAPPING = {
-    "1" => 1,
-    "2" => 1,
-    "3" => 1,
-    "4" => 1,
-    "5" => 1,
-    "5X" => 1,
-    "6" => 1,
-    "6X" => 1,
-    "GS" => 1,
-    "A" => 26,
-    "C" => 26,
-    "E" => 26,
-    "H" => 26,
-    "FS" => 26,
-    "N" => 16,
-    "Q" => 16,
-    "R" => 16,
-    "W" => 16,
-    "B" => 21,
-    "D" => 21,
-    "F" => 21,
-    "M" => 21,
-    "L" => 2,
-    "SI" => 11,
-    "G" => 31,
-    "J" => 36,
-    "Z" => 36,
-    "7" => 51,
-    "7X" => 51,
+    "1" => "",
+    "2" => "",
+    "3" => "",
+    "4" => "",
+    "5" => "",
+    "5X" => "",
+    "6" => "",
+    "6X" => "",
+    "GS" => "",
+    "A" => "-ace",
+    "C" => "-ace",
+    "E" => "-ace",
+    "H" => "-ace",
+    "FS" => "-ace",
+    "N" => "-nqrw",
+    "Q" => "-nqrw",
+    "R" => "-nqrw",
+    "W" => "-nqrw",
+    "B" => "-bdfm",
+    "D" => "-bdfm",
+    "F" => "-bdfm",
+    "M" => "-bdfm",
+    "L" => "-l",
+    "SI" => "-si",
+    "G" => "-g",
+    "J" => "-jz",
+    "Z" => "-jz",
+    "7" => "-7",
+    "7X" => "-7",
   }
 
   attr_accessor :routes, :lines, :key_stops, :stops
@@ -506,8 +506,16 @@ class ScheduleProcessor
 
   def retrieve_feed(feed_id)
     puts "Retrieving feed #{feed_id}"
-    data = Net::HTTP.get(URI.parse("#{BASE_URI}?key=#{ENV["MTA_KEY"]}&feed_id=#{feed_id}"))
-    Transit_realtime::FeedMessage.decode(data)
+
+    uri = URI.parse("#{BASE_URI}#{feed_id}")
+    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      request = Net::HTTP::Get.new uri
+      request["x-api-key"] = ENV["MTA_KEY"]
+
+      response = http.request request
+      data = response.body
+      Transit_realtime::FeedMessage.decode(data)
+    end
   end
 
   def analyze_feed(feed, id)

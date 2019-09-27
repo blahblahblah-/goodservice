@@ -24,7 +24,7 @@ brew install node
 npm install -g yarn
 ```
 
-Next, you'll need to sign up for a developer account with the MTA. To do so, go to [https://datamine.mta.info](https://datamine.mta.info). You'll get an API key and set it as `MTA_KEY` env variable.
+Next, you'll need to sign up for a developer account with the MTA. To do so, go to [https://api.mta.info](https://api.mta.info). You'll get an API key and set it as `MTA_KEY` env variable.
 
 Finally, you'll need to download the current static schedules from the MTA. Go to [https://web.mta.info/developers/developer-data-terms.html](https://web.mta.info/developers/developer-data-terms.html), agree to the terms, and then download the data for New York City Transit. (Ctrl+F for "GTFS".) Put this into the `import` folder and unzip it.
 
