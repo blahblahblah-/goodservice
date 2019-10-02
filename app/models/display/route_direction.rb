@@ -19,8 +19,7 @@ module Display
       elsif line_directions.all? { |ld| ld.no_service? }
         @status = "No Service"
       elsif line_directions.any? { |ld|
-          (ld.rerouted? && line_directions.none? { |ld2| ld.line == ld2.line && ld2.normal_routing?}) ||
-          (ld.no_service? && trips.present?)
+          (ld.rerouted? && line_directions.none? { |ld2| ld.line == ld2.line && ld2.normal_routing?})
         }
         @status = "Service Change"
       elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
@@ -32,6 +31,66 @@ module Display
       else
         @status = "Good Service"
       end
+    end
+
+    def status_summary
+      return @status_summary if @status_summary
+      return if ["Not Scheduled", "No Service"].include?(status)
+
+      strs = []
+      intro = "#{scheduled_destinations.join('/') || destinations.join('/')}-bound trains are "
+
+      if delays = delayed_line_directions.presence
+        strs << "experiencing delays on #{delays.map(&:parent_name).join('/')}"
+      end
+
+      if long_headways = long_headway_line_directions.presence
+        strs << "experiencing longer than normal wait times on #{long_headways.map(&:parent_name).join('/')}"
+      end
+
+      if slow = slow_line_directions.presence
+        strs << "traveling slowly on #{slow.map(&:parent_name).join('/')}"
+      end
+
+      if service_changes = service_change_line_directions.presence
+        strs << "running on #{service_changes.map(&:name).join('/')}"
+      end
+
+      if no_service = lines_not_in_service.presence
+        strs << "not running on #{no_service.map(&:name).join('/')}"
+      end
+
+      if short_turns = short_turn_destinations.presence
+        strs << "terminating at #{short_turn_destinations.join('/')}"
+      end
+
+      return unless strs.present?
+
+      if strs.size > 1
+        strs[strs.size - 1] = "and #{strs.last}"
+      end
+
+      @status_summary = "#{intro}#{strs.join(', ')}."
+    end
+
+    def delayed_line_directions
+      line_directions.select(&:delayed?)
+    end
+
+    def long_headway_line_directions
+      line_directions.select(&:headway_gap?)
+    end
+
+    def slow_line_directions
+      line_directions.select(&:slow?)
+    end
+
+    def service_change_line_directions
+      line_directions.select(&:rerouted?)
+    end
+
+    def short_turn_destinations
+      destinations if (scheduled_destinations - destinations).present?
     end
 
     def push_trip(trip)

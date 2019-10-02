@@ -94,84 +94,14 @@ class TrainModal extends React.Component {
 
   renderSummary() {
     const { train } = this.props;
-    const directions = ["south", "north"];
-
-    if (train.status === "No Service") {
-      return;
+    let out = [];
+    if (train.service_summaries["south"]) {
+      out.push(<Header as='h4' inverted key="south">{train.service_summaries["south"].replace(/ - /g, "–")}</Header>)
     }
-
-    let results = directions.map(direction => {
-      const delays = this.delayedLines(direction);
-      const longHeadways = this.longHeadwayLines(direction);
-      const slow = this.slowLines(direction);
-      const noService = this.noServiceOnLines(direction);
-      const serviceChanges = this.serviceChangeOnLines(direction);
-      const shortTurns = this.shortTurnDestinations(direction);
-      let strs = [];
-      if (delays) {
-        strs.push(`experiencing delays on ${delays}`);
-      }
-      if (longHeadways) {
-        strs.push(`experiencing longer than normal wait times on ${longHeadways}`);
-      }
-      if (slow) {
-        strs.push(`traveling slowly on ${slow}`);
-      }
-      if (serviceChanges) {
-        strs.push(`running on ${serviceChanges}`);
-      }
-      if (noService) {
-        strs.push(`not running on ${noService}`);
-      }
-      if (shortTurns) {
-        strs.push(`terminating at ${shortTurns}`);
-      }
-      if (strs.length) {
-        const destinations = (train.scheduled_destinations[direction].length && train.scheduled_destinations[direction]) || train.destinations[direction]
-        const intro = `${destinations.map(dest => dest.replace(/ - /g, "–")).join('/')}-bound trains are `;
-        if (strs.length > 1) {
-          strs[strs.length - 1] = `and ${strs[strs.length - 1]}`;
-        }
-        return intro + strs.join(", ") + ".";
-      }
-    });
-    results = results.filter(r => r !== null);
-    if (results) {
-      return results.map((r, i) => <Header as='h4' inverted key={i}>{r}</Header>);
+    if (train.service_summaries["north"]) {
+      out.push(<Header as='h4' inverted key="north">{train.service_summaries["north"].replace(/ - /g, "–")}</Header>)
     }
-  }
-
-  delayedLines(direction) {
-    const { train } = this.props;
-    return train[direction].filter(line => line.delay >= 5).map(line => line.parent_name).join("/");
-  }
-
-  longHeadwayLines(direction) {
-    const { train } = this.props;
-    return train[direction].filter(line => line.max_scheduled_headway && ((line.max_actual_headway - line.max_scheduled_headway) >= 3)).map(line => line.parent_name).join("/");
-  }
-
-  slowLines(direction) {
-    const { train } = this.props;
-    return train[direction].filter(line => line.travel_time >= 0.25 && line.travel_time_discrepancy >= 2).map(line => line.parent_name).join("/");
-  }
-
-  noServiceOnLines(direction) {
-    const { train } = this.props;
-    return train.lines_not_in_service[direction].map(line => line.name).join("/");
-  }
-
-  shortTurnDestinations(direction) {
-    const { train } = this.props;
-    if (train.scheduled_destinations[direction].every(dest => train.destinations[direction].includes(dest))) {
-      return;
-    }
-    return train.destinations[direction].map(dest => dest.replace(/ - /g, "–")).join("/");
-  }
-
-  serviceChangeOnLines(direction) {
-    const { train } = this.props;
-    return train[direction].filter(line => line.max_scheduled_headway === null).map(line => line.name.replace('via ', '')).join("/");
+    return out;
   }
 
   render() {
