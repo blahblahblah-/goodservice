@@ -21,32 +21,13 @@ module Display
       return @status if @status
       return @status = "No Data" if unavailable
 
-      if delay >= 5
-        @status = "Delay"
-      elsif directions.any? { |_, d|
-        d.line_directions.any? { |ld|
-          (ld.max_actual_headway.present? && ld.max_scheduled_headway.nil? && d.line_directions.none? { |ld2|
-            ld.line == ld2.line && ld2.max_actual_headway.present? && ld2.max_scheduled_headway.present?
-          }) ||
-          (ld.max_scheduled_headway.present? && ld.max_actual_headway.nil? && max_headway_discrepancy.present?)
-        }
-      }
-        @status = "Service Change"
-      elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
-        @status = "Service Change"
-      elsif any_lines_not_in_service? && any_lines_in_service?
-        @status = "Service Change"
-      elsif max_headway_discrepancy.nil?
-        if route.scheduled?
-          @status = "No Service"
-        else
-          @status = "Not Scheduled"
-        end
-      elsif max_headway_discrepancy > 2 || (max_travel_time >= 0.25 && max_travel_time_discrepancy >= 2)
-        @status = "Not Good"
-      else
-        @status = "Good Service"
+      @status = ["Delay", "Service Change", "Not Good", "Good Service", "No Service"].find do |s|
+        directions.any? { |_, d| d.status == s }
       end
+
+      return @status if @status
+
+      @status = "Not Scheduled"
     end
 
     def max_travel_time

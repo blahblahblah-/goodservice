@@ -10,6 +10,30 @@ module Display
       @stops = stops
     end
 
+    def status
+      return @status if @status
+      if line_directions.any?(&:delayed?)
+        @status = "Delay"
+      elsif line_directions.empty?
+        @status = "Not Scheduled"
+      elsif line_directions.all? { |ld| ld.no_service? }
+        @status = "No Service"
+      elsif line_directions.any? { |ld|
+          (ld.rerouted? && line_directions.none? { |ld2| ld.line == ld2.line && ld2.normal_routing?}) ||
+          (ld.no_service? && trips.present?)
+        }
+        @status = "Service Change"
+      elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
+        @status = "Service Change"
+      elsif lines_not_in_service.present?
+        @status = "Service Change"
+      elsif line_directions.any? { |ld| ld.slow? || ld.headway_gap? }
+        @status = "Not Good"
+      else
+        @status = "Good Service"
+      end
+    end
+
     def push_trip(trip)
       trips << trip
     end

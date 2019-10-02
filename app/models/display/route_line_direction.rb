@@ -14,6 +14,31 @@ module Display
       @stops = stops
     end
 
+    def delayed?
+      delay >= 5
+    end
+
+    def rerouted?
+      trips.present? && max_scheduled_headway.nil?
+    end
+
+    def normal_routing?
+      trips.present? && max_scheduled_headway.present?
+    end
+
+    def no_service?
+      trips.empty?
+    end
+
+    def slow?
+      return false unless travel_time
+      travel_time >= 0.25 && travel_time_discrepancy >= 2
+    end
+
+    def headway_gap?
+      headway_discrepancy && headway_discrepancy > 2
+    end
+
     def delay
       return @delay if @delay
 
