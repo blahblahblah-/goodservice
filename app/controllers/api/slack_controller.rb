@@ -236,12 +236,12 @@ class Api::SlackController < ApplicationController
       }
     end
 
-    unless route_data[:lines_not_in_service][direction].blank?
+    unless route_data[:service_summaries][direction].blank?
       result << {
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "_No service on #{route_data[:lines_not_in_service][direction].map { |l| l[:name] }.join(", ")}_"
+          "text": route_data[:service_summaries][direction]
         }
       }
     end
