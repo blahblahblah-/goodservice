@@ -14,10 +14,10 @@ module Display
       return @status if @status
       if line_directions.any?(&:delayed?)
         @status = "Delay"
+      elsif line_directions.empty? && lines_not_in_service.any?
+        @status = "No Service"
       elsif line_directions.empty?
         @status = "Not Scheduled"
-      elsif line_directions.all? { |ld| ld.no_service? }
-        @status = "No Service"
       elsif line_directions.any? { |ld|
           (ld.rerouted? && line_directions.none? { |ld2| ld.line == ld2.line && ld2.normal_routing?})
         }
