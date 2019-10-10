@@ -1,6 +1,8 @@
 module Display
   class RouteDirection
 
+    attr_accessor :trips
+
     def initialize(route_id, direction, stop_times, timestamp, stops)
       @route_id = route_id
       @direction = direction
@@ -165,7 +167,7 @@ module Display
 
     private
 
-    attr_accessor :trips, :stop_times, :route_id, :timestamp, :direction, :stops
+    attr_accessor :stop_times, :route_id, :timestamp, :direction, :stops
 
     def line_directions_data
       return @line_directions_data if @line_directions_data

@@ -498,6 +498,33 @@ class ScheduleProcessor
     end
   end
 
+def self.arrivals_info(force_refresh: false)
+    return Rails.cache.read("arrivals_info") if !force_refresh && Rails.cache.read("arrivals_info")
+    processor = self.instance
+
+    results = Hash[processor.routes.reject { |_, route|
+      !route.visible? && !route.scheduled?
+    }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
+      [route.internal_id, {
+          id: route.internal_id,
+          arrival_times: {
+            north: route.directions[1].trips.map(&:arrival_times),
+            south: route.directions[3].trips.map(&:arrival_times),
+          },
+        }
+      ]
+    end]
+
+    data = {
+      routes: results,
+      timestamp: Time.current.iso8601,
+    }
+
+    Rails.cache.write("arrivals_info", data, expires_in: 1.day)
+
+    data
+  end
+
   private
 
   attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :recent_trips, :unavailable_feeds

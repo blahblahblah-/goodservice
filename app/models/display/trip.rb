@@ -32,6 +32,15 @@ module Display
       }.uniq
     end
 
+    def arrival_times
+      trip.stop_time_update.map do |update|
+        {
+          stop_id: update.stop_id,
+          estimated_time: (update&.departure || update&.arrival).time
+        }
+      end
+    end
+
     def lines
       line_directions.map(&:line)
     end

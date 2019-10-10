@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :info, only: [:index]
     resources :routes, only: [:index]
     resources :stats, only: [:index]
+    resources :arrivals, only: [:index]
     resources :lines, only: [:show] do
       get 'archive/:past_days', to:'lines#archive'
     end
