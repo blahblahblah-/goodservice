@@ -21,9 +21,11 @@ module Display
       return @status if @status
       return @status = "No Data" if unavailable
 
-      @status = ["Delay", "Service Change", "Not Good", "Good Service", "No Service"].find do |s|
+      @status = ["Delay", "Service Change", "Not Good", "Good Service"].find do |s|
         directions.any? { |_, d| d.status == s }
       end
+
+      @status = "No Service" if directions.all? { |_, d| d.status == "No Service" }
 
       return @status if @status
 
