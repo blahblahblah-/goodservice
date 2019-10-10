@@ -126,6 +126,10 @@ class ScheduleProcessor
           north: route.directions[1].status_summary,
           south: route.directions[3].status_summary,
         },
+        direction_statuses: {
+          north: route.directions[1].status,
+          south: route.directions[3].status,
+        },
         north: route.directions[1].line_directions.reject { |ld|
             ld.max_actual_headway.nil?
           }.map { |ld|
