@@ -116,7 +116,7 @@ class LandingPage extends React.Component {
     return (
       <Header as='h5' inverted>
         Introducing: <a href="https://www.theweekendest.com" target="_blank">The Weekendest</a> - a real-time New York City subway map with
-        up-to-date routing and real-time arrival times, powered by goodservice.io
+        up-to-date routing and real-time arrival times, powered by goodservice.io – <a href="https://medium.com/good-service/introducing-the-weekendest-dynamic-map-for-new-york-city-subway-35b4a0017920" target="_blank">blog post</a>
         {/*Blog Post: <a href={blogPost.link} target="_blank">{blogPost.title}</a>*/}
       </Header>
     )
