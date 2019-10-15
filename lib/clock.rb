@@ -28,12 +28,10 @@ module Clockwork
     ScheduleProcessor.stats_info(force_refresh: true)
     statsTime = Time.current
     puts "Processed stats in #{statsTime - processTime} seconds"
-    if (Time.current.min % 5 == 1)
-      puts "Updating Routes"
-      ScheduleProcessor.routes_info(force_refresh: true)
-      routesTime = Time.current
-      puts "Processed routes info in #{routesTime - statsTime} seconds"
-    end
+    puts "Updating Routes"
+    ScheduleProcessor.routes_info(force_refresh: true)
+    routesTime = Time.current
+    puts "Processed routes info in #{routesTime - statsTime} seconds"
     ScheduleProcessor.arrivals_info(force_refresh: true)
     arrivals_time = Time.current
     puts "Processed arrivals info in #{arrivals_time - statsTime} seconds"
