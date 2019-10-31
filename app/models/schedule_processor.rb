@@ -370,6 +370,13 @@ class ScheduleProcessor
       timestamp: Time.current.iso8601,
     }
 
+    prev_results = Rails.cache.read("routes-info-results")
+    if prev_results
+      puts "Diff: #{Hashdiff.diff(prev_results, results)}"
+      puts "Old checksum: #{Digest::MD5.hexdigest(Marshal::dump(prev_results))}"
+      puts "New checksum: #{Digest::MD5.hexdigest(Marshal::dump(results))}"
+    end
+    Rails.cache.write("routes-info-results", results, expires_in: 1.day)
     Rails.cache.write("routes-info", data, expires_in: 1.day)
 
     data
