@@ -1,6 +1,7 @@
 require 'nyct-subway.pb'
 require 'net/http'
 require 'uri'
+require 'digest/md5'
 
 class ScheduleProcessor
   include Singleton
@@ -365,6 +366,7 @@ class ScheduleProcessor
     data = {
       routes: results,
       stops: stop_results,
+      checksum: Digest::MD5.hexdigest(Marshal::dump(results)),
       timestamp: Time.current.iso8601,
     }
 
