@@ -265,7 +265,7 @@ class TrainModalMapPane extends React.Component {
 
                 if (stopId === "") {
                   segments.branches.splice(0, 1);
-                  currentBranches = [0];
+                  currentBranches = [];
                   currentProblemSection = null;
                   currentProblemTop = null;
                   currentProblemBottom = null;
