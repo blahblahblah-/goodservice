@@ -1,0 +1,9 @@
+{
+  "name": "goodservice.io",
+  "short_name": "goodservice.io",
+  "start_url": "https://www.goodservice.io",
+  "display": "fullscreen",
+  "background_color": "#000000",
+  "description": "status page for new york city subway",
+  "scope": "https://www.goodservice.io/"
+}
