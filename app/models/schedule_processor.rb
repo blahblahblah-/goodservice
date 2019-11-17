@@ -151,6 +151,9 @@ class ScheduleProcessor
             actual_runtimes: ld.actual_runtimes,
             first_stops: ld.first_stops,
             last_stops: ld.last_stops,
+            delayed: ld.delayed?,
+            slow: ld.slow?,
+            headway_gap: ld.headway_gap?,
           }
         },
         south: route.directions[3].line_directions.reject { |ld|
@@ -173,6 +176,9 @@ class ScheduleProcessor
             actual_runtimes: ld.actual_runtimes,
             first_stops: ld.first_stops,
             last_stops: ld.last_stops,
+            delayed: ld.delayed?,
+            slow: ld.slow?,
+            headway_gap: ld.headway_gap?,
           }
         },
         lines_not_in_service: {
