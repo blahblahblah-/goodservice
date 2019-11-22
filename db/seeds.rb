@@ -342,8 +342,8 @@ LocalLineDirection.create(line: cpw, express_line_direction: cpwexn, direction: 
 LocalLineDirection.create(line: cpw, express_line_direction: cpwexs, direction: 3, first_stop: "A16S", last_stop: "A21S")
 LineDirection.create(line: wh, direction: 1, first_stop: "A07N", first_branch_stop: "A09N", first_alternate_branch_stop: "A09N", last_stop: "A02N")
 LineDirection.create(line: wh, direction: 3, first_stop: "A02S", last_branch_stop: "A09S", last_alternate_branch_stop: "A09S", last_stop: "A07S")
-LineDirection.create(line: si, direction: 1, first_stop: "S31N", last_stop: "S09N")
-LineDirection.create(line: si, direction: 3, first_stop: "S09S", last_stop: "S31S")
+LineDirection.create(line: si, direction: 1, first_stop: "S09N", last_stop: "S31N")
+LineDirection.create(line: si, direction: 3, first_stop: "S31S", last_stop: "S09S")
 
 LineDirection.create(line: canarsie2, direction: 1, first_stop: "L29N", last_stop: "L24N", last_branch_stop: "L22N", last_alternate_branch_stop: "L22N")
 LineDirection.create(line: canarsie2, direction: 3, first_stop: "L24S", last_stop: "L29S", first_branch_stop: "L22S", first_alternate_branch_stop: "L22S")
