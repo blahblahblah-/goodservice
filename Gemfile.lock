@@ -147,7 +147,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.10)
     public_suffix (3.0.3)
-    puma (3.12.1)
+    puma (3.12.2)
     rack (2.0.6)
     rack-cors (1.0.5)
       rack (>= 1.6.0)
@@ -270,7 +270,7 @@ DEPENDENCIES
   parallel
   pg
   pry-byebug
-  puma (~> 3.11)
+  puma (~> 3.12)
   rack-cors
   rails (~> 5.2.2.1)
   redis (~> 4.0)
