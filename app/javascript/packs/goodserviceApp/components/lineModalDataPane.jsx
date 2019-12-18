@@ -206,9 +206,9 @@ class LineModalDataPane extends React.Component {
       return (
         <div>
           <Divider inverted horizontal style={{marginTop: "2em"}}>
-            <Header size='medium' inverted>THROUGHPUT PAST HOUR (TPH)</Header>
+            <Header size='medium' inverted>{(width < Responsive.onlyMobile.maxWidth) ? "TRAINS LAST HOUR" : "THROUGHPUT PAST HOUR (TPH)" }</Header>
           </Divider>
-          <Statistic.Group widths={(width < Responsive.onlyMobile.maxWidth) ? 1 : 2} size="small" inverted>
+          <Statistic.Group widths={2} size="small" inverted>
             <Statistic>
               <Statistic.Label>To {stats.destinations.south.join(', ').replace(/ - /g, "–") || "--"}</Statistic.Label>
               <Statistic.Value>
@@ -281,7 +281,7 @@ class LineModalDataPane extends React.Component {
         { this.loading() }
         { this.renderThroughput() }
         <Divider inverted horizontal style={{marginTop: "2em"}}>
-          <Header size='medium' inverted>COMPARISON OF ACTUAL RUNTIME VS. SCHEDULED RUNTIME</Header>
+          <Header size='medium' inverted>{(width < Responsive.onlyMobile.maxWidth) ? "ACTUAL VS. SCHEDULED RUNTIME" : "COMPARISON OF ACTUAL RUNTIME VS. SCHEDULED RUNTIME" }</Header>
         </Divider>
         { this.graph() }
         <Menu widths={8} style={{margin: '1em 0'}} attached='bottom' inverted>
