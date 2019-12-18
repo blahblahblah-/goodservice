@@ -221,7 +221,7 @@ class LineDirection < ActiveRecord::Base
       last_stops = [last_stop]
     end
 
-    last = recent_stop_times(last_stops, time_range: 1.hour)
+    last = recent_stop_times(last_stops)
 
     # M train shuffle
     if line.name == "Williamsburg Bridge"
@@ -264,9 +264,9 @@ class LineDirection < ActiveRecord::Base
     @actual_throughput = last.map { |_, ls| ls.size }.sum
   end
 
-  def recent_stop_times(stops, time_range: 60.minutes)
+  def recent_stop_times(stops, time_range: 1.hour)
     stop_key = stops.is_a?(Array) ? stops.join('-') : stops
-    times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{StopTime.rounded_time}", expires_in: 5.minutes) do
+    times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{StopTime.rounded_time}-#{time_range.to_i}", expires_in: 5.minutes) do
       StopTime.recent(time_range: time_range).where(stop_internal_id: stops).to_a
     end
   end
