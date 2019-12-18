@@ -1,5 +1,6 @@
 module Display
   class RouteLineDirection
+    require 'descriptive_statistics'
 
     delegate :name, :boroughs, :travel_time, :travel_time_discrepancy, :parent_name, :first_stops, :last_stops, :line, to: :line_direction
 
@@ -56,6 +57,10 @@ module Display
       actual_headways.sort[i]
     end
 
+    def actual_headway_std_dev
+      actual_headways.standard_deviation
+    end
+
     def min_actual_headway
       actual_headways.min
     end
@@ -67,6 +72,10 @@ module Display
     def median_scheduled_headway
       i = scheduled_headways.size / 2
       scheduled_headways.sort[i]
+    end
+
+    def scheduled_headway_std_dev
+      scheduled_headways.standard_deviation
     end
 
     def min_scheduled_headway

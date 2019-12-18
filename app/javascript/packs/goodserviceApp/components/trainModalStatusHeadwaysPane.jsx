@@ -44,7 +44,7 @@ class TrainModalStatusHeadwaysPane extends React.Component {
               {isMobile ? "+" : "Max"}
             </Table.HeaderCell>
             <Table.HeaderCell textAlign='center'>
-              {isMobile ? "~" : "Median"}
+              {isMobile ? "~/σ" : "Median/Std Dev"}
             </Table.HeaderCell>
             <Table.HeaderCell textAlign='center'>
               {isMobile ? "-" : "Min"}
@@ -53,7 +53,7 @@ class TrainModalStatusHeadwaysPane extends React.Component {
               {isMobile ? "+" : "Max"}
             </Table.HeaderCell>
             <Table.HeaderCell textAlign='center'>
-              {isMobile ? "~" : "Median"}
+              {isMobile ? "~/σ" : "Median/Std Dev"}
             </Table.HeaderCell>
             <Table.HeaderCell textAlign='center'>
               {isMobile ? "-" : "Min"}
@@ -78,7 +78,7 @@ class TrainModalStatusHeadwaysPane extends React.Component {
             {this.renderValue(obj.max_actual_headway, this.cellColor(obj.max_scheduled_headway, obj.max_actual_headway))}
           </Table.Cell>
           <Table.Cell textAlign='center'>
-            {this.renderValue(obj.median_actual_headway)}
+            {this.renderValue(`${obj.median_actual_headway}/${Math.round(obj.actual_headway_std_dev)}`)}
           </Table.Cell>
           <Table.Cell textAlign='center'>
             {this.renderValue(obj.min_actual_headway)}
@@ -87,7 +87,7 @@ class TrainModalStatusHeadwaysPane extends React.Component {
             {this.renderValue(obj.max_scheduled_headway || obj.max_scheduled_headway === 0 && "0" || "--")}
           </Table.Cell>
           <Table.Cell textAlign='center'>
-            {this.renderValue(obj.median_scheduled_headway || obj.median_scheduled_headway === 0 && "0" || "--")}
+            {this.renderValue(this.renderMedianAndStdDev(obj))}
           </Table.Cell>
           <Table.Cell textAlign='center'>
             {this.renderValue(obj.min_scheduled_headway || obj.min_scheduled_headway === 0 && "0" || "--")}
@@ -95,6 +95,13 @@ class TrainModalStatusHeadwaysPane extends React.Component {
         </Table.Row>
       )
     });
+  }
+
+  renderMedianAndStdDev(obj) {
+    if (obj['median_scheduled_headway'] == undefined || obj['median_scheduled_headway'] == null) {
+      return "--"
+    }
+    return `${obj['median_scheduled_headway']}/${Math.round(obj['scheduled_headway_std_dev'])}`;
   }
 
   renderValue(data, color) {

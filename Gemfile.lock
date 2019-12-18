@@ -80,6 +80,7 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
     crass (1.0.5)
+    descriptive_statistics (2.5.1)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
@@ -262,6 +263,7 @@ DEPENDENCIES
   chromedriver-helper
   clockwork
   coffee-rails (~> 4.2)
+  descriptive_statistics
   gtfs-realtime-bindings
   hashdiff
   hiredis
