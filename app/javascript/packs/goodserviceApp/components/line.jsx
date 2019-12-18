@@ -157,9 +157,9 @@ class Line extends React.Component {
   }
 
   render() {
-    const { line, borough, starredPane, slowZonesPane, onFavLineChange, favLines, width } = this.props;
+    const { line, borough, starredPane, slowZonesPane, onFavLineChange, favLines, width, stats } = this.props;
     return(
-      <Responsive as={LineModal} line={line} borough={borough} starredPane={starredPane || slowZonesPane}
+      <Responsive as={LineModal} line={line} stats={stats} borough={borough} starredPane={starredPane || slowZonesPane}
         onFavLineChange={onFavLineChange} favLines={favLines} fireOnMount
         onClose={this.handleClose} width={width} trigger={
         <Segment className='line-button' as={Button} fluid style={{minHeight: 92}} onClick={this.handleClick}>

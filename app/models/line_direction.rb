@@ -212,14 +212,62 @@ class LineDirection < ActiveRecord::Base
     @actual_runtimes = results
   end
 
-  def recent_stop_times(stops, time_range: nil)
+  def scheduled_throughput
+    return @scheduled_throughput if @scheduled_throughput
+
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
+    else
+      last_stops = [last_stop]
+    end
+
+    last = recent_stop_times(last_stops, time_range: 1.hour)
+
+    # M train shuffle
+    if line.name == "Williamsburg Bridge"
+      last.reject! { |st| st.trip.route_internal_id == 'M'}
+      new_direction = (last_stop[3] == 'S') ? 'N' : 'S'
+      modified_last_stops = last_stops.map do |stop_name|
+        "#{stop_name[0..2]}#{new_direction}"
+      end
+      last = StopTime.recent.joins(:trip).where(stop_internal_id: modified_last_stops, trips: {route_internal_id: 'M'})
+    end
+
+    @scheduled_throughput = last.size
+  end
+
+  def actual_throughput
+    return @actual_throughput if @actual_throughput
+
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
+    else
+      last_stops = [last_stop]
+    end
+
+    # M train shuffle
+    if line.name == "Williamsburg Bridge"
+      new_direction = (last_stop[3] == 'S') ? 'N' : 'S'
+      last_stops = last_stops.map do |stop_name|
+        if stop_name[0..2] == 'D21'
+          "#{stop_name[0..2]}#{new_direction}"
+        else
+          stop_name
+        end
+      end
+    end
+
+    last = Hash[last_stops.map { |ls| [ls, Rails.cache.read("stoptime-#{ls}") || {}] }]
+
+    last.each { |_, ls| ls.reject! { |_, v| v < Time.current.to_i - 1.hour} }
+
+    @actual_throughput = last.map { |_, ls| ls.size }.sum
+  end
+
+  def recent_stop_times(stops, time_range: 60.minutes)
     stop_key = stops.is_a?(Array) ? stops.join('-') : stops
     times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{StopTime.rounded_time}", expires_in: 5.minutes) do
-      StopTime.recent(time_range: 1.hour).where(stop_internal_id: stops).to_a
+      StopTime.recent(time_range: time_range).where(stop_internal_id: stops).to_a
     end
-    if time_range
-      return times.select { |t| t.departure_time <= (StopTime.rounded_time - time_range).to_i}
-    end
-    times
   end
 end

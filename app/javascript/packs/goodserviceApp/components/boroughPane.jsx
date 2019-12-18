@@ -6,8 +6,8 @@ import { Helmet } from "react-helmet";
 
 class BoroughPane extends React.Component {
   render() {
-    const { width } = this.props;
-    const title = "goodservice.io beta - Lines - " + this.props.borough;
+    const { width, lines, borough, lineStats, onFavLineChange, favLines } = this.props;
+    const title = "goodservice.io beta - Lines - " + borough;
     return(
       <Tab.Pane>
         <Helmet>
@@ -17,8 +17,8 @@ class BoroughPane extends React.Component {
         </Helmet>
         <Grid stackable columns={2}>
           {
-            map(this.props.lines, line => {
-              return <Grid.Column key={line.name}><Line line={line} borough={this.props.borough} onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} /></Grid.Column>
+            map(lines, line => {
+              return <Grid.Column key={line.name}><Line line={line} borough={borough} stats={lineStats[line.id]} onFavLineChange={onFavLineChange} favLines={favLines} width={width} /></Grid.Column>
             })
           }
         </Grid>

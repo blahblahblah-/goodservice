@@ -24,7 +24,7 @@ class LinePane extends React.Component {
   state = {}
 
   panes() {
-    const { width } = this.props;
+    const { width, lines, favLines, onFavLineChange, lineStats } = this.props;
     return map(BOROUGHS, borough => {
       const { width } = this.props;
       var boroughName = borough;
@@ -37,8 +37,8 @@ class LinePane extends React.Component {
       }
       return {
         menuItem: <Menu.Item as={Link} to={'/boroughs/' + borough.replace(/\s+/g, '-').toLowerCase()} key={borough}>{boroughName}</Menu.Item>,
-        render: () => <BoroughPane borough={borough} lines={this.props.lines[borough]}
-          onFavLineChange={this.props.onFavLineChange} favLines={this.props.favLines} width={width} />
+        render: () => <BoroughPane borough={borough} lines={lines[borough]} lineStats={lineStats}
+          onFavLineChange={onFavLineChange} favLines={favLines} width={width} />
       }
     })
   }

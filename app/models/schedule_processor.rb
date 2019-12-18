@@ -468,8 +468,36 @@ class ScheduleProcessor
       ]
     end]
 
+    line_results = Hash[processor.lines.map do |id, line|
+      [id, {
+          id: line.id.to_s,
+          destinations: {
+            north: line.destinations[1],
+            south: line.destinations[3],
+          },
+          throughputs: {
+            north: line.directions[1].map do |ld|
+              {
+                type: ld.type,
+                scheduled: ld.scheduled_throughput,
+                actual: ld.actual_throughput
+              }
+            end,
+            south: line.directions[3].map do |ld|
+              {
+                type: ld.type,
+                scheduled: ld.scheduled_throughput,
+                actual: ld.actual_throughput
+              }
+            end
+          }
+        }
+      ]
+    end]
+
     data = {
       status: results,
+      lines: line_results,
       timestamp: Time.current.iso8601,
     }
 

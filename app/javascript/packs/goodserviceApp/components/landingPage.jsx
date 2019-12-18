@@ -28,6 +28,7 @@ class LandingPage extends React.Component {
       trains: [],
       lines: [],
       trainStats: [],
+      lineStats: {},
       routingData: {},
       stops: {},
       loading: false,
@@ -123,7 +124,7 @@ class LandingPage extends React.Component {
   }
 
   panes() {
-    const { trains, lines, favTrains, favLines, trainStats, width, routing, routingTimestamp, stops } = this.state;
+    const { trains, lines, favTrains, favLines, trainStats, lineStats, width, routing, routingTimestamp, stops } = this.state;
     return [
       { menuItem: <Menu.Item as={Link} to='/trains' key='train'>Trains</Menu.Item>,
         render: () =>
@@ -134,7 +135,7 @@ class LandingPage extends React.Component {
       { menuItem: <Menu.Item as={Link} to='/boroughs' key='line'>Lines</Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <LinePane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
+            <LinePane lines={lines} onFavLineChange={this.handleFavLineChange} lineStats={lineStats} favLines={favLines} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/slow-zones' key='slow-zones'>Slow Zones</Menu.Item>,
@@ -271,7 +272,7 @@ class LandingPage extends React.Component {
 
   fetchData() {
     if (TEST_DATA) {
-      this.setState({ trains: sampleData.routes, lines: sampleData.lines, trainStats: sampleStats.status, routing: sampleRoutes.routes, routingTimestamp: sampleRoutes.timestamp, stops: sampleRoutes.stops, loading: false });
+      this.setState({ trains: sampleData.routes, lines: sampleData.lines, trainStats: sampleStats.status, lineStats: sampleStats.lines, routing: sampleRoutes.routes, routingTimestamp: sampleRoutes.timestamp, stops: sampleRoutes.stops, loading: false });
     } else {
       fetch(API_URL)
         .then(response => response.json())
@@ -279,7 +280,7 @@ class LandingPage extends React.Component {
 
       fetch(STATS_URL)
         .then(response => response.json())
-        .then(data => this.setState({ trainStats: data.status }))
+        .then(data => this.setState({ trainStats: data.status, lineStats: data.lines }))
 
       fetch(ROUTES_URL)
         .then(response => response.json())

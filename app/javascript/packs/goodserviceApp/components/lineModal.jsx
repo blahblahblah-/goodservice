@@ -34,7 +34,7 @@ class LineModal extends React.Component {
   }
 
   panes() {
-    const { line, width, match, starredPane } = this.props;
+    const { line, width, match, starredPane, stats } = this.props;
     const baseUrl = starredPane ? match.url.split('/').slice(0, 3).join('/') : match.url.split('/').slice(0, 4).join('/');
     const isMobile = (width <= Responsive.onlyMobile.maxWidth);
     return [
@@ -45,7 +45,7 @@ class LineModal extends React.Component {
       },
       { menuItem: <Menu.Item as={Link} to={`${baseUrl}/stats`} key='stats'>Stats</Menu.Item>, render: () =>
         <Tab.Pane attached={false} basic={true} key='stats' style={isMobile ? {padding: '0'} : {padding: '1em 0'}}>
-          <LineModalDataPane line={line} width={width} />
+          <LineModalDataPane line={line} width={width} stats={stats} />
         </Tab.Pane>
       },
     ];

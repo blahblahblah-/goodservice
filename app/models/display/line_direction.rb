@@ -2,7 +2,7 @@ module Display
   class LineDirection
     require 'descriptive_statistics'
 
-    delegate :name, :alternate_name, :direction, to: :line_direction
+    delegate :name, :alternate_name, :direction, :scheduled_throughput, :actual_throughput, to: :line_direction
     attr_accessor :line_direction
 
     def initialize(line_direction, stop_times, timestamp, stops, routes_data)
