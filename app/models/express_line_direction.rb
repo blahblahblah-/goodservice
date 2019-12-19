@@ -178,9 +178,9 @@ class ExpressLineDirection < LineDirection
 
     return @actual_throughput = 0 unless last.any?(&:present?) && first.any?(&:present?)
 
-    local_stop.reject! { |_, v| v < Time.current.to_i - 2.hours}
-    first.each { |_, fs| fs.reject! { |_, v| v < Time.current.to_i - 2.hours} }
-    last.each { |_, ls| ls.reject! { |_, v| v < Time.current.to_i - 1.hour} }
+    local_stop.reject! { |_, v| v < (Time.current - 2.hours).to_i}
+    first.each { |_, fs| fs.reject! { |_, v| v < (Time.current - 2.hours).to_i }}
+    last.each { |_, ls| ls.reject! { |_, v| v < (Time.current - 1.hour).to_i }}
 
     last.each { |ls_stop_id, ls_trips|
       ls_trips.reject! { |trip_id, time|
