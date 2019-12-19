@@ -475,22 +475,6 @@ class ScheduleProcessor
             north: line.destinations[1],
             south: line.destinations[3],
           },
-          throughputs: {
-            north: line.directions[1].map do |ld|
-              {
-                type: ld.type,
-                scheduled: ld.scheduled_throughput,
-                actual: ld.actual_throughput
-              }
-            end,
-            south: line.directions[3].map do |ld|
-              {
-                type: ld.type,
-                scheduled: ld.scheduled_throughput,
-                actual: ld.actual_throughput
-              }
-            end
-          }
         }
       ]
     end]
