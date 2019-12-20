@@ -141,13 +141,13 @@ class LandingPage extends React.Component {
       { menuItem: <Menu.Item as={Link} to='/slow-zones' key='slow-zones'>Slow Zones</Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <SlowZonesPane lines={lines} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
+            <SlowZonesPane lines={lines} onFavLineChange={this.handleFavLineChange} lineStats={lineStats} favLines={favLines} width={width} />
           </Tab.Pane>
       },
       { menuItem: <Menu.Item as={Link} to='/starred' key='starred'><Icon name="star" /></Menu.Item>,
         render: () =>
           <Tab.Pane style={{minHeight: 650}}>
-            <StarredPane trains={trains} trainStats={trainStats} lines={lines} routing={routing} routingTimestamp={routingTimestamp} stops={stops} onFavTrainChange={this.handleFavTrainChange}
+            <StarredPane trains={trains} trainStats={trainStats} lineStats={lineStats} lines={lines} routing={routing} routingTimestamp={routingTimestamp} stops={stops} onFavTrainChange={this.handleFavTrainChange}
               favTrains={favTrains} onFavLineChange={this.handleFavLineChange} favLines={favLines} width={width} />
           </Tab.Pane>
       },
