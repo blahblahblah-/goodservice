@@ -213,20 +213,72 @@ class LineDirection < ActiveRecord::Base
   end
 
   def scheduled_throughput
-    0
+    return @scheduled_throughput if @scheduled_throughput
+
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
+    else
+      last_stops = [last_stop]
+    end
+
+    last = recent_stop_times(last_stops, time_range: 1.hour)
+
+    # M train shuffle
+    if line.name == "Williamsburg Bridge"
+      last.reject! { |st| st.trip.route_internal_id == 'M'}
+      new_direction = (last_stop[3] == 'S') ? 'N' : 'S'
+      modified_last_stops = last_stops.map do |stop_name|
+        "#{stop_name[0..2]}#{new_direction}"
+      end
+      last = StopTime.recent.joins(:trip).where(stop_internal_id: modified_last_stops, trips: {route_internal_id: 'M'})
+    end
+
+    @scheduled_throughput = last.size
   end
 
   def actual_throughput
-    0
+    return @actual_throughput if @actual_throughput
+
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
+    else
+      last_stops = [last_stop]
+    end
+
+    # M train shuffle
+    if line.name == "Williamsburg Bridge"
+      new_direction = (last_stop[3] == 'S') ? 'N' : 'S'
+      last_stops = last_stops.map do |stop_name|
+        if stop_name[0..2] == 'D21'
+          "#{stop_name[0..2]}#{new_direction}"
+        else
+          stop_name
+        end
+      end
+    end
+
+    last = Hash[last_stops.map { |ls| [ls, Rails.cache.read("stoptime-#{ls}") || {}] }]
+
+    last.each { |_, ls| ls.reject! { |_, v| v < Time.current.to_i - 1.hour} }
+
+    @actual_throughput = last.map { |_, ls| ls.size }.sum
   end
 
   def recent_stop_times(stops, time_range: nil)
     stop_key = stops.is_a?(Array) ? stops.join('-') : stops
-    times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{StopTime.rounded_time}", expires_in: 5.minutes) do
-      StopTime.recent(time_range: 1.hour).where(stop_internal_id: stops).to_a
+    rounded_time = StopTime.rounded_time
+    times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{rounded_time}", expires_in: 5.minutes) do
+      StopTime.recent(time_range: 2.hours).where(stop_internal_id: stops).to_a
     end
     if time_range
-      return times.select { |t| t.departure_time <= (StopTime.rounded_time - time_range).to_i}
+      if rounded_time.hour < 4
+        return times.select { |t|
+          (t.departure_time >= rounded_time - rounded_time.beginning_of_day - time_range.to_i && t.departure_time < rounded_time - rounded_time.beginning_of_day) || 
+          t.departure_time >= rounded_time - rounded_time.beginning_of_day + StopTime::DAY_IN_MINUTES - time_range.to_i
+        }
+      else
+        return times.select { |t| t.departure_time >= rounded_time - rounded_time.beginning_of_day - time_range.to_i}
+      end
     end
     times
   end

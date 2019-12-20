@@ -200,12 +200,86 @@ class LineModalDataPane extends React.Component {
     )
   }
 
+  renderThroughput() {
+    const { stats, width } = this.props;
+    if (stats) {
+      return (
+        <div>
+          <Divider inverted horizontal style={{marginTop: "2em"}}>
+            <Header size='medium' inverted>{(width < Responsive.onlyMobile.maxWidth) ? "TRAINS LAST HOUR" : "THROUGHPUT PAST HOUR (TPH)" }</Header>
+          </Divider>
+          <Statistic.Group widths={2} size="small" inverted>
+            <Statistic>
+              <Statistic.Label>To {stats.destinations.south.join(', ').replace(/ - /g, "–") || "--"}</Statistic.Label>
+              <Statistic.Value>
+                <Statistic.Group widths={2} size="mini" inverted>
+                  <Statistic>
+                    <Statistic.Value>{this.renderThroughputValue("south", "actual")}</Statistic.Value>
+                    <Statistic.Label style={{fontSize: "0.5em"}}>Actual</Statistic.Label>
+                  </Statistic>
+                  <Statistic>
+                    <Statistic.Value>{this.renderThroughputValue("south", "scheduled")}</Statistic.Value>
+                    <Statistic.Label style={{fontSize: "0.5em"}}>Scheduled</Statistic.Label>
+                  </Statistic>
+                </Statistic.Group>
+              </Statistic.Value>
+            </Statistic>
+            <Statistic>
+              <Statistic.Label>To {stats.destinations.north.join(', ').replace(/ - /g, "–") || "--"}</Statistic.Label>
+              <Statistic.Value>
+                <Statistic.Group widths={2} size="mini" inverted>
+                  <Statistic>
+                    <Statistic.Value>{this.renderThroughputValue("north", "actual")}</Statistic.Value>
+                    <Statistic.Label style={{fontSize: "0.5em"}}>Actual</Statistic.Label>
+                  </Statistic>
+                  <Statistic>
+                    <Statistic.Value>{this.renderThroughputValue("north", "scheduled")}</Statistic.Value>
+                    <Statistic.Label style={{fontSize: "0.5em"}}>Scheduled</Statistic.Label>
+                  </Statistic>
+                </Statistic.Group>
+              </Statistic.Value>
+            </Statistic>
+          </Statistic.Group>
+        </div>
+      )
+    }
+  }
+
+  renderThroughputValue(direction, type) {
+    const { stats } = this.props;
+    const values = stats.throughputs[direction]
+
+    if (values.length === 0) {
+      return "--";
+    }
+
+    if (values.length === 1) {
+      return `${values[0][type]}`;
+    }
+
+    return (
+      <Statistic.Group widths={2} size="small" inverted>
+        {
+          values.map((obj) => {
+            return (
+              <Statistic key={obj.type}>
+                <Statistic.Label style={{fontSize: "0.5em"}}>{obj.type}</Statistic.Label>
+                <Statistic.Value>{obj[type]}</Statistic.Value>
+              </Statistic>
+            )
+          })
+        }
+      </Statistic.Group>
+    )
+  }
+
   render() {
     const { selectedDay } = this.state;
     const { width } = this.props;
     return (
       <Responsive as={Segment} fireOnMount basic style={{padding: "1em 0"}}>
         { this.loading() }
+        { this.renderThroughput() }
         <Divider inverted horizontal style={{marginTop: "2em"}}>
           <Header size='medium' inverted>{(width < Responsive.onlyMobile.maxWidth) ? "ACTUAL VS. SCHEDULED RUNTIME" : "COMPARISON OF ACTUAL RUNTIME VS. SCHEDULED RUNTIME" }</Header>
         </Divider>
