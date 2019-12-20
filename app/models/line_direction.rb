@@ -11,6 +11,8 @@ class LineDirection < ActiveRecord::Base
     NORTH, SOUTH
   ]
 
+  attr_accessor :recent_stop_times
+
   def parent_name
     line.name
   end
@@ -94,8 +96,8 @@ class LineDirection < ActiveRecord::Base
       last_stops = [last_stop]
     end
 
-    first = recent_stop_times(first_stops)
-    last = recent_stop_times(last_stops, time_range: 30.minutes)
+    first = recent_stop_times_by_stops(first_stops)
+    last = recent_stop_times_by_stops(last_stops, time_range: 30.minutes)
 
     # M train shuffle
     if line.name == "Williamsburg Bridge"
@@ -221,7 +223,7 @@ class LineDirection < ActiveRecord::Base
       last_stops = [last_stop]
     end
 
-    last = recent_stop_times(last_stops, time_range: 1.hour)
+    last = recent_stop_times_by_stops(last_stops, time_range: 1.hour)
 
     # M train shuffle
     if line.name == "Williamsburg Bridge"
@@ -264,22 +266,28 @@ class LineDirection < ActiveRecord::Base
     @actual_throughput = last.map { |_, ls| ls.size }.sum
   end
 
-  def recent_stop_times(stops, time_range: nil)
-    stop_key = stops.is_a?(Array) ? stops.join('-') : stops
+  def recent_stop_times_by_stops(stop_ids, time_range: nil)
     rounded_time = StopTime.rounded_time
-    times = Rails.cache.fetch("recent-scheduled-stoptimes-#{stop_key}-#{rounded_time}", expires_in: 5.minutes) do
-      StopTime.recent(time_range: 2.hours).where(stop_internal_id: stops).to_a
+    if !stop_ids.is_a?(Array)
+      stops = [stop_ids]
+    else
+      stops = stop_ids.compact
     end
+
+    stop_times = stops.map { |s|
+      recent_stop_times[s]
+    }.flatten.compact
+
     if time_range
       if rounded_time.hour < 4
-        return times.select { |t|
+        return stop_times.select { |t|
           (t.departure_time >= rounded_time - rounded_time.beginning_of_day - time_range.to_i && t.departure_time < rounded_time - rounded_time.beginning_of_day) || 
           t.departure_time >= rounded_time - rounded_time.beginning_of_day + StopTime::DAY_IN_MINUTES - time_range.to_i
-        }
+        }.uniq { |st| st.trip_internal_id }
       else
-        return times.select { |t| t.departure_time >= rounded_time - rounded_time.beginning_of_day - time_range.to_i}
+        return stop_times.select { |t| t.departure_time >= rounded_time - rounded_time.beginning_of_day - time_range.to_i}.uniq { |st| st.trip_internal_id }
       end
     end
-    times
+    stop_times.uniq { |st| st.trip_internal_id }
   end
 end

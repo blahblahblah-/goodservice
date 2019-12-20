@@ -41,7 +41,7 @@ class ScheduleProcessor
     "7X" => "-7",
   }
 
-  attr_accessor :routes, :lines, :key_stops, :stops
+  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops
 
   def initialize
     refresh_data
@@ -284,7 +284,7 @@ class ScheduleProcessor
     }
 
     log_route_statuses(routes_data)
-    log_line_direction_statuses
+    log_line_direction_statuses(processor.line_directions)
 
     Rails.cache.write("headway-info", data, expires_in: 1.day)
 
@@ -302,9 +302,11 @@ class ScheduleProcessor
     end
   end
 
-  def self.log_line_direction_statuses
-    LineDirection.all.each do |ld|
-      LineDirectionStatus.create(line_direction_id: ld.id, travel_time: ld.travel_time)
+  def self.log_line_direction_statuses(line_directions)
+    line_directions.each do |_, directions|
+      directions.each do |ld|
+        LineDirectionStatus.create(line_direction_id: ld.id, travel_time: ld.travel_time)
+      end
     end
   end
 
@@ -578,7 +580,7 @@ def self.arrivals_info(force_refresh: false)
 
   private
 
-  attr_accessor :line_directions, :stop_times, :timestamp, :stop_names, :recent_trips, :unavailable_feeds
+  attr_accessor :stop_times, :recent_stop_times, :timestamp, :stop_names, :recent_trips, :unavailable_feeds
 
   def self.twitter_client
     return unless ENV["TWITTER_CONSUMER_KEY"]
@@ -678,7 +680,16 @@ def self.arrivals_info(force_refresh: false)
 
   def instantiate_data
     @timestamp = Time.current
-    @stop_times = StopTime.soon.includes(:trip).group_by(&:stop_internal_id)
+    upcoming_stops = LineDirection.all.map { |ld|
+      [ld.first_stop, ld.last_stop, ld.penultimate_stop]
+    }.flatten.compact.uniq.map { |stop|
+      [stop[0..2] + 'N', stop[0..2] + 'S']
+    }.flatten.uniq
+    recent_stops = LineDirection.all.map { |ld|
+      [ld.first_stop, ld.last_stop, ld.first_branch_stop, ld.first_alternate_branch_stop, ld.last_branch_stop, ld.last_alternate_branch_stop]
+    }.flatten.compact.uniq
+    @stop_times = StopTime.soon.includes(:trip).where(stop_internal_id: upcoming_stops).group_by(&:stop_internal_id)
+    @recent_stop_times = StopTime.recent(time_range: 2.hours).where(stop_internal_id: recent_stops).group_by(&:stop_internal_id)
     @stop_names ||= Stop.pluck(:internal_id).to_set
     @stops ||= Stop.all
     @unavailable_feeds = Set.new
@@ -698,6 +709,9 @@ def self.arrivals_info(force_refresh: false)
 
   def instantiate_lines
     pairs = Line.all.includes({line_directions: [:line, :express_line_direction, :local_line_direction]}, :line_boroughs).map do |line|
+      line.line_directions.each do |ld|
+        ld.recent_stop_times = recent_stop_times
+      end
       [line.id, Display::Line.new(line, stop_times, timestamp, stops, routes)]
     end
     @key_stops = LineDirection.all.pluck(
@@ -712,6 +726,12 @@ def self.arrivals_info(force_refresh: false)
 
   def instantiate_line_directions
     @line_directions = LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
+
+    @line_directions.each do |_, directions|
+      directions.each do |ld|
+        ld.recent_stop_times = recent_stop_times
+      end
+    end
 
     # Facilitate M train shuffle
     @line_directions[1].push(*@line_directions[3].select { |ld| ["Broadway (Brooklyn)", "Williamsburg Bridge"].include?(ld.line.name)})

@@ -208,31 +208,31 @@ class LineModalDataPane extends React.Component {
           <Divider inverted horizontal style={{marginTop: "2em"}}>
             <Header size='medium' inverted>{(width < Responsive.onlyMobile.maxWidth) ? "TRAINS LAST HOUR" : "THROUGHPUT PAST HOUR (TPH)" }</Header>
           </Divider>
-          <Statistic.Group widths={2} size="small" inverted>
-            <Statistic>
+          <Statistic.Group widths={(width <= Responsive.onlyMobile.maxWidth) ? 1 : 2} size="small" inverted>
+            <Statistic style={{maxWidth: (width > Responsive.onlyMobile.maxWidth) && "50%"}}>
               <Statistic.Label>To {stats.destinations.south.join(', ').replace(/ - /g, "–") || "--"}</Statistic.Label>
               <Statistic.Value>
                 <Statistic.Group widths={2} size="mini" inverted>
-                  <Statistic>
+                  <Statistic style={{width: (width <= Responsive.onlyMobile.maxWidth) && "100%"}}>
                     <Statistic.Value>{this.renderThroughputValue("south", "actual")}</Statistic.Value>
                     <Statistic.Label style={{fontSize: "0.5em"}}>Actual</Statistic.Label>
                   </Statistic>
-                  <Statistic>
+                  <Statistic style={{width: (width <= Responsive.onlyMobile.maxWidth) && "100%"}}>
                     <Statistic.Value>{this.renderThroughputValue("south", "scheduled")}</Statistic.Value>
                     <Statistic.Label style={{fontSize: "0.5em"}}>Scheduled</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>
               </Statistic.Value>
             </Statistic>
-            <Statistic>
+            <Statistic style={{maxWidth: (width > Responsive.onlyMobile.maxWidth) && "50%"}}>
               <Statistic.Label>To {stats.destinations.north.join(', ').replace(/ - /g, "–") || "--"}</Statistic.Label>
               <Statistic.Value>
                 <Statistic.Group widths={2} size="mini" inverted>
-                  <Statistic>
+                  <Statistic style={{width: (width <= Responsive.onlyMobile.maxWidth) && "100%"}}>
                     <Statistic.Value>{this.renderThroughputValue("north", "actual")}</Statistic.Value>
                     <Statistic.Label style={{fontSize: "0.5em"}}>Actual</Statistic.Label>
                   </Statistic>
-                  <Statistic>
+                  <Statistic style={{width: (width <= Responsive.onlyMobile.maxWidth) && "100%"}}>
                     <Statistic.Value>{this.renderThroughputValue("north", "scheduled")}</Statistic.Value>
                     <Statistic.Label style={{fontSize: "0.5em"}}>Scheduled</Statistic.Label>
                   </Statistic>
@@ -246,7 +246,7 @@ class LineModalDataPane extends React.Component {
   }
 
   renderThroughputValue(direction, type) {
-    const { stats } = this.props;
+    const { stats, width } = this.props;
     const values = stats.throughputs[direction]
 
     if (values.length === 0) {
@@ -258,11 +258,11 @@ class LineModalDataPane extends React.Component {
     }
 
     return (
-      <Statistic.Group widths={2} size="small" inverted>
+      <Statistic.Group widths="two" size="small" inverted>
         {
           values.map((obj) => {
             return (
-              <Statistic key={obj.type}>
+              <Statistic key={obj.type} style={{minWidth: (width <= Responsive.onlyMobile.maxWidth) && "50%"}}>
                 <Statistic.Label style={{fontSize: "0.5em"}}>{obj.type}</Statistic.Label>
                 <Statistic.Value>{obj[type]}</Statistic.Value>
               </Statistic>
