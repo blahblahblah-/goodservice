@@ -10,6 +10,7 @@ const STATUSES = {
   'Delay': 'red',
   'No Service': 'black',
   'Service Change': 'orange',
+  'Slow': 'yellow',
   'Not Good': 'yellow',
   'Good Service': 'green',
   'Not Scheduled': 'black'
@@ -24,7 +25,7 @@ class TrainStatusPane extends React.Component {
   renderGrid() {
     const { width, trains, showStats, trainStats, onFavTrainChange, favTrains, routing, routingTimestamp, stops } = this.props;
     if (width < Responsive.onlyMobile.maxWidth) {
-      const groups = groupBy(trains, 'status');
+      const groups = groupBy(trains, 'secondary_status');
       return (
         <div>
           {
