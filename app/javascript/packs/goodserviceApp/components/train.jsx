@@ -50,7 +50,7 @@ class Train extends React.Component {
     if (this.props.train.status == "No Data") {
       return "--";
     }
-    return this.props.train.status;
+    return this.props.train.secondary_status;
   }
 
   lastDayData() {

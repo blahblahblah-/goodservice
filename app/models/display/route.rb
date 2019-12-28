@@ -32,6 +32,14 @@ module Display
       @status = "Not Scheduled"
     end
 
+    def secondary_status
+      return status unless status == "Not Good"
+
+      ["Slow", "Not Good"].find do |s|
+        directions.any? { |_, d| d.secondary_status == s }
+      end
+    end
+
     def max_travel_time
       @max_travel_time ||= directions.map { |_, rd|
         rd.travel_time

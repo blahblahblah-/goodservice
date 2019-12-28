@@ -35,6 +35,16 @@ module Display
       end
     end
 
+    def secondary_status
+      return status unless status == "Not Good"
+
+      if line_directions.any? { |ld| ld.slow? }
+        return "Slow"
+      end
+
+      return "Not Good"
+    end
+
     def status_summary
       return @status_summary if @status_summary
       return if ["Not Scheduled", "No Service"].include?(status)

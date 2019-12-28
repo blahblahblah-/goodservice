@@ -38,6 +38,16 @@ module Display
       end
     end
 
+    def secondary_status
+      return status unless status == "Not Good"
+
+      if (max_travel_time >= 0.25 && max_travel_time_discrepancy >= 2)
+        return "Slow"
+      end
+
+      return "Not Good"
+    end
+
     def destinations
       Hash[directions.map do |k, v|
         [k, v.map(&:destinations).flatten.uniq.sort]

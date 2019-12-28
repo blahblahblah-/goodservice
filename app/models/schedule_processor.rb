@@ -112,6 +112,7 @@ class ScheduleProcessor
         text_color: route.text_color && "##{route.text_color}",
         alternate_name: route.alternate_name,
         status: route.status,
+        secondary_status: route.secondary_status,
         max_headway_discrepancy: route.max_headway_discrepancy,
         max_travel_time_discrepancy: route.max_travel_time_discrepancy,
         max_travel_time: route.max_travel_time,
@@ -130,6 +131,10 @@ class ScheduleProcessor
         direction_statuses: {
           north: route.directions[1].status,
           south: route.directions[3].status,
+        },
+        direction_secondary_statuses: {
+          north: route.directions[1].secondary_status,
+          south: route.directions[3].secondary_status,
         },
         north: route.directions[1].line_directions.reject { |ld|
             ld.max_actual_headway.nil?
@@ -208,6 +213,7 @@ class ScheduleProcessor
             }
           },
           status: line.status,
+          secondary_status: line.secondary_status,
           max_travel_time: line.max_travel_time,
           max_travel_time_discrepancy: line.max_travel_time_discrepancy,
           max_headway_discrepancy: line.max_headway_discrepancy,

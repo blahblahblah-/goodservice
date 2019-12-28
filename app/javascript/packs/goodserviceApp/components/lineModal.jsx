@@ -81,7 +81,7 @@ class LineModal extends React.Component {
               <Grid.Column>
               <Statistic.Group widths={1} size={(width > Responsive.onlyMobile.maxWidth) ? "small" : "tiny"} color={this.color()} inverted>
                 <Statistic>
-                  <Statistic.Value>{line.status}</Statistic.Value>
+                  <Statistic.Value>{line.secondary_status}</Statistic.Value>
                   <Statistic.Label>Status</Statistic.Label>
                 </Statistic>
               </Statistic.Group>

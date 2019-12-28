@@ -153,7 +153,7 @@ class Line extends React.Component {
         </Statistic>
       )
     }
-    return this.props.line.status;
+    return this.props.line.secondary_status;
   }
 
   render() {
