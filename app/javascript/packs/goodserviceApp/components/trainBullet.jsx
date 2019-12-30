@@ -38,7 +38,7 @@ class TrainBullet extends React.Component {
   }
 
   innerStyle() {
-    if (this.props.directions && this.props.directions.length === 1) {
+    if (this.props.directions && this.props.directions.length === 1 && this.props.textColor.toUpperCase() !== '#FFFFFF') {
       return { WebkitTextStroke: `0.5px ${this.props.color}` }
     }
   }
