@@ -359,16 +359,16 @@ class ScheduleProcessor
         text_color: route[:text_color],
         alternate_name: route[:alternate_name],
       }
-      route[:routings].each do |_, routings|
+      route[:routings].each do |direction, routings|
         routings.each do |routing|
           routing.each do |stop|
             next if closed_stops.include?(stop)
-            stop_trains[stop[0..2]] << route_obj
+            stop_trains[stop[0..2]] << route_obj.merge({direction: direction})
 
             next unless transfers_for_stop = transfers[stop[0..2]]
 
             transfers_for_stop.each do |transfer|
-              stop_trains[transfer.from_stop_internal_id] << route_obj
+              stop_trains[transfer.from_stop_internal_id] << route_obj.merge({direction: direction})
             end
           end
         end
@@ -379,7 +379,16 @@ class ScheduleProcessor
       [stop.internal_id, {
         id: stop.internal_id,
         name: stop.stop_name,
-        trains: stop_trains[stop.internal_id].uniq { |r| r[:id] },
+        trains: stop_trains[stop.internal_id].group_by { |r| r[:id]}.map { |_, rs|
+          r = rs.uniq { |r| r[:direction]}.reduce { |base, add|
+            base[:directions] = [base[:direction]] unless base[:directions]
+            base[:directions] << add[:direction]
+            base
+          }
+          r[:directions] = [r[:direction]] unless r[:directions]
+          r.delete(:direction)
+          r
+        },
         # borough: nil,
         # is_accessible: false,
       }]
