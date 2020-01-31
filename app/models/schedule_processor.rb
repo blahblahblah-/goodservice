@@ -575,10 +575,24 @@ def self.arrivals_info(force_refresh: false)
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       [route.internal_id, {
           id: route.internal_id,
-          arrival_times: {
+          arrival_times: { # to be deprecated
             north: route.directions[1].trips.map(&:arrival_times),
             south: route.directions[3].trips.map(&:arrival_times),
           },
+          trains: {
+            north: route.directions[1].trips.map do |t|
+              {
+                id: t.trip_id,
+                arrival_times: t.arrival_times
+              }
+            end,
+            south: route.directions[3].trips.map do |t|
+              {
+                id: t.trip_id,
+                arrival_times: t.arrival_times
+              }
+            end
+          }
         }
       ]
     end]
