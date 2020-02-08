@@ -33,12 +33,14 @@ module Display
     end
 
     def arrival_times
-      trip.stop_time_update.map do |update|
+      trip.stop_time_update.reject { |update|
+        !valid_stops.include?(update.stop_id)
+      }.map { |update|
         {
           stop_id: update.stop_id,
           estimated_time: (update&.departure || update&.arrival).time
         }
-      end
+      }
     end
 
     def lines
