@@ -1,7 +1,7 @@
 class Api::RoutesController < ApplicationController
 
   def index
-    result = ScheduleProcessor.routes_info
+    result = Rails.cache.read("routes-info")
     expires_now
     render json: result
   end

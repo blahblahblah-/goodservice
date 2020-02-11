@@ -1,7 +1,7 @@
 class Api::InfoController < ApplicationController
 
   def index
-    result = ScheduleProcessor.headway_info
+    result = Rails.cache.read("headway-info")
     expires_now
     result[:blog_post] = blog_post if blog_post
     render json: result

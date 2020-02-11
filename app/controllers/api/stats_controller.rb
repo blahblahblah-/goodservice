@@ -2,7 +2,7 @@ class Api::StatsController < ApplicationController
 
   def index
     expires_now
-    result = ScheduleProcessor.stats_info
+    result = Rails.cache.read("stats-info")
     render json: result
   end
 end
