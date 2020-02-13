@@ -68,6 +68,10 @@ module Display
       @unavailable = true
     end
 
+    def any_lines_in_service?
+      directions.any? { |_, rd| rd.any_lines_in_service? }
+    end
+
     private
 
     attr_accessor :trips, :unavailable
@@ -88,10 +92,6 @@ module Display
 
     def any_lines_not_in_service?
       directions.any? { |_, rd| rd.lines_not_in_service.present? }
-    end
-
-    def any_lines_in_service?
-      directions.any? { |_, rd| rd.any_lines_in_service? }
     end
   end
 end

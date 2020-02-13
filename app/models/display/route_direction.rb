@@ -50,7 +50,7 @@ module Display
       return if ["Not Scheduled", "No Service"].include?(status)
 
       strs = []
-      intro = "#{scheduled_destinations.join('/') || destinations.join('/')}-bound trains are "
+      intro = "#{scheduled_destinations.join('/').presence || destinations.join('/').presence}-bound trains are "
 
       if delays = delayed_line_directions.presence
         strs << "experiencing delays on #{delays.map(&:parent_name).join('/')}"

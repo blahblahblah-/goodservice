@@ -325,7 +325,7 @@ class ScheduleProcessor
     stop_trains = Hash.new { |h, k| h[k] = [] }
 
     results = Hash[processor.routes.reject { |_, route|
-      !route.visible? && !route.scheduled?
+      !route.visible? && !route.scheduled? && !route.any_lines_in_service?
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       [route.internal_id, {
           id: route.internal_id,
