@@ -571,7 +571,7 @@ def self.arrivals_info(force_refresh: false)
     processor = self.instance
 
     results = Hash[processor.routes.reject { |_, route|
-      !route.visible? && !route.scheduled?
+      !route.visible? && !route.scheduled? && !route.any_lines_in_service?
     }.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       [route.internal_id, {
           id: route.internal_id,
