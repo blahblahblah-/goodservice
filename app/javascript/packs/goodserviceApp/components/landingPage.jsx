@@ -116,9 +116,7 @@ class LandingPage extends React.Component {
     if (!blogPost) return;
     return (
       <Header as='h5' inverted>
-        Introducing: <a href="https://www.theweekendest.com" target="_blank">The Weekendest</a> - a real-time New York City subway map with
-        up-to-date routing and real-time arrival times, powered by goodservice.io – <a href="https://medium.com/good-service/introducing-the-weekendest-dynamic-map-for-new-york-city-subway-35b4a0017920" target="_blank">blog post</a>
-        {/*Blog Post: <a href={blogPost.link} target="_blank">{blogPost.title}</a>*/}
+        Blog Post: <a href={blogPost.link} target="_blank">{blogPost.title}</a>
       </Header>
     )
   }
@@ -212,18 +210,35 @@ class LandingPage extends React.Component {
           <meta property="og:title" content="goodservice.io" />
           <meta name="twitter:title" content="goodservice.io" />
         </Helmet>
-        <Segment inverted vertical style={{padding: '2em 2em 1em 2em'}}>
-          <Header inverted as='h1' color='blue'>
-            goodservice.io<span id="beta">beta</span>
-            <Header.Subheader>
-              status page for new york city subway
-                <AboutModal trigger={(<sup>[<span id="about-link">?</span>]</sup>)} />
-            </Header.Subheader>
-          </Header>
-        </Segment>
-        <Segment inverted vertical style={{backgroundColor: '#333333', padding: '1em 2em'}}>
-          { this.blogPostMessage() }
-        </Segment>
+        <Grid>
+          <Grid.Column floated='left' computer={13} mobile={11} tablet={13} style={{paddingRight: 0}}>
+            <Segment inverted vertical style={{padding: '2em 2em 1em 2em'}}>
+              <Header inverted as='h1' color='blue'>
+                goodservice.io<span id="beta">beta</span>
+                <Header.Subheader>
+                  status page for new york city subway
+                    <AboutModal trigger={(<sup>[<span id="about-link">?</span>]</sup>)} />
+                </Header.Subheader>
+              </Header>
+            </Segment>
+            <Segment inverted vertical style={{backgroundColor: '#333333', padding: '1em 2em'}}>
+              { this.blogPostMessage() }
+            </Segment>
+          </Grid.Column>
+          <Grid.Column floated='right' computer={3} mobile={5} tablet={3} textAlign='center' verticalAlign='middle'
+          style={{backgroundColor: '#ffe21f', paddingLeft: 0, paddingRight: 0, minHeight: "141px"}}>
+            <a href="https://www.theweekendest.com" target="_blank" className='theweekendest-link'>
+              <Segment basic>
+                <Header as='h3'>
+                  the weekendest &gt; &gt;
+                </Header>
+                <Header as='h5'>
+                  real-time nyc subway map
+                </Header>
+              </Segment>
+            </a>
+          </Grid.Column>
+        </Grid>
         <Responsive as={Parallax} fireOnMount onUpdate={this.handleOnUpdate}
             blur={5}
             bgImage={this.backgroundImage()}
