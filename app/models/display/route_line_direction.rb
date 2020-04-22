@@ -97,7 +97,7 @@ module Display
     end
 
     def actual_runtimes
-      line_direction.actual_runtimes.reject { |k, v| v.empty? || !is_route_applicable?(k) }.map do |k, v|
+      @actual_runtimes ||= line_direction.actual_runtimes.reject { |k, v| v.empty? || !is_route_applicable?(k) }.map do |k, v|
         runtime_stops = k.split("-")
         first_stop = stops.find { |s| s.internal_id == runtime_stops[0]}
         last_stop = stops.find { |s| s.internal_id == runtime_stops[1]}
@@ -109,6 +109,18 @@ module Display
           time: v.inject { |sum, el| sum + el }.to_f / v.size,
         }
       end
+    end
+
+    def actual_first_stop_name
+      a = actual_runtimes.max_by { |r| r[:time] }
+      first_stop_id = a ? a[:id].split("-").first : line_direction.first_stop
+      stops.find { |s| s.internal_id == first_stop_id}.stop_name
+    end
+
+    def actual_last_stop_name
+      a = actual_runtimes.max_by { |r| r[:time] }
+      last_stop_id = a ? a[:id].split("-").last : line_direction.last_stop
+      stops.find { |s| s.internal_id == last_stop_id}.stop_name
     end
 
     private

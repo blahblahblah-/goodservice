@@ -52,16 +52,53 @@ module Display
       strs = []
       intro = "#{scheduled_destinations.join('/').presence || destinations.join('/').presence}-bound trains are "
 
-      if delays = delayed_line_directions.presence
-        strs << "experiencing delays on #{delays.map(&:parent_name).join('/')}"
+      delays = delayed_line_directions.each_with_index.inject([]) do |collection, pair|
+        element, index = pair
+
+        if collection.last && collection.last.last == delayed_line_directions[index - 1]
+          collection.last << element
+        else
+          collection << [element]
+        end
+        collection
       end
 
-      if long_headways = long_headway_line_directions.presence
-        strs << "experiencing longer than normal wait times on #{long_headways.map(&:parent_name).join('/')}"
+      delays.each do |d|
+        delay = d.map(&:delay).compact&.max.round
+        strs << "experiencing delays between #{d.first.actual_first_stop_name} and #{d.last.actual_last_stop_name} (for #{delay} mins)"
       end
 
-      if slow = slow_line_directions.presence
-        strs << "traveling slowly on #{slow.map(&:parent_name).join('/')}"
+      long_headways = long_headway_line_directions.each_with_index.inject([]) do |collection, pair|
+        element, index = pair
+
+        if collection.last && collection.last.last == long_headway_line_directions[index - 1]
+          collection.last << element
+        else
+          collection << [element]
+        end
+        collection
+      end
+
+      long_headways.each do |l|
+        scheduled_headway = l.map(&:max_scheduled_headway).compact&.max.round
+        actual_headway = l.map(&:max_actual_headway).compact&.max.round
+        strs << "experiencing longer than normal wait times between #{l.first.actual_first_stop_name} and #{l.last.actual_last_stop_name} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
+      end
+
+      slow = slow_line_directions.each_with_index.inject([]) do |collection, pair|
+        element, index = pair
+
+        if collection.last && collection.last.last == slow_line_directions[index - 1]
+          collection.last << element
+        else
+          collection << [element]
+        end
+        collection
+      end
+
+      slow.each do |s|
+        time = s.map(&:travel_time_discrepancy).compact&.sum.round
+        strs << "traveling slowly between #{s.first.actual_first_stop_name} and #{s.last.actual_last_stop_name} (taking #{time} mins longer)"
       end
 
       if service_changes = service_change_line_directions.presence
