@@ -65,7 +65,7 @@ module Display
 
       delays.each do |d|
         delay = d.map(&:delay).compact&.max.round
-        strs << "experiencing delays between #{d.first.actual_first_stop_name} and #{d.last.actual_last_stop_name} (for #{delay} mins)"
+        strs << "delayed between #{d.first.actual_first_stop_name} and #{d.last.actual_last_stop_name} (for #{delay} mins)"
       end
 
       long_headways = long_headway_line_directions.each_with_index.inject([]) do |collection, pair|
@@ -82,7 +82,7 @@ module Display
       long_headways.each do |l|
         scheduled_headway = l.map(&:max_scheduled_headway).compact&.max.round
         actual_headway = l.map(&:max_actual_headway).compact&.max.round
-        strs << "experiencing longer than normal wait times between #{l.first.actual_first_stop_name} and #{l.last.actual_last_stop_name} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
+        strs << "experiencing long wait times between #{l.first.actual_first_stop_name} and #{l.last.actual_last_stop_name} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
       end
 
       slow = slow_line_directions.each_with_index.inject([]) do |collection, pair|
