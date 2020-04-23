@@ -9,6 +9,7 @@ class ActualTrip < ActiveRecord::Base
     last_update = actual_trip_updates.last
     return 0 unless last_update
     return 0 if last_update.updated_at < Time.current - 5.minutes
+    return 0 unless first_stop_departure_timestamp
 
     last_update.diff / 60
   end
