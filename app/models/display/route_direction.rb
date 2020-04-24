@@ -82,7 +82,7 @@ module Display
       long_headways.each do |l|
         scheduled_headway = l.map(&:max_scheduled_headway).compact&.max.round
         actual_headway = l.map(&:max_actual_headway).compact&.max.round
-        strs << "experiencing long wait times between #{l.first.actual_first_stop_name(routing_stops)} and #{l.last.actual_last_stop_name(routing_stops)} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
+        strs << "having longer wait times between #{l.first.actual_first_stop_name(routing_stops)} and #{l.last.actual_last_stop_name(routing_stops)} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
       end
 
       slow = slow_line_directions.each_with_index.inject([]) do |collection, pair|
