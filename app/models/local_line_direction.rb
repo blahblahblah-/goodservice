@@ -1,4 +1,9 @@
 class LocalLineDirection < LineDirection
+  def type
+    return alternate_name if alternate_name && alternate_name.include?("via")
+    "Local"
+  end
+
   def name
     alternate_name || "#{line.name} Local"
   end

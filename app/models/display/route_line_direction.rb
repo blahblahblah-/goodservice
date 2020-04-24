@@ -2,7 +2,7 @@ module Display
   class RouteLineDirection
     require 'descriptive_statistics'
 
-    delegate :name, :boroughs, :travel_time, :travel_time_discrepancy, :parent_name, :first_stops, :last_stops, :line, to: :line_direction
+    delegate :name, :type, :boroughs, :travel_time, :travel_time_discrepancy, :parent_name, :first_stops, :last_stops, :line, to: :line_direction
 
     def initialize(route_id, line_direction, trips, stop_times, timestamp, stops)
       @route_id = route_id
@@ -111,15 +111,31 @@ module Display
       end
     end
 
-    def actual_first_stop_name
+    def actual_first_stop_name(routing_stops)
       a = actual_runtimes.max_by { |r| r[:time] }
-      first_stop_id = a ? a[:id].split("-").first : line_direction.first_stop
+      if a
+        first_stop_id = a[:id].split("-").first
+      elsif routing_stops.include?(line_direction.first_branch_stop)
+        first_stop_id = line_direction.first_branch_stop
+      elsif routing_stops.include?(line_direction.first_alternate_branch_stop)
+        first_stop_id = line_direction.first_alternate_branch_stop
+      else
+        first_stop_id = line_direction.first_stop
+      end
       stops.find { |s| s.internal_id == first_stop_id}.stop_name
     end
 
-    def actual_last_stop_name
+    def actual_last_stop_name(routing_stops)
       a = actual_runtimes.max_by { |r| r[:time] }
-      last_stop_id = a ? a[:id].split("-").last : line_direction.last_stop
+      if a
+        last_stop_id = a[:id].split("-").last
+      elsif routing_stops.include?(line_direction.last_branch_stop)
+        last_stop_id = line_direction.last_branch_stop
+      elsif routing_stops.include?(line_direction.last_alternate_branch_stop)
+        last_stop_id = line_direction.last_alternate_branch_stop
+      else
+        last_stop_id = line_direction.last_stop
+      end
       stops.find { |s| s.internal_id == last_stop_id}.stop_name
     end
 

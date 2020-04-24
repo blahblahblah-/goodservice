@@ -1,4 +1,9 @@
 class ExpressLineDirection < LineDirection
+  def type
+    return alternate_name if alternate_name && alternate_name.include?("via")
+    "Express"
+  end
+
   def name
     alternate_name || "#{line.name} Express"
   end

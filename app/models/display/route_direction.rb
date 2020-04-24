@@ -65,7 +65,7 @@ module Display
 
       delays.each do |d|
         delay = d.map(&:delay).compact&.max.round
-        strs << "delayed between #{d.first.actual_first_stop_name} and #{d.last.actual_last_stop_name} (for #{delay} mins)"
+        strs << "delayed between #{d.first.actual_first_stop_name(routing_stops)} and #{d.last.actual_last_stop_name(routing_stops)} (for #{delay} mins)"
       end
 
       long_headways = long_headway_line_directions.each_with_index.inject([]) do |collection, pair|
@@ -82,7 +82,7 @@ module Display
       long_headways.each do |l|
         scheduled_headway = l.map(&:max_scheduled_headway).compact&.max.round
         actual_headway = l.map(&:max_actual_headway).compact&.max.round
-        strs << "experiencing long wait times between #{l.first.actual_first_stop_name} and #{l.last.actual_last_stop_name} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
+        strs << "experiencing long wait times between #{l.first.actual_first_stop_name(routing_stops)} and #{l.last.actual_last_stop_name(routing_stops)} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
       end
 
       slow = slow_line_directions.each_with_index.inject([]) do |collection, pair|
@@ -98,11 +98,29 @@ module Display
 
       slow.each do |s|
         time = s.map(&:travel_time_discrepancy).compact&.sum.round
-        strs << "traveling slowly between #{s.first.actual_first_stop_name} and #{s.last.actual_last_stop_name} (taking #{time} mins longer)"
+        strs << "traveling slowly between #{s.first.actual_first_stop_name(routing_stops)} and #{s.last.actual_last_stop_name(routing_stops)} (taking #{time} mins longer)"
       end
 
       if service_changes = service_change_line_directions.presence
-        strs << "running on #{service_changes.map(&:name).join('/')}"
+        tmp = service_changes.dup
+        scheduled_lds = ::LineDirection.scheduled_line_directions(route_id, (direction - 1) / 2)
+
+        service_changes.reject! do |s|
+          arr = tmp - [s]
+          arr.map(&:parent_name).any? { |n| s.parent_name == n }
+        end
+
+        pattern_change, extra_routing = service_changes.partition { |s|
+          scheduled_lds.any? { |ld| ld.parent_name == s.parent_name}
+        }
+
+        pattern_change.each do |s|
+          strs << "running #{s.type[0, 1].downcase + s.type[1..-1]} between #{s.actual_first_stop_name(routing_stops)} and #{s.actual_last_stop_name(routing_stops)}"
+        end
+
+        if extra_routing.presence
+          strs << "running on #{extra_routing.map(&:name).join('/')}"
+        end
       end
 
       if no_service = lines_not_in_service.presence
@@ -110,7 +128,11 @@ module Display
       end
 
       if short_turns = short_turn_destinations.presence
-        strs << "terminating at #{short_turn_destinations.join('/')}"
+        if short_turns.size == 1 && scheduled_destinations.size > 1 && scheduled_destinations.include?(short_turns.first)
+          strs << "terminating at #{short_turns.join('/')} only"
+        else
+          strs << "terminating at #{short_turns.join('/')}"
+        end
       end
 
       return unless strs.present?
@@ -167,6 +189,10 @@ module Display
         end
         memo
       end
+    end
+
+    def routing_stops
+      routings.flatten.uniq
     end
 
     def line_directions

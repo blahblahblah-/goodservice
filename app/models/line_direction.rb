@@ -17,6 +17,10 @@ class LineDirection < ActiveRecord::Base
     line.name
   end
 
+  def type
+    alternate_name
+  end
+
   def name
     alternate_name || line.name
   end
@@ -73,6 +77,13 @@ class LineDirection < ActiveRecord::Base
     self.where("type is null or type <> 'ExpressLineDirection'").where(last_stop: stops).or(self.where(type: 'ExpressLineDirection').where(penultimate_stop: stops).where(last_stop: stops))
       .includes(:line).uniq.map(&:line).uniq.select(&:is_visible).sort_by(&:name)
   end
+
+  def self.scheduled_line_directions(route_internal_id, direction)
+    stops = StopTime.soon_by_route(route_internal_id, direction).pluck(:stop_internal_id)
+    self.where("type is null or type <> 'ExpressLineDirection'").where(last_stop: stops).or(self.where(type: 'ExpressLineDirection').where(penultimate_stop: stops).where(last_stop: stops))
+      .includes(:line).uniq
+  end
+
 
   def first_stops
     [first_branch_stop, first_alternate_branch_stop, first_stop].compact
