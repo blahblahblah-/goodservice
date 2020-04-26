@@ -3,6 +3,10 @@ module Display
 
     attr_accessor :trips
 
+    EUCLID_AV = "Euclid Av"
+    LEFFERTS_BLVD = "Ozone Park - Lefferts Blvd"
+    ONE_SIXTY_EIGHTH_ST = "168 St"
+
     def initialize(route_id, direction, stop_times, timestamp, stops)
       @route_id = route_id
       @direction = direction
@@ -175,7 +179,18 @@ module Display
     end
 
     def scheduled_destinations
-      StopTime.scheduled_destinations_by_route(route_id, (direction - 1) / 2)
+      sd = StopTime.scheduled_destinations_by_route(route_id, (direction - 1) / 2)
+
+      if route_id == 'A'
+        sd -= [EUCLID_AV, LEFFERTS_BLVD]
+      elsif route_id == 'AL'
+        sd -= [ONE_SIXTY_EIGHTH_ST]
+        if direction == 3
+          sd -= [EUCLID_AV]
+        end
+      end
+
+      sd
     end
 
     def destination_stops
@@ -229,6 +244,10 @@ module Display
     def lines_not_in_service
       return @lines_not_in_service if @lines_not_in_service
       scheduled_lines = ::LineDirection.scheduled_lines(route_id, (direction - 1) / 2)
+      if route_id == 'A'
+        scheduled_lines.reject! { |l| l.name == 'Fulton Street (Lefferts Boulevard Branch)' }
+      end
+
       lines_in_service = line_directions_data&.map(&:line) || []
 
       @lines_not_in_service = scheduled_lines - lines_in_service
