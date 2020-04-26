@@ -12,24 +12,40 @@ class LocalLineDirection < LineDirection
     name
   end
 
+  def first_branch_stop
+    express_line_direction.first_branch_stop
+  end
+
+  def first_alternate_branch_stop
+    express_line_direction.first_alternate_branch_stop
+  end
+
+  def last_branch_stop
+    express_line_direction.last_branch_stop
+  end
+
+  def last_alternate_branch_stop
+    express_line_direction.last_alternate_branch_stop
+  end
+
   def first_stops
-    [express_line_direction.first_branch_stop, express_line_direction.first_alternate_branch_stop, express_line_direction.first_stop].compact
+    [first_branch_stop, first_alternate_branch_stop, express_line_direction.first_stop].compact
   end
 
   def last_stops
-    [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop, express_line_direction.last_stop].compact
+    [last_branch_stop, last_alternate_branch_stop, express_line_direction.last_stop].compact
   end
 
   def scheduled_runtimes
     return @scheduled_runtimes if @scheduled_runtimes
-    if express_line_direction.first_branch_stop.present?
-      first_stops = [express_line_direction.first_branch_stop, express_line_direction.first_alternate_branch_stop]
+    if first_branch_stop.present?
+      first_stops = [first_branch_stop, first_alternate_branch_stop]
     else
       first_stops = [express_line_direction.first_stop]
     end
 
-    if express_line_direction.last_branch_stop.present?
-      last_stops = [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop]
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
     else
       last_stops = [express_line_direction.last_stop]
     end
@@ -82,14 +98,14 @@ class LocalLineDirection < LineDirection
 
     local_stop = Rails.cache.read("stoptime-#{last_stop}") || {}
 
-    if express_line_direction.first_branch_stop.present?
-      first_stops = [express_line_direction.first_branch_stop, express_line_direction.first_alternate_branch_stop]
+    if first_branch_stop.present?
+      first_stops = [first_branch_stop, first_alternate_branch_stop]
     else
       first_stops = [express_line_direction.first_stop]
     end
 
-    if express_line_direction.last_branch_stop.present?
-      last_stops = [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop]
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
     else
       last_stops = [express_line_direction.last_stop]
     end
@@ -135,8 +151,8 @@ class LocalLineDirection < LineDirection
   def scheduled_throughput
     return @scheduled_throughput if @scheduled_throughput
 
-    if express_line_direction.last_branch_stop.present?
-      last_stops = [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop]
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
     else
       last_stops = [express_line_direction.last_stop]
     end
@@ -166,8 +182,8 @@ class LocalLineDirection < LineDirection
 
     local_stop = Rails.cache.read("stoptime-#{last_stop}") || {}
 
-    if express_line_direction.last_branch_stop.present?
-      last_stops = [express_line_direction.last_branch_stop, express_line_direction.last_alternate_branch_stop]
+    if last_branch_stop.present?
+      last_stops = [last_branch_stop, last_alternate_branch_stop]
     else
       last_stops = [express_line_direction.last_stop]
     end

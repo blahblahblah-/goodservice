@@ -114,28 +114,32 @@ module Display
 
     def actual_first_stop_name(routing_stops)
       a = actual_runtimes.max_by { |r| r[:time] }
+      branch_stop = line_direction.first_branch_stop
+      alternate_branch_stop = line_direction.first_alternate_branch_stop
       if a
         first_stop_id = a[:id].split("-").first
-      elsif routing_stops.include?(line_direction.first_branch_stop)
-        first_stop_id = line_direction.first_branch_stop
-      elsif routing_stops.include?(line_direction.first_alternate_branch_stop)
-        first_stop_id = line_direction.first_alternate_branch_stop
+      elsif routing_stops.include?(branch_stop)
+        first_stop_id = branch_stop
+      elsif routing_stops.include?(alternate_branch_stop)
+        first_stop_id = alternate_branch_stop
       else
-        first_stop_id = line_direction.first_stop
+        first_stop_id = line_direction.express_line_direction && line_direction.express_line_direction.first_stop || line_direction.first_stop
       end
       stops.find { |s| s.internal_id == first_stop_id}.stop_name
     end
 
     def actual_last_stop_name(routing_stops)
       a = actual_runtimes.max_by { |r| r[:time] }
+      branch_stop = line_direction.last_branch_stop
+      alternate_branch_stop = line_direction.last_alternate_branch_stop
       if a
         last_stop_id = a[:id].split("-").last
-      elsif routing_stops.include?(line_direction.last_branch_stop)
-        last_stop_id = line_direction.last_branch_stop
-      elsif routing_stops.include?(line_direction.last_alternate_branch_stop)
-        last_stop_id = line_direction.last_alternate_branch_stop
+      elsif routing_stops.include?(branch_stop)
+        last_stop_id = branch_stop
+      elsif routing_stops.include?(alternate_branch_stop)
+        last_stop_id = alternate_branch_stop
       else
-        last_stop_id = line_direction.last_stop
+        last_stop_id = line_direction.express_line_direction && line_direction.express_line_direction.last_stop || line_direction.last_stop
       end
       stops.find { |s| s.internal_id == last_stop_id}.stop_name
     end
