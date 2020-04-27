@@ -533,7 +533,11 @@ class ScheduleProcessor
     }.select { |_, r| r.status == "Delay" }.reject { |_, r|
       r.internal_id == 'FS'
     }.map { |_, r|
-      r.name == 'S' ? r.alternate_name : r.name
+      if r.alternate_name
+        "#{r.name} - #{r.alternate_name.replace(" Shuttle", "")}"
+      else
+        r.name
+      end
     }
 
     if delayed_routes.any?
