@@ -20,7 +20,6 @@ module Display
     end
 
     def rerouted?
-      return false if route_id == 'AL' && ['Washington Heights (8 Avenue)', 'Lefferts Blvd Branch'].include?(name)
       trips.present? && max_scheduled_headway.nil?
     end
 

@@ -840,11 +840,6 @@ def self.arrivals_info(force_refresh: false)
       puts "A Shuttle found, reversing trip #{trip_id}"
       entity.trip_update, direction = reverse_trip_update(entity.trip_update)
     end
-    if route_id == 'A'
-      if entity.trip_update.trip.nyct_trip_descriptor.train_id.include?("LEF")
-        route_id = 'AL'
-      end
-    end
     trip = Display::Trip.new(route_id, entity.trip_update, direction, feed.header.timestamp, line_directions[direction], stop_names, recent_trips, key_stops, trip_id)
     routes[route_id]&.push_trip(trip)
     trip.add_to_lines(lines)
