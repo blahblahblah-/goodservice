@@ -103,7 +103,7 @@ module Display
         end
 
         if extra_routing.presence
-          strs << "running on #{extra_routing.map(&:name).join('/')}"
+          strs << "running via #{extra_routing.map{ |r| r.name.sub('via ', '')}.join('/')}"
         end
       end
 
