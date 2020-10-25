@@ -289,7 +289,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 2.4.2p198
+   ruby 2.4.4p296
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
