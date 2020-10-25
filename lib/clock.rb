@@ -35,6 +35,11 @@ module Clockwork
     ScheduleProcessor.arrivals_info(force_refresh: true)
     arrivals_time = Time.current
     puts "Processed arrivals info in #{arrivals_time - statsTime} seconds"
+    if Time.current.min % 30 == 0
+      AccessibilityProcessor.accessibility_info(force_refresh: true)
+      accessibilityTime = Time.current
+      puts "Processed accessibility info in #{accessibilityTime - arrivals_time} seconds"
+    end
     endTime = Time.current
     status = "Finished in #{endTime - startTime} seconds"
     puts status
