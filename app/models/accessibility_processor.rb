@@ -8,6 +8,7 @@ class AccessibilityProcessor
   include Singleton
   BASE_URI = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/"
   ADA_OVERRIDES = ENV['ADA_OVERRIDES']&.split(',') || []
+  ADA_ADDITIONAL_STATIONS = ENV['ADA_ADDITIONAL_STATIONS']&.split(',') || []
 
   attr_accessor :list, :statuses, :ada_stations, :elevator_map, :outages
 
@@ -30,11 +31,13 @@ class AccessibilityProcessor
     processor.perform
     outages = processor.outages.dup
     outages.default_proc = nil
+    north_additional_stations = ADA_ADDITIONAL_STATIONS.select{ |s| s.ends_with?('N') }
+    south_additional_stations = ADA_ADDITIONAL_STATIONS.select{ |s| s.ends_with?('S') }
 
     data = {
       accessible_stations: {
-        north: (processor.ada_stations.to_a.map{ |s| "#{s}N"} - ADA_OVERRIDES).sort,
-        south: (processor.ada_stations.to_a.map{ |s| "#{s}S"} - ADA_OVERRIDES).sort,
+        north: (processor.ada_stations.to_a.map{ |s| "#{s}N"} - ADA_OVERRIDES + north_additional_stations).sort,
+        south: (processor.ada_stations.to_a.map{ |s| "#{s}S"} - ADA_OVERRIDES + south_additional_stations).sort,
       },
       outages: outages,
     }
