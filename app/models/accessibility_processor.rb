@@ -2,6 +2,7 @@ require 'net/http'
 require 'uri'
 require 'digest/md5'
 require 'json'
+require 'htmlentities'
 
 class AccessibilityProcessor
   include Singleton
@@ -92,7 +93,7 @@ class AccessibilityProcessor
     self.outages = Hash.new { |h, k| h[k] = [] }
     self.statuses.each do |status|
       elevator_map[status['equipment']]&.flatten&.each do |station|
-        outages[station] << status['serving']
+        outages[station] << HTMLEntities.new.decode(status['serving'])
       end
     end
   end

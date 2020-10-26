@@ -93,6 +93,7 @@ GEM
       protobuf (>= 3.0)
     hashdiff (1.0.0)
     hiredis (0.6.3)
+    htmlentities (4.3.4)
     http (3.3.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -267,6 +268,7 @@ DEPENDENCIES
   gtfs-realtime-bindings
   hashdiff
   hiredis
+  htmlentities
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   parallel
