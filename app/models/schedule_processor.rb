@@ -753,6 +753,21 @@ def self.arrivals_info(force_refresh: false)
     @recent_trips = ActualTrip.includes(:actual_trip_updates).where("created_at > ?", Time.current - 3.hours)
   end
 
+  def instantiate_recent_routings
+    @recent_routings = Hash[StopTime.soon.map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+      [k, Hash[v.group_by(&:direction).map{ |j, w|
+        a = w.map { |t|
+          t.stop_times.not_past.pluck(:stop_internal_id)
+        }.uniq
+        result = a.select { |b|
+          others = a - [b]
+          others.none? {|o| o.each_cons(b.length).any?(&b.method(:==))}
+        }
+        [j, result]
+      }]]
+    }]
+  end
+
   def instantiate_line_directions
     @line_directions = LineDirection.all.includes({line: :line_boroughs}, :express_line_direction, :local_line_direction).group_by(&:direction)
 

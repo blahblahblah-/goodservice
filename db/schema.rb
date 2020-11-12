@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_200334) do
+ActiveRecord::Schema.define(version: 2020_11_12_015053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -140,7 +140,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_200334) do
     t.string "stop_internal_id", null: false
     t.integer "stop_sequence", null: false
     t.index ["stop_internal_id", "departure_time"], name: "index_stop_times_on_stop_internal_id_and_departure_time"
-    t.index ["trip_internal_id"], name: "index_stop_times_on_trip_internal_id"
+    t.index ["trip_internal_id", "departure_time"], name: "index_stop_times_on_trip_internal_id_and_departure_time"
   end
 
   create_table "stops", force: :cascade do |t|

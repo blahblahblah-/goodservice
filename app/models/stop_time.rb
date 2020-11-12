@@ -3,6 +3,7 @@ class StopTime < ActiveRecord::Base
   belongs_to :stop, foreign_key: "stop_internal_id", primary_key: "internal_id"
 
   DAY_IN_MINUTES = 86400
+  BUFFER = 10800
 
   def self.soon(time_range: 60.minutes)
     if (rounded_time + time_range).to_date == Date.current.tomorrow
@@ -56,6 +57,26 @@ class StopTime < ActiveRecord::Base
   def self.scheduled_destinations_by_route(route_id, direction)
     Rails.cache.fetch("scheduled-destinations-#{route_id}-#{direction}-#{rounded_time}", expires_in: 5.minutes) do
       StopTime.soon_by_route(route_id, direction).map(&:trip).map(&:destination).sort.uniq
+    end
+  end
+
+  def self.not_past
+    if (rounded_time + BUFFER).to_date == Date.current.tomorrow
+      where("departure_time > ? or (? - departure_time > ?)",
+        rounded_time - rounded_time.beginning_of_day,
+        rounded_time - rounded_time.beginning_of_day,
+        BUFFER,
+      )
+    elsif rounded_time.hour < 4
+      where("(departure_time < ? and departure_time > ?) or (departure_time >= ? and departure_time - ? > ?",
+        DAY_IN_MINUTES,
+        rounded_time - rounded_time.beginning_of_day,
+        DAY_IN_MINUTES,
+        DAY_IN_MINUTES,
+        rounded_time - rounded_time.beginning_of_day
+      )
+    else
+      where("departure_time > ?", rounded_time - rounded_time.beginning_of_day)
     end
   end
 end
