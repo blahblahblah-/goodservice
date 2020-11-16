@@ -107,7 +107,7 @@ class ScheduleProcessor
     routes_data = processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       service_changes = processor.recent_routings[route.internal_id] &&
         ServiceChangeAnalyzer.service_change_summary(
-          route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.transfers
+          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.transfers
         )
       {
         id: route.internal_id,

@@ -26,7 +26,7 @@ class ServiceChangeAnalyzer
     }
   end
 
-  def self.service_change_summary(actual_route_directions, scheduled_routings, recent_routings, evergreen_routings, transfers)
+  def self.service_change_summary(route_id, actual_route_directions, scheduled_routings, recent_routings, evergreen_routings, transfers)
     direction_changes = [NORTH, SOUTH].map do |direction|
       changes = []
       actual = actual_route_directions[direction[:route_direction]].routings
@@ -140,7 +140,7 @@ class ServiceChangeAnalyzer
       d.each do |r|
         r.each do |c|
           if c.is_a?(ReroutingServiceChange)
-            match_route(c, recent_routings, evergreen_routings)
+            match_route(route_id, c, recent_routings, evergreen_routings)
           end
         end
       end
@@ -175,13 +175,13 @@ class ServiceChangeAnalyzer
 
   private
 
-  def self.match_route(reroute_service_change, recent_routings, evergreen_routings)
+  def self.match_route(current_route_id, reroute_service_change, recent_routings, evergreen_routings)
     stations = reroute_service_change.stations_affected.compact
     route_pair = nil
 
     [recent_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
-        direction.any? do |_, routings|
+        route_id != current_route_id && direction.any? do |_, routings|
           routings.any? {|r| normalize_routing(r).each_cons(stations.length).any?(&stations.method(:==))}
         end
       end
