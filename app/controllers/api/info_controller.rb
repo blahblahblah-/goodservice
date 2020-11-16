@@ -7,6 +7,13 @@ class Api::InfoController < ApplicationController
     render json: result
   end
 
+  def summary
+    result = Rails.cache.read("headway-info-summary")
+    expires_now
+    result[:blog_post] = blog_post if blog_post
+    render json: result
+  end
+
   private
 
   def blog_post

@@ -295,9 +295,15 @@ class ScheduleProcessor
       timestamp: Time.current.iso8601,
     }
 
+    summary_data = {
+      routes: routes_data.map { |r| r.except(:north, :south) },
+      timestamp: Time.current.iso8601,
+    }
+
     log_route_statuses(routes_data)
     log_line_direction_statuses(processor.line_directions)
 
+    Rails.cache.write("headway-info-summary", summary_data, expires_in: 1.day)
     Rails.cache.write("headway-info", data, expires_in: 1.day)
 
     tweet_delayed_routes(processor.routes) if tweet_delays

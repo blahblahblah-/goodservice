@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   namespace :api do
-    resources :info, only: [:index]
+    resources :info, only: [:index] do
+      collection do
+        get 'summary'
+      end
+    end
     resources :routes, only: [:index]
     resources :stats, only: [:index]
     resources :arrivals, only: [:index]
