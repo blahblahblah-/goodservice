@@ -26,8 +26,6 @@ module Display
         @status = "Service Change"
       elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
         @status = "Service Change"
-      elsif lines_not_in_service.present?
-        @status = "Service Change"
       elsif line_directions.any? { |ld| ld.slow? || ld.headway_gap? }
         @status = "Not Good"
       else
