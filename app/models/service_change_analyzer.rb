@@ -36,9 +36,9 @@ class ServiceChangeAnalyzer
       
       if !actual || actual.empty?
         if !scheduled || scheduled.empty?
-          return
+          changes << []
         else
-          changes << [NoTrainServiceChange.new(direction[:route_direction], [])]
+          changes << [NoTrainServiceChange.new(direction[:route_direction], [], nil, nil)]
         end
       else
         actual.each do |a|
