@@ -37,7 +37,7 @@ module Display
       return [] unless service_changes
 
       if service_changes.any? { |_, v| v.any? { |c| c.is_a?(NoTrainServiceChange) }}
-        return ["<#{name}> trains are not running."]
+        return ["<#{internal_id}> trains are not running."]
       end
 
       results = []
@@ -130,7 +130,7 @@ module Display
 
       case direction
       when :both
-        sentence_intro = "<#{name}> trains are"
+        sentence_intro = "<#{internal_id}> trains are"
         origin = directions[3].origin_text
         destination = directions[3].destination_text
         begin_preposition = 'to/from'

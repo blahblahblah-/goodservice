@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_12_015053) do
+ActiveRecord::Schema.define(version: 2020_11_16_042704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 2020_11_12_015053) do
     t.string "from_stop_internal_id", null: false
     t.string "to_stop_internal_id", null: false
     t.integer "min_transfer_time", default: 0, null: false
+    t.boolean "interchangeable_platforms", default: false, null: false
   end
 
   create_table "trips", force: :cascade do |t|

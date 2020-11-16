@@ -140,7 +140,7 @@ class Train extends React.Component {
   }
 
   render() {
-    const { width, train, stats, starredPane, modelOpen, onFavTrainChange, favTrains, routing, routingTimestamp, stops, showStats, mini } = this.props;
+    const { width, train, trains, stats, starredPane, modelOpen, onFavTrainChange, favTrains, routing, routingTimestamp, stops, showStats, mini } = this.props;
     const buttonStyle = {};
     if (mini) {
       buttonStyle.padding = "0";
@@ -149,7 +149,7 @@ class Train extends React.Component {
       buttonStyle.minWidth = "2em";
     }
     return(
-      <TrainModal train={train} stats={stats} starredPane={starredPane}
+      <TrainModal train={train} trains={trains} stats={stats} starredPane={starredPane}
         modalOpen={this.state.modelOpen} showStats={showStats}
         onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} routing={routing} routingTimestamp={routingTimestamp} stops={stops} trigger={
         <Segment as={Button} fluid id={"train-" + train.name} onClick={this.handleClick} style={buttonStyle}>

@@ -732,7 +732,7 @@ def self.arrivals_info(force_refresh: false)
     @stop_names ||= Stop.pluck(:internal_id).to_set
     @stops ||= Stop.all
     @unavailable_feeds = Set.new
-    @transfers ||= Transfer.where("from_stop_internal_id <> to_stop_internal_id").group_by(&:to_stop_internal_id)
+    @transfers ||= Transfer.where("from_stop_internal_id <> to_stop_internal_id and interchangeable_platforms = true").group_by(&:to_stop_internal_id)
 
     instantiate_routes
     instantiate_lines

@@ -92,6 +92,31 @@ class TrainModal extends React.Component {
     ];
   }
 
+  renderServiceChanges() {
+    const { train, trains } = this.props;
+    const trainBullet = (<TrainBullet name={train.name} color={train.color}
+      textColor={train.text_color} style={{display: "inline-block"}} size='small' key={train.id} />);
+
+    return train.service_change_summary.map((change, i) => {
+      let tmp = [change.replace(/ - /g, "–")];
+      let matched;
+      while (matched = tmp.find((c) => typeof c === 'string' && c.match(/\<[A-Z0-9]*\>/))) {
+        const regexResult = matched.match(/\<([A-Z0-9]*)\>/);
+        let j = tmp.indexOf(matched);
+        const selectedTrain = trains.find((t) => t.id === regexResult[1]);
+        const selectedTrainBullet = (<TrainBullet name={selectedTrain.name} color={selectedTrain.color}
+              textColor={selectedTrain.text_color} style={{display: "inline-block"}} key={selectedTrain.id} size='small' />);
+        const parts = matched.split(regexResult[0]);
+        let newMatched = parts.flatMap((x) => [x, selectedTrainBullet]);
+        newMatched.pop();
+        tmp[j] = newMatched;
+        tmp = tmp.flat();
+      }
+
+      return (<Header as='h4' inverted key={i}>{tmp}</Header>);
+    });
+  }
+
   renderSummary() {
     const { train } = this.props;
     let out = [];
@@ -136,6 +161,9 @@ class TrainModal extends React.Component {
                     <Statistic.Label>Status</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>
+                {
+                  this.renderServiceChanges()
+                }
                 {
                   this.renderSummary()
                 }

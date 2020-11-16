@@ -83,42 +83,6 @@ module Display
         strs << "traveling slowly " + slow_strs.join('/')
       end
 
-      if service_changes = service_change_line_directions.presence
-        tmp = service_changes.dup
-        scheduled_lds = ::LineDirection.scheduled_line_directions(route_id, (direction - 1) / 2)
-
-        service_changes.reject! do |s|
-          arr = tmp - [s]
-          arr.map(&:parent_name).any? { |n| s.parent_name == n }
-        end
-
-        pattern_change, extra_routing = service_changes.partition { |s|
-          scheduled_lds.any? { |ld| ld.parent_name == s.parent_name}
-        }
-
-        pc = combine_adjacent_line_directions(slow_line_directions)
-
-        pattern_change.each do |s|
-          strs << "running #{s.type[0, 1].downcase + s.type[1..-1]} between #{s.actual_first_stop_name(routing_stops)} and #{s.actual_last_stop_name(routing_stops)}"
-        end
-
-        if extra_routing.presence
-          strs << "running via #{extra_routing.map{ |r| r.name.sub('via ', '')}.join('/')}"
-        end
-      end
-
-      if no_service = lines_not_in_service.presence
-        strs << "not running on #{no_service.map(&:name).join('/')}"
-      end
-
-      if short_turns = short_turn_destinations.presence
-        if short_turns.size == 1 && scheduled_destinations.size > 1 && scheduled_destinations.include?(short_turns.first)
-          strs << "terminating at #{short_turns.join('/')} only"
-        else
-          strs << "terminating at #{short_turns.join('/')}"
-        end
-      end
-
       return unless strs.present?
 
       if strs.size > 1
@@ -258,7 +222,7 @@ module Display
       collection.inject([]) do |c, ld|
         index = line_directions.index(ld)
 
-        if c.last && c.last.last == line_directions[index - 1]
+        if c.last
           c.last << ld
         else
           c << [ld]

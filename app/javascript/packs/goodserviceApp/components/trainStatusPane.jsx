@@ -30,8 +30,8 @@ class TrainStatusPane extends React.Component {
         <div>
           {
             trainStats && routing && map(STATUSES, (color, status) => {
-              const trains = groups[status];
-              if (!trains || !trains.length) {
+              const trainGroups = groups[status];
+              if (!trainGroups || !trainGroups.length) {
                 return (<div key={status}></div>)
               }
               return (
@@ -41,11 +41,11 @@ class TrainStatusPane extends React.Component {
                   </Grid.Row>
                   <Grid.Row columns={6} textAlign='center'>
                     {
-                      trains.map(train => {
+                      trainGroups.map(train => {
                         const visible = train.visible || train.status !== 'Not Scheduled';
                         return (
                           <Grid.Column key={train.name + train.alternate_name} style={{display: (visible ? 'block' : 'none')}}>
-                            <Train train={train} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} routingTimestamp={routingTimestamp} stops={stops}
+                            <Train train={train} trains={trains} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} routingTimestamp={routingTimestamp} stops={stops}
                               onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} mini={true} />
                           </Grid.Column>
                         )
@@ -66,7 +66,7 @@ class TrainStatusPane extends React.Component {
             const visible = train.visible || train.status !== 'Not Scheduled';
             return (
               <Grid.Column key={train.name + train.alternate_name} style={{display: (visible ? 'block' : 'none')}}>
-                <Train train={train} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} routingTimestamp={routingTimestamp} stops={stops}
+                <Train train={train} trains={trains} stats={trainStats[train.id]} showStats={showStats} routing={routing[train.id]} routingTimestamp={routingTimestamp} stops={stops}
                   onFavTrainChange={onFavTrainChange} favTrains={favTrains} width={width} />
               </Grid.Column>)
           })
