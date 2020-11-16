@@ -52,20 +52,9 @@ class TrainModal extends React.Component {
     return this.props.train.secondary_status;
   }
 
-  hasLinesWithoutService() {
-    return (this.props.train.lines_not_in_service.north.length > 0 || this.props.train.lines_not_in_service.south.length > 0);
-  }
-
   headingSize() {
     const { width } = this.props;
     return (width > Responsive.onlyMobile.maxWidth) ? 'h1' : 'h4';
-  }
-
-  renderStatus() {
-    if (this.status() !== '--' && this.hasLinesWithoutService()) {
-      return `${this.status()}*`
-    }
-    return this.status();
   }
 
   panes() {
@@ -155,7 +144,7 @@ class TrainModal extends React.Component {
               <Grid.Column>
                 <Statistic.Group widths={1} size={(width > Responsive.onlyMobile.maxWidth) ? "small" : "tiny"} color={this.color()} inverted>
                   <Statistic>
-                    <Statistic.Value>{this.renderStatus()}</Statistic.Value>
+                    <Statistic.Value>{this.status()}</Statistic.Value>
                     <Statistic.Label>Status</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>

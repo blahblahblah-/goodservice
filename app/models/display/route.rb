@@ -18,9 +18,11 @@ module Display
       directions[trip.direction].push_trip(trip)
     end
 
-    def status
+    def status(service_changes)
       return @status if @status
       return @status = "No Data" if unavailable
+      return "No Service" if service_changes && service_changes[:both].present? && service_changes[:both].all? { |c| c.is_a?(NoTrainServiceChange)}
+      return "Service Change" if service_changes&.any? { |_, v| v.present? }
 
       @status = ["Delay", "Service Change", "Not Good", "Good Service"].find do |s|
         directions.any? { |_, d| d.status == s }
@@ -57,8 +59,9 @@ module Display
       }&.to_h
     end
 
-    def secondary_status
-      return status unless status == "Not Good"
+    def secondary_status(service_changes)
+      s = status(service_changes)
+      return s unless s == "Not Good"
 
       ["Slow", "Not Good"].find do |s|
         directions.any? { |_, d| d.secondary_status == s }

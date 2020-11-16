@@ -178,7 +178,6 @@ class ServiceChangeAnalyzer
   def self.match_route(current_route_id, reroute_service_change, recent_routings, evergreen_routings)
     stations = reroute_service_change.stations_affected.compact
     route_pair = nil
-
     [recent_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
         route_id != current_route_id && direction.any? do |_, routings|

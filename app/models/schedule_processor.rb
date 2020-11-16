@@ -115,8 +115,8 @@ class ScheduleProcessor
         color: route.color && "##{route.color}",
         text_color: route.text_color && "##{route.text_color}",
         alternate_name: route.alternate_name,
-        status: route.status,
-        secondary_status: route.secondary_status,
+        status: route.status(service_changes),
+        secondary_status: route.secondary_status(service_changes),
         max_headway_discrepancy: route.max_headway_discrepancy,
         max_travel_time_discrepancy: route.max_travel_time_discrepancy,
         max_travel_time: route.max_travel_time,
@@ -457,12 +457,16 @@ class ScheduleProcessor
     results = Hash[processor.routes.sort_by { |_, v|
       "#{v.name} #{v.alternate_name}"
     }.map do |_, route|
+      service_changes = processor.recent_routings[route.internal_id] &&
+        ServiceChangeAnalyzer.service_change_summary(
+          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.transfers
+        )
       [route.internal_id, {
           name: route.name,
           color: route.color && "##{route.color}",
           text_color: route.text_color && "##{route.text_color}",
           alternate_name: route.alternate_name,
-          status: route.status,
+          status: route.status(service_changes),
           statuses: {
             last_hour: last_hour_statuses[route.internal_id]&.pluck(:status)&.chunk { |n| n }&.map { |n, ary|
               {
