@@ -59,7 +59,7 @@ class ServiceChangeAnalyzer
             scheduled_station = scheduled_routing[scheduled_index]
 
             if scheduled_station.nil?
-              remaining_stations = actual_station.slice(actual_index - 1, actual_station.length)
+              remaining_stations = actual_routing[actual_index...actual_station.length]
               break
             end
 
