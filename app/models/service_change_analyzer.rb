@@ -33,7 +33,7 @@ class ServiceChangeAnalyzer
       scheduled = scheduled_routings[direction[:scheduled_direction]]
       
       if !actual || actual.empty?
-        if !scheduled_routings || scheduled_routings.empty?
+        if !scheduled || scheduled.empty?
           return
         else
           changes << [NoTrainServiceChange.new(direction[:route_direction], [])]
@@ -122,7 +122,7 @@ class ServiceChangeAnalyzer
           if ongoing_service_change
             ongoing_service_change.stations_affected << nil
             routing_changes << ongoing_service_change        
-          elsif remaining_stations
+          elsif remaining_stations.present?
             routing_changes << ReroutingServiceChange.new(direction[:route_direction], remaining_stations)
           elsif scheduled_routing[scheduled_index + 1]
             routing_changes << TruncatedServiceChange.new(direction[:route_direction], scheduled_routing[scheduled_index - 1..scheduled_routing.length].concat([nil]))
