@@ -778,7 +778,7 @@ def self.arrivals_info(force_refresh: false)
         }.uniq
         result = a.select { |b|
           others = a - [b]
-          others.none? {|o| o.each_cons(b.length).any?(&b.method(:==))}
+          b.length > 0 && others.none? {|o| o.each_cons(b.length).any?(&b.method(:==))}
         }
         [j, result]
       }]]
