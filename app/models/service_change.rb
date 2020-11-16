@@ -1,10 +1,12 @@
 class ServiceChange
-  attr_accessor :direction, :stations_affected, :related_route, :affects_some_trains
+  attr_accessor :direction, :stations_affected, :related_route, :affects_some_trains, :origin, :destination
 
-  def initialize(direction, stations_affected)
+  def initialize(direction, stations_affected, origin, destination)
     self.direction = direction
     self.stations_affected = stations_affected
     self.affects_some_trains = false
+    self.origin = origin
+    self.destination = destination
   end
 
   def first_station
