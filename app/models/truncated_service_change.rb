@@ -1,0 +1,2 @@
+class TruncatedServiceChange < ServiceChange
+end

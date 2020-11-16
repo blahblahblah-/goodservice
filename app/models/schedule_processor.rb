@@ -41,7 +41,7 @@ class ScheduleProcessor
     "7X" => "-7",
   }
 
-  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops
+  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops, :recent_routings, :evergreen_routings, :transfers
 
   def initialize
     refresh_data
@@ -105,6 +105,10 @@ class ScheduleProcessor
 
     processor = self.instance
     routes_data = processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
+      service_changes = processor.recent_routings[route.internal_id] &&
+        ServiceChangeAnalyzer.service_change_summary(
+          route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.transfers
+        )
       {
         id: route.internal_id,
         name: route.name,
@@ -128,6 +132,8 @@ class ScheduleProcessor
           north: route.directions[1].status_summary,
           south: route.directions[3].status_summary,
         },
+        service_changes: route.format_service_changes(service_changes),
+        service_change_summary: route.service_change_summary(service_changes),
         direction_statuses: {
           north: route.directions[1].status,
           south: route.directions[3].status,
@@ -349,8 +355,6 @@ class ScheduleProcessor
       ]
     end]
 
-    transfers = Transfer.where("from_stop_internal_id <> to_stop_internal_id").group_by(&:to_stop_internal_id)
-
     results.each do |route_id, route|
       route_obj = {
         id: route_id,
@@ -365,7 +369,7 @@ class ScheduleProcessor
             next if closed_stops.include?(stop)
             stop_trains[stop[0..2]] << route_obj.merge({direction: direction})
 
-            next unless transfers_for_stop = transfers[stop[0..2]]
+            next unless transfers_for_stop = processor.transfers[stop[0..2]]
 
             transfers_for_stop.each do |transfer|
               stop_trains[transfer.from_stop_internal_id] << route_obj.merge({direction: direction})
@@ -722,11 +726,14 @@ def self.arrivals_info(force_refresh: false)
     @stop_names ||= Stop.pluck(:internal_id).to_set
     @stops ||= Stop.all
     @unavailable_feeds = Set.new
+    @transfers ||= Transfer.where("from_stop_internal_id <> to_stop_internal_id").group_by(&:to_stop_internal_id)
 
     instantiate_routes
     instantiate_lines
     instantiate_line_directions
     instantiate_recent_trips
+    instantiate_recent_routings
+    instantiate_evergreen_routings
   end
 
   def instantiate_routes
@@ -754,10 +761,26 @@ def self.arrivals_info(force_refresh: false)
   end
 
   def instantiate_recent_routings
-    @recent_routings = Hash[StopTime.soon.map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+    @recent_routings = Hash[StopTime.soon(time_range: 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
       [k, Hash[v.group_by(&:direction).map{ |j, w|
         a = w.map { |t|
           t.stop_times.not_past.pluck(:stop_internal_id)
+        }.uniq
+        result = a.select { |b|
+          others = a - [b]
+          others.none? {|o| o.each_cons(b.length).any?(&b.method(:==))}
+        }
+        [j, result]
+      }]]
+    }]
+  end
+
+  def instantiate_evergreen_routings
+    time = CalendarException.next_weekday.to_time.change(hour: 12)
+    @evergreen_routings ||= Hash[StopTime.soon(time_range: 30.minutes, current_time: time).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+      [k, Hash[v.group_by(&:direction).map{ |j, w|
+        a = w.map { |t|
+          t.stop_times.not_past(current_time: time).pluck(:stop_internal_id)
         }.uniq
         result = a.select { |b|
           others = a - [b]

@@ -50,7 +50,7 @@ module Display
       return if ["Not Scheduled", "No Service"].include?(status)
 
       strs = []
-      intro = "#{scheduled_destinations.join('/').presence || destinations.join('/').presence}-bound trains are "
+      intro = "#{destination_text}-bound trains are "
 
       delays = combine_adjacent_line_directions(delayed_line_directions)
 
@@ -164,6 +164,18 @@ module Display
 
     def destination_stops
       routings.map(&:last).uniq
+    end
+
+    def destination_text
+      "#{destinations.join('/').presence || scheduled_destinations.join('/').presence}"
+    end
+
+    def origin_stops
+      routings.map(&:first).uniq
+    end
+
+    def origin_text
+      origin_stops.map { |o| stops.find { |s| s.internal_id == o}&.stop_name}.compact.join('/')
     end
 
     def routings

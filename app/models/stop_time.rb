@@ -5,26 +5,26 @@ class StopTime < ActiveRecord::Base
   DAY_IN_MINUTES = 86400
   BUFFER = 10800
 
-  def self.soon(time_range: 60.minutes)
-    if (rounded_time + time_range).to_date == Date.current.tomorrow
+  def self.soon(time_range: 60.minutes, current_time: rounded_time)
+    if (current_time + time_range).to_date == current_time.to_date.tomorrow
       where("(departure_time > ? and departure_time < ?) or (departure_time > ? and departure_time < ?)",
-        rounded_time - rounded_time.beginning_of_day,
-        rounded_time - rounded_time.beginning_of_day + time_range.to_i,
+        current_time - current_time.beginning_of_day,
+        current_time - current_time.beginning_of_day + time_range.to_i,
         0,
-        (rounded_time - rounded_time.beginning_of_day + time_range.to_i) % DAY_IN_MINUTES
-      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today)
-    elsif rounded_time.hour < 4
+        (current_time - current_time.beginning_of_day + time_range.to_i) % DAY_IN_MINUTES
+      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today(date: current_time.to_date))
+    elsif current_time.hour < 4
       where("(departure_time > ? and departure_time < ?) or (departure_time > ? and departure_time < ?)",
-        rounded_time - rounded_time.beginning_of_day,
-        rounded_time - rounded_time.beginning_of_day + time_range.to_i,
-        rounded_time - rounded_time.beginning_of_day + DAY_IN_MINUTES,
-        rounded_time - rounded_time.beginning_of_day + DAY_IN_MINUTES + time_range.to_i
-      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today)
+        current_time - current_time.beginning_of_day,
+        current_time - current_time.beginning_of_day + time_range.to_i,
+        current_time - current_time.beginning_of_day + DAY_IN_MINUTES,
+        current_time - current_time.beginning_of_day + DAY_IN_MINUTES + time_range.to_i
+      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today(date: current_time.to_date))
     else
       where("departure_time > ? and departure_time < ?",
-        rounded_time - rounded_time.beginning_of_day,
-        rounded_time - rounded_time.beginning_of_day + time_range.to_i
-      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today)
+        current_time - current_time.beginning_of_day,
+        current_time - current_time.beginning_of_day + time_range.to_i
+      ).includes(:trip).joins(trip: :schedule).merge(Schedule.today(date: current_time.to_date))
     end
   end
 
@@ -60,23 +60,23 @@ class StopTime < ActiveRecord::Base
     end
   end
 
-  def self.not_past
-    if (rounded_time + BUFFER).to_date == Date.current.tomorrow
+  def self.not_past(current_time: rounded_time)
+    if (rounded_time + BUFFER).to_date == current_time.to_date.tomorrow
       where("departure_time > ? or (? - departure_time > ?)",
-        rounded_time - rounded_time.beginning_of_day,
-        rounded_time - rounded_time.beginning_of_day,
+        current_time - current_time.beginning_of_day,
+        current_time - current_time.beginning_of_day,
         BUFFER,
       )
-    elsif rounded_time.hour < 4
-      where("(departure_time < ? and departure_time > ?) or (departure_time >= ? and departure_time - ? > ?",
+    elsif current_time.hour < 4
+      where("(departure_time < ? and departure_time > ?) or (departure_time >= ? and departure_time - ? > ?)",
         DAY_IN_MINUTES,
-        rounded_time - rounded_time.beginning_of_day,
+        current_time - current_time.beginning_of_day,
         DAY_IN_MINUTES,
         DAY_IN_MINUTES,
-        rounded_time - rounded_time.beginning_of_day
+        current_time - current_time.beginning_of_day
       )
     else
-      where("departure_time > ?", rounded_time - rounded_time.beginning_of_day)
+      where("departure_time > ?", current_time - current_time.beginning_of_day)
     end
   end
 end

@@ -1,0 +1,3 @@
+class ExpressToLocalServiceChange < ServiceChange
+
+end

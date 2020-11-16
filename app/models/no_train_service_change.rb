@@ -1,0 +1,3 @@
+class NoTrainServiceChange < ServiceChange
+
+end
