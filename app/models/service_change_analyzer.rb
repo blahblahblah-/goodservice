@@ -80,7 +80,7 @@ class ServiceChangeAnalyzer
                   end
                 else
                   if actual_routing.include?(scheduled_station) && previous_actual_station
-                    if routing_changes.last&.class == ExpressToLocalServiceChange && actual_routing[actual_index - 1, 2].include?(routing_changes.last.last_station)
+                    if routing_changes.last&.class == ExpressToLocalServiceChange && actual_routing[actual_index - 2, 2].include?(routing_changes.last.last_station)
                       ongoing_service_change = routing_changes.pop
                       ongoing_service_change.stations_affected << actual_station if ongoing_service_change.last_station != actual_station
                     else
