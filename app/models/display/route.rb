@@ -154,7 +154,11 @@ module Display
         sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + sentence_intro + " running"
         if begin_of_route&.is_a?(ReroutingServiceChange) &&
           if begin_of_route.related_route
-            sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.first_station)} and"
+            if begin_of_route == end_of_route
+              sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.last_station)} and"
+            else
+              sentence += " via <#{begin_of_route.related_route}> between #{stop_name(begin_of_route.first_station)} and"
+            end
           else
             sentence += " between #{stop_name(begin_of_route.first_station)} and"
           end
