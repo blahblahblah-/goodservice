@@ -180,7 +180,7 @@ class ServiceChangeAnalyzer
     route_pair = nil
     [recent_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
-        route_id != current_route_id && direction.any? do |_, routings|
+        route_id[0] != current_route_id[0] && direction.any? do |_, routings|
           routings.any? {|r| normalize_routing(r).each_cons(stations.length).any?(&stations.method(:==))}
         end
       end
