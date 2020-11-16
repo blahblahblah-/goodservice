@@ -36,10 +36,6 @@ module Display
     def service_change_summary(service_changes)
       return [] unless service_changes
 
-      if service_changes.any? { |_, v| v.any? { |c| c.is_a?(NoTrainServiceChange) }}
-        return ["<#{internal_id}> trains are not running."]
-      end
-
       results = []
 
       service_changes.each do |k, v|
@@ -149,11 +145,16 @@ module Display
         end_preposition = 'to'
       end
 
+      if service_changes.any? { |c| c.is_a?(NoTrainServiceChange) }
+        return ["#{sentence_intro} not running."]
+      end
+
+
       if (begin_of_route = service_changes.find(&:begin_of_route?)) || (end_of_route = service_changes.find(&:end_of_route?))
         sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + sentence_intro + " running"
         if begin_of_route&.is_a?(ReroutingServiceChange) &&
           if begin_of_route.related_route
-            sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.last_station)} and"
+            sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.first_station)} and"
           else
             sentence += " between #{stop_name(begin_of_route.first_station)} and"
           end

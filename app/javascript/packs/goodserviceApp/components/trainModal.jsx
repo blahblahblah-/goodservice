@@ -94,8 +94,6 @@ class TrainModal extends React.Component {
 
   renderServiceChanges() {
     const { train, trains } = this.props;
-    const trainBullet = (<TrainBullet name={train.name} color={train.color}
-      textColor={train.text_color} style={{display: "inline-block"}} size='small' key={train.id} />);
 
     return train.service_change_summary.map((change, i) => {
       let tmp = [change.replace(/ - /g, "–")];
