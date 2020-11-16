@@ -68,7 +68,7 @@ module Display
         headway_strs = long_headways.map do |l|
           scheduled_headway = l.map(&:max_scheduled_headway).compact&.max.round
           actual_headway = l.map(&:max_actual_headway).compact&.max.round
-          "between #{l.first.actual_first_stop_name(routing_stops)} and #{l.last.actual_last_stop_name(routing_stops)} (up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
+          "(up to #{actual_headway} mins, normally every #{scheduled_headway} mins)"
         end
         strs << "having longer wait times " + headway_strs.join('/')
       end
