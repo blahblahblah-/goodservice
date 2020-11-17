@@ -155,35 +155,41 @@ module Display
         return ["#{sentence_intro} not running."]
       end
 
+      begin_of_route = service_changes.find(&:begin_of_route?)
+      end_of_route = service_changes.find(&:end_of_route?)
 
-      if (begin_of_route = service_changes.find(&:begin_of_route?)) || (end_of_route = service_changes.find(&:end_of_route?))
+      if begin_of_route || end_of_route
         sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + sentence_intro + " running"
-        if begin_of_route&.is_a?(ReroutingServiceChange)
-          if begin_of_route.related_route
-            if begin_of_route == end_of_route
-              sentence += " via <#{begin_of_route.related_route}> between #{stop_name(begin_of_route.first_station)} and"
+        if begin_of_route && end_of_route && begin_of_route != end_of_route && [begin_of_route, end_of_route].all? {|c| c.is_a?(TruncatedServiceChange)} && ([begin_of_route.stations_affected[1...-1] & end_of_route.stations_affected[1...-1]]).present?
+          sentence += " in two sections: between #{stop_name(end_of_route.origin)} and #{stop_name(end_of_route.first_station)}, and #{stop_name(begin_of_route.last_station)} and #{stop_name(begin_of_route.destination)}"
+        else
+          if begin_of_route&.is_a?(ReroutingServiceChange)
+            if begin_of_route.related_route
+              if begin_of_route == end_of_route
+                sentence += " via <#{begin_of_route.related_route}> between #{stop_name(begin_of_route.first_station)} and"
+              else
+                sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.last_station)} and"
+              end
             else
-              sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.last_station)} and"
+              sentence += " between #{stop_name(begin_of_route.first_station)} and"
             end
+          elsif begin_of_route&.is_a?(TruncatedServiceChange)
+            sentence += " between #{stop_name(begin_of_route.last_station)} and"
           else
-            sentence += " between #{stop_name(begin_of_route.first_station)} and"
+            sentence += " between #{stop_name(end_of_route.origin)} and"
           end
-        elsif begin_of_route&.is_a?(TruncatedServiceChange)
-          sentence += " between #{stop_name(begin_of_route.last_station)} and"
-        else
-          sentence += " between #{stop_name(end_of_route.origin)} and"
-        end
 
-        if end_of_route&.is_a?(ReroutingServiceChange)
-          if end_of_route.related_route
-            sentence += " #{stop_name(end_of_route.first_station)}, via <#{end_of_route.related_route}> #{end_preposition} #{stop_name(end_of_route.last_station)}."
+          if end_of_route&.is_a?(ReroutingServiceChange)
+            if end_of_route.related_route
+              sentence += " #{stop_name(end_of_route.first_station)}, via <#{end_of_route.related_route}> #{end_preposition} #{stop_name(end_of_route.last_station)}."
+            else
+              sentence += " #{stop_name(end_of_route.last_station)}."
+            end
+          elsif end_of_route&.is_a?(TruncatedServiceChange)
+            sentence += " between #{stop_name(end_of_route.first_station)} and"
           else
-            sentence += " #{stop_name(end_of_route.last_station)}."
+            sentence += " #{stop_name(begin_of_route.destination)}."
           end
-        elsif end_of_route&.is_a?(TruncatedServiceChange)
-          sentence += " between #{stop_name(end_of_route.first_station)} and"
-        else
-          sentence += " #{stop_name(begin_of_route.destination)}."
         end
 
         notices << sentence
