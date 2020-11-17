@@ -194,7 +194,31 @@ class ServiceChangeAnalyzer
       break if route_pair
     end
 
-    reroute_service_change.related_route = route_pair[0] if route_pair
+    if route_pair
+      reroute_service_change.related_routes = [route_pair[0]]
+      return
+    end
+
+    route_pairs = []
+
+    [recent_routings, evergreen_routings].each do |routing_set|
+      (1...stations.size - 1).each_with_index do |i|
+        first_station_sequence = stations[0..i]
+        second_station_sequence = stations[i..stations.size]
+
+        route_pairs = [first_station_sequence, second_station_sequence].map do |station_sequence|
+          route_pair = routing_set.find do |route_id, direction|
+            route_id[0] != current_route_id[0] && direction.any? do |_, routings|
+              routings.any? {|r| normalize_routing(r).each_cons(station_sequence.length).any?(&station_sequence.method(:==))}
+            end
+          end
+          route_pair
+        end
+
+        break if route_pairs.compact.size == 2
+      end
+    end
+    reroute_service_change.related_routes = route_pairs.map {|r| r[0] } if route_pairs.compact.size == 2
   end
 
   def self.normalize_routing(routing)

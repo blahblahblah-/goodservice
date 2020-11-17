@@ -54,7 +54,7 @@ module Display
           {
            type: r.class.name,
            stations_affected: r.stations_affected,
-           related_route: r.related_route,
+           related_routes: r.related_routes,
           }
         }]
       }&.to_h
@@ -164,11 +164,11 @@ module Display
           sentence += " in two sections: between #{stop_name(end_of_route.origin)} and #{stop_name(end_of_route.first_station)}, and #{stop_name(begin_of_route.last_station)} and #{stop_name(begin_of_route.destination)}"
         else
           if begin_of_route&.is_a?(ReroutingServiceChange)
-            if begin_of_route.related_route
+            if begin_of_route.related_routes.present?
               if begin_of_route == end_of_route
-                sentence += " via <#{begin_of_route.related_route}> between #{stop_name(begin_of_route.first_station)} and"
+                sentence += " via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} between #{stop_name(begin_of_route.first_station)} and"
               else
-                sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via <#{begin_of_route.related_route}>, and between #{stop_name(begin_of_route.last_station)} and"
+                sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')}, and between #{stop_name(begin_of_route.last_station)} and"
               end
             else
               sentence += " between #{stop_name(begin_of_route.first_station)} and"
@@ -180,8 +180,8 @@ module Display
           end
 
           if end_of_route&.is_a?(ReroutingServiceChange)
-            if end_of_route.related_route
-              sentence += " #{stop_name(end_of_route.first_station)}, via <#{end_of_route.related_route}> #{end_preposition} #{stop_name(end_of_route.last_station)}."
+            if end_of_route.related_routes.present?
+              sentence += " #{stop_name(end_of_route.first_station)}, via  #{end_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} #{end_preposition} #{stop_name(end_of_route.last_station)}."
             else
               sentence += " #{stop_name(end_of_route.last_station)}."
             end
@@ -197,8 +197,8 @@ module Display
 
       service_changes.select { |c| c.is_a?(ReroutingServiceChange) && !c.begin_of_route? && !c.end_of_route?}.each do |change|
         sentence = (change.affects_some_trains ? 'Some ' : '') + sentence_intro + " running"
-        if change.related_route
-          sentence += " via <#{change.related_route}> between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
+        if change.related_routes.present?
+          sentence += " via #{change.related_routes.map { |r| "<#{r}>" }.join(' and ')} between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
         else
           sentence += " via #{change.intermediate_stations.map { |s| stop_name(s) }.join(', ') } between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
         end
