@@ -21,7 +21,8 @@ module Display
     def status(service_changes)
       return @status if @status
       return @status = "No Data" if unavailable
-      return "No Service" if service_changes && service_changes[:both].present? && service_changes[:both].all? { |c| c.is_a?(NoTrainServiceChange)}
+      return "No Service" if service_changes && service_changes[:both]&.find { |c| c.is_a?(NoTrainServiceChange).present? }.present?
+      return "No Service" if service_changes && [NoTrainServiceChange, NotScheduledServiceChange].all? { |klass| service_changes.find { |_, v| v.find {|c| c.is_a?(klass) } }.present? }
       return "Service Change" if service_changes&.any? { |_, v| v.present? }
 
       @status = ["Delay", "Service Change", "Not Good", "Good Service"].find do |s|
@@ -124,6 +125,8 @@ module Display
 
     def generate_service_change_notice(direction, service_changes)
       return [] unless service_changes
+
+      service_changes.select! { |s| !s.is_a?(NotScheduledServiceChange)}
 
       notices = []
 

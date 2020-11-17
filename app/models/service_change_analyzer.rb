@@ -36,7 +36,7 @@ class ServiceChangeAnalyzer
       
       if !actual || actual.empty?
         if !scheduled || scheduled.empty?
-          changes << []
+          changes << [NotScheduledServiceChange.new(direction[:route_direction], [], nil, nil)]
         else
           changes << [NoTrainServiceChange.new(direction[:route_direction], [], nil, nil)]
         end
@@ -155,7 +155,9 @@ class ServiceChangeAnalyzer
       changes = d.flatten.uniq
 
       changes.each do |c|
-        c.affects_some_trains = d.each_index.select { |i| !d[i].include?(c) && ![c.first_station, c.last_station].all? { |s1| actual_route_directions[c.direction].routings[i].map { |s2| s2[0..2] }.include?(s1) } }.present?
+        c.affects_some_trains = d.each_index.select { |i|
+          c.stations_enroute.length > 0 && !d[i].include?(c) && actual_route_directions[c.direction].routings[i].map { |s2| s2[0..2] }.unshift(nil).push(nil).each_cons(c.stations_enroute.length).any?(&c.stations_enroute.method(:==))
+        }.present?
       end
 
       changes.sort_by { |c| c.affects_some_trains ? 1 : 0 }

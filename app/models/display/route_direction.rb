@@ -20,12 +20,6 @@ module Display
         @status = "No Service"
       elsif line_directions.empty?
         @status = "Not Scheduled"
-      elsif line_directions.any? { |ld|
-          (ld.rerouted? && line_directions.none? { |ld2| ld.line == ld2.line && ld2.normal_routing?})
-        }
-        @status = "Service Change"
-      elsif (scheduled_destinations - destinations).any? && destinations.present? && scheduled_destinations.size == 1
-        @status = "Service Change"
       elsif line_directions.any? { |ld| ld.slow? || ld.headway_gap? }
         @status = "Not Good"
       else

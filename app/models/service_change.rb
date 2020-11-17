@@ -29,6 +29,10 @@ class ServiceChange
     stations_affected - [first_station, last_station]
   end
 
+  def stations_enroute
+    []
+  end
+
   def hash
     self.class.hash ^ self.direction.hash ^ self.stations_affected.first.hash ^ self.stations_affected.last.hash
   end
