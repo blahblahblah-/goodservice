@@ -156,7 +156,7 @@ class ServiceChangeAnalyzer
 
       changes.each do |c|
         c.affects_some_trains = d.each_index.select { |i|
-          c.stations_enroute.length > 0 && !d[i].include?(c) && actual_route_directions[c.direction].routings[i].map { |s2| s2[0..2] }.unshift(nil).push(nil).each_cons(c.stations_enroute.length).any?(&c.stations_enroute.method(:==))
+          !d[i].include?(c) && c.applicable_to_routing?(actual_route_directions[c.direction].routings[i].map { |s2| s2[0..2] }.unshift(nil).push(nil))
         }.present?
       end
 

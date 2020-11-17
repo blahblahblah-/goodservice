@@ -29,8 +29,8 @@ class ServiceChange
     stations_affected - [first_station, last_station]
   end
 
-  def stations_enroute
-    []
+  def applicable_to_routing?(routing)
+    [first_station, last_station].all? { |s| routing.include?(s) }
   end
 
   def hash

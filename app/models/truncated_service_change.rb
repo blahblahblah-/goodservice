@@ -1,9 +1,9 @@
 class TruncatedServiceChange < ServiceChange
-  def stations_enroute
+  def applicable_to_routing?(routing)
     if begin_of_route?
-      [nil, last_station]
+      routing.first == last_station
     else
-      [nil, first_station]
+      routing.last == first_station
     end
   end
 end
