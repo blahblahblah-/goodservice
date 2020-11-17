@@ -181,7 +181,7 @@ module Display
             sentence += " #{stop_name(end_of_route.last_station)}."
           end
         elsif end_of_route&.is_a?(TruncatedServiceChange)
-          sentence += " between #{stop_name(begin_of_route.first_station)} and"
+          sentence += " between #{stop_name(end_of_route.first_station)} and"
         else
           sentence += " #{stop_name(begin_of_route.destination)}."
         end
