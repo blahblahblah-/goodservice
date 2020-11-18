@@ -159,6 +159,7 @@ module Display
       end_of_route = service_changes.find(&:end_of_route?)
 
       if begin_of_route || end_of_route
+        binding.pry if internal_id == 'L'
         sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + sentence_intro + " running"
         if begin_of_route && end_of_route && begin_of_route != end_of_route && [begin_of_route, end_of_route].all? {|c| c.is_a?(TruncatedServiceChange)} && ([begin_of_route.stations_affected[1...-1] & end_of_route.stations_affected[1...-1]]).present?
           sentence += " in two sections: between #{stop_name(end_of_route.origin)} and #{stop_name(end_of_route.first_station)}, and #{stop_name(begin_of_route.last_station)} and #{stop_name(begin_of_route.destination)}"
@@ -166,7 +167,11 @@ module Display
           if begin_of_route&.is_a?(ReroutingServiceChange)
             if begin_of_route.related_routes.present?
               if begin_of_route == end_of_route
-                sentence += " via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} between #{stop_name(begin_of_route.first_station)} and"
+                if begin_of_route.first_station == begin_of_route.last_station
+                  sentence += " via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} to"
+                else
+                  sentence += " via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} between #{stop_name(begin_of_route.first_station)} and"
+                end
               else
                 sentence += " #{begin_preposition} #{stop_name(begin_of_route.first_station)} via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')}, and between #{stop_name(begin_of_route.last_station)} and"
               end
@@ -186,7 +191,7 @@ module Display
               sentence += " #{stop_name(end_of_route.last_station)}."
             end
           elsif end_of_route&.is_a?(TruncatedServiceChange)
-            sentence += " between #{stop_name(end_of_route.first_station)} and"
+            sentence += " and #{stop_name(end_of_route.first_station)}."
           else
             sentence += " #{stop_name(begin_of_route.destination)}."
           end

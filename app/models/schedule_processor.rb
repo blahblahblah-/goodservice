@@ -667,7 +667,7 @@ def self.arrivals_info(force_refresh: false)
           (update.departure || update.arrival)&.time.nil?
         }
         next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time < feed.header.timestamp }
-        next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time > feed.header.timestamp + 60.minutes }
+        next if entity.trip_update.stop_time_update.all? {|update| (update&.departure || update&.arrival).time > feed.header.timestamp + 30.minutes }
         actual_trip_id = entity.trip_update.trip.trip_id
         if (translated_trip_id = translations[actual_trip_id])
           process_trip(feed, translated_trip_id, entity)

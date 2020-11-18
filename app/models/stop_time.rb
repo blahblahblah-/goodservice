@@ -5,7 +5,7 @@ class StopTime < ActiveRecord::Base
   DAY_IN_MINUTES = 86400
   BUFFER = 10800
 
-  def self.soon(time_range: 60.minutes, current_time: rounded_time)
+  def self.soon(time_range: 30.minutes, current_time: rounded_time)
     if (current_time + time_range).to_date == current_time.to_date.tomorrow
       where("(departure_time > ? and departure_time < ?) or (departure_time > ? and departure_time < ?)",
         current_time - current_time.beginning_of_day,

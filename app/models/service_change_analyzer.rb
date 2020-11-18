@@ -45,14 +45,14 @@ class ServiceChangeAnalyzer
           routing_changes = []
           ongoing_service_change = nil
           if a.any? { |s| s[-1] != direction[:suffix] }
-            return
+            next
           end
           actual_routing = a.map { |s| s[0..2] }
           scheduled_routing = scheduled.map { |sr| sr.map { |s| s[0..2] }}.min_by { |sr| (actual_routing - sr).size }
 
           if !scheduled_routing
             changes << [ReroutingServiceChange.new(direction[:route_direction], actual_routing, actual_routing.first, actual_routing.last)]
-            return
+            next
           end
 
           scheduled_index = 0
@@ -136,7 +136,7 @@ class ServiceChangeAnalyzer
         end
       end
 
-      changes
+      changes.select { |c| !c.is_a?(TruncatedServiceChange) || !truncate_service_change_overlaps_with_different_routing?(c, actual)}
     end
 
     both = []
@@ -223,5 +223,17 @@ class ServiceChangeAnalyzer
 
   def self.normalize_routing(routing)
     routing.map { |r| r[0..2] }
+  end
+
+  def self.truncate_service_change_overlaps_with_different_routing?(service_change, routings)
+    if service_change.begin_of_route?
+      routings.any? do |r|
+        normalize_routing(r).index(service_change.last_station) > 0
+      end
+    else
+      routings.any? do |r|
+        normalize_routing(r).reverse.index(service_change.first_station) > 0
+      end
+    end
   end
 end
