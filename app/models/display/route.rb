@@ -164,7 +164,7 @@ module Display
           sentence += " in two sections: between #{stop_name(end_of_route.origin)} and #{stop_name(end_of_route.first_station)}, and #{stop_name(begin_of_route.last_station)} and #{stop_name(begin_of_route.destination)}"
         else
           if end_of_route.present? && direction != :both
-            sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + " #{end_of_route.last_station}-bound trains are running"
+            sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + " #{stop_name(end_of_route.last_station)}-bound trains are running"
           end
 
           if begin_of_route&.is_a?(ReroutingServiceChange)
