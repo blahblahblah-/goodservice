@@ -163,6 +163,10 @@ module Display
         if begin_of_route && end_of_route && begin_of_route != end_of_route && [begin_of_route, end_of_route].all? {|c| c.is_a?(TruncatedServiceChange)} && ([begin_of_route.stations_affected[1...-1] & end_of_route.stations_affected[1...-1]]).present?
           sentence += " in two sections: between #{stop_name(end_of_route.origin)} and #{stop_name(end_of_route.first_station)}, and #{stop_name(begin_of_route.last_station)} and #{stop_name(begin_of_route.destination)}"
         else
+          if end_of_route.present? && direction != :both
+            sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + " #{end_of_route.last_station}-bound trains are running"
+          end
+
           if begin_of_route&.is_a?(ReroutingServiceChange)
             if begin_of_route.related_routes.present?
               if begin_of_route == end_of_route
