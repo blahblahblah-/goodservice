@@ -135,8 +135,7 @@ class ServiceChangeAnalyzer
           changes << routing_changes
         end
       end
-
-      changes.select { |c| !c.is_a?(TruncatedServiceChange) || !truncate_service_change_overlaps_with_different_routing?(c, actual)}
+      changes.map { |r| r.select { |c| !c.is_a?(TruncatedServiceChange) || !truncate_service_change_overlaps_with_different_routing?(c, actual)}}
     end
 
     both = []
@@ -228,11 +227,13 @@ class ServiceChangeAnalyzer
   def self.truncate_service_change_overlaps_with_different_routing?(service_change, routings)
     if service_change.begin_of_route?
       routings.any? do |r|
-        normalize_routing(r).index(service_change.last_station) > 0
+        i = normalize_routing(r).index(service_change.last_station)
+        i && i > 0
       end
     else
       routings.any? do |r|
-        normalize_routing(r).reverse.index(service_change.first_station) > 0
+        i = normalize_routing(r).index(service_change.first_station)
+        i && i < r.size - 1
       end
     end
   end
