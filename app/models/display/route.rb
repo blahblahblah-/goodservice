@@ -184,7 +184,7 @@ module Display
           end
 
           if end_of_route&.is_a?(ReroutingServiceChange)
-            if end_of_route.related_routes.present?
+            if end_of_route.related_routes.present? && begin_of_route != end_of_route
               sentence += " #{stop_name(end_of_route.first_station)}, via  #{end_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} #{end_preposition} #{stop_name(end_of_route.last_station)}."
             else
               sentence += " #{stop_name(end_of_route.last_station)}."
