@@ -41,7 +41,7 @@ class ScheduleProcessor
     "7X" => "-7",
   }
 
-  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops, :recent_routings, :evergreen_routings, :transfers
+  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops, :recent_routings, :evergreen_routings, :interchangeable_transfers, :transfers
 
   def initialize
     refresh_data
@@ -107,7 +107,7 @@ class ScheduleProcessor
     routes_data = processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
       service_changes = processor.recent_routings[route.internal_id] &&
         ServiceChangeAnalyzer.service_change_summary(
-          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.transfers
+          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
         )
       {
         id: route.internal_id,
@@ -459,7 +459,7 @@ class ScheduleProcessor
     }.map do |_, route|
       service_changes = processor.recent_routings[route.internal_id] &&
         ServiceChangeAnalyzer.service_change_summary(
-          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.transfers
+          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
         )
       [route.internal_id, {
           name: route.name,
@@ -736,7 +736,8 @@ def self.arrivals_info(force_refresh: false)
     @stop_names ||= Stop.pluck(:internal_id).to_set
     @stops ||= Stop.all
     @unavailable_feeds = Set.new
-    @transfers ||= Transfer.where("from_stop_internal_id <> to_stop_internal_id and interchangeable_platforms = true").group_by(&:to_stop_internal_id)
+    @transfers ||= Transfer.where("from_stop_internal_id <> to_stop_internal_id").group_by(&:to_stop_internal_id)
+    @interchangeable_transfers ||= Transfer.where("from_stop_internal_id <> to_stop_internal_id and interchangeable_platforms = true").group_by(&:to_stop_internal_id)
 
     instantiate_routes
     instantiate_lines

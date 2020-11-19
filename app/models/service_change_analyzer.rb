@@ -144,7 +144,7 @@ class ServiceChangeAnalyzer
       d.each do |r|
         r.each do |c|
           if c.is_a?(ReroutingServiceChange)
-            match_route(route_id, c, recent_routings, evergreen_routings)
+            match_route(route_id, c, recent_routings, evergreen_routings, transfers)
           end
         end
       end
@@ -181,13 +181,23 @@ class ServiceChangeAnalyzer
 
   private
 
-  def self.match_route(current_route_id, reroute_service_change, recent_routings, evergreen_routings)
+  def self.match_route(current_route_id, reroute_service_change, recent_routings, evergreen_routings, transfers)
     stations = reroute_service_change.stations_affected.compact
+    station_combinations = [stations]
+    if t = transfers[stations.first]
+      station_combinations << [t.from_stop_internal_id].concat(stations[1...stations.length])
+    end
+    if transfers[stations.last]
+      station_combinations << stations[0...stations.length - 1].concat([t.from_stop_internal_id])
+    end
+
     route_pair = nil
     [recent_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
         route_id[0] != current_route_id[0] && direction.any? do |_, routings|
-          routings.any? {|r| normalize_routing(r).each_cons(stations.length).any?(&stations.method(:==))}
+          station_combinations.any? do |sc|
+            routings.any? {|r| normalize_routing(r).each_cons(sc.length).any?(&sc.method(:==))}
+          end
         end
       end
       break if route_pair
