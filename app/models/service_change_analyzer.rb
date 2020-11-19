@@ -123,13 +123,12 @@ class ServiceChangeAnalyzer
 
             previous_actual_station = actual_station
           end
-
           if ongoing_service_change
             ongoing_service_change.stations_affected << nil
             routing_changes << ongoing_service_change        
           elsif remaining_stations.present?
             routing_changes << ReroutingServiceChange.new(direction[:route_direction], remaining_stations, actual_routing.first, actual_routing.last)
-          elsif scheduled_routing[scheduled_index]
+          elsif scheduled_routing[scheduled_index] && scheduled_routing.size > scheduled_index + 1
             routing_changes << TruncatedServiceChange.new(direction[:route_direction], scheduled_routing[scheduled_index - 1..scheduled_routing.length].concat([nil]), actual_routing.first, actual_routing.last)
           end
           changes << routing_changes
@@ -184,11 +183,15 @@ class ServiceChangeAnalyzer
   def self.match_route(current_route_id, reroute_service_change, recent_routings, evergreen_routings, transfers)
     stations = reroute_service_change.stations_affected.compact
     station_combinations = [stations]
-    if t = transfers[stations.first]
-      station_combinations << [t.from_stop_internal_id].concat(stations[1...stations.length])
+    if tr = transfers[stations.first]
+      tr.each do |t|
+        station_combinations << [t.from_stop_internal_id].concat(stations[1...stations.length])
+      end
     end
-    if transfers[stations.last]
-      station_combinations << stations[0...stations.length - 1].concat([t.from_stop_internal_id])
+    if tr = transfers[stations.last]
+      tr.each do |t|
+        station_combinations << stations[0...stations.length - 1].concat([t.from_stop_internal_id])
+      end
     end
 
     route_pair = nil
