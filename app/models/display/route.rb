@@ -23,9 +23,12 @@ module Display
       return @status = "No Data" if unavailable
       return "No Service" if service_changes && service_changes[:both]&.find { |c| c.is_a?(NoTrainServiceChange).present? }.present?
       return "No Service" if service_changes && [NoTrainServiceChange, NotScheduledServiceChange].all? { |klass| service_changes.find { |_, v| v.find {|c| c.is_a?(klass) } }.present? }
+
+      @status = 'Delay' if directions.any? { |_, d| d.status == 'Delay' }
+
       return "Service Change" if service_changes&.any? { |_, v| v&.select{ |c| !c.is_a?(NotScheduledServiceChange) }.present? }
 
-      @status = ["Delay", "Service Change", "Not Good", "Good Service"].find do |s|
+      @status = ["Not Good", "Good Service"].find do |s|
         directions.any? { |_, d| d.status == s }
       end
 

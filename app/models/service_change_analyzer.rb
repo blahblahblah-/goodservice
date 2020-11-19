@@ -229,6 +229,7 @@ class ServiceChangeAnalyzer
 
         break if route_pairs.compact.size == 2
       end
+      break if route_pairs.compact.size == 2
     end
     reroute_service_change.related_routes = route_pairs.map {|r| r[0] } if route_pairs.compact.size == 2
   end
