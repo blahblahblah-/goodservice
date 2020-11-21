@@ -71,7 +71,7 @@ class ServiceChangeAnalyzer
             if ongoing_service_change.nil?
               if actual_station != scheduled_station &&
                 (transfers[actual_station].nil? || transfers[actual_station].none? { |t| t.from_stop_internal_id == scheduled_station })
-                if scheduled_index_to_current_station = scheduled_routing.index(actual_station)
+                if (scheduled_index_to_current_station = scheduled_routing.index(actual_station)) || transfers[actual_station]&.any?{ |t| scheduled_index_to_current_station = scheduled_routing.index(t.from_stop_internal_id)}
                   if previous_actual_station.nil? && previous_scheduled_station.nil?
                     array_of_skipped_stations = [nil].concat(scheduled_routing[0..scheduled_index_to_current_station])
                     routing_changes << TruncatedServiceChange.new(direction[:route_direction], array_of_skipped_stations, actual_routing.first, actual_routing.last)
