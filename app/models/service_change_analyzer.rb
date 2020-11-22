@@ -214,19 +214,21 @@ class ServiceChangeAnalyzer
     route_pairs = []
 
     [recent_routings, evergreen_routings].each do |routing_set|
-      (1...stations.size - 1).each_with_index do |i|
-        first_station_sequence = stations[0..i]
-        second_station_sequence = stations[i..stations.size]
+      (0..1).each do |j|
+        (1...stations.size - 1).each_with_index do |i|
+          first_station_sequence = stations[0..(i - j)]
+          second_station_sequence = stations[i..stations.size]
 
-        route_pairs = [first_station_sequence, second_station_sequence].map do |station_sequence|
-          route_pair = routing_set.find do |route_id, direction|
-            route_id[0] != current_route_id[0] && direction.any? do |_, routings|
-              routings.any? {|r| normalize_routing(r).each_cons(station_sequence.length).any?(&station_sequence.method(:==))}
+          route_pairs = [first_station_sequence, second_station_sequence].map do |station_sequence|
+            route_pair = routing_set.find do |route_id, direction|
+              route_id[0] != current_route_id[0] && direction.any? do |_, routings|
+                routings.any? {|r| normalize_routing(r).each_cons(station_sequence.length).any?(&station_sequence.method(:==))}
+              end
             end
+            route_pair
           end
-          route_pair
+          break if route_pairs.compact.size == 2
         end
-
         break if route_pairs.compact.size == 2
       end
       break if route_pairs.compact.size == 2
