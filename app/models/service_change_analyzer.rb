@@ -215,7 +215,7 @@ class ServiceChangeAnalyzer
 
     [recent_routings, evergreen_routings].each do |routing_set|
       (0..1).each do |j|
-        (1...stations.size - 1).each_with_index do |i|
+        ((1 + j)...stations.size - 1).each_with_index do |i|
           first_station_sequence = stations[0..(i - j)]
           second_station_sequence = stations[i..stations.size]
 
