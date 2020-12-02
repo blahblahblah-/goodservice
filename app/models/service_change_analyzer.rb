@@ -199,7 +199,7 @@ class ServiceChangeAnalyzer
     current_evergreen_routings = { current_route_id => evergreen_routings[current_route_id] }
     [current_route_routings, current_evergreen_routings, recent_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
-        direction.any? do |_, routings|
+        direction&.any? do |_, routings|
           station_combinations.any? do |sc|
             routings.any? {|r| normalize_routing(r).each_cons(sc.length).any?(&sc.method(:==))}
           end
@@ -247,7 +247,7 @@ class ServiceChangeAnalyzer
   def self.truncate_service_change_overlaps_with_different_routing?(service_change, routings)
     if service_change.begin_of_route?
       routings.any? do |r|
-        i = normalize_routing(r).index(service_change.last_station)
+        i = normalize_routing(r).index(service_change.destination)
         i && i > 0
       end
     else
