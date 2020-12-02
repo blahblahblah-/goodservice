@@ -61,7 +61,7 @@ class StopTime < ActiveRecord::Base
   end
 
   def self.not_past(current_time: rounded_time)
-    if (rounded_time + BUFFER).to_date == current_time.to_date.tomorrow
+    if (current_time + BUFFER).to_date == current_time.to_date.tomorrow
       where("departure_time > ? or (? - departure_time > ?)",
         current_time - current_time.beginning_of_day,
         current_time - current_time.beginning_of_day,
@@ -69,7 +69,7 @@ class StopTime < ActiveRecord::Base
       )
     elsif current_time.hour < 4
       where("(departure_time < ? and departure_time > ?) or (departure_time >= ? and departure_time - ? > ?)",
-        DAY_IN_MINUTES,
+        DAY_IN_MINUTES - BUFFER,
         current_time - current_time.beginning_of_day,
         DAY_IN_MINUTES,
         DAY_IN_MINUTES,

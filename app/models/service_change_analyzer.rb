@@ -48,7 +48,7 @@ class ServiceChangeAnalyzer
             next
           end
           actual_routing = a.map { |s| s[0..2] }
-          scheduled_routing = scheduled.map { |sr| sr.map { |s| s[0..2] }}.min_by { |sr| (actual_routing - sr).size }
+          scheduled_routing = scheduled.map { |sr| sr.map { |s| s[0..2] }}.min_by { |sr| (actual_routing - sr).size + (sr - actual_routing).size }
 
           if !scheduled_routing
             changes << [ReroutingServiceChange.new(direction[:route_direction], actual_routing, actual_routing.first, actual_routing.last)]

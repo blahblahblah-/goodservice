@@ -162,7 +162,7 @@ module Display
       end_of_route = service_changes.find(&:end_of_route?)
 
       if begin_of_route || end_of_route
-        if begin_of_route&.affects_some_trains
+        if begin_of_route.present? && end_of_route.nil?
           sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + "#{stop_name(begin_of_route.destination)}-bound trains are running"
         elsif end_of_route.present?
           sentence = (service_changes.any?(&:affects_some_trains) ? 'Some ' : '') + "#{stop_name(end_of_route.destination)}-bound trains are running"
