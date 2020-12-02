@@ -195,9 +195,11 @@ class ServiceChangeAnalyzer
     end
 
     route_pair = nil
-    [recent_routings, evergreen_routings].each do |routing_set|
+    current_route_routings = { current_route_id => recent_routings[current_route_id] }
+    current_evergreen_routings = { current_route_id => evergreen_routings[current_route_id] }
+    [current_route_routings, current_evergreen_routings, recent_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
-        route_id[0] != current_route_id[0] && direction.any? do |_, routings|
+        direction.any? do |_, routings|
           station_combinations.any? do |sc|
             routings.any? {|r| normalize_routing(r).each_cons(sc.length).any?(&sc.method(:==))}
           end
@@ -207,7 +209,9 @@ class ServiceChangeAnalyzer
     end
 
     if route_pair
-      reroute_service_change.related_routes = [route_pair[0]]
+      if route_pair[0] != current_route_id[0]
+        reroute_service_change.related_routes = [route_pair[0]]
+      end
       return
     end
 
