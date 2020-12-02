@@ -127,7 +127,7 @@ class ServiceChangeAnalyzer
             ongoing_service_change.stations_affected << nil
             routing_changes << ongoing_service_change        
           elsif remaining_stations.present?
-            routing_changes << ReroutingServiceChange.new(direction[:route_direction], remaining_stations, actual_routing.first, actual_routing.last)
+            routing_changes << ReroutingServiceChange.new(direction[:route_direction], remaining_stations.concat([nil]), actual_routing.first, actual_routing.last)
           elsif scheduled_routing[scheduled_index] && scheduled_routing.size > scheduled_index + 1
             routing_changes << TruncatedServiceChange.new(direction[:route_direction], scheduled_routing[scheduled_index - 1..scheduled_routing.length].concat([nil]), actual_routing.first, actual_routing.last)
           end
