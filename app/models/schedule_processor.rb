@@ -591,13 +591,13 @@ def self.arrivals_info(force_refresh: false)
             north: route.directions[1].trips.map do |t|
               {
                 id: t.trip_id,
-                arrival_times: t.arrival_times
+                times: Hash[* t.arrival_times.map(&:values).flatten]
               }
             end,
             south: route.directions[3].trips.map do |t|
               {
                 id: t.trip_id,
-                arrival_times: t.arrival_times
+                times: Hash[* t.arrival_times.map(&:values).flatten]
               }
             end
           }
