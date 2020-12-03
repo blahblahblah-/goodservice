@@ -242,11 +242,12 @@ class TrainModalMapPane extends React.Component {
   }
 
   render() {
-    const { width, routing, routingTimestamp, stops } = this.props;
+    const { width, routing, routingTimestamp, stops, trains } = this.props;
     const { displayProblems } = this.state;
     const segments = this.generateSegments();
     const stopPattern = this.calculateStops();
     const problemSections = this.calculateProblemSections();
+    const color = trains.find((t) => t.id === routing.id).color;
     let currentBranches = [0];
     let currentProblemSection = null;
     let currentProblemTop = null;
@@ -380,7 +381,7 @@ class TrainModalMapPane extends React.Component {
                    });
                  }
                 return (
-                  <TrainMapStop key={stopId} stop={stop} color={routing.color} southStop={stopPattern.southStops[stopId]}
+                  <TrainMapStop key={stopId} stop={stop} color={routing.color} trains={trains} southStop={stopPattern.southStops[stopId]}
                     northStop={stopPattern.northStops[stopId]} transfers={transfers} branchStops={branchStops} branchStart={branchStart}
                     branchEnd={branchEnd} activeBranches={activeBranches} width={width} problemSection={displayProblems && currentProblemSection}
                     displayProblemTop={displayProblems && currentProblemTop} displayProblemBottom={displayProblems && currentProblemBottom} />

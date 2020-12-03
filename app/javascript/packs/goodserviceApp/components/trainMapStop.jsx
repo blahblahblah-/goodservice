@@ -125,7 +125,7 @@ class TrainMapStop extends React.Component {
   }
 
   render() {
-    const { stop, transfers, activeBranches, branchStart, branchEnd, width } = this.props;
+    const { stop, transfers, activeBranches, branchStart, branchEnd, width, trains } = this.props;
     return (
       <li>
         <div style={{height: (width > Responsive.onlyMobile.maxWidth && "50px"), minHeight: (width <= Responsive.onlyMobile.maxWidth && "50px"), display: "flex"}}>
@@ -140,9 +140,10 @@ class TrainMapStop extends React.Component {
           <div style={{display: "inline-block", margin: "auto 0"}}>
             {
               transfers && transfers.map((route) => {
+                const train = trains.find((t) => t.id === route.id);
                 return (
-                  <TrainBullet link={true} id={route.id} key={route.name} name={route.name} color={route.color}
-                    textColor={route.text_color} size='small' key={route.id} directions={route.directions} />
+                  <TrainBullet link={true} id={route.id} key={train.name} name={train.name} color={train.color}
+                    textColor={train.text_color} size='small' directions={route.directions} />
                 )
               })
             }

@@ -364,10 +364,6 @@ class ScheduleProcessor
     results.each do |route_id, route|
       route_obj = {
         id: route_id,
-        name: route[:name],
-        color: route[:color],
-        text_color: route[:text_color],
-        alternate_name: route[:alternate_name],
       }
       route[:routings].each do |direction, routings|
         routings.each do |routing|
@@ -399,8 +395,6 @@ class ScheduleProcessor
           r.delete(:direction)
           r
         },
-        # borough: nil,
-        # is_accessible: false,
       }]
     end]
 
