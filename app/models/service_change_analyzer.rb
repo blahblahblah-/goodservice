@@ -28,7 +28,7 @@ class ServiceChangeAnalyzer
     }
   end
 
-  def self.service_change_summary(route_id, actual_route_directions, scheduled_routings, recent_routings, evergreen_routings, transfers)
+  def self.service_change_summary(route_id, actual_route_directions, scheduled_routings, current_routings, recent_routings, evergreen_routings, transfers)
     direction_changes = [NORTH, SOUTH].map do |direction|
       changes = []
       actual = actual_route_directions[direction[:route_direction]].routings
@@ -143,7 +143,7 @@ class ServiceChangeAnalyzer
       d.each do |r|
         r.each do |c|
           if c.is_a?(ReroutingServiceChange)
-            match_route(route_id, c, recent_routings, evergreen_routings, transfers)
+            match_route(route_id, c, current_routings, recent_routings, evergreen_routings, transfers)
           end
         end
       end
@@ -180,7 +180,7 @@ class ServiceChangeAnalyzer
 
   private
 
-  def self.match_route(current_route_id, reroute_service_change, recent_routings, evergreen_routings, transfers)
+  def self.match_route(current_route_id, reroute_service_change, current_routings, recent_routings, evergreen_routings, transfers)
     stations = reroute_service_change.stations_affected.compact
     station_combinations = [stations]
     if tr = transfers[stations.first]
@@ -195,9 +195,10 @@ class ServiceChangeAnalyzer
     end
 
     route_pair = nil
-    current_route_routings = { current_route_id => recent_routings[current_route_id] }
+    current_route_routings = { current_route_id => current_routings[current_route_id] }
+    recent_route_routings = { current_route_id => recent_routings[current_route_id] }
     current_evergreen_routings = { current_route_id => evergreen_routings[current_route_id] }
-    [current_route_routings, current_evergreen_routings, recent_routings, evergreen_routings].each do |routing_set|
+    [current_route_routings, recent_route_routings, current_evergreen_routings, current_routings, evergreen_routings].each do |routing_set|
       route_pair = routing_set.find do |route_id, direction|
         direction&.any? do |_, routings|
           station_combinations.any? do |sc|
@@ -217,7 +218,7 @@ class ServiceChangeAnalyzer
 
     route_pairs = []
 
-    [recent_routings, evergreen_routings].each do |routing_set|
+    [current_routings, evergreen_routings].each do |routing_set|
       (0..1).each do |j|
         ((1 + j)...stations.size - 1).each_with_index do |i|
           first_station_sequence = stations[0..(i - j)]

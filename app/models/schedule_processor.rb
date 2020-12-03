@@ -41,7 +41,7 @@ class ScheduleProcessor
     "7X" => "-7",
   }
 
-  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops, :recent_routings, :evergreen_routings, :interchangeable_transfers, :transfers
+  attr_accessor :routes, :lines, :line_directions, :key_stops, :stops, :current_routings, :recent_routings, :evergreen_routings, :interchangeable_transfers, :transfers
 
   def initialize
     refresh_data
@@ -105,9 +105,9 @@ class ScheduleProcessor
 
     processor = self.instance
     routes_data = processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
-      service_changes = processor.recent_routings[route.internal_id] &&
+      service_changes = processor.current_routings[route.internal_id] &&
         ServiceChangeAnalyzer.service_change_summary(
-          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
+          route.internal_id, route.directions, processor.current_routings[route.internal_id], processor.current_routings, processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
         )
       {
         id: route.internal_id,
@@ -457,9 +457,9 @@ class ScheduleProcessor
     results = Hash[processor.routes.sort_by { |_, v|
       "#{v.name} #{v.alternate_name}"
     }.map do |_, route|
-      service_changes = processor.recent_routings[route.internal_id] &&
+      service_changes = processor.current_routings[route.internal_id] &&
         ServiceChangeAnalyzer.service_change_summary(
-          route.internal_id, route.directions, processor.recent_routings[route.internal_id], processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
+          route.internal_id, route.directions, processor.current_routings[route.internal_id], processor.current_routings, processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
         )
       [route.internal_id, {
           name: route.name,
@@ -743,7 +743,7 @@ def self.arrivals_info(force_refresh: false)
     instantiate_lines
     instantiate_line_directions
     instantiate_recent_trips
-    instantiate_recent_routings
+    instantiate_current_routings
     instantiate_evergreen_routings
   end
 
@@ -771,11 +771,23 @@ def self.arrivals_info(force_refresh: false)
     @recent_trips = ActualTrip.includes(:actual_trip_updates).where("created_at > ?", Time.current - 3.hours)
   end
 
-  def instantiate_recent_routings
-    @recent_routings = Hash[StopTime.soon(time_range: 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+  def instantiate_current_routings
+    @current_routings = Hash[StopTime.soon(time_range: 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
       [k, Hash[v.group_by(&:direction).map{ |j, w|
         a = w.map { |t|
           t.stop_times.not_past.pluck(:stop_internal_id)
+        }.uniq
+        result = a.select { |b|
+          others = a - [b]
+          b.length > 0 && others.none? {|o| o.each_cons(b.length).any?(&b.method(:==))}
+        }
+        [j, result]
+      }]]
+    }]
+    @recent_routings = Hash[StopTime.soon(time_range: 30.minutes, current_time: Time.current - 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+      [k, Hash[v.group_by(&:direction).map{ |j, w|
+        a = w.map { |t|
+          t.stop_times.not_past(current_time: Time.current - 30.minutes).pluck(:stop_internal_id)
         }.uniq
         result = a.select { |b|
           others = a - [b]
