@@ -18,7 +18,8 @@ module Display
       directions[trip.direction].push_trip(trip)
     end
 
-    def status(service_changes)
+    def status(*args)
+      service_changes = args.size == 1 && args.first
       return @status if @status
       return @status = "No Data" if unavailable
       return "No Service" if service_changes && service_changes[:both]&.find { |c| c.is_a?(NoTrainServiceChange).present? }.present?

@@ -766,7 +766,8 @@ def self.arrivals_info(force_refresh: false)
   end
 
   def instantiate_current_routings
-    @current_routings = Hash[StopTime.soon(time_range: 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+    recent_trips = StopTime.soon(time_range: 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id)
+    @current_routings = Hash[recent_trips.map{ |k, v|
       [k, Hash[v.group_by(&:direction).map{ |j, w|
         a = w.map { |t|
           t.stop_times.not_past.pluck(:stop_internal_id)
@@ -778,10 +779,10 @@ def self.arrivals_info(force_refresh: false)
         [j, result]
       }]]
     }]
-    @recent_routings = Hash[StopTime.soon(time_range: 30.minutes, current_time: Time.current - 30.minutes).map(&:trip).uniq.group_by(&:route_internal_id).map{ |k, v|
+    @recent_routings = Hash[recent_trips.map{ |k, v|
       [k, Hash[v.group_by(&:direction).map{ |j, w|
         a = w.map { |t|
-          t.stop_times.not_past(current_time: Time.current - 30.minutes).pluck(:stop_internal_id)
+          t.stop_times.pluck(:stop_internal_id)
         }.uniq
         result = a.select { |b|
           others = a - [b]
