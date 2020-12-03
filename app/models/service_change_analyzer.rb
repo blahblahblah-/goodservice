@@ -51,7 +51,7 @@ class ServiceChangeAnalyzer
           scheduled_routing = scheduled&.map { |sr| sr.map { |s| s[0..2] }}.min_by { |sr| (actual_routing - sr).size + (sr - actual_routing).size }
 
           if !scheduled_routing
-            changes << [ReroutingServiceChange.new(direction[:route_direction], actual_routing, actual_routing.first, actual_routing.last)]
+            changes << [ReroutingServiceChange.new(direction[:route_direction], actual_routing, actual_routing.first, actual_routing)]
             next
           end
 
@@ -74,12 +74,12 @@ class ServiceChangeAnalyzer
                 if (scheduled_index_to_current_station = scheduled_routing.index(actual_station)) || transfers[actual_station]&.any?{ |t| scheduled_index_to_current_station = scheduled_routing.index(t.from_stop_internal_id)}
                   if previous_actual_station.nil? && previous_scheduled_station.nil?
                     array_of_skipped_stations = [nil].concat(scheduled_routing[0..scheduled_index_to_current_station])
-                    routing_changes << TruncatedServiceChange.new(direction[:route_direction], array_of_skipped_stations, actual_routing.first, actual_routing.last)
+                    routing_changes << TruncatedServiceChange.new(direction[:route_direction], array_of_skipped_stations, actual_routing.first, actual_routing)
                     scheduled_index = scheduled_index_to_current_station + 1
                     previous_scheduled_station = array_of_skipped_stations.last
                   else
                     array_of_skipped_stations = scheduled_routing[(scheduled_index - 1)..scheduled_index_to_current_station]
-                    routing_changes << LocalToExpressServiceChange.new(direction[:route_direction], array_of_skipped_stations, actual_routing.first, actual_routing.last)
+                    routing_changes << LocalToExpressServiceChange.new(direction[:route_direction], array_of_skipped_stations, actual_routing.first, actual_routing)
                     scheduled_index = scheduled_index_to_current_station + 1
                     previous_scheduled_station = actual_station
                   end
@@ -89,10 +89,10 @@ class ServiceChangeAnalyzer
                       ongoing_service_change = routing_changes.pop
                       ongoing_service_change.stations_affected << actual_station if ongoing_service_change.last_station != actual_station
                     else
-                      ongoing_service_change = ExpressToLocalServiceChange.new(direction[:route_direction], [previous_actual_station, actual_station], actual_routing.first, actual_routing.last)  
+                      ongoing_service_change = ExpressToLocalServiceChange.new(direction[:route_direction], [previous_actual_station, actual_station], actual_routing.first, actual_routing)
                     end
                   else
-                    ongoing_service_change = ReroutingServiceChange.new(direction[:route_direction], [previous_actual_station, actual_station], actual_routing.first, actual_routing.last)
+                    ongoing_service_change = ReroutingServiceChange.new(direction[:route_direction], [previous_actual_station, actual_station], actual_routing.first, actual_routing)
                   end
                 end
               else
@@ -127,9 +127,9 @@ class ServiceChangeAnalyzer
             ongoing_service_change.stations_affected << nil
             routing_changes << ongoing_service_change        
           elsif remaining_stations.present?
-            routing_changes << ReroutingServiceChange.new(direction[:route_direction], remaining_stations.concat([nil]), actual_routing.first, actual_routing.last)
+            routing_changes << ReroutingServiceChange.new(direction[:route_direction], remaining_stations.concat([nil]), actual_routing.first, actual_routing)
           elsif scheduled_routing[scheduled_index] && scheduled_routing.size > scheduled_index + 1
-            routing_changes << TruncatedServiceChange.new(direction[:route_direction], scheduled_routing[scheduled_index - 1..scheduled_routing.length].concat([nil]), actual_routing.first, actual_routing.last)
+            routing_changes << TruncatedServiceChange.new(direction[:route_direction], scheduled_routing[scheduled_index - 1..scheduled_routing.length].concat([nil]), actual_routing.first, actual_routing)
           end
           changes << routing_changes
         end
@@ -248,12 +248,16 @@ class ServiceChangeAnalyzer
   def self.truncate_service_change_overlaps_with_different_routing?(service_change, routings)
     if service_change.begin_of_route?
       routings.any? do |r|
-        i = normalize_routing(r).index(service_change.destination)
+        normalized_routing = normalize_routing(r)
+        next if normalized_routing == service_change.routing
+        i = normalized_routing.index(service_change.destination)
         i && i > 0
       end
     else
       routings.any? do |r|
-        i = normalize_routing(r).index(service_change.first_station)
+        normalized_routing = normalize_routing(r)
+        next if normalized_routing == service_change.routing
+        i = normalized_routing.index(service_change.first_station)
         i && i < r.size - 1
       end
     end
