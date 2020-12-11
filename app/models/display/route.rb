@@ -213,6 +213,12 @@ module Display
         notices << sentence
       end
 
+      split_route_changes = service_changes.select { |c| c.is_a?(SplitRoutingServiceChange)}
+
+      if split_route_changes.present?
+        notices << sentence_intro + " running in two sections: between #{stop_name(split_route_changes.first.first_station)} and #{stop_name(split_route_changes.first.last_station)}, and between #{stop_name(split_route_changes.second.first_station)} and #{stop_name(split_route_changes.second.last_station)}"
+      end
+
       service_changes.select { |c| c.is_a?(ReroutingServiceChange) && !c.begin_of_route? && !c.end_of_route?}.each do |change|
         sentence = (change.affects_some_trains ? 'Some ' : '') + sentence_intro + " running"
         if change.related_routes.present?

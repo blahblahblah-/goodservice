@@ -31,7 +31,7 @@ class ServiceChangeAnalyzer
   def self.service_change_summary(route_id, actual_route_directions, scheduled_routings, current_routings, recent_routings, evergreen_routings, transfers)
     direction_changes = [NORTH, SOUTH].map do |direction|
       changes = []
-      actual = actual_route_directions[direction[:route_direction]].routings
+      actual = actual_route_directions[direction[:route_direction]].routings.select{ |r| r.all?{ |s| s.ends_with?(direction[:suffix]) }}
       scheduled = scheduled_routings[direction[:scheduled_direction]]
       
       if !actual || actual.empty?
@@ -134,7 +134,13 @@ class ServiceChangeAnalyzer
           changes << routing_changes
         end
       end
-      changes.map { |r| r.select { |c| !c.is_a?(TruncatedServiceChange) || !truncate_service_change_overlaps_with_different_routing?(c, actual)}}
+      if actual.size == 2 && (actual[0] & actual[1]).size <= 1
+        actual.each_with_index do |a, i|
+          ar = a.map { |s| s[0..2] }
+          changes[i] << SplitRoutingServiceChange.new(direction[:route_direction], ar, ar.first, ar)
+        end
+      end
+      changes.map { |r| r.select { |c| !c.is_a?(TruncatedServiceChange) || (!truncate_service_change_overlaps_with_different_routing?(c, actual) && !r.any?{ |c2| c2.is_a?(SplitRoutingServiceChange)} )}}
     end
 
     both = []
@@ -162,12 +168,27 @@ class ServiceChangeAnalyzer
     end
 
     condensed_changes[1].select! do |c1|
-      if other_direction = condensed_changes[0].find { |c2| c1.class == c2.class && c1.first_station == c2.last_station && c1.last_station == c2.first_station }
+      if other_direction = condensed_changes[0].find { |c2| c1.class == c2.class && c1.first_station == c2.last_station && c1.last_station == c2.first_station && c1.class != SplitRoutingServiceChange }
         condensed_changes[0].delete(other_direction)
         both << c1
         false
       else
         true
+      end
+    end
+
+    split_changes = condensed_changes[1].select{ |c| c.is_a?(SplitRoutingServiceChange) }
+    split_changes_other_direction = condensed_changes[0].select{ |c| c.is_a?(SplitRoutingServiceChange) }
+
+    if split_changes.present? && split_changes_other_direction.present?
+      if split_changes.all? { |c1| split_changes_other_direction.any? { |c2| c1.first_station == c2.last_station && c1.last_station == c2.first_station }}
+        both.concat(split_changes)
+        split_changes.each { |c|
+          condensed_changes[1].delete(c)
+        }
+        split_changes_other_direction.each { |c|
+          condensed_changes[0].delete(c)
+        }
       end
     end
 
