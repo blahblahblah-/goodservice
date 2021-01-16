@@ -32,7 +32,7 @@ class ServiceChangeAnalyzer
     direction_changes = [NORTH, SOUTH].map do |direction|
       changes = []
       actual = actual_route_directions[direction[:route_direction]].routings.select{ |r| r.all?{ |s| s.ends_with?(direction[:suffix]) }}
-      scheduled = scheduled_routings[direction[:scheduled_direction]]
+      scheduled = scheduled_routings && scheduled_routings[direction[:scheduled_direction]]
       
       if !actual || actual.empty?
         if !scheduled || scheduled.empty?
@@ -48,7 +48,7 @@ class ServiceChangeAnalyzer
             next
           end
           actual_routing = a.map { |s| s[0..2] }
-          scheduled_routing = scheduled&.map { |sr| sr.map { |s| s[0..2] }}.min_by { |sr| (actual_routing - sr).size + (sr - actual_routing).size }
+          scheduled_routing = scheduled&.map { |sr| sr.map { |s| s[0..2] }}&.min_by { |sr| (actual_routing - sr).size + (sr - actual_routing).size }
 
           if !scheduled_routing
             changes << [ReroutingServiceChange.new(direction[:route_direction], actual_routing, actual_routing.first, actual_routing)]
@@ -231,9 +231,7 @@ class ServiceChangeAnalyzer
     end
 
     if route_pair
-      if route_pair[0] != current_route_id[0]
-        reroute_service_change.related_routes = [route_pair[0]]
-      end
+      reroute_service_change.related_routes = [route_pair[0]]
       return
     end
 

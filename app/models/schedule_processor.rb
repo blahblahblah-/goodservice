@@ -105,8 +105,7 @@ class ScheduleProcessor
 
     processor = self.instance
     routes_data = processor.routes.sort_by { |_, v| "#{v.name} #{v.alternate_name}" }.map do |_, route|
-      service_changes = processor.current_routings[route.internal_id] &&
-        ServiceChangeAnalyzer.service_change_summary(
+      service_changes = ServiceChangeAnalyzer.service_change_summary(
           route.internal_id, route.directions, processor.current_routings[route.internal_id], processor.current_routings, processor.recent_routings, processor.evergreen_routings, processor.interchangeable_transfers
         )
       {

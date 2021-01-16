@@ -178,7 +178,7 @@ module Display
           end
 
           if begin_of_route&.is_a?(ReroutingServiceChange)
-            if begin_of_route.related_routes.present?
+            if begin_of_route.related_routes.present? && !begin_of_route.related_routes.include?(internal_id)
               if begin_of_route == end_of_route
                 if begin_of_route.first_station == begin_of_route.last_station
                   sentence += " via #{begin_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} to"
@@ -198,7 +198,7 @@ module Display
           end
 
           if end_of_route&.is_a?(ReroutingServiceChange)
-            if end_of_route.related_routes.present? && begin_of_route != end_of_route
+            if end_of_route.related_routes.present? && begin_of_route != end_of_route && !end_of_route.related_routes.include?(internal_id)
               sentence += " #{stop_name(end_of_route.first_station)}, via  #{end_of_route.related_routes.map { |r| "<#{r}>" }.join(' and ')} #{end_preposition} #{stop_name(end_of_route.last_station)}."
             else
               sentence += " #{stop_name(end_of_route.last_station)}."
@@ -222,7 +222,11 @@ module Display
       service_changes.select { |c| c.is_a?(ReroutingServiceChange) && !c.begin_of_route? && !c.end_of_route?}.each do |change|
         sentence = (change.affects_some_trains ? 'Some ' : '') + sentence_intro + " running"
         if change.related_routes.present?
-          sentence += " via #{change.related_routes.map { |r| "<#{r}>" }.join(' and ')} between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
+          if change.related_routes.include?(internal_id)
+            sentence += " between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
+          else
+            sentence += " via #{change.related_routes.map { |r| "<#{r}>" }.join(' and ')} between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
+          end
         else
           sentence += " via #{change.intermediate_stations.map { |s| stop_name(s) }.join(', ') } between #{stop_name(change.first_station)} and #{stop_name(change.last_station)}."
         end
