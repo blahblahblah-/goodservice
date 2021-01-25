@@ -1,3 +1,5 @@
+## This repo is soon to be deprecated. The app is being re-written and its new source code can be found at [https://github.com/blahblahblah-/goodservice-v2](https://github.com/blahblahblah-/goodservice-v2).
+
 # goodservice
 
 This is a Rails app that generates live route maps, detects headway discrepancies, track delays and compare runtimes to the schedule on the New York City Subway system by comparing the data for live countdown clocks with the static schedule data provided by the MTA.
