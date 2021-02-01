@@ -227,17 +227,17 @@ class LandingPage extends React.Component {
           </Grid.Column>
           <Grid.Column floated='right' computer={3} tablet={3} mobile={5} textAlign='center' verticalAlign='middle'
           style={{backgroundColor: '#ffe21f', paddingLeft: 0, paddingRight: (width < Responsive.onlyTablet.maxWidth) ? "14px": 0, minHeight: "141px"}}>
-            <a href="https://www.theweekendest.com" target="_blank" className='theweekendest-link'>
+            <a href="https://preview.goodservice.io" className='theweekendest-link'>
               <Segment basic style={{paddingLeft: 0, paddingRight: 0}}>
                 <Header as='h3'>
-                  the weekendest
+                  goodservice.io v2
                   <Responsive maxWidth={Responsive.onlyTablet.maxWidth} as='br' />
                   &nbsp;&gt; &gt;
                 </Header>
                 <Header as='h5'>
-                  real-time nyc
+                  try the next version
                   <Responsive maxWidth={Responsive.onlyTablet.maxWidth} as='br' />
-                  &nbsp;subway map
+                  &nbsp;of goodservice
                 </Header>
               </Segment>
             </a>
