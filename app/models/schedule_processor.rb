@@ -6,7 +6,7 @@ require 'digest/md5'
 class ScheduleProcessor
   include Singleton
   BASE_URI = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs"
-  FEED_IDS = ["", "-ace", "-bdfm", "-g", "-jz", "-nqrw", "-l", "-7", "-si"]
+  FEED_IDS = ["", "-ace", "-bdfm", "-g", "-jz", "-nqrw", "-l", "-si"]
   BOROUGHS = ["The Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
   STATUSES = ["Good Service", "Service Change", "Not Good", "Delay", "No Service"]
   ROUTE_FEED_MAPPING = {
@@ -37,8 +37,8 @@ class ScheduleProcessor
     "G" => "-g",
     "J" => "-jz",
     "Z" => "-jz",
-    "7" => "-7",
-    "7X" => "-7",
+    "7" => "",
+    "7X" => "",
   }
 
   attr_accessor :routes, :lines, :line_directions, :key_stops, :stops, :current_routings, :recent_routings, :evergreen_routings, :interchangeable_transfers, :transfers
